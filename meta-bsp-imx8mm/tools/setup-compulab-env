@@ -1,0 +1,76 @@
+#!/bin/bash
+
+SUPPORTED_MACHINE=" ucm-imx8m-mini "
+
+mod_bblayer() {
+# A mandatory bsp layer: kernel, u-boot, imx-boot
+sed -i '$aBBLAYERS += " ${BSPDIR}/sources/meta-compulab-bsp/meta-bsp-imx8mm "' ${BBLAYERS_CONF}
+}
+
+mod_local() {
+# Modify local.conf
+CORE_IMAGE_EXTRA_INSTALL_append+=" dhcp-client memtester "
+IMAGE_FEATURES_append+=" package-management ssh-server-openssh "
+
+sed -i "$ a CORE_IMAGE_EXTRA_INSTALL += \"${CORE_IMAGE_EXTRA_INSTALL_append}\"" ${LOCAL_CONF}
+sed -i "$ a IMAGE_FEATURES += \"${IMAGE_FEATURES_append}\"" ${LOCAL_CONF}
+}
+
+CWD=$(pwd)
+PROGNAME=${BASH_SOURCE[0]}
+[ $(basename -- $BASH_SOURCE) == $(basename -- $0) ] && EXIT="exit" || EXIT="return"
+
+if [[ $(id -u) -eq 0 ]]; then
+    echo "ERROR: do not use the BSP as root. Exiting..."
+    ${EXIT}
+fi
+
+BBLAYERS_CONF=conf/bblayers.conf
+BB_CL_CONF_DONE=conf/bb_cl_conf.done
+LOCAL_CONF=conf/local.conf
+
+if ([ ! -f ${BBLAYERS_CONF} ] || [ ! -f ${LOCAL_CONF} ]);then
+cat << eom
+    Warning: Files ${BBLAYERS_CONF} and ${LOCAL_CONF} not found.
+    Make sure that the scritp issued at a correct location.
+eom
+    ${EXIT} 2
+fi
+
+[[ -n ${FORCE} ]] && rm -rf ${BB_CL_CONF_DONE}
+
+if [ -f ${BB_CL_CONF_DONE} ];then
+cat << eom
+    Note: Already issued.
+    Nothing to be done.
+eom
+    ${EXIT} 0
+fi
+
+eval $(awk '(/MACHINE|DISTRO/)&&(gsub(/'"'"'/,"")&&($0=$1"="$NF))' ORS=";" ${LOCAL_CONF})
+
+if [[ ! ${SUPPORTED_MACHINE} =~ ${MACHINE} ]];then
+cat << eom
+    ${MACHINE} is not in supported machine list: [ ${SUPPORTED_MACHINE} ]
+    Error exit.
+eom
+    ${EXIT} 0
+fi
+
+cat << eom
+    Prepare: ${MACHINE}:${DISTRO} ...
+eom
+
+mod_bblayer
+mod_local
+
+cat << eom
+    Note: Files ${BBLAYERS_CONF} and ${LOCAL_CONF} updated successfully.
+eom
+
+cat << eom > ${BB_CL_CONF_DONE}
+$(date)
+eom
+
+unset IMAGE_FEATURES_append CORE_IMAGE_EXTRA_INSTALL_append
+${EXIT} 0
