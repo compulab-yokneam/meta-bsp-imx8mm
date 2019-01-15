@@ -2,7 +2,21 @@
 
 SUPPORTED_MACHINE=" ucm-imx8m-mini "
 
+get_meta_compulab() {
+meta_cpl_dir="../sources/meta-compulab"
+branch="devel"
+meta_url="https://github.com/compulab-yokneam/meta-compulab"
+if [[ -d ${meta_cpl_dir} ]];then
+git -C ${meta_cpl_dir} remote update
+git -C ${meta_cpl_dir} pull
+else
+git clone -b ${branch} ${meta_url} ${meta_cpl_dir}
+fi
+}
+
 mod_bblayer() {
+# Get CompuLab Main meta layer
+get_meta_compulab
 # A mandatory bsp layer: kernel, u-boot, imx-boot
 sed -i '$aBBLAYERS += " ${BSPDIR}/sources/meta-compulab-bsp/meta-bsp-imx8mm "' ${BBLAYERS_CONF}
 sed -i '$aBBLAYERS += " ${BSPDIR}/sources/meta-compulab-bsp/meta-desktop "' ${BBLAYERS_CONF}
