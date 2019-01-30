@@ -25,7 +25,7 @@ sed -i '$aBBLAYERS += " ${BSPDIR}/sources/meta-compulab "' ${BBLAYERS_CONF}
 
 mod_local() {
 # Modify local.conf
-CORE_IMAGE_EXTRA_INSTALL_append+=" dhcp-client memtester cl-uboot cl-deploy "
+CORE_IMAGE_EXTRA_INSTALL_append+=" dhcp-client memtester cl-uboot cl-deploy u-boot-fw-utils"
 IMAGE_FEATURES_append+=" package-management ssh-server-openssh "
 
 sed -i "$ a CORE_IMAGE_EXTRA_INSTALL += \"${CORE_IMAGE_EXTRA_INSTALL_append}\"" ${LOCAL_CONF}
