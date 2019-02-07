@@ -1,0 +1,74 @@
+From f5c10e5c2888c19c8acc10683773c0c77dc41a83 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 5 Feb 2019 14:26:32 +0200
+Subject: [PATCH 4/8] ucm-imx8m-mini-dsi: dts: add mipi device tree
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/Makefile              |  1 +
+ .../arm64/boot/dts/compulab/ucm-imx8m-mini-dsi.dts | 43 ++++++++++++++++++++++
+ 2 files changed, 44 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi.dts
+
+diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
+index 2b52042..9d3f708 100644
+--- a/arch/arm64/boot/dts/compulab/Makefile
++++ b/arch/arm64/boot/dts/compulab/Makefile
+@@ -1,4 +1,5 @@
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini.dtb
++dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-dsi.dtb
+ 
+ always         := $(dtb-y)
+ subdir-y       := $(dts-dirs)
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi.dts
+new file mode 100644
+index 0000000..1cf13b7
+--- /dev/null
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi.dts
+@@ -0,0 +1,43 @@
++/*
++ * Copyright 2018 CompuLab
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++/dts-v1/;
++
++#include "ucm-imx8m-mini.dts"
++
++/ {
++	model = "CompuLab UCM i.MX8MM board (mipi)";
++	compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm";
++};
++
++&lcdif {
++	status = "okay";
++};
++
++&mipi_dsi {
++	status = "okay";
++	panel@0 {
++		compatible = "bananapi,lhr050h41";
++		reg = <0>;
++		reset-gpio = <&pca9555 6 GPIO_ACTIVE_LOW>;
++		dsi-lanes = <4>;
++		video-mode = <2>;	/* 0: burst mode
++					 * 1: non-burst mode with sync event
++					 * 2: non-burst mode with sync pulse
++					 */
++		panel-width-mm = <68>;
++		panel-height-mm = <121>;
++		status = "okay";
++	};
++};
+-- 
+1.9.1
+

@@ -1,24 +1,24 @@
-From ce597a9456fff0b00631e44cb8288cae89295fed Mon Sep 17 00:00:00 2001
+From 7734a8c3034d771fb5a77ee40bb4e07beb10af1b Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Thu, 10 Jan 2019 12:41:57 +0200
-Subject: [PATCH] ucm-imx8m-mini: Add basic board support
+Date: Tue, 5 Feb 2019 11:49:11 +0200
+Subject: [PATCH 0/8] ucm-imx8m-mini: add basic support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
  arch/arm64/boot/dts/Makefile                    |   1 +
  arch/arm64/boot/dts/compulab/Makefile           |   5 +
- arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts | 452 ++++++++++++++++
- arch/arm64/configs/ucm-imx8m-mini_defconfig     | 679 ++++++++++++++++++++++++
- 4 files changed, 1137 insertions(+)
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts | 603 +++++++++++++++++++++
+ arch/arm64/configs/ucm-imx8m-mini_defconfig     | 670 ++++++++++++++++++++++++
+ 4 files changed, 1279 insertions(+)
  create mode 100644 arch/arm64/boot/dts/compulab/Makefile
  create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
  create mode 100644 arch/arm64/configs/ucm-imx8m-mini_defconfig
 
 diff --git a/arch/arm64/boot/dts/Makefile b/arch/arm64/boot/dts/Makefile
-index 6684f97..c803628 100644
+index c6684ab..34a8515 100644
 --- a/arch/arm64/boot/dts/Makefile
 +++ b/arch/arm64/boot/dts/Makefile
-@@ -6,6 +6,7 @@ dts-dirs += apm
+@@ -9,6 +9,7 @@ dts-dirs += apm
  dts-dirs += arm
  dts-dirs += broadcom
  dts-dirs += cavium
@@ -39,10 +39,10 @@ index 0000000..2b52042
 +clean-files    := *.dtb
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 new file mode 100644
-index 0000000..12d33ae
+index 0000000..ca50fc1
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-@@ -0,0 +1,452 @@
+@@ -0,0 +1,603 @@
 +/*
 + * Copyright 2018 CompuLab
 + *
@@ -63,7 +63,7 @@ index 0000000..12d33ae
 +
 +/ {
 +	model = "CompuLab UCM i.MX8MM board";
-+	compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
++	compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm";
 +
 +	chosen {
 +		bootargs = "console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200";
@@ -80,6 +80,38 @@ index 0000000..12d33ae
 +		startup-delay-us = <100>;
 +		off-on-delay-us = <12000>;
 +	};
++
++	regulator-usdhc3rst {
++		compatible = "regulator-fixed";
++		regulator-name = "usdhc3_rst";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio3 16 GPIO_ACTIVE_HIGH>;
++		regulator-always-on;
++		enable-active-high;
++	};
++
++	regulator-fec1rst {
++		compatible = "regulator-fixed";
++		regulator-name = "fec1_rst";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio1 10 GPIO_ACTIVE_HIGH>;
++		regulator-always-on;
++		enable-active-high;
++		startup-delay-us = <500>;
++	};
++
++	reg_fec0_supply: fec0_nvcc {
++		compatible = "regulator-fixed";
++		regulator-name = "fec0_nvcc";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&pca9555 6 GPIO_ACTIVE_HIGH>;
++		regulator-always-on;
++		enable-active-high;
++		startup-delay-us = <500>;
++	};
 +};
 +
 +&iomuxc {
@@ -89,7 +121,8 @@ index 0000000..12d33ae
 +	ucm-imx8m-mini {
 +		pinctrl_hog_1: hoggrp-1 {
 +			fsl,pins = <
-+				MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x19
++				MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10	0x19
++				MX8MM_IOMUXC_NAND_READY_B_GPIO3_IO16	0x190
 +			>;
 +		};
 +
@@ -109,19 +142,6 @@ index 0000000..12d33ae
 +				MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC	0x91
 +				MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
 +				MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
-+				MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22	0x19
-+			>;
-+		};
-+
-+		pinctrl_flexspi0: flexspi0grp {
-+			fsl,pins = <
-+				MX8MM_IOMUXC_NAND_ALE_QSPI_A_SCLK 0x1c4
-+				MX8MM_IOMUXC_NAND_CE0_B_QSPI_A_SS0_B 0x84
-+
-+				MX8MM_IOMUXC_NAND_DATA00_QSPI_A_DATA0 0x84
-+				MX8MM_IOMUXC_NAND_DATA01_QSPI_A_DATA1 0x84
-+				MX8MM_IOMUXC_NAND_DATA02_QSPI_A_DATA2 0x84
-+				MX8MM_IOMUXC_NAND_DATA03_QSPI_A_DATA3 0x84
 +			>;
 +		};
 +
@@ -146,6 +166,13 @@ index 0000000..12d33ae
 +			>;
 +		};
 +
++		pinctrl_i2c4: i2c4grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_I2C4_SCL_I2C4_SCL			0x400001c3
++				MX8MM_IOMUXC_I2C4_SDA_I2C4_SDA			0x400001c3
++			>;
++		};
++
 +		pinctrl_pmic: pmicirq {
 +			fsl,pins = <
 +				MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x41
@@ -162,6 +189,7 @@ index 0000000..12d33ae
 +		pinctrl_usdhc2_gpio: usdhc2grpgpio {
 +			fsl,pins = <
 +				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
++				MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12	0x41
 +			>;
 +		};
 +
@@ -254,6 +282,17 @@ index 0000000..12d33ae
 +				MX8MM_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B		0xc6
 +			>;
 +		};
++		/*
++		Copy & Paste from an MXP evk
++		As of now an external OSC1 25MHz is in use
++		Left as an example for the next revision
++		*/
++		pinctrl_csi1: csi1grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_GPIO1_IO15_CCMSRCGPCMIX_CLKO2	0x59
++				MX8MM_IOMUXC_GPIO1_IO14_CCMSRCGPCMIX_CLKO1	0x59
++			>;
++		};
 +	};
 +};
 +
@@ -261,8 +300,22 @@ index 0000000..12d33ae
 +	clock-frequency = <400000>;
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&pinctrl_i2c1>;
-+	status = "disabled";
++	status = "okay";
 +
++	pca9555:pca9555@20 {
++		compatible = "nxp,pca9555";
++		/* Role #0 */
++		gpio-controller;
++		#gpio-cells = <2>;
++		/* Bus address */
++		reg = <0x20>;
++	};
++
++	eeprom@54 {
++		compatible = "atmel,24c08";
++		reg = <0x54>;
++		pagesize = <16>;
++	};
 +};
 +
 +&i2c2 {
@@ -270,6 +323,14 @@ index 0000000..12d33ae
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&pinctrl_i2c2>;
 +	status = "okay";
++
++	rtc@69 {
++		compatible = "ab1805";
++		reg = <0x69>;
++		pagesize = <16>;
++		status = "okay";
++	};
++
 +
 +	pmic: bd71837@4b {
 +		reg = <0x4b>;
@@ -428,12 +489,84 @@ index 0000000..12d33ae
 +	status = "disabled";
 +};
 +
++&i2c4 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c4>;
++	status = "okay";
++
++	ov5640_mipi: ov5640_mipi@3c {
++		compatible = "ovti,ov5640_mipi";
++		reg = <0x3c>;
++		status = "okay";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_csi1>;
++		clocks = <&clk IMX8MM_CLK_CLKO1_DIV>;
++		clock-names = "csi_mclk";
++		assigned-clocks = <&clk IMX8MM_CLK_CLKO1_SRC>,
++				  <&clk IMX8MM_CLK_CLKO1_DIV>;
++		assigned-clock-parents = <&clk IMX8MM_CLK_24M>;
++		assigned-clock-rates = <0>, <24000000>;
++		csi_id = <0>;
++		/*
++		To be looked into & fixed
++		As of now the device is alwas out of reset & under the power
++		*/
++		pwn-gpios = <&pca9555 8 GPIO_ACTIVE_LOW>;
++		rst-gpios = <&pca9555 7 GPIO_ACTIVE_HIGH>;
++
++		mclk = <24000000>;
++		mclk_source = <0>;
++		port {
++			ov5640_mipi1_ep: endpoint {
++				remote-endpoint = <&mipi1_sensor_ep>;
++			};
++		};
++	};
++};
++
++&mipi_csi_1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++	port {
++		mipi1_sensor_ep: endpoint1 {
++			remote-endpoint = <&ov5640_mipi1_ep>;
++			data-lanes = <2>;
++			csis-hs-settle = <13>;
++			csis-clk-settle = <2>;
++			csis-wclk;
++		};
++
++		csi1_mipi_ep: endpoint2 {
++			remote-endpoint = <&csi1_ep>;
++		};
++	};
++};
++
++&csi1_bridge {
++    fsl,mipi-mode;
++    status = "okay";
++
++    port {
++        csi1_ep: endpoint {
++            remote-endpoint = <&csi1_mipi_ep>;
++        };
++    };
++};
++
++&snvs {
++	status = "okay";
++};
++
 +&fec1 {
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&pinctrl_fec1>;
 +	phy-mode = "rgmii-id";
 +	phy-handle = <&ethphy0>;
++	phy-supply = <&reg_fec0_supply>;
 +	fsl,magic-packet;
++	fsl,rgmii_rxc_dly;
 +	status = "okay";
 +
 +	mdio {
@@ -461,8 +594,8 @@ index 0000000..12d33ae
 +	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
 +	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
 +	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
++	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
 +	bus-width = <4>;
-+	non-removable;
 +	vmmc-supply = <&reg_usdhc2_vmmc>;
 +	status = "okay";
 +};
@@ -488,19 +621,37 @@ index 0000000..12d33ae
 +	arm-supply = <&buck2_reg>;
 +};
 +
++&gpu {
++	status = "okay";
++};
++
++&vpu_g1 {
++	status = "okay";
++};
++
++&vpu_g2 {
++	status = "okay";
++};
++
++&vpu_h1 {
++	status = "okay";
++};
++
 +&usbotg1 {
-+	status = "disabled";
++	dr_mode = "otg";
++	status = "okay";
 +};
 +
 +&usbotg2 {
-+	status = "disabled";
++	dr_mode = "host";
++	status = "okay";
 +};
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 new file mode 100644
-index 0000000..f7df110
+index 0000000..8875442
 --- /dev/null
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-@@ -0,0 +1,679 @@
+@@ -0,0 +1,670 @@
 +CONFIG_SYSVIPC=y
 +CONFIG_POSIX_MQUEUE=y
 +CONFIG_AUDIT=y
@@ -1035,16 +1186,7 @@ index 0000000..f7df110
 +CONFIG_LEDS_TRIGGER_HEARTBEAT=y
 +CONFIG_LEDS_TRIGGER_CPU=y
 +CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_MAX77686=y
-+CONFIG_RTC_DRV_S5M=y
-+CONFIG_RTC_DRV_DS3232=y
-+CONFIG_RTC_DRV_EFI=y
-+CONFIG_RTC_DRV_S3C=y
-+CONFIG_RTC_DRV_PL031=y
-+CONFIG_RTC_DRV_TEGRA=y
-+CONFIG_RTC_DRV_SNVS=y
-+CONFIG_RTC_DRV_IMX_SC=y
-+CONFIG_RTC_DRV_XGENE=y
++CONFIG_RTC_DRV_ABX80X=y
 +CONFIG_DMADEVICES=y
 +CONFIG_FSL_EDMA_V3=y
 +CONFIG_IMX_SDMA=y
