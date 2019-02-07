@@ -1,34 +1,34 @@
-From 56fa42265a1ca4c6c5014b8cc8734b70c9d8ca74 Mon Sep 17 00:00:00 2001
+From 6d3400ac2f2365d98f4be7edb154bb9a792d9ccc Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Mon, 14 Jan 2019 11:11:05 +0200
-Subject: [PATCH 1/1] ucm-imx8m-mini: Add basic board support
+Date: Thu, 7 Feb 2019 08:14:46 +0200
+Subject: [PATCH] ucm-imx8m-mini: Add basic support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
- arch/arm/cpu/armv8/imx8m/Kconfig                   |    6 +
- arch/arm/dts/Makefile                              |    2 +
+ arch/arm/dts/Makefile                              |  265 +--
  arch/arm/dts/ucm-imx8m-mini.dts                    |  452 +++++
+ arch/arm/mach-imx/imx8m/Kconfig                    |    6 +
  board/compulab/common/Makefile                     |    1 +
- board/compulab/common/eeprom.c                     |    2 +-
- board/compulab/common/mmc.c                        |   48 +
- board/compulab/common/pfuze.c                      |   93 +
- board/compulab/common/pfuze.h                      |   20 +
+ board/compulab/common/eeprom.c                     |    4 +-
+ board/compulab/common/mmc.c                        |   50 +
+ board/compulab/common/pfuze.c                      |  174 ++
+ board/compulab/common/pfuze.h                      |   19 +
  board/compulab/common/pfuze_dm.c                   |   89 +
  board/compulab/common/tcpc.h                       |  454 +++++
  board/compulab/ucm-imx8m-mini/Kconfig              |   30 +
  board/compulab/ucm-imx8m-mini/Makefile             |   16 +
  board/compulab/ucm-imx8m-mini/ddr/Makefile         |   11 +
  board/compulab/ucm-imx8m-mini/ddr/ddr.h            |   59 +
- board/compulab/ucm-imx8m-mini/ddr/ddr_init.c       |  254 +++
- board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c   | 1043 +++++++++++
- board/compulab/ucm-imx8m-mini/ddr/helper.c         |  102 +
- .../ddr/wait_ddrphy_training_complete.c            |  102 +
+ board/compulab/ucm-imx8m-mini/ddr/ddr_init.c       |  255 +++
+ board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c   | 1044 +++++++++++
+ board/compulab/ucm-imx8m-mini/ddr/helper.c         |  103 +
+ .../ddr/wait_ddrphy_training_complete.c            |  103 +
  board/compulab/ucm-imx8m-mini/lpddr4_timing.c      | 1980 ++++++++++++++++++++
- board/compulab/ucm-imx8m-mini/spl.c                |  250 +++
- board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c     |  731 ++++++++
- configs/ucm-imx8m-mini_defconfig                   |   51 +
- include/configs/ucm-imx8m-mini.h                   |  374 ++++
- 23 files changed, 6169 insertions(+), 1 deletion(-)
+ board/compulab/ucm-imx8m-mini/spl.c                |  258 +++
+ board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c     |  734 ++++++++
+ configs/ucm-imx8m-mini_defconfig                   |   56 +
+ include/configs/ucm-imx8m-mini.h                   |  361 ++++
+ 23 files changed, 6315 insertions(+), 209 deletions(-)
  create mode 100644 arch/arm/dts/ucm-imx8m-mini.dts
  create mode 100644 board/compulab/common/mmc.c
  create mode 100644 board/compulab/common/pfuze.c
@@ -49,42 +49,495 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 configs/ucm-imx8m-mini_defconfig
  create mode 100644 include/configs/ucm-imx8m-mini.h
 
-diff --git a/arch/arm/cpu/armv8/imx8m/Kconfig b/arch/arm/cpu/armv8/imx8m/Kconfig
-index d344afd..ccddd6e 100644
---- a/arch/arm/cpu/armv8/imx8m/Kconfig
-+++ b/arch/arm/cpu/armv8/imx8m/Kconfig
-@@ -52,6 +52,11 @@ config TARGET_IMX8MM_EVK
- 	select SUPPORT_SPL
- 	select IMX8M_LPDDR4
- 
-+config TARGET_UCM_IMX8M_MINI
-+	bool "CompuLab ucm-imx8m-mini"
-+	select IMX8MM
-+	select SUPPORT_SPL
-+
- endchoice
- 
- config SYS_SOC
-@@ -62,5 +67,6 @@ source "board/freescale/imx8mq_evk/Kconfig"
- source "board/freescale/imx8mq_arm2/Kconfig"
- source "board/freescale/imx8mm_evk/Kconfig"
- source "board/freescale/imx8mm_val/Kconfig"
-+source "board/compulab/ucm-imx8m-mini/Kconfig"
- 
- endif
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index cca5221..9a7e056 100644
+index 845de59..9a7e056 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -400,6 +400,8 @@ dtb-$(CONFIG_ARCH_IMX8) += fsl-imx8qm-lpddr4-arm2.dtb \
+@@ -29,36 +29,18 @@ dtb-$(CONFIG_EXYNOS5) += exynos5250-arndale.dtb \
+ dtb-$(CONFIG_EXYNOS7420) += exynos7420-espresso7420.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += \
+ 	rk3036-sdk.dtb \
+-	rk3128-evb.dtb \
+-	rk3188-radxarock.dtb \
+-	rk3288-evb.dtb \
+-	rk3288-fennec.dtb \
+ 	rk3288-firefly.dtb \
+-	rk3288-miqi.dtb \
+-	rk3288-phycore-rdk.dtb \
+-	rk3288-popmetal.dtb \
+-	rk3288-rock2-square.dtb \
+-	rk3288-tinker.dtb \
+ 	rk3288-veyron-jerry.dtb \
+ 	rk3288-veyron-mickey.dtb \
+ 	rk3288-veyron-minnie.dtb \
+-	rk3288-vyasa.dtb \
+-	rk3328-evb.dtb \
+-	rk3368-lion.dtb \
+-	rk3368-sheep.dtb \
+-	rk3368-geekbox.dtb \
+-	rk3368-px5-evb.dtb \
+-	rk3399-evb.dtb \
+-	rk3399-firefly.dtb \
+-	rk3399-puma-ddr1333.dtb \
+-	rk3399-puma-ddr1600.dtb \
+-	rk3399-puma-ddr1866.dtb \
+-	rv1108-evb.dtb
++	rk3288-rock2-square.dtb \
++	rk3288-evb.dtb \
++	rk3288-fennec.dtb \
++	rk3288-tinker.dtb \
++	rk3288-popmetal.dtb \
++	rk3399-evb.dtb
+ dtb-$(CONFIG_ARCH_MESON) += \
+-	meson-gxbb-odroidc2.dtb \
+-	meson-gxl-s905x-p212.dtb \
+-	meson-gxl-s905x-libretech-cc.dtb \
+-	meson-gxl-s905x-khadas-vim.dtb
++	meson-gxbb-odroidc2.dtb
+ dtb-$(CONFIG_TEGRA) += tegra20-harmony.dtb \
+ 	tegra20-medcom-wide.dtb \
+ 	tegra20-paz00.dtb \
+@@ -67,6 +49,7 @@ dtb-$(CONFIG_TEGRA) += tegra20-harmony.dtb \
+ 	tegra20-tec.dtb \
+ 	tegra20-trimslice.dtb \
+ 	tegra20-ventana.dtb \
++	tegra20-whistler.dtb \
+ 	tegra20-colibri.dtb \
+ 	tegra30-apalis.dtb \
+ 	tegra30-beaver.dtb \
+@@ -74,7 +57,6 @@ dtb-$(CONFIG_TEGRA) += tegra20-harmony.dtb \
+ 	tegra30-colibri.dtb \
+ 	tegra30-tec-ng.dtb \
+ 	tegra114-dalmore.dtb \
+-	tegra124-apalis.dtb \
+ 	tegra124-jetson-tk1.dtb \
+ 	tegra124-nyan-big.dtb \
+ 	tegra124-cei-tk1-som.dtb \
+@@ -88,26 +70,20 @@ dtb-$(CONFIG_TEGRA) += tegra20-harmony.dtb \
+ 
+ dtb-$(CONFIG_ARCH_MVEBU) +=			\
+ 	armada-3720-db.dtb			\
+-	armada-3720-espressobin.dtb		\
+ 	armada-375-db.dtb			\
+ 	armada-388-clearfog.dtb			\
+ 	armada-388-gp.dtb			\
+ 	armada-385-amc.dtb			\
+ 	armada-7040-db.dtb			\
+-	armada-7040-db-nand.dtb			\
+ 	armada-8040-db.dtb			\
+-	armada-8040-mcbin.dtb			\
+ 	armada-xp-gp.dtb			\
+ 	armada-xp-maxbcm.dtb			\
+ 	armada-xp-synology-ds414.dtb		\
+-	armada-xp-theadorable.dtb		\
+-	armada-38x-controlcenterdc.dtb
++	armada-xp-theadorable.dtb
+ 
+ dtb-$(CONFIG_ARCH_UNIPHIER_LD11) += \
+-	uniphier-ld11-global.dtb \
+ 	uniphier-ld11-ref.dtb
+ dtb-$(CONFIG_ARCH_UNIPHIER_LD20) += \
+-	uniphier-ld20-global.dtb \
+ 	uniphier-ld20-ref.dtb
+ dtb-$(CONFIG_ARCH_UNIPHIER_LD4) += \
+ 	uniphier-ld4-ref.dtb
+@@ -124,34 +100,27 @@ dtb-$(CONFIG_ARCH_UNIPHIER_PXS2) += \
+ 	uniphier-pxs2-vodka.dtb
+ dtb-$(CONFIG_ARCH_UNIPHIER_PXS3) += \
+ 	uniphier-pxs3-ref.dtb
++dtb-$(CONFIG_ARCH_UNIPHIER_SLD3) += \
++	uniphier-sld3-ref.dtb
+ dtb-$(CONFIG_ARCH_UNIPHIER_SLD8) += \
+ 	uniphier-sld8-ref.dtb
+ 
+-dtb-$(CONFIG_ARCH_ZYNQ) += \
+-	zynq-cc108.dtb \
+-	zynq-cse-qspi-single.dtb \
++dtb-$(CONFIG_ARCH_ZYNQ) += zynq-zc702.dtb \
++	zynq-zc706.dtb \
++	zynq-zed.dtb \
++	zynq-zybo.dtb \
+ 	zynq-microzed.dtb \
+ 	zynq-picozed.dtb \
+-	zynq-syzygy-hub.dtb \
+ 	zynq-topic-miami.dtb \
+-	zynq-topic-miamilite.dtb \
+ 	zynq-topic-miamiplus.dtb \
+-	zynq-zc702.dtb \
+-	zynq-zc706.dtb \
+ 	zynq-zc770-xm010.dtb \
+ 	zynq-zc770-xm011.dtb \
+ 	zynq-zc770-xm012.dtb \
+-	zynq-zc770-xm013.dtb \
+-	zynq-zed.dtb \
+-	zynq-zturn-myir.dtb \
+-	zynq-zybo.dtb
++	zynq-zc770-xm013.dtb
+ dtb-$(CONFIG_ARCH_ZYNQMP) += \
+ 	zynqmp-ep108.dtb			\
+-	zynqmp-mini-emmc.dtb			\
+-	zynqmp-mini-nand.dtb			\
+-	zynqmp-zcu102-revA.dtb			\
++	zynqmp-zcu102.dtb			\
+ 	zynqmp-zcu102-revB.dtb			\
+-	zynqmp-zcu102-rev1.0.dtb		\
+ 	zynqmp-zc1751-xm015-dc1.dtb		\
+ 	zynqmp-zc1751-xm016-dc2.dtb		\
+ 	zynqmp-zc1751-xm018-dc4.dtb		\
+@@ -163,49 +132,38 @@ dtb-$(CONFIG_AM33XX) += am335x-boneblack.dtb am335x-bone.dtb \
+ 	am335x-bonegreen.dtb \
+ 	am335x-icev2.dtb \
+ 	am335x-pxm50.dtb \
+-	am335x-rut.dtb \
+-	am335x-pdu001.dtb
++	am335x-rut.dtb
+ dtb-$(CONFIG_AM43XX) += am437x-gp-evm.dtb am437x-sk-evm.dtb	\
+ 	am43x-epos-evm.dtb \
+ 	am437x-idk-evm.dtb
+-dtb-$(CONFIG_TI816X) += dm8168-evm.dtb
+ dtb-$(CONFIG_THUNDERX) += thunderx-88xx.dtb
+ 
+ dtb-$(CONFIG_ARCH_SOCFPGA) +=				\
+-	socfpga_arria10_socdk_sdmmc.dtb			\
+ 	socfpga_arria5_socdk.dtb			\
+ 	socfpga_cyclone5_is1.dtb			\
+ 	socfpga_cyclone5_mcvevk.dtb			\
+ 	socfpga_cyclone5_socdk.dtb			\
+-	socfpga_cyclone5_dbm_soc1.dtb			\
+ 	socfpga_cyclone5_de0_nano_soc.dtb			\
+ 	socfpga_cyclone5_de1_soc.dtb			\
+-	socfpga_cyclone5_de10_nano.dtb			\
+ 	socfpga_cyclone5_sockit.dtb			\
+ 	socfpga_cyclone5_socrates.dtb			\
+ 	socfpga_cyclone5_sr1500.dtb			\
+ 	socfpga_cyclone5_vining_fpga.dtb
+ 
+ dtb-$(CONFIG_TARGET_DRA7XX_EVM) += dra72-evm.dtb dra7-evm.dtb	\
+-	dra72-evm-revc.dtb dra71-evm.dtb dra76-evm.dtb
++	dra72-evm-revc.dtb dra71-evm.dtb
+ dtb-$(CONFIG_TARGET_AM57XX_EVM) += am57xx-beagle-x15.dtb \
+ 	am57xx-beagle-x15-revb1.dtb \
+-	am57xx-beagle-x15-revc.dtb \
+-	am574x-idk.dtb \
+ 	am572x-idk.dtb	\
+ 	am571x-idk.dtb
+ dtb-$(CONFIG_TARGET_STV0991) += stv0991.dtb
+ 
+-dtb-$(CONFIG_ARCH_LS1021A) += ls1021a-qds-duart.dtb \
++dtb-$(CONFIG_LS102XA) += ls1021a-qds-duart.dtb \
+ 	ls1021a-qds-lpuart.dtb \
+ 	ls1021a-twr-duart.dtb ls1021a-twr-lpuart.dtb \
+ 	ls1021a-iot-duart.dtb
+ dtb-$(CONFIG_FSL_LSCH3) += fsl-ls2080a-qds.dtb \
+-	fsl-ls2080a-rdb.dtb \
+-	fsl-ls2081a-rdb.dtb \
+-	fsl-ls2088a-rdb-qspi.dtb \
+-	fsl-ls1088a-rdb.dtb \
+-	fsl-ls1088a-qds.dtb
++	fsl-ls2080a-rdb.dtb
+ dtb-$(CONFIG_FSL_LSCH2) += fsl-ls1043a-qds-duart.dtb \
+ 	fsl-ls1043a-qds-lpuart.dtb \
+ 	fsl-ls1043a-rdb.dtb \
+@@ -214,20 +172,11 @@ dtb-$(CONFIG_FSL_LSCH2) += fsl-ls1043a-qds-duart.dtb \
+ 	fsl-ls1046a-rdb.dtb \
+ 	fsl-ls1012a-qds.dtb \
+ 	fsl-ls1012a-rdb.dtb \
+-	fsl-ls1012a-2g5rdb.dtb \
+ 	fsl-ls1012a-frdm.dtb
+ 
+-dtb-$(CONFIG_TARGET_DRAGONBOARD410C) += dragonboard410c.dtb
+-dtb-$(CONFIG_TARGET_DRAGONBOARD820C) += dragonboard820c.dtb
++dtb-$(CONFIG_ARCH_SNAPDRAGON) += dragonboard410c.dtb
+ 
+-dtb-$(CONFIG_STM32F4) += stm32f429-disco.dtb \
+-	stm32429i-eval.dtb \
+-	stm32f469-disco.dtb
+-
+-dtb-$(CONFIG_STM32F7) += stm32f746-disco.dtb \
+-	stm32f769-disco.dtb
+-dtb-$(CONFIG_STM32H7) += stm32h743i-disco.dtb \
+-	stm32h743i-eval.dtb
++dtb-$(CONFIG_STM32F7) += stm32f746-disco.dtb
+ 
+ dtb-$(CONFIG_MACH_SUN4I) += \
+ 	sun4i-a10-a1000.dtb \
+@@ -271,7 +220,6 @@ dtb-$(CONFIG_MACH_SUN5I) += \
+ 	sun5i-a13-olinuxino-micro.dtb \
+ 	sun5i-a13-q8-tablet.dtb \
+ 	sun5i-a13-utoo-p66.dtb \
+-	sun5i-gr8-chip-pro.dtb \
+ 	sun5i-r8-chip.dtb
+ dtb-$(CONFIG_MACH_SUN6I) += \
+ 	sun6i-a31-app4-evb1.dtb \
+@@ -329,18 +277,15 @@ dtb-$(CONFIG_MACH_SUN8I_A33) += \
+ 	sun8i-a33-olinuxino.dtb \
+ 	sun8i-a33-q8-tablet.dtb \
+ 	sun8i-a33-sinlinx-sina33.dtb \
+-	sun8i-r16-bananapi-m2m.dtb \
+ 	sun8i-r16-nintendo-nes-classic-edition.dtb \
+ 	sun8i-r16-parrot.dtb
+ dtb-$(CONFIG_MACH_SUN8I_A83T) += \
+ 	sun8i-a83t-allwinner-h8homlet-v2.dtb \
+-	sun8i-a83t-bananapi-m3.dtb \
+ 	sun8i-a83t-cubietruck-plus.dtb \
+-	sun8i-a83t-tbs-a711.dts
++	sun8i-a83t-sinovoip-bpi-m3.dtb
+ dtb-$(CONFIG_MACH_SUN8I_H3) += \
+ 	sun8i-h2-plus-orangepi-zero.dtb \
+ 	sun8i-h3-bananapi-m2-plus.dtb \
+-	sun8i-h3-libretech-all-h3-cc.dtb \
+ 	sun8i-h3-orangepi-2.dtb \
+ 	sun8i-h3-orangepi-lite.dtb \
+ 	sun8i-h3-orangepi-one.dtb \
+@@ -348,31 +293,13 @@ dtb-$(CONFIG_MACH_SUN8I_H3) += \
+ 	sun8i-h3-orangepi-pc-plus.dtb \
+ 	sun8i-h3-orangepi-plus.dtb \
+ 	sun8i-h3-orangepi-plus2e.dtb \
+-	sun8i-h3-nanopi-m1.dtb \
+-	sun8i-h3-nanopi-m1-plus.dtb \
+-	sun8i-h3-nanopi-neo.dtb \
+-	sun8i-h3-nanopi-neo-air.dtb
+-dtb-$(CONFIG_MACH_SUN8I_R40) += \
+-	sun8i-r40-bananapi-m2-ultra.dtb
+-dtb-$(CONFIG_MACH_SUN8I_V3S) += \
+-	sun8i-v3s-licheepi-zero.dtb
+-dtb-$(CONFIG_MACH_SUN50I_H5) += \
+-	sun50i-h5-nanopi-neo2.dtb \
+-	sun50i-h5-nanopi-neo-plus2.dtb \
+-	sun50i-h5-orangepi-pc2.dtb \
+-	sun50i-h5-orangepi-prime.dtb \
+-	sun50i-h5-orangepi-zero-plus2.dtb
++	sun8i-h3-nanopi-neo.dtb
+ dtb-$(CONFIG_MACH_SUN50I) += \
+-	sun50i-a64-bananapi-m64.dtb \
+-	sun50i-a64-nanopi-a64.dtb \
+-	sun50i-a64-olinuxino.dtb \
+-	sun50i-a64-orangepi-win.dtb \
+ 	sun50i-a64-pine64-plus.dtb \
+ 	sun50i-a64-pine64.dtb
+ dtb-$(CONFIG_MACH_SUN9I) += \
+ 	sun9i-a80-optimus.dtb \
+-	sun9i-a80-cubieboard4.dtb \
+-	sun9i-a80-cx-a99.dtb
++	sun9i-a80-cubieboard4.dtb
+ 
+ dtb-$(CONFIG_VF610) += vf500-colibri.dtb \
+ 	vf610-colibri.dtb \
+@@ -389,27 +316,22 @@ dtb-$(CONFIG_MX6) += imx6ul-14x14-ddr3-arm2.dtb \
+ 	imx6ul-14x14-evk.dtb \
+ 	imx6ul-14x14-evk-emmc.dtb \
+ 	imx6ul-14x14-evk-gpmi-weim.dtb \
+-	imx6ul-9x9-evk.dtb \
+ 	imx6ull-14x14-ddr3-arm2.dtb \
+ 	imx6ull-14x14-ddr3-arm2-epdc.dtb \
+ 	imx6ull-14x14-ddr3-arm2-emmc.dtb \
+ 	imx6ull-14x14-ddr3-arm2-gpmi-weim.dtb \
+ 	imx6ull-14x14-ddr3-arm2-tsc.dtb \
+-	imx6ull-9x9-evk.dtb \
+ 	imx6ull-14x14-evk.dtb \
+ 	imx6ull-14x14-evk-emmc.dtb \
+ 	imx6ull-14x14-evk-gpmi-weim.dtb \
+-	imx6ulz-14x14-evk.dtb \
+-	imx6ulz-14x14-evk-emmc.dtb \
+-	imx6ulz-14x14-evk-gpmi-weim.dtb \
+-	imx6sl-evk.dtb \
+-	imx6sll-evk.dtb \
++	imx6ul-9x9-evk.dtb \
++	imx6ull-9x9-evk.dtb \
+ 	imx6sll-lpddr2-arm2.dtb \
+ 	imx6sll-lpddr3-arm2.dtb \
+ 	imx6sll-lpddr3-arm2-ecspi.dtb \
++	imx6sll-evk.dtb \
+ 	imx6dl-arm2.dtb \
+ 	imx6dl-icore.dtb \
+-	imx6dl-icore-mipi.dtb \
+ 	imx6dl-icore-rqs.dtb \
+ 	imx6dl-sabreauto.dtb \
+ 	imx6dl-sabreauto-ecspi.dtb \
+@@ -417,17 +339,15 @@ dtb-$(CONFIG_MX6) += imx6ul-14x14-ddr3-arm2.dtb \
+ 	imx6dl-sabresd.dtb \
+ 	imx6q-arm2.dtb \
+ 	imx6q-pop-arm2.dtb \
+-	imx6q-cm-fx6.dtb \
+ 	imx6q-icore.dtb \
+-	imx6q-icore-mipi.dtb \
+ 	imx6q-icore-rqs.dtb \
+-	imx6q-logicpd.dtb \
+ 	imx6q-sabreauto.dtb \
+ 	imx6q-sabreauto-ecspi.dtb \
+ 	imx6q-sabreauto-gpmi-weim.dtb \
+ 	imx6qp-sabreauto.dtb \
+ 	imx6qp-sabreauto-ecspi.dtb \
+ 	imx6qp-sabreauto-gpmi-weim.dtb \
++	imx6sl-evk.dtb \
+ 	imx6sx-14x14-arm2.dtb \
+ 	imx6sx-17x17-arm2.dtb \
+ 	imx6sx-17x17-arm2-ecspi.dtb \
+@@ -436,127 +356,60 @@ dtb-$(CONFIG_MX6) += imx6ul-14x14-ddr3-arm2.dtb \
+ 	imx6sx-19x19-arm2-gpmi-weim.dtb \
+ 	imx6sx-sabreauto.dtb \
+ 	imx6sx-sdb.dtb \
++	imx6sx-sdb-emmc.dtb \
++	imx6q-sabresd.dtb \
++	imx6qp-sabresd.dtb \
+ 	imx6ul-geam-kit.dtb \
+-	imx6ul-isiot-emmc.dtb \
+-	imx6ul-isiot-nand.dtb \
+-	imx6ul-opos6uldev.dtb
++	imx6dqscm-1gb-qwks-rev2-fix-ldo.dtb \
++	imx6dqscm-1gb-qwks-rev3-fix-ldo.dtb \
++	imx6dqscm-1gb-qwks-rev2-interleave-android-ldo.dtb \
++	imx6dqscm-1gb-qwks-rev3-interleave-android-ldo.dtb \
++	imx6sxscm-1gb-evb-ldo.dtb
+ 
+ dtb-$(CONFIG_MX7) += imx7-colibri.dtb \
+-	imx7d-sdb.dtb \
+-	imx7d-sdb-epdc.dtb \
+-	imx7d-sdb-gpmi-weim.dtb \
+-	imx7d-sdb-qspi.dtb \
+-	imx7d-sdb-reva.dtb \
+-	imx7d-12x12-lpddr3-arm2.dtb \
+-	imx7d-12x12-lpddr3-arm2-ecspi.dtb \
+-	imx7d-12x12-lpddr3-arm2-qspi.dtb \
+-	imx7d-12x12-ddr3-arm2.dtb \
+-	imx7d-19x19-ddr3-arm2.dtb \
+-	imx7d-19x19-lpddr2-arm2.dtb \
+-	imx7d-19x19-lpddr3-arm2.dtb
++		imx7d-sdb.dtb \
++		imx7d-sdb-epdc.dtb \
++		imx7d-sdb-gpmi-weim.dtb \
++		imx7d-sdb-qspi.dtb \
++		imx7d-sdb-reva.dtb \
++		imx7d-12x12-lpddr3-arm2.dtb \
++		imx7d-12x12-lpddr3-arm2-ecspi.dtb \
++		imx7d-12x12-lpddr3-arm2-qspi.dtb \
++		imx7d-12x12-ddr3-arm2.dtb \
++		imx7d-19x19-ddr3-arm2.dtb \
++		imx7d-19x19-lpddr2-arm2.dtb \
++		imx7d-19x19-lpddr3-arm2.dtb
+ 
+ dtb-$(CONFIG_ARCH_MX7ULP) += imx7ulp-evk.dtb \
+-	imx7ulp-evk-emmc.dtb \
+-	imx7ulp-evk-qspi.dtb \
+-	imx7ulp-10x10-arm2.dtb \
+-	imx7ulp-14x14-arm2.dtb
++		imx7ulp-evk-emmc.dtb \
++		imx7ulp-evk-qspi.dtb \
++		imx7ulp-10x10-arm2.dtb \
++		imx7ulp-14x14-arm2.dtb
+ 
+ dtb-$(CONFIG_ARCH_IMX8M) += fsl-imx8mq-evk.dtb \
+ 		fsl-imx8mq-ddr3l-arm2.dtb \
+-		fsl-imx8mq-ddr4-arm2.dtb \
+ 		fsl-imx8mq-phanbell.dtb \
+-		fsl-imx8mm-ddr3l-val.dtb \
+-		fsl-imx8mm-ddr4-evk.dtb \
++		fsl-imx8mq-ddr4-arm2.dtb \
+ 		fsl-imx8mm-ddr4-val.dtb \
+ 		fsl-imx8mm-evk.dtb
+ 
+-dtb-$(CONFIG_ARCH_IMX8) += fsl-imx8dx-ddr3-arm2.dtb \
++dtb-$(CONFIG_ARCH_IMX8) += fsl-imx8qm-lpddr4-arm2.dtb \
+ 		fsl-imx8qm-ddr4-arm2.dtb \
+-		fsl-imx8qm-lpddr4-arm2.dtb \
+ 		fsl-imx8qm-mek.dtb \
+ 		fsl-imx8qm-mek-xen.dtb \
  		fsl-imx8qxp-lpddr4-arm2.dtb \
  		fsl-imx8qxp-mek.dtb
  
+-dtb-$(CONFIG_RCAR_GEN3) += \
+-	r8a7795-h3ulcb.dtb \
+-	r8a7795-salvator-x.dtb \
+-	r8a7796-m3ulcb.dtb \
+-	r8a7796-salvator-x.dtb \
+-	r8a77965-salvator-x.dtb \
+-	r8a77970-eagle.dtb \
+-	r8a77995-draak.dtb
 +dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
-+
+ 
  dtb-$(CONFIG_SOC_KEYSTONE) += keystone-k2hk-evm.dtb \
  	keystone-k2l-evm.dtb \
  	keystone-k2e-evm.dtb \
+-	keystone-k2g-evm.dtb \
+-	keystone-k2g-generic.dtb \
+-	keystone-k2g-ice.dtb
+-
+-dtb-$(CONFIG_TARGET_AT91SAM9261EK) += at91sam9261ek.dtb
+-
+-dtb-$(CONFIG_TARGET_PM9263) += at91sam9263ek.dtb
+-
+-dtb-$(CONFIG_TARGET_AT91SAM9263EK) += at91sam9263ek.dtb
+-
+-dtb-$(CONFIG_TARGET_AT91SAM9RLEK) += at91sam9rlek.dtb
+-
+-dtb-$(CONFIG_TARGET_AT91SAM9260EK) += \
+-	at91sam9260ek.dtb	\
+-	at91sam9g20ek.dtb	\
+-	at91sam9g20ek_2mmc.dtb
+-
+-dtb-$(CONFIG_TARGET_AT91SAM9M10G45EK) += at91sam9m10g45ek.dtb
+-
+-dtb-$(CONFIG_TARGET_AT91SAM9X5EK) += \
+-	at91sam9g15ek.dtb	\
+-	at91sam9g25ek.dtb	\
+-	at91sam9g35ek.dtb	\
+-	at91sam9x25ek.dtb	\
+-	at91sam9x35ek.dtb
+-
+-dtb-$(CONFIG_TARGET_AT91SAM9N12EK) += at91sam9n12ek.dtb
+-
+-dtb-$(CONFIG_TARGET_OMAP3_LOGIC) += \
+-	logicpd-torpedo-37xx-devkit.dtb \
+-	logicpd-som-lv-37xx-devkit.dtb
+-
+-dtb-$(CONFIG_TARGET_OMAP3_EVM) += \
+-	omap3-evm-37xx.dtb \
+-	omap3-evm.dtb
+-
+-dtb-$(CONFIG_TARGET_OMAP3_BEAGLE) += \
+-	omap3-beagle-xm-ab.dtb \
+-	omap3-beagle-xm.dtb \
+-	omap3-beagle.dtb
+-
+-dtb-$(CONFIG_TARGET_SAMA5D2_PTC_EK) += \
+-	at91-sama5d2_ptc_ek.dtb
++	keystone-k2g-evm.dtb
+ 
+ dtb-$(CONFIG_TARGET_SAMA5D2_XPLAINED) += \
+ 	at91-sama5d2_xplained.dtb
+ 
+-dtb-$(CONFIG_TARGET_SAMA5D27_SOM1_EK) += \
+-	at91-sama5d27_som1_ek.dtb
+-
+-dtb-$(CONFIG_TARGET_SAMA5D3XEK) += \
+-	sama5d31ek.dtb \
+-	sama5d33ek.dtb \
+-	sama5d34ek.dtb \
+-	sama5d35ek.dtb \
+-	sama5d36ek.dtb \
+-	sama5d36ek_cmp.dtb
+-
+-dtb-$(CONFIG_TARGET_SAMA5D3_XPLAINED) += \
+-	at91-sama5d3_xplained.dtb
+-
+-dtb-$(CONFIG_TARGET_SAMA5D4EK) += \
+-	at91-sama5d4ek.dtb
+-
+-dtb-$(CONFIG_TARGET_SAMA5D4_XPLAINED) += \
+-	at91-sama5d4_xplained.dtb
+-
+ dtb-$(CONFIG_ARCH_BCM283X) += \
+ 	bcm2835-rpi-a-plus.dtb \
+ 	bcm2835-rpi-a.dtb \
+@@ -568,8 +421,6 @@ dtb-$(CONFIG_ARCH_BCM283X) += \
+ 
+ dtb-$(CONFIG_ARCH_ASPEED) += ast2500-evb.dtb
+ 
+-dtb-$(CONFIG_ARCH_STI) += stih410-b2260.dtb
+-
+ targets += $(dtb-y)
+ 
+ # Add any required device tree compiler flags here
 diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
 new file mode 100644
 index 0000000..112345b
@@ -543,6 +996,29 @@ index 0000000..112345b
 +&usbotg2 {
 +	status = "disabled";
 +};
+diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
+index 249436c..ccff991 100644
+--- a/arch/arm/mach-imx/imx8m/Kconfig
++++ b/arch/arm/mach-imx/imx8m/Kconfig
+@@ -60,6 +60,11 @@ config TARGET_IMX8MM_DDR4_EVK
+ 	select SUPPORT_SPL
+ 	select IMX8M_DDR4
+ 
++config TARGET_UCM_IMX8M_MINI
++	bool "CompuLab ucm-imx8m-mini"
++	select IMX8MM
++	select SUPPORT_SPL
++
+ endchoice
+ 
+ config SYS_SOC
+@@ -70,5 +75,6 @@ source "board/freescale/imx8mq_arm2/Kconfig"
+ source "board/freescale/imx8mq_phanbell/Kconfig"
+ source "board/freescale/imx8mm_evk/Kconfig"
+ source "board/freescale/imx8mm_val/Kconfig"
++source "board/compulab/ucm-imx8m-mini/Kconfig"
+ 
+ endif
 diff --git a/board/compulab/common/Makefile b/board/compulab/common/Makefile
 index 286f327..ca75832 100644
 --- a/board/compulab/common/Makefile
@@ -556,10 +1032,20 @@ index 286f327..ca75832 100644
  obj-$(CONFIG_LCD)		+= omap3_display.o
  obj-$(CONFIG_SMC911X)		+= omap3_smc911x.o
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
-index b5f1aa6..5626c7b 100644
+index bb4c9e9..65ba3d3 100644
 --- a/board/compulab/common/eeprom.c
 +++ b/board/compulab/common/eeprom.c
-@@ -82,7 +82,7 @@ static int cl_eeprom_setup(uint eeprom_bus)
+@@ -11,8 +11,8 @@
+ #include <i2c.h>
+ #include <eeprom_layout.h>
+ #include <eeprom_field.h>
+-#include <asm/setup.h>
+ #include <linux/kernel.h>
++#include <asm/setup.h>
+ #include "eeprom.h"
+ 
+ #ifndef CONFIG_SYS_I2C_EEPROM_ADDR
+@@ -83,7 +83,7 @@ static int cl_eeprom_setup(uint eeprom_bus)
  	return 0;
  }
  
@@ -570,12 +1056,13 @@ index b5f1aa6..5626c7b 100644
  	uint offset;
 diff --git a/board/compulab/common/mmc.c b/board/compulab/common/mmc.c
 new file mode 100644
-index 0000000..20eaab6
+index 0000000..9fc3e68
 --- /dev/null
 +++ b/board/compulab/common/mmc.c
-@@ -0,0 +1,48 @@
+@@ -0,0 +1,50 @@
 +/*
 + * Copyright (C) 2016 Freescale Semiconductor, Inc.
++ * Copyright 2018 NXP
 + *
 + * SPDX-License-Identifier:	GPL-2.0+
 + */
@@ -584,10 +1071,11 @@ index 0000000..20eaab6
 +#include <linux/errno.h>
 +#include <asm/io.h>
 +#include <stdbool.h>
++#include <mmc.h>
 +
 +static int check_mmc_autodetect(void)
 +{
-+	char *autodetect_str = getenv("mmcautodetect");
++	char *autodetect_str = env_get("mmcautodetect");
 +
 +	if ((autodetect_str != NULL) &&
 +		(strcmp(autodetect_str, "yes") == 0)) {
@@ -612,22 +1100,22 @@ index 0000000..20eaab6
 +	if (!check_mmc_autodetect())
 +		return;
 +
-+	setenv_ulong("mmcdev", dev_no);
++	env_set_ulong("mmcdev", dev_no);
 +
 +	/* Set mmcblk env */
 +	sprintf(mmcblk, "/dev/mmcblk%dp2 rootwait rw",
 +		mmc_map_to_kernel_blk(dev_no));
-+	setenv("mmcroot", mmcblk);
++	env_set("mmcroot", mmcblk);
 +
 +	sprintf(cmd, "mmc dev %d", dev_no);
 +	run_command(cmd, 0);
 +}
 diff --git a/board/compulab/common/pfuze.c b/board/compulab/common/pfuze.c
 new file mode 100644
-index 0000000..30f6f0a
+index 0000000..f194d0b
 --- /dev/null
 +++ b/board/compulab/common/pfuze.c
-@@ -0,0 +1,93 @@
+@@ -0,0 +1,174 @@
 +/*
 + * Copyright 2014 Freescale Semiconductor, Inc.
 + *
@@ -639,6 +1127,7 @@ index 0000000..30f6f0a
 +#include <power/pmic.h>
 +#include <power/pfuze100_pmic.h>
 +
++#ifndef CONFIG_DM_PMIC_PFUZE100
 +int pfuze_mode_init(struct pmic *p, u32 mode)
 +{
 +	unsigned char offset, i, switch_num;
@@ -721,12 +1210,92 @@ index 0000000..30f6f0a
 +
 +	return p;
 +}
++#else
++int pfuze_mode_init(struct udevice *dev, u32 mode)
++{
++	unsigned char offset, i, switch_num;
++	u32 id;
++	int ret;
++
++	id = pmic_reg_read(dev, PFUZE100_DEVICEID);
++	id = id & 0xf;
++
++	if (id == 0) {
++		switch_num = 6;
++		offset = PFUZE100_SW1CMODE;
++	} else if (id == 1) {
++		switch_num = 4;
++		offset = PFUZE100_SW2MODE;
++	} else {
++		printf("Not supported, id=%d\n", id);
++		return -EINVAL;
++	}
++
++	ret = pmic_reg_write(dev, PFUZE100_SW1ABMODE, mode);
++	if (ret < 0) {
++		printf("Set SW1AB mode error!\n");
++		return ret;
++	}
++
++	for (i = 0; i < switch_num - 1; i++) {
++		ret = pmic_reg_write(dev, offset + i * SWITCH_SIZE, mode);
++		if (ret < 0) {
++			printf("Set switch 0x%x mode error!\n",
++			       offset + i * SWITCH_SIZE);
++			return ret;
++		}
++	}
++
++	return ret;
++}
++
++struct udevice *pfuze_common_init(void)
++{
++	struct udevice *dev;
++	int ret;
++	unsigned int reg, dev_id, rev_id;
++
++	ret = pmic_get("pfuze100", &dev);
++	if (ret == -ENODEV)
++		return NULL;
++
++	dev_id = pmic_reg_read(dev, PFUZE100_DEVICEID);
++	rev_id = pmic_reg_read(dev, PFUZE100_REVID);
++	printf("PMIC: PFUZE100! DEV_ID=0x%x REV_ID=0x%x\n", dev_id, rev_id);
++
++	/* Set SW1AB stanby volage to 0.975V */
++	reg = pmic_reg_read(dev, PFUZE100_SW1ABSTBY);
++	reg &= ~SW1x_STBY_MASK;
++	reg |= SW1x_0_975V;
++	pmic_reg_write(dev, PFUZE100_SW1ABSTBY, reg);
++
++	/* Set SW1AB/VDDARM step ramp up time from 16us to 4us/25mV */
++	reg = pmic_reg_read(dev, PFUZE100_SW1ABCONF);
++	reg &= ~SW1xCONF_DVSSPEED_MASK;
++	reg |= SW1xCONF_DVSSPEED_4US;
++	pmic_reg_write(dev, PFUZE100_SW1ABCONF, reg);
++
++	/* Set SW1C standby voltage to 0.975V */
++	reg = pmic_reg_read(dev, PFUZE100_SW1CSTBY);
++	reg &= ~SW1x_STBY_MASK;
++	reg |= SW1x_0_975V;
++	pmic_reg_write(dev, PFUZE100_SW1CSTBY, reg);
++
++	/* Set SW1C/VDDSOC step ramp up time from 16us to 4us/25mV */
++	reg = pmic_reg_read(dev, PFUZE100_SW1CCONF);
++	reg &= ~SW1xCONF_DVSSPEED_MASK;
++	reg |= SW1xCONF_DVSSPEED_4US;
++	pmic_reg_write(dev, PFUZE100_SW1CCONF, reg);
++
++	return dev;
++}
++#endif
 diff --git a/board/compulab/common/pfuze.h b/board/compulab/common/pfuze.h
 new file mode 100644
-index 0000000..b4afd3d
+index 0000000..b799417
 --- /dev/null
 +++ b/board/compulab/common/pfuze.h
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,19 @@
 +/*
 + * Copyright 2014 Freescale Semiconductor, Inc.
 + * Copyright 2017 NXP
@@ -740,8 +1309,7 @@ index 0000000..b4afd3d
 +#ifdef CONFIG_DM_PMIC_PFUZE100
 +struct udevice *pfuze_common_init(void);
 +int pfuze_mode_init(struct udevice *dev, u32 mode);
-+
-+#elif defined(CONFIG_POWER_PFUZE100)
++#else
 +struct pmic *pfuze_common_init(unsigned char i2cbus);
 +int pfuze_mode_init(struct pmic *p, u32 mode);
 +#endif
@@ -1379,7 +1947,7 @@ index 0000000..05bc991
 +endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.h b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 new file mode 100644
-index 0000000..55dc06c
+index 0000000..252b11e
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 @@ -0,0 +1,59 @@
@@ -1390,8 +1958,8 @@ index 0000000..55dc06c
 + * Common file for ddr code
 + */
 +
-+#ifndef __DDR_H_
-+#define __DDR_H_
++#ifndef __LOCAL_DDR_H_
++#define __LOCAL_DDR_H_
 +
 +#ifdef DDR_DEBUG
 +#define ddr_dbg(fmt, ...) printf("DDR: debug:" fmt "\n", ##__VA_ARGS__)
@@ -1444,10 +2012,10 @@ index 0000000..55dc06c
 +#endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c b/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
 new file mode 100644
-index 0000000..eadcb43
+index 0000000..d3e84da
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
-@@ -0,0 +1,254 @@
+@@ -0,0 +1,255 @@
 +/*
 + * Copyright 2017 NXP
 + *
@@ -1460,7 +2028,8 @@ index 0000000..eadcb43
 +#include <common.h>
 +#include <errno.h>
 +#include <asm/io.h>
-+#include <asm/arch/ddr_memory_map.h>
++#include <asm/arch-imx8m/imx-regs-imx8mm.h>
++#include <asm/arch-imx8m/ddr.h>
 +#include <asm/arch/clock.h>
 +#include "ddr.h"
 +
@@ -1702,13 +2271,12 @@ index 0000000..eadcb43
 +	tmp = reg32_read(DDRC_RFSHCTL3(0)) & ~0x1;
 +	reg32_write(DDRC_RFSHCTL3(0), tmp);
 +}
-\ No newline at end of file
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c b/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
 new file mode 100644
-index 0000000..a54c60c
+index 0000000..019aae5
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
-@@ -0,0 +1,1043 @@
+@@ -0,0 +1,1044 @@
 +/*
 + * Copyright 2017 NXP
 + *
@@ -1720,7 +2288,8 @@ index 0000000..a54c60c
 +
 +#include <common.h>
 +#include <asm/io.h>
-+#include <asm/arch/ddr_memory_map.h>
++#include <asm/arch-imx8m/imx-regs-imx8mm.h>
++#include <asm/arch-imx8m/ddr.h>
 +#include "ddr.h"
 +
 +extern void wait_ddrphy_training_complete(void);
@@ -2752,13 +3321,12 @@ index 0000000..a54c60c
 +	//disable APB bus to access DDRPHY RAM
 +	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x1);
 +}
-\ No newline at end of file
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/helper.c b/board/compulab/ucm-imx8m-mini/ddr/helper.c
 new file mode 100644
-index 0000000..f1409ef
+index 0000000..050c87b
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/helper.c
-@@ -0,0 +1,102 @@
+@@ -0,0 +1,103 @@
 +/*
 + * Copyright 2018 NXP
 + *
@@ -2770,7 +3338,8 @@ index 0000000..f1409ef
 +#include <asm/io.h>
 +#include <errno.h>
 +#include <asm/io.h>
-+#include <asm/arch/ddr_memory_map.h>
++#include <asm/arch-imx8m/imx-regs-imx8mm.h>
++#include <asm/arch-imx8m/ddr.h>
 +#include <asm/sections.h>
 +
 +#include "ddr.h"
@@ -2863,10 +3432,10 @@ index 0000000..f1409ef
 +}
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c b/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c
 new file mode 100644
-index 0000000..04937ac
+index 0000000..d85e345
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c
-@@ -0,0 +1,102 @@
+@@ -0,0 +1,103 @@
 +/*
 + * Copyright 2017 NXP
 + *
@@ -2875,7 +3444,8 @@ index 0000000..04937ac
 +#include <common.h>
 +#include <errno.h>
 +#include <asm/io.h>
-+#include <asm/arch/ddr_memory_map.h>
++#include <asm/arch-imx8m/imx-regs-imx8mm.h>
++#include <asm/arch-imx8m/ddr.h>
 +#include <asm/arch/clock.h>
 +#include "ddr.h"
 +
@@ -4957,10 +5527,10 @@ index 0000000..72ba6ee
 +};
 diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
 new file mode 100644
-index 0000000..46f5fbe
+index 0000000..6d9cccd
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/spl.c
-@@ -0,0 +1,250 @@
+@@ -0,0 +1,258 @@
 +/*
 + * Copyright 2018 NXP
 + *
@@ -4972,14 +5542,14 @@ index 0000000..46f5fbe
 +#include <asm/io.h>
 +#include <errno.h>
 +#include <asm/io.h>
-+#include <asm/imx-common/iomux-v3.h>
++#include <asm/mach-imx/iomux-v3.h>
 +#include <asm/arch/imx8mm_pins.h>
 +#include <asm/arch/sys_proto.h>
 +#include <power/pmic.h>
 +#include <power/bd71837.h>
 +#include <asm/arch/clock.h>
-+#include <asm/imx-common/gpio.h>
-+#include <asm/imx-common/mxc_i2c.h>
++#include <asm/mach-imx/gpio.h>
++#include <asm/mach-imx/mxc_i2c.h>
 +#include <fsl_esdhc.h>
 +#include <mmc.h>
 +
@@ -5165,14 +5735,6 @@ index 0000000..46f5fbe
 +
 +void spl_board_init(void)
 +{
-+	enable_tzc380();
-+
-+	setup_i2c(1, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
-+
-+	power_init_board();
-+	/* DDR initialization */
-+	spl_dram_init();
-+
 +#ifndef CONFIG_SPL_USB_SDP_SUPPORT
 +	/* Serial download mode */
 +	if (is_usb_boot()) {
@@ -5195,6 +5757,8 @@ index 0000000..46f5fbe
 +
 +void board_init_f(ulong dummy)
 +{
++	int ret;
++
 +	/* Clear global data */
 +	memset((void *)gd, 0, sizeof(gd_t));
 +
@@ -5209,14 +5773,28 @@ index 0000000..46f5fbe
 +	/* Clear the BSS. */
 +	memset(__bss_start, 0, __bss_end - __bss_start);
 +
++	ret = spl_init();
++	if (ret) {
++		debug("spl_init() failed: %d\n", ret);
++		hang();
++	}
++
++	enable_tzc380();
++
++	setup_i2c(1, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
++
++	power_init_board();
++	/* DDR initialization */
++	spl_dram_init();
++
 +	board_init_r(NULL, 0);
 +}
 diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 new file mode 100644
-index 0000000..541bd46
+index 0000000..ef5d1ff
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
-@@ -0,0 +1,731 @@
+@@ -0,0 +1,734 @@
 +/*
 + * Copyright 2018 NXP
 + *
@@ -5229,17 +5807,17 @@ index 0000000..541bd46
 +#include <asm/io.h>
 +#include <miiphy.h>
 +#include <netdev.h>
-+#include <asm/imx-common/iomux-v3.h>
++#include <asm/mach-imx/iomux-v3.h>
 +#include <asm-generic/gpio.h>
 +#include <fsl_esdhc.h>
 +#include <mmc.h>
 +#include <asm/arch/imx8mm_pins.h>
 +#include <asm/arch/sys_proto.h>
-+#include <asm/imx-common/gpio.h>
-+#include <asm/imx-common/mxc_i2c.h>
++#include <asm/mach-imx/gpio.h>
++#include <asm/mach-imx/mxc_i2c.h>
 +#include <asm/arch/clock.h>
 +#include <spl.h>
-+#include <asm/imx-common/dma.h>
++#include <asm/mach-imx/dma.h>
 +#include <power/pmic.h>
 +#include <power/bd71837.h>
 +#include "../common/tcpc.h"
@@ -5247,7 +5825,7 @@ index 0000000..541bd46
 +#include <sec_mipi_dsim.h>
 +#include <imx_mipi_dsi_bridge.h>
 +#include <mipi_dsi_panel.h>
-+#include <asm/imx-common/video.h>
++#include <asm/mach-imx/video.h>
 +
 +DECLARE_GLOBAL_DATA_PTR;
 +
@@ -5386,9 +5964,9 @@ index 0000000..541bd46
 +#endif
 +
 +#ifdef CONFIG_FEC_MXC
-+#define FEC_RST_PAD IMX_GPIO_NR(4, 22)
++#define FEC_RST_PAD IMX_GPIO_NR(1, 10)
 +static iomux_v3_cfg_t const fec1_rst_pads[] = {
-+	IMX8MM_PAD_SAI2_RXC_GPIO4_IO22 | MUX_PAD_CTRL(NO_PAD_CTRL),
++	IMX8MM_PAD_GPIO1_IO10_GPIO1_IO10 | MUX_PAD_CTRL(NO_PAD_CTRL),
 +};
 +
 +static void setup_iomux_fec(void)
@@ -5404,12 +5982,15 @@ index 0000000..541bd46
 +
 +static int setup_fec(void)
 +{
++	struct iomuxc_gpr_base_regs *const iomuxc_gpr_regs
++		= (struct iomuxc_gpr_base_regs *) IOMUXC_GPR_BASE_ADDR;
++
 +	setup_iomux_fec();
 +
 +	/* Use 125M anatop REF_CLK1 for ENET1, not from external */
-+	clrsetbits_le32(IOMUXC_GPR1,
-+			BIT(13), 0);
-+	return set_clk_enet(ENET_125MHz);
++	clrsetbits_le32(&iomuxc_gpr_regs->gpr[1],
++			IOMUXC_GPR_GPR1_GPR_ENET1_TX_CLK_SEL_SHIFT, 0);
++	return set_clk_enet(ENET_125MHZ);
 +}
 +
 +int board_phy_config(struct phy_device *phydev)
@@ -5950,44 +6531,45 @@ index 0000000..541bd46
 +#endif /*CONFIG_FSL_FASTBOOT*/
 diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
 new file mode 100644
-index 0000000..0479d4a
+index 0000000..2212e76
 --- /dev/null
 +++ b/configs/ucm-imx8m-mini_defconfig
-@@ -0,0 +1,51 @@
+@@ -0,0 +1,56 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_IMX8M=y
++CONFIG_SYS_TEXT_BASE=0x40200000
 +CONFIG_SYS_MALLOC_F_LEN=0x2000
-+CONFIG_SPL_MMC_SUPPORT=y
 +CONFIG_TARGET_UCM_IMX8M_MINI=y
++CONFIG_SPL_MMC_SUPPORT=y
 +CONFIG_DEFAULT_DEVICE_TREE="ucm-imx8m-mini"
 +CONFIG_FIT=y
 +CONFIG_SPL_LOAD_FIT=y
-+CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/imx-common/spl_sd.cfg,SPL_TEXT_BASE=0x7E1000,ENV_IS_IN_MMC"
++CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/mach-imx/spl_sd.cfg,SPL_TEXT_BASE=0x7E1000"
++CONFIG_DEFAULT_FDT_FILE="ucm-imx8m-mini.dtb"
 +CONFIG_ARCH_MISC_INIT=y
 +CONFIG_SPL=y
++CONFIG_SPL_BOARD_INIT=y
 +CONFIG_HUSH_PARSER=y
 +CONFIG_FASTBOOT=y
-+CONFIG_USB_FUNCTION_FASTBOOT=y
-+CONFIG_CMD_FASTBOOT=y
-+CONFIG_ANDROID_BOOT_IMAGE=y
 +CONFIG_FSL_FASTBOOT=y
 +CONFIG_FASTBOOT_BUF_ADDR=0x42800000
 +CONFIG_FASTBOOT_BUF_SIZE=0x40000000
 +CONFIG_FASTBOOT_FLASH=y
 +CONFIG_FASTBOOT_FLASH_MMC_DEV=0
++CONFIG_CMD_MEMINFO=y
 +CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_I2C=y
 +CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
 +CONFIG_CMD_CACHE=y
 +CONFIG_CMD_REGULATOR=y
++CONFIG_CMD_FS_GENERIC=y
 +CONFIG_EFI_PARTITION=y
 +CONFIG_OF_CONTROL=y
-+# CONFIG_BLK is not set
++CONFIG_ENV_IS_IN_MMC=y
 +CONFIG_DM_GPIO=y
 +CONFIG_DM_I2C=y
 +CONFIG_SYS_I2C_MXC=y
 +CONFIG_DM_MMC=y
-+# CONFIG_DM_MMC_OPS is not set
 +CONFIG_DM_SPI_FLASH=y
 +CONFIG_SPI_FLASH=y
 +CONFIG_SPI_FLASH_STMICRO=y
@@ -6004,13 +6586,17 @@ index 0000000..0479d4a
 +CONFIG_DM_USB=y
 +CONFIG_USB_EHCI_HCD=y
 +CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_MANUFACTURER="FSL"
++CONFIG_USB_GADGET_VENDOR_NUM=0x0525
++CONFIG_USB_GADGET_PRODUCT_NUM=0xa4a5
 +CONFIG_SDP_LOADADDR=0x40400000
++CONFIG_FS_FAT=y
 diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
 new file mode 100644
-index 0000000..5fc75cf
+index 0000000..1605ab7
 --- /dev/null
 +++ b/include/configs/ucm-imx8m-mini.h
-@@ -0,0 +1,374 @@
+@@ -0,0 +1,361 @@
 +/*
 + * Copyright 2018 CompuLab
 + *
@@ -6027,8 +6613,7 @@ index 0000000..5fc75cf
 +#define CONFIG_CSF_SIZE			0x2000 /* 8K region */
 +#endif
 +
-+#define CONFIG_SPL_FRAMEWORK
-+#define CONFIG_SPL_MAX_SIZE		(124 * 1024)
++#define CONFIG_SPL_MAX_SIZE		(148 * 1024)
 +#define CONFIG_SYS_MONITOR_LEN		(512 * 1024)
 +#define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_USE_SECTOR
 +#define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR	0x300
@@ -6041,7 +6626,6 @@ index 0000000..5fc75cf
 +#define CONFIG_SPL_POWER_SUPPORT
 +#define CONFIG_SPL_DRIVERS_MISC_SUPPORT
 +#define CONFIG_SPL_I2C_SUPPORT
-+#define CONFIG_SPL_BOARD_INIT
 +#define CONFIG_SPL_LDSCRIPT		"arch/arm/cpu/armv8/u-boot-spl.lds"
 +#define CONFIG_SPL_STACK		0x91fff0
 +#define CONFIG_SPL_LIBCOMMON_SUPPORT
@@ -6049,21 +6633,18 @@ index 0000000..5fc75cf
 +#define CONFIG_SPL_SERIAL_SUPPORT
 +#define CONFIG_SPL_GPIO_SUPPORT
 +#define CONFIG_SPL_BSS_START_ADDR      0x00910000
-+#define CONFIG_SPL_BSS_MAX_SIZE        0x1000	/* 4 KB */
-+#define CONFIG_SYS_SPL_MALLOC_START    0x00911000
-+#define CONFIG_SYS_SPL_MALLOC_SIZE     0x3000	/* 12 KB */
++#define CONFIG_SPL_BSS_MAX_SIZE        0x2000	/* 8 KB */
++#define CONFIG_SYS_SPL_MALLOC_START    0x42200000
++#define CONFIG_SYS_SPL_MALLOC_SIZE     0x80000	/* 512 KB */
 +#define CONFIG_SYS_ICACHE_OFF
 +#define CONFIG_SYS_DCACHE_OFF
++#define CONFIG_MALLOC_F_ADDR		0x912000 /* malloc f used before GD_FLG_FULL_MALLOC_INIT set */
 +
 +#define CONFIG_SPL_ABORT_ON_RAW_IMAGE /* For RAW image gives a error info not panic */
 +
 +#undef CONFIG_DM_MMC
 +#undef CONFIG_DM_PMIC
 +#undef CONFIG_DM_PMIC_PFUZE100
-+
-+#define CONFIG_POWER
-+#define CONFIG_POWER_I2C
-+#define CONFIG_POWER_BD71837
 +
 +#define CONFIG_SYS_I2C
 +#define CONFIG_SYS_I2C_MXC_I2C1		/* enable I2C bus 1 */
@@ -6198,7 +6779,6 @@ index 0000000..5fc75cf
 +
 +/* Link Definitions */
 +#define CONFIG_LOADADDR			0x40480000
-+#define CONFIG_SYS_TEXT_BASE		0x40200000
 +
 +#define CONFIG_SYS_LOAD_ADDR           CONFIG_LOADADDR
 +
@@ -6243,15 +6823,12 @@ index 0000000..5fc75cf
 +/* Monitor Command Prompt */
 +#undef CONFIG_SYS_PROMPT
 +#define CONFIG_SYS_PROMPT		"u-boot=> "
-+#define CONFIG_SYS_LONGHELP
 +#define CONFIG_SYS_PROMPT_HUSH_PS2     "> "
-+#define CONFIG_AUTO_COMPLETE
 +#define CONFIG_SYS_CBSIZE              2048
 +#define CONFIG_SYS_MAXARGS             64
 +#define CONFIG_SYS_BARGSIZE CONFIG_SYS_CBSIZE
 +#define CONFIG_SYS_PBSIZE		(CONFIG_SYS_CBSIZE + \
 +					sizeof(CONFIG_SYS_PROMPT) + 16)
-+#define CONFIG_CMDLINE_EDITING
 +
 +#define CONFIG_DOS_PARTITION
 +#define CONFIG_CMD_EXT2
@@ -6350,16 +6927,12 @@ index 0000000..5fc75cf
 +
 +#define CONFIG_CMD_USB_MASS_STORAGE
 +#define CONFIG_USB_GADGET_MASS_STORAGE
-+#define CONFIG_USB_GADGET_DOWNLOAD
 +#define CONFIG_USB_FUNCTION_MASS_STORAGE
 +
 +#endif
 +
 +#define CONFIG_USB_GADGET_DUALSPEED
 +#define CONFIG_USB_GADGET_VBUS_DRAW 2
-+#define CONFIG_G_DNL_VENDOR_NUM		0x0525
-+#define CONFIG_G_DNL_PRODUCT_NUM	0xa4a5
-+#define CONFIG_G_DNL_MANUFACTURER	"FSL"
 +
 +#define CONFIG_CI_UDC
 +
