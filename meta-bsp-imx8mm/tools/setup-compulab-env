@@ -18,18 +18,24 @@ mod_bblayer() {
 # Get CompuLab Main meta layer
 get_meta_compulab
 # A mandatory bsp layer: kernel, u-boot, imx-boot
-sed -i '$aBBLAYERS += " ${BSPDIR}/sources/meta-compulab-bsp/meta-bsp-imx8mm "' ${BBLAYERS_CONF}
-sed -i '$aBBLAYERS += " ${BSPDIR}/sources/meta-compulab-bsp/meta-desktop "' ${BBLAYERS_CONF}
-sed -i '$aBBLAYERS += " ${BSPDIR}/sources/meta-compulab "' ${BBLAYERS_CONF}
+cat << eof | tee -a ${BBLAYERS_CONF} > /dev/null
+BBLAYERS += " \\
+	\${BSPDIR}/sources/meta-compulab-bsp/meta-bsp-imx8mm \\
+	\${BSPDIR}/sources/meta-compulab-bsp/meta-desktop \\
+	\${BSPDIR}/sources/meta-compulab \\
+"
+eof
 }
 
 mod_local() {
 # Modify local.conf
-CORE_IMAGE_EXTRA_INSTALL_append+=" dhcp-client memtester cl-uboot cl-deploy u-boot-fw-utils"
-IMAGE_FEATURES_append+=" package-management ssh-server-openssh "
-
-sed -i "$ a CORE_IMAGE_EXTRA_INSTALL += \"${CORE_IMAGE_EXTRA_INSTALL_append}\"" ${LOCAL_CONF}
-sed -i "$ a IMAGE_FEATURES += \"${IMAGE_FEATURES_append}\"" ${LOCAL_CONF}
+CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy u-boot-fw-utils"
+IMAGE_FEATURES+=" package-management ssh-server-openssh "
+cat << eof | tee -a ${LOCAL_CONF} > /dev/null
+CORE_IMAGE_EXTRA_INSTALL += "${CORE_IMAGE_EXTRA_INSTALL}"
+IMAGE_FEATURES += "${IMAGE_FEATURES}"
+LICENSE_FLAGS_WHITELIST = "commercial"
+eof
 }
 
 CWD=$(pwd)
@@ -63,6 +69,17 @@ eom
     ${EXIT} 0
 fi
 
+add_bbmask() {
+declare -a bbmask=('meta-compulab/recipes-xfce/images/compulab-eval-image-xfce.bb' \
+	'meta-compulab/recipes-xfce/xfce4-power-manager/xfce4-power-manager_%.bbappend')
+
+for i in  ${bbmask[@]}; do
+cat << eof | tee -a ${LOCAL_CONF} > /dev/null
+BBMASK += "${i}"
+eof
+done
+}
+
 eval $(awk '(/MACHINE|DISTRO/)&&(gsub(/'"'"'/,"")&&($0=$1"="$NF))' ORS=";" ${LOCAL_CONF})
 
 if [[ ! ${SUPPORTED_MACHINE} =~ ${MACHINE} ]];then
@@ -79,6 +96,7 @@ eom
 
 mod_bblayer
 mod_local
+add_bbmask
 
 cat << eom
     Note: Files ${BBLAYERS_CONF} and ${LOCAL_CONF} updated successfully.
@@ -88,5 +106,5 @@ cat << eom > ${BB_CL_CONF_DONE}
 $(date)
 eom
 
-unset IMAGE_FEATURES_append CORE_IMAGE_EXTRA_INSTALL_append
+unset IMAGE_FEATURES CORE_IMAGE_EXTRA_INSTALL
 ${EXIT} 0

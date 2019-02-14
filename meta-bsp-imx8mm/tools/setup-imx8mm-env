@@ -1,0 +1,10 @@
+MACHINE=${MACHINE:-ucm-imx8m-mini}
+DISTRO=${DISTRO:-fsl-imx-xwayland}
+
+. fsl-setup-release.sh $@
+
+declare -a ENVIRONMENT=('../sources/meta-compulab-bsp/meta-bsp-imx8mm/tools/setup-compulab-env')
+
+for env in ${ENVIRONMENT[@]};do
+[ -f ${env} ] && FORCE=Yes source ${env} >/dev/null
+done
