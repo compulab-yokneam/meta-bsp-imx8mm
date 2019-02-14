@@ -1,5 +1,6 @@
 MACHINE=${MACHINE:-ucm-imx8m-mini}
 DISTRO=${DISTRO:-fsl-imx-xwayland}
+EULA=1
 
 . fsl-setup-release.sh $@
 
