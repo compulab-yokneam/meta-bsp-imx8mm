@@ -8,5 +8,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0006-ucm-imx8m-mini-dts-remove-phy-supply.patch \
 	file://0007-sn65dsi83-add-dsi2lvds-bridge.patch \
 	file://0008-ucm-imx8m-mini-lvds-dts-add-device-tree-file.patch \
+	file://0009-sn65dsi83-Kconfig-Add-a-missing-quates.patch \
+	file://0010-ucm-imx8m-mini-config-Update-defcongig.patch \
 	file://defconfig \
 "
