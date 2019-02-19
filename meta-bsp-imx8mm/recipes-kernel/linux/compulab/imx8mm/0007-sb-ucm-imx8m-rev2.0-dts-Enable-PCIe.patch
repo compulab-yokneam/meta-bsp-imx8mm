@@ -1,0 +1,32 @@
+From 7c184e134a728c7613dbb5b69fe7d455ded1a7af Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sat, 9 Feb 2019 21:25:15 +0200
+Subject: [PATCH 07/19] sb-ucm-imx8m-rev2.0: dts: Enable PCIe
+
+Enable PCIe0 interface (mini-PCIe connector).
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+index d413d8d..c13a8d5 100644
+--- a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
++++ b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+@@ -14,6 +14,12 @@
+ 
+ #include <dt-bindings/pinctrl/pins-imx8mm.h>
+ 
++&pcie0 {
++	reset-gpio = <&pca9555 0 GPIO_ACTIVE_LOW>;
++	ext_osc = <1>;
++	status = "okay";
++};
++
+ &i2c1 {
+ 	clock-frequency = <100000>;
+ 	pinctrl-names = "default";
+-- 
+1.9.1
+

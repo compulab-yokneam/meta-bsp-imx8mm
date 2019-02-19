@@ -1,7 +1,7 @@
-From 9826b8ad0eea1044099ee2361ed0778ac4101442 Mon Sep 17 00:00:00 2001
+From 01cae113925182f248c56c458b0c665a4e861080 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Tue, 5 Feb 2019 19:47:48 +0200
-Subject: [PATCH 7/8] sn65dsi83: add dsi2lvds bridge
+Date: Tue, 19 Feb 2019 11:50:09 +0200
+Subject: [PATCH 13/19] sn65dsi83: Add ti,sn65dsi83 dsi to lvds bridge driver
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -22,16 +22,18 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 drivers/gpu/drm/bridge/sn65dsi83/sn65dsi83_timing.h
 
 diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
-index 593e9a4..a7757f7 100644
+index 593e9a4..9e4a7b5 100644
 --- a/drivers/gpu/drm/bridge/Kconfig
 +++ b/drivers/gpu/drm/bridge/Kconfig
-@@ -134,4 +134,6 @@ config DRM_ITE_IT6263
- 	---help---
- 	  ITE IT6263 bridge chip driver.
+@@ -126,6 +126,8 @@ source "drivers/gpu/drm/bridge/adv7511/Kconfig"
  
-+source "drivers/gpu/drm/bridge/sn65dsi83/Kconfig
+ source "drivers/gpu/drm/bridge/synopsys/Kconfig"
+ 
++source "drivers/gpu/drm/bridge/sn65dsi83/Kconfig"
 +
- endmenu
+ config DRM_ITE_IT6263
+ 	tristate "ITE IT6263 LVDS/HDMI bridge"
+ 	depends on OF
 diff --git a/drivers/gpu/drm/bridge/Makefile b/drivers/gpu/drm/bridge/Makefile
 index d684dce..cd84c88 100644
 --- a/drivers/gpu/drm/bridge/Makefile

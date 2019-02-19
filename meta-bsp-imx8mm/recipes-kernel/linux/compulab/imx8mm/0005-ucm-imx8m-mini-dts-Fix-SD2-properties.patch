@@ -1,0 +1,36 @@
+From 715b6fff2fd242830a0ca2a9719334f1f8035156 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sat, 9 Feb 2019 21:05:39 +0200
+Subject: [PATCH 05/19] ucm-imx8m-mini:dts: Fix SD2 properties
+
+Define WP GPIO. Add no-1-8-v, that's necessary for some uSD cards.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+index a36af39..64173c7 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+@@ -143,6 +143,7 @@
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
+ 				MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12	0x41
++				MX8MM_IOMUXC_SD2_WP_GPIO2_IO20		0x00
+ 			>;
+ 		};
+ 
+@@ -547,6 +548,8 @@
+ 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+ 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
++	wp-gpios = <&gpio2 20 GPIO_ACTIVE_HIGH>;
++	no-1-8-v;
+ 	bus-width = <4>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+ 	status = "okay";
+-- 
+1.9.1
+

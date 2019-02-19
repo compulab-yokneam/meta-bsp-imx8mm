@@ -1,7 +1,7 @@
 From 7734a8c3034d771fb5a77ee40bb4e07beb10af1b Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 5 Feb 2019 11:49:11 +0200
-Subject: [PATCH 0/8] ucm-imx8m-mini: add basic support
+Subject: [PATCH 00/19] ucm-imx8m-mini: add basic support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

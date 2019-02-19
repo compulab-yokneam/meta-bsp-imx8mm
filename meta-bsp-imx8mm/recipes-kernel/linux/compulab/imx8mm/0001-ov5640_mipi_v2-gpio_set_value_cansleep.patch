@@ -1,7 +1,7 @@
-From a87b9c0285ae059db2ed9f894ba557f0d9290f65 Mon Sep 17 00:00:00 2001
+From a5d3ea86a2398a92a8156ca257c224db8b289f72 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Tue, 5 Feb 2019 11:50:18 +0200
-Subject: [PATCH 1/8] ov5640_mipi_v2: gpio can sleep
+Date: Tue, 19 Feb 2019 11:44:48 +0200
+Subject: [PATCH 01/19] ov5640_mipi_v2: gpio_set_value_cansleep
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

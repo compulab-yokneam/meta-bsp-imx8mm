@@ -1,7 +1,7 @@
-From d5d81df43c312e690f66e2735d3121f952450072 Mon Sep 17 00:00:00 2001
+From 322d97f7ddf5c26187cafdcd783ccc284a6a1eaa Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Tue, 5 Feb 2019 19:48:24 +0200
-Subject: [PATCH 8/8] ucm-imx8m-mini-lvds: dts: add device tree file
+Date: Tue, 19 Feb 2019 11:51:38 +0200
+Subject: [PATCH 14/19] ucm-imx8m-mini: Enable lvds in device tree
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -11,19 +11,19 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
 
 diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
-index 9d3f708..a98ca57 100644
+index 711d726..5c6e24d 100644
 --- a/arch/arm64/boot/dts/compulab/Makefile
 +++ b/arch/arm64/boot/dts/compulab/Makefile
 @@ -1,5 +1,6 @@
  dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini.dtb
- dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-dsi.dtb
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-thermal.dtb
 +dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-lvds.dtb
  
  always         := $(dtb-y)
  subdir-y       := $(dts-dirs)
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
 new file mode 100644
-index 0000000..3ec5862
+index 0000000..4e749ef
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
 @@ -0,0 +1,85 @@
@@ -46,8 +46,8 @@ index 0000000..3ec5862
 +#include "ucm-imx8m-mini.dts"
 +
 +/ {
-+	model = "CompuLab UCM i.MX8MM board (lvds)";
-+	compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm";
++    model = "CompuLab UCM i.MX8MM board (lvds)";
++    compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm";
 +};
 +
 +&iomuxc {
@@ -61,11 +61,11 @@ index 0000000..3ec5862
 +};
 +
 +&lcdif {
-+	status = "okay";
++    status = "okay";
 +};
 +
 +&mipi_dsi {
-+	status = "okay";
++    status = "okay";
 +    port@1 {
 +        mipi_dsi_bridge_out: endpoint {
 +            remote-endpoint = <&sn65dsi83_in>;

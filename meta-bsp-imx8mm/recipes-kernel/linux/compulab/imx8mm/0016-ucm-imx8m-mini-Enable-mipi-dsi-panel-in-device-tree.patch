@@ -1,0 +1,76 @@
+From ac548e897f13770fb706c3ceeaf60fcc02ea75a1 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 19 Feb 2019 12:12:44 +0200
+Subject: [PATCH 16/19] ucm-imx8m-mini: Enable mipi dsi panel in device tree
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/Makefile                |  1 +
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts | 19 +++++++++++++++++++
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts      | 15 +++++++++++++++
+ 3 files changed, 35 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts
+
+diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
+index 5c6e24d..8ddfb2f 100644
+--- a/arch/arm64/boot/dts/compulab/Makefile
++++ b/arch/arm64/boot/dts/compulab/Makefile
+@@ -1,6 +1,7 @@
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini.dtb
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-thermal.dtb
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-lvds.dtb
++dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-dsi2.dtb
+ 
+ always         := $(dtb-y)
+ subdir-y       := $(dts-dirs)
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts
+new file mode 100644
+index 0000000..27dc899
+--- /dev/null
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts
+@@ -0,0 +1,19 @@
++/*
++ * Copyright 2018 CompuLab
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include "ucm-imx8m-mini.dts"
++
++&panel {
++	dsi-lanes = <2>;
++};
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+index 0b51586..ab66f04 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+@@ -677,3 +677,18 @@
+ 	dr_mode = "host";
+ 	status = "okay";
+ };
++
++&lcdif {
++	status = "okay";
++};
++
++&mipi_dsi {
++	status = "okay";
++	panel: panel@0 {
++		compatible = "startek,kd050hdfia020";
++		reg = <0>;
++		reset-gpio = <&pca9555 6 GPIO_ACTIVE_LOW>;
++		dsi-lanes = <4>;
++		status = "okay";
++	};
++};
+-- 
+1.9.1
+
