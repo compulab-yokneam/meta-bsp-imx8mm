@@ -1,0 +1,16 @@
+#!/bin/bash
+
+SUPPORT_ENV='../sources/meta-compulab-bsp/meta-bsp-imx8mm-private/tools/setup-compulab-env'
+
+if [[ -f ${SUPPORT_ENV} ]];then
+FORCE=Yes source ${SUPPORT_ENV}
+else
+SUPPORT=$(cat <<< $(basename $BASH_SOURCE) | awk -F 'env-' '($0=$2)')
+cat << eom
+
+Your build environment has been configured without full ${SUPPORT} support
+
+	Contact CompuLab support for details
+	CompuLab DEV Team
+eom
+fi

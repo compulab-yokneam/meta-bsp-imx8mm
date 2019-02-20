@@ -4,8 +4,9 @@ EULA=1
 
 . fsl-setup-release.sh $@
 
-declare -a ENVIRONMENT=('../sources/meta-compulab-bsp/meta-bsp-imx8mm/tools/setup-compulab-env')
+declare -a ENVIRONMENT=('../sources/meta-compulab-bsp/meta-bsp-imx8mm/tools/setup-compulab-env'
+	'../sources/meta-compulab-bsp/meta-bsp-imx8mm/tools/setup-compulab-env-MIPI-DSI')
 
 for env in ${ENVIRONMENT[@]};do
-[ -f ${env} ] && FORCE=Yes source ${env} >/dev/null
+[ -f ${env} ] && FORCE=Yes source ${env}
 done
