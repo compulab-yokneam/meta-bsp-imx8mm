@@ -1,0 +1,59 @@
+From 90446b34c4f1fdd7b075d09adc0c2516d3ebe1d1 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 19 Feb 2019 18:11:45 +0200
+Subject: [PATCH 09/14] compulab: integrate DM_I2C in EEPROM driver
+
+CompuLab's EEPROM driver is enabled only for CONFIG_SYS_I2C.
+Update the  enabling condition of the driver to CONFIG_SYS_I2C or
+CONFIG_DM_I2C.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ board/compulab/common/Makefile | 4 +++-
+ board/compulab/common/eeprom.h | 2 +-
+ cmd/eeprom.c                   | 2 +-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/board/compulab/common/Makefile b/board/compulab/common/Makefile
+index ca75832..0a26fdb 100644
+--- a/board/compulab/common/Makefile
++++ b/board/compulab/common/Makefile
+@@ -8,6 +8,8 @@
+ 
+ obj-y				+= common.o
+ obj-y				+= mmc.o
+-obj-$(CONFIG_SYS_I2C)		+= eeprom.o
++ifneq "$(or $(CONFIG_SYS_I2C),$(CONFIG_DM_I2C))" ""
++obj-y				+= eeprom.o
++endif # (CONFIG_SYS_I2C || CONFIG_DM_I2C2)
+ obj-$(CONFIG_LCD)		+= omap3_display.o
+ obj-$(CONFIG_SMC911X)		+= omap3_smc911x.o
+diff --git a/board/compulab/common/eeprom.h b/board/compulab/common/eeprom.h
+index c0b4739..09804ee 100644
+--- a/board/compulab/common/eeprom.h
++++ b/board/compulab/common/eeprom.h
+@@ -11,7 +11,7 @@
+ #define _EEPROM_
+ #include <errno.h>
+ 
+-#ifdef CONFIG_SYS_I2C
++#if (defined(CONFIG_SYS_I2C) || defined(CONFIG_DM_I2C))
+ int cl_eeprom_read_mac_addr(uchar *buf, uint eeprom_bus);
+ u32 cl_eeprom_get_board_rev(uint eeprom_bus);
+ int cl_eeprom_get_product_name(uchar *buf, uint eeprom_bus);
+diff --git a/cmd/eeprom.c b/cmd/eeprom.c
+index 48352e4..64e1294 100644
+--- a/cmd/eeprom.c
++++ b/cmd/eeprom.c
+@@ -73,7 +73,7 @@ void eeprom_init(int bus)
+ #endif
+ 
+ 	/* I2C EEPROM */
+-#if defined(CONFIG_SYS_I2C)
++#if (defined(CONFIG_SYS_I2C) || defined(CONFIG_DM_I2C)) 
+ 	if (bus >= 0)
+ 		i2c_set_bus_num(bus);
+ 	i2c_init(CONFIG_SYS_I2C_SPEED, CONFIG_SYS_I2C_SLAVE);
+-- 
+1.9.1
+
