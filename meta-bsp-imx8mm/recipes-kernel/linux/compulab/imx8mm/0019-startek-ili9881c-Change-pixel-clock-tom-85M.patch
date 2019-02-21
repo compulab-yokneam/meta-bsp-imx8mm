@@ -1,0 +1,26 @@
+From 4613a0f87ecffcaf82a5ed18df8f28694327c406 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Thu, 21 Feb 2019 10:09:23 +0200
+Subject: [PATCH 19/19] startek-ili9881c: Change pixel clock tom 85M
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ drivers/gpu/drm/panel/panel-startek-ili9881c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-startek-ili9881c.c b/drivers/gpu/drm/panel/panel-startek-ili9881c.c
+index ca7b7c6..147a594 100644
+--- a/drivers/gpu/drm/panel/panel-startek-ili9881c.c
++++ b/drivers/gpu/drm/panel/panel-startek-ili9881c.c
+@@ -28,7 +28,7 @@
+ 
+ #define   LCD_XSIZE_TFT   720
+ #define   LCD_YSIZE_TFT   1280
+-#define   PCLOCK          80000
++#define   PCLOCK          85000
+ #define   LCD_VBPD        20
+ #define   LCD_VFPD        10
+ #define   LCD_VSPW        10
+-- 
+1.9.1
+
