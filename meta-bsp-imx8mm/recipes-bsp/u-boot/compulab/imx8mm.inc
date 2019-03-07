@@ -14,5 +14,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0012-mx8m-mini-set-Ethernet-MAC-address-environment.patch \
 	file://0013-ucm-imx8m-mini-release-U-Boot-v2018.03-ucm-imx8m-min.patch \
 	file://0014-ucm-imx8m-mini-config-Remove-unused-stuff.patch \
+	file://0015-ucm-imx8m-mini-Enable-uart4-for-bluetooth.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
