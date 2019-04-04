@@ -19,6 +19,5 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0017-ucm-imx8m-mini-defconfig-Enable-startek-ili9881c.patch \
 	file://0018-ucm-imx8m-mini-defconfig-Update-defconfig.patch \
 	file://0019-startek-ili9881c-Change-pixel-clock-tom-85M.patch \
-	file://0020-ucm-imx8m-mini-dts-Enable-bluetooth.patch \
 	file://defconfig \
 "
