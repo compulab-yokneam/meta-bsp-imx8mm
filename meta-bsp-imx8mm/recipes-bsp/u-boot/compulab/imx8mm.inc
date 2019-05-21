@@ -15,5 +15,16 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0013-ucm-imx8m-mini-release-U-Boot-v2018.03-ucm-imx8m-min.patch \
 	file://0014-ucm-imx8m-mini-config-Remove-unused-stuff.patch \
 	file://0015-ucm-imx8m-mini-Enable-uart4-for-bluetooth.patch \
+	file://0016-ucm-imx8m-mini-ddr-Validate-new-setting.patch \
+	file://0017-ucm-imx8m-mini-defconfig-Disable-CONFIG_NXP_TMU.patch \
+	file://0018-ucm-imx8m-mini-config-Update-h-file.patch \
+	file://0019-ucm-imx8m-mini-spl-Refacoring-ddr_init-call.patch \
+	file://0020-ucm-imx8m-mini-Kconfig-Refacoring-ddr-init-config-op.patch \
+	file://0021-ucm-imx8m-mini-Makefile-Refacoring-ddr-init-build-op.patch \
+	file://0022-ucm-imx8m-mini-lpddr4_timing-Add-ucm-imx8m-mini-supp.patch \
+	file://0023-ucm-imx8m-mini-config-Enable-the-new-LPDDR4-config.patch \
+	file://0024-ucm-imx8m-mini-Move-FS-support-to-defconfig.patch \
+	file://0025-ucm-imx8m-mini-config-CONFIG_IMX_OPTEE-y.patch \
+	file://0026-set-extended-temperature-range.patch \
 	file://ucm-imx8m-mini_defconfig \
 "

@@ -22,14 +22,16 @@ cat << eof | tee -a ${BBLAYERS_CONF} > /dev/null
 BBLAYERS += " \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-bsp-imx8mm \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-desktop \\
+	\${BSPDIR}/sources/meta-compulab-bsp/meta-multimedia \\
 	\${BSPDIR}/sources/meta-compulab \\
+	\${BSPDIR}/sources/meta-compulab-bsp/meta-xfce \\
 "
 eof
 }
 
 mod_local() {
 # Modify local.conf
-CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy u-boot-fw-utils"
+CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy u-boot-fw-utils bt-start"
 IMAGE_FEATURES+=" package-management ssh-server-openssh "
 cat << eof | tee -a ${LOCAL_CONF} > /dev/null
 CORE_IMAGE_EXTRA_INSTALL += "${CORE_IMAGE_EXTRA_INSTALL}"

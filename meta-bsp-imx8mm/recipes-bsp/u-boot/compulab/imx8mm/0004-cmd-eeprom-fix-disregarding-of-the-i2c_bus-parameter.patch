@@ -1,7 +1,7 @@
-From c538d92855cf83445e83a37a08f842f3207499d0 Mon Sep 17 00:00:00 2001
+From f70346c777ec784380d52448507348f411746dc3 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 09:59:20 +0200
-Subject: [PATCH 04/14] cmd: eeprom: fix disregarding of the i2c_bus parameter
+Subject: [PATCH 04/25] cmd: eeprom: fix disregarding of the i2c_bus parameter
 
 The eeprom commands are disregarding the i2c_bus parameter if
 CONFIG_SYS_I2C_EEPROM_BUS is defined - setting the i2c bus to

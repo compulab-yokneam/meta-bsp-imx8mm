@@ -1,0 +1,55 @@
+From 3e060d1c0a1e862011aacbb50b22a6411b99594f Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 11 Apr 2019 15:10:19 +0300
+Subject: [PATCH 3/3] ucm-imx8m-mini: Enable display backlight dimming control
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+index 34d34501f223..6fa129876eae 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+@@ -78,6 +78,15 @@
+ 		enable-active-high;
+ 		startup-delay-us = <500>;
+ 	};
++
++	backlight {
++		compatible = "pwm-backlight";
++		pwms = <&pwm2 0 3000000 0>;
++
++		brightness-levels = <0 1 2 4 8 16 32 64 128 255>;
++		default-brightness-level = <9>;
++		status = "okay";
++	};
+ };
+ 
+ &iomuxc {
+@@ -309,6 +318,11 @@
+ 				MX8MM_IOMUXC_GPIO1_IO14_CCMSRCGPCMIX_CLKO1	0x59
+ 			>;
+ 		};
++		pinctrl_pwm_backlight: pwm_backlightgrp {
++			fsl,pins = <
++				MX8MM_IOMUXC_GPIO1_IO13_PWM2_OUT	0x03
++			>;
++		};
+ 	};
+ };
+ 
+@@ -693,3 +707,9 @@
+ 		status = "okay";
+ 	};
+ };
++
++&pwm2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm_backlight>;
++	status = "okay";
++};
+-- 
+2.11.0
+

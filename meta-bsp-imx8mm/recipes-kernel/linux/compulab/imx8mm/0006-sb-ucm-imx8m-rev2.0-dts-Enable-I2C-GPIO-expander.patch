@@ -1,7 +1,7 @@
-From 4f3a2ae13ad565eb8715957928be227ff7f9117e Mon Sep 17 00:00:00 2001
+From 6ef5d7622b35bd4b84b7a368194792690379eb31 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 9 Feb 2019 21:40:45 +0200
-Subject: [PATCH 06/19] sb-ucm-imx8m-rev2.0: dts: Enable I2C GPIO expander
+Subject: [PATCH 06/25] sb-ucm-imx8m-rev2.0: dts: Enable I2C GPIO expander
 
 Enable PCA9555 @i2c1 GPIO expander. i2c1 bus descriptor has been moved to
 baseboard include file.

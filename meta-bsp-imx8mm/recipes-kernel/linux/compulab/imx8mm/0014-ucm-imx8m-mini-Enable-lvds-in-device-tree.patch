@@ -1,7 +1,7 @@
-From 322d97f7ddf5c26187cafdcd783ccc284a6a1eaa Mon Sep 17 00:00:00 2001
+From a52d69d2fecd4e13a0d0d85a0f116f80a50fa14e Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 11:51:38 +0200
-Subject: [PATCH 14/19] ucm-imx8m-mini: Enable lvds in device tree
+Subject: [PATCH 14/25] ucm-imx8m-mini: Enable lvds in device tree
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

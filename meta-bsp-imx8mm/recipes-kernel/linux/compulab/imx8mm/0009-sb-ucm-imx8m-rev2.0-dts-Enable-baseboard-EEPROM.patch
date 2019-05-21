@@ -1,7 +1,7 @@
-From acb7558cba2ed9fed8ed4e7eacac8d4f015a99a8 Mon Sep 17 00:00:00 2001
+From 29bc22e8e9964734a80e9caf37e807f191dd7329 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 9 Feb 2019 22:17:53 +0200
-Subject: [PATCH 09/19] sb-ucm-imx8m-rev2.0:dts: Enable baseboard EEPROM
+Subject: [PATCH 09/25] sb-ucm-imx8m-rev2.0:dts: Enable baseboard EEPROM
 
 Enable eeprom type of Atmel 24c08 at 0x54@i2c1.
 

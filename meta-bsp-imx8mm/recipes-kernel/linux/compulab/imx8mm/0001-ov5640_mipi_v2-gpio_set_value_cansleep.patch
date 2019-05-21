@@ -1,7 +1,7 @@
-From a5d3ea86a2398a92a8156ca257c224db8b289f72 Mon Sep 17 00:00:00 2001
+From 414c22df8637cd560ad56d3378bf4400cc7c15ff Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 11:44:48 +0200
-Subject: [PATCH 01/19] ov5640_mipi_v2: gpio_set_value_cansleep
+Subject: [PATCH 01/25] ov5640_mipi_v2: gpio_set_value_cansleep
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c b/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
-index 1cb3d69..ffbb06e 100644
+index d681863..3ad0371 100644
 --- a/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
 +++ b/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
-@@ -504,19 +504,19 @@ static void ov5640_reset(struct ov5640 *sensor)
+@@ -536,19 +536,19 @@ static void ov5640_reset(struct ov5640 *sensor)
  		return;
  
  	/* camera reset */

@@ -1,7 +1,7 @@
-From 7c184e134a728c7613dbb5b69fe7d455ded1a7af Mon Sep 17 00:00:00 2001
+From 616ee920cdfcfe8b98b6548e7b0c0841c540c0e5 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 9 Feb 2019 21:25:15 +0200
-Subject: [PATCH 07/19] sb-ucm-imx8m-rev2.0: dts: Enable PCIe
+Subject: [PATCH 07/25] sb-ucm-imx8m-rev2.0: dts: Enable PCIe
 
 Enable PCIe0 interface (mini-PCIe connector).
 

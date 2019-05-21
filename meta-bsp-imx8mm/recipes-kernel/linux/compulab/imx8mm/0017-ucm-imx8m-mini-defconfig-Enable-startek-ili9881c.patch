@@ -1,7 +1,7 @@
-From 8e3b76bce797f09162779a9ed159e49960cb5b97 Mon Sep 17 00:00:00 2001
+From d5e611b869596f08a81694186550a71ea7368bd2 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 15:07:56 +0200
-Subject: [PATCH 17/19] ucm-imx8m-mini: defconfig: Enable startek-ili9881c
+Subject: [PATCH 17/25] ucm-imx8m-mini: defconfig: Enable startek-ili9881c
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

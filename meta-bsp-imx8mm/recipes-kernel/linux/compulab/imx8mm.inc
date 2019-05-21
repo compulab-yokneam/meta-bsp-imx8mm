@@ -18,6 +18,16 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0016-ucm-imx8m-mini-Enable-mipi-dsi-panel-in-device-tree.patch \
 	file://0017-ucm-imx8m-mini-defconfig-Enable-startek-ili9881c.patch \
 	file://0018-ucm-imx8m-mini-defconfig-Update-defconfig.patch \
-	file://0019-startek-ili9881c-Change-pixel-clock-tom-85M.patch \
+	file://0019-startek-ili9881c-Change-pixel-clock-to-62M.patch \
+	file://0020-ucm-imx8m-mini-dts-Enable-bluetooth.patch \
+	file://0021-ucm-imx8m-mini-Add-analog-audio-support.patch \
+	file://0022-ucm-imx8m-mini-dts-Some-small-changes.patch \
+	file://0023-ucm-imx8m-mini_defconfig-Enable-wm8731-with-sdma-as-.patch \
+	file://0024-ucm-imx8m-mini-defconfig-Enable-CONFIG_FRAMEBUFFER_C.patch \
+	file://0025-UCM-iMX8M-Mini-enable-on-CPU-SNVS-RTC-driver.patch \
+	file://0026-ucm-imx8m-mini-dts-Fix-eMMC-mode.patch \
+	file://0027-ucm-imx8m-mini-Enable-display-backlight-dimming-cont.patch \
+	file://0028-Set-an-extended-temperature-range.patch \
+	file://0029-dts-Revert-eMMC-compatible-string.patch \
 	file://defconfig \
 "

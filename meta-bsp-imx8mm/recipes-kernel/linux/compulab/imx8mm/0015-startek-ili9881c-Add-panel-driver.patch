@@ -1,7 +1,7 @@
-From 6d3bf971d4e27a4c679c89eb7e0216912efa0a15 Mon Sep 17 00:00:00 2001
+From 5192394d11f57ccd74c3aedcb7689fbf6147280c Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 12:04:29 +0200
-Subject: [PATCH 15/19] startek-ili9881c: Add panel driver
+Subject: [PATCH 15/25] startek-ili9881c: Add panel driver
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

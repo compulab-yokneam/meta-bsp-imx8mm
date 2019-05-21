@@ -1,7 +1,7 @@
-From b4e5fdb1856f56ba65981f8a611f71504484b686 Mon Sep 17 00:00:00 2001
+From ee5512ff4b37793e82a035e705bb80758466265a Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 12 Feb 2019 13:50:09 +0200
-Subject: [PATCH 13/14] ucm-imx8m-mini: release U-Boot
+Subject: [PATCH 13/25] ucm-imx8m-mini: release U-Boot
  v2018.03-ucm-imx8m-mini-1.0
 
 Release U-Boot v2018.03-ucm-imx8m-mini-1.0

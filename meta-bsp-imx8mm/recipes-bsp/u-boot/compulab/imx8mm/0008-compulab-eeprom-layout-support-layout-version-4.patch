@@ -1,7 +1,7 @@
-From ec8e40aed261929bd5a3d75b1aebbe51b9135d76 Mon Sep 17 00:00:00 2001
+From 72c0d9691cfd1f0ca2c420d2ddf72f2067c1462f Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 29 Nov 2017 10:58:36 +0200
-Subject: [PATCH 08/14] compulab: eeprom: layout: support layout version 4
+Subject: [PATCH 08/25] compulab: eeprom: layout: support layout version 4
 
 Add fields table for layout version 4.
 Update the code to support layout version 4.

@@ -1,7 +1,7 @@
-From 30d46158b9a07b5c0fa5ccd4bcc77301ff0bcd86 Mon Sep 17 00:00:00 2001
+From a914b8f5f2caa5a8dd4124f257c193f87a8dd47b Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 16:26:29 +0200
-Subject: [PATCH 18/19] ucm-imx8m-mini: defconfig: Update defconfig
+Subject: [PATCH 18/25] ucm-imx8m-mini: defconfig: Update defconfig
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

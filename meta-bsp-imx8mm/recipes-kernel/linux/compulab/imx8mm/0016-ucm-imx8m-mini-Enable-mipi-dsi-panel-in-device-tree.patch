@@ -1,7 +1,7 @@
-From ac548e897f13770fb706c3ceeaf60fcc02ea75a1 Mon Sep 17 00:00:00 2001
+From f8434321ff74e779efc763da881a9a061ee2d057 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 12:12:44 +0200
-Subject: [PATCH 16/19] ucm-imx8m-mini: Enable mipi dsi panel in device tree
+Subject: [PATCH 16/25] ucm-imx8m-mini: Enable mipi dsi panel in device tree
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

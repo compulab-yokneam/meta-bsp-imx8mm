@@ -1,7 +1,7 @@
-From 3114d2dfba612e1135b4f9bb05878b9dd9bf67f5 Mon Sep 17 00:00:00 2001
+From 8e3dada31bb79910d0f5bbf0e5f6f270806ac726 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 13 Feb 2019 15:04:59 +0200
-Subject: [PATCH 03/14] ucm-imx8m-mini: enable status LED
+Subject: [PATCH 03/25] ucm-imx8m-mini: enable status LED
 
 Use the status LED feature to turn on the status LED.
 

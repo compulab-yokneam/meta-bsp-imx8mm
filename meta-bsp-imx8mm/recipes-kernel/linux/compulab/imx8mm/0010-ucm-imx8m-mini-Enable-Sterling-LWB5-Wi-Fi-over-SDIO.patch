@@ -1,7 +1,7 @@
-From 2ee92a8630c5137830efaa49e3f39c2092e3dabb Mon Sep 17 00:00:00 2001
+From 60061b9c12b1e360e7ba26f5a39cf79e96ef826d Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 13 Feb 2019 22:08:03 +0200
-Subject: [PATCH 10/19] ucm-imx8m-mini: Enable Sterling-LWB5 Wi-Fi over SDIO
+Subject: [PATCH 10/25] ucm-imx8m-mini: Enable Sterling-LWB5 Wi-Fi over SDIO
 
 	Enable Wi-Fi over SDIO using Sterling-LWB5 Dual-Band 802.11ac Wi-Fi +
 	Bluetooth v4.2 Combo Module.

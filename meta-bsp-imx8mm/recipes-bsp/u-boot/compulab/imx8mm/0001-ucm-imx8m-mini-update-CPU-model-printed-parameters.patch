@@ -1,7 +1,7 @@
-From 78e8df0c038d7231cff3628d216f0a9a4c67bb5a Mon Sep 17 00:00:00 2001
+From 9a00a0ef365dd6c9b9e7616b37b2d7522162ba38 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 12 Feb 2019 17:51:20 +0200
-Subject: [PATCH 01/14] ucm-imx8m-mini: update CPU/model printed parameters
+Subject: [PATCH 01/25] ucm-imx8m-mini: update CPU/model printed parameters
 
 Update the startup messages of the CPU and model parameters
 
@@ -25,7 +25,7 @@ index 112345b..899899c 100644
  
  	chosen {
 diff --git a/arch/arm/mach-imx/cpu.c b/arch/arm/mach-imx/cpu.c
-index aa541fc..c13c976 100644
+index 111f1e4..0ea375b 100644
 --- a/arch/arm/mach-imx/cpu.c
 +++ b/arch/arm/mach-imx/cpu.c
 @@ -235,7 +235,11 @@ int print_cpuinfo(void)

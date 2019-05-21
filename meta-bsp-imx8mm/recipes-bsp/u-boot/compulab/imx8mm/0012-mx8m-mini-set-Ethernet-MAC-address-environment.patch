@@ -1,7 +1,7 @@
-From 52ea4c51a1b294c2e315679b7069ca230427a37e Mon Sep 17 00:00:00 2001
+From 7990034c06db7a525a7d45a1095ac7ea9cf90a12 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 21:46:54 +0200
-Subject: [PATCH 12/14] mx8m-mini: set Ethernet MAC address environment
+Subject: [PATCH 12/25] mx8m-mini: set Ethernet MAC address environment
 
 If the environment variable "ethaddr" is empty:
 * Read the MAC address from the EEPROM.

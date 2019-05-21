@@ -1,7 +1,7 @@
-From 9434b759151b62d5a2b33de2b55274a6b9df89e3 Mon Sep 17 00:00:00 2001
+From 5071f70211f3019c8c9642d83e45d259dacf1d9f Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 18:22:40 +0200
-Subject: [PATCH 10/14] i2c: prevent dual functions with CONFIG_DM_I2C_COMPAT
+Subject: [PATCH 10/25] i2c: prevent dual functions with CONFIG_DM_I2C_COMPAT
 
 Dual definition of functions exists when CONFIG_DM_I2C_COMPAT is
 enabled.

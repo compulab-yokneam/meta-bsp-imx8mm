@@ -6,8 +6,8 @@ SRC_URI_append += " \
 
 do_install_append () {
     cp -rfv ${WORKDIR}/lib/firmware/brcm ${D}${base_libdir}/firmware/
-    echo cp -rfv ${WORKDIR}/lib/firmware/brcm ${D}${base_libdir}/firmware/ >/tmp/rep
 }
 
 FILES_${PN}-brcm += "${base_libdir}/firmware/brcm"
+PACKAGES =+ "${PN}-brcm"
 COMPATIBLE_MACHINE = "(ucm-imx8m-mini)"

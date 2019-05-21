@@ -1,7 +1,7 @@
-From 96bcd898959e09716000ea9160fac0a4a3cf4999 Mon Sep 17 00:00:00 2001
+From f1cefcbdb071e58348cae0adde1b0fbe733da323 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 17 Feb 2019 18:21:29 +0200
-Subject: [PATCH 11/19] ucm-imx8m-mini: Enable touchscreen
+Subject: [PATCH 11/25] ucm-imx8m-mini: Enable touchscreen
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

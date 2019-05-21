@@ -1,7 +1,7 @@
-From 4613a0f87ecffcaf82a5ed18df8f28694327c406 Mon Sep 17 00:00:00 2001
+From 049096c3dc77e0b59c046cda7cd2b5df7d675564 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Thu, 21 Feb 2019 10:09:23 +0200
-Subject: [PATCH 19/19] startek-ili9881c: Change pixel clock tom 85M
+Subject: [PATCH 20/25] startek-ili9881c: Change pixel clock to 62M
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -17,7 +17,7 @@ index ca7b7c6..147a594 100644
  #define   LCD_XSIZE_TFT   720
  #define   LCD_YSIZE_TFT   1280
 -#define   PCLOCK          80000
-+#define   PCLOCK          85000
++#define   PCLOCK          62000
  #define   LCD_VBPD        20
  #define   LCD_VFPD        10
  #define   LCD_VSPW        10
