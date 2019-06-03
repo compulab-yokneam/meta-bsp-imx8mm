@@ -10,3 +10,5 @@ do_install_append () {
     install -m 0755 ${WORKDIR}/bt-start.mod ${D}${sbindir}/bt-start
 
 }
+
+RDEPENDS_${PN} = "bash brcm-patchram firmware-imx-brcm"
