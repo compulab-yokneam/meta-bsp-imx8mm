@@ -29,5 +29,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0027-ucm-imx8m-mini-Enable-display-backlight-dimming-cont.patch \
 	file://0028-Set-an-extended-temperature-range.patch \
 	file://0029-dts-Revert-eMMC-compatible-string.patch \
+	file://0030-ucm-imx8m-mini-defconfig-Update-for-bt-pulseaudio.patch \
 	file://defconfig \
 "
