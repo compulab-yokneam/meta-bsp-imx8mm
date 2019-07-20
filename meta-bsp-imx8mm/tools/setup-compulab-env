@@ -1,37 +1,48 @@
 #!/bin/bash
 
-SUPPORTED_MACHINE=" ucm-imx8m-mini "
+declare -A SUPPORTED_MACHINE=([ucm-imx8m-mini]=1)
+
+get_meta() {
+if [[ -d ${dir} ]];then
+git -C ${dir} remote update
+git -C ${dir} pull
+else
+git clone ${url} ${branch} ${dir}
+fi
+}
 
 get_meta_compulab() {
-meta_cpl_dir="../sources/meta-compulab"
-branch="devel"
-meta_url="https://github.com/compulab-yokneam/meta-compulab"
-if [[ -d ${meta_cpl_dir} ]];then
-git -C ${meta_cpl_dir} remote update
-git -C ${meta_cpl_dir} pull
-else
-git clone -b ${branch} ${meta_url} ${meta_cpl_dir}
-fi
+dir="../sources/meta-compulab"
+branch="-b devel"
+url="https://github.com/compulab-yokneam/meta-compulab"
+get_meta ${url} ${branch} ${dir}
+}
+
+get_meta_compulab_bsp() {
+dir="../sources/meta-compulab-bsp"
+branch="-b devel-imx8mm-4.14.98"
+url="https://github.com/compulab-yokneam/meta-compulab-bsp"
+get_meta ${url} ${branch} ${dir}
 }
 
 mod_bblayer() {
 # Get CompuLab Main meta layer
 get_meta_compulab
+get_meta_compulab_bsp
 # A mandatory bsp layer: kernel, u-boot, imx-boot
 cat << eof | tee -a ${BBLAYERS_CONF} > /dev/null
 BBLAYERS += " \\
-	\${BSPDIR}/sources/meta-compulab-bsp/meta-bsp-imx8mm \\
+	\${BSPDIR}/sources/meta-compulab \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-desktop \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-multimedia \\
-	\${BSPDIR}/sources/meta-compulab \\
-	\${BSPDIR}/sources/meta-compulab-bsp/meta-xfce \\
+	\${BSPDIR}/sources/meta-compulab-imx8mm/meta-bsp-imx8mm \\
 "
 eof
 }
 
 mod_local() {
 # Modify local.conf
-CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy u-boot-fw-utils bt-start cl-stest "
+CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy bt-start cl-stest u-boot-fw-utils imx-gpu-viv-demos"
 IMAGE_FEATURES+=" package-management ssh-server-openssh "
 cat << eof | tee -a ${LOCAL_CONF} > /dev/null
 CORE_IMAGE_EXTRA_INSTALL += "${CORE_IMAGE_EXTRA_INSTALL}"
@@ -73,8 +84,7 @@ eom
 fi
 
 add_bbmask() {
-declare -a bbmask=('meta-compulab/recipes-xfce/images/compulab-eval-image-xfce.bb' \
-	'meta-compulab/recipes-xfce/xfce4-power-manager/xfce4-power-manager_%.bbappend')
+declare -a bbmask=('meta-compulab/recipes-xfce')
 
 for i in  ${bbmask[@]}; do
 cat << eof | tee -a ${LOCAL_CONF} > /dev/null
@@ -85,9 +95,9 @@ done
 
 eval $(awk '(/MACHINE|DISTRO/)&&(gsub(/'"'"'/,"")&&($0=$1"="$NF))' ORS=";" ${LOCAL_CONF})
 
-if [[ ! ${SUPPORTED_MACHINE} =~ ${MACHINE} ]];then
+if [[ ${SUPPORTED_MACHINE[${MACHINE}]} -ne 1 ]];then
 cat << eom
-    ${MACHINE} is not in supported machine list: [ ${SUPPORTED_MACHINE} ]
+    ${MACHINE} is not in supported machine list.
     Error exit.
 eom
     ${EXIT} 0
