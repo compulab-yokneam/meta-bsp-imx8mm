@@ -1,0 +1,28 @@
+# Quick Start Guide
+
+## Supported CompuLab Machines
+
+* `ucm-imx8m-mini`
+
+# Prepare NXP BSP
+[source,console]
+repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-linux-sumo -m imx-4.14.98-2.0.0_ga.xml
+repo sync
+
+# Download CompuLab meta layer
+[source,console]
+git clone -b master https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-compulab-imx8mm/
+
+# Set a desire machine
+* `ucm-imx8m-mini`
+[source,console]
+COMPULAB_MACHINE=ucm-imx8m-mini
+
+# Build Images
+Refer to the http://source.codeaurora.org/external/imx/meta-fsl-bsp-release/tree/imx/README?h=sumo-4.14.98-2.0.0_ga[`NXP Readme`] for details about how to select a correct `backend` & `distro`.
+
+## imx8mm
+This example shows how to build an NXP supported image for the `${COMPULAB_MACHINE}`
+[source,console]
+MACHINE=${COMPULAB_MACHINE} source sources/meta-compulab-imx8mm/meta-bsp-imx8mm/tools/setup-imx8mm-env -b build-xwayland
+bitbake -k fsl-image-qt5-validation-imx
