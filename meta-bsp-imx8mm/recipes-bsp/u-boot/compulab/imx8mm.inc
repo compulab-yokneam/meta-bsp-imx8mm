@@ -26,5 +26,8 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0024-ucm-imx8m-mini-Move-FS-support-to-defconfig.patch \
 	file://0025-ucm-imx8m-mini-config-CONFIG_IMX_OPTEE-y.patch \
 	file://0026-set-extended-temperature-range.patch \
+	file://0027-ucm-imx8m-mini-Update-memory-init-code.patch \
+	file://0028-ucm-imx8m-mini-Add-4G-DRAM-support.patch \
+	file://0029-ucm-imx8m-mini-defconfig-Add-d1-d4-configs.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
