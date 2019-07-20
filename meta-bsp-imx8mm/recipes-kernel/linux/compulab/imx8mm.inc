@@ -30,5 +30,8 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0028-Set-an-extended-temperature-range.patch \
 	file://0029-dts-Revert-eMMC-compatible-string.patch \
 	file://0030-ucm-imx8m-mini-defconfig-Update-for-bt-pulseaudio.patch \
+	file://0031-ucm-imx8m-mini-dts-Add-m4-device-tree.patch \
+	file://0032-ucm-imx8m-mini-dts-Fix-lvds-device-tree.patch \
+	file://0033-Enable-GPU-workaround-on-4GB-LPDDR4-platform-for-imx.patch \
 	file://defconfig \
 "
