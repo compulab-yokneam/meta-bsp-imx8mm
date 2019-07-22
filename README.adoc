@@ -11,7 +11,7 @@ repo sync
 
 # Download CompuLab meta layer
 [source,console]
-git clone -b master https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/
+git clone -b master https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
 
 # Set a desire machine
 * `ucm-imx8m-mini`
