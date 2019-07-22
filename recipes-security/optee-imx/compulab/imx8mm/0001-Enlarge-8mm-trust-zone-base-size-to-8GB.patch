@@ -1,0 +1,25 @@
+From 705bd19d11616170bce9e0a2e9fcc407dd811a98 Mon Sep 17 00:00:00 2001
+From: "Tom.zheng" <haidong.zheng@nxp.com>
+Date: Mon, 20 May 2019 13:37:22 +0800
+Subject: [PATCH] Enlarge 8mm trust zone base size to 8GB
+
+---
+ core/arch/arm/plat-imx/tzasc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/arch/arm/plat-imx/tzasc.c b/core/arch/arm/plat-imx/tzasc.c
+index b2b76530..984dd250 100644
+--- a/core/arch/arm/plat-imx/tzasc.c
++++ b/core/arch/arm/plat-imx/tzasc.c
+@@ -373,7 +373,7 @@ static int board_imx_tzasc_configure(vaddr_t addr)
+ 	 * Like with i.MX 8MQ, The DDR mapping seems to start at 0.
+ 	 */
+ 	tzc_configure_region(1, 0x00000000,
+-		TZC_ATTR_REGION_SIZE(TZC_REGION_SIZE_2G) |
++		TZC_ATTR_REGION_SIZE(TZC_REGION_SIZE_8G) |
+ 		TZC_ATTR_REGION_EN_MASK | TZC_ATTR_SP_NS_RW);
+ 
+ 	tzc_configure_region(2, (CFG_TZDRAM_START - DRAM0_BASE),
+-- 
+2.17.1
+
