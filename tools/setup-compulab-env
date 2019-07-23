@@ -43,6 +43,7 @@ eof
 mod_local() {
 # Modify local.conf
 CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy bt-start cl-stest u-boot-fw-utils imx-gpu-viv-demos"
+CORE_IMAGE_EXTRA_INSTALL+=" htop iotop tmux"
 IMAGE_FEATURES+=" package-management ssh-server-openssh "
 cat << eof | tee -a ${LOCAL_CONF} > /dev/null
 CORE_IMAGE_EXTRA_INSTALL += "${CORE_IMAGE_EXTRA_INSTALL}"
