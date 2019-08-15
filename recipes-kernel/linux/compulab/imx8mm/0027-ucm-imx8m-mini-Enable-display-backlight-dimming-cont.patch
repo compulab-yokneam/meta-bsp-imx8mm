@@ -1,7 +1,8 @@
-From 3e060d1c0a1e862011aacbb50b22a6411b99594f Mon Sep 17 00:00:00 2001
+From 3955dd92b834b89913cc8addc602d3a447d86659 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-Date: Thu, 11 Apr 2019 15:10:19 +0300
-Subject: [PATCH 3/3] ucm-imx8m-mini: Enable display backlight dimming control
+Date: Thu, 15 Aug 2019 20:31:52 +0300
+Subject: [PATCH 27/27] ucm-imx8m-mini: Enable display backlight dimming
+ control
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,12 +10,12 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 20 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index 34d34501f223..6fa129876eae 100644
+index 52b8834682ee..f7a8cf89cf45 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-@@ -78,6 +78,15 @@
- 		enable-active-high;
- 		startup-delay-us = <500>;
+@@ -148,6 +148,15 @@
+ 		};
+ 
  	};
 +
 +	backlight {
@@ -27,11 +28,11 @@ index 34d34501f223..6fa129876eae 100644
 +	};
  };
  
- &iomuxc {
-@@ -309,6 +318,11 @@
- 				MX8MM_IOMUXC_GPIO1_IO14_CCMSRCGPCMIX_CLKO1	0x59
+ &clk {
+@@ -423,6 +432,11 @@
  			>;
  		};
+ 
 +		pinctrl_pwm_backlight: pwm_backlightgrp {
 +			fsl,pins = <
 +				MX8MM_IOMUXC_GPIO1_IO13_PWM2_OUT	0x03
@@ -40,16 +41,19 @@ index 34d34501f223..6fa129876eae 100644
  	};
  };
  
-@@ -693,3 +707,9 @@
- 		status = "okay";
- 	};
+@@ -834,6 +848,12 @@
+ 	status = "okay";
  };
-+
+ 
 +&pwm2 {
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&pinctrl_pwm_backlight>;
 +	status = "okay";
 +};
++
+ &mipi_dsi {
+ 	status = "okay";
+ 	panel: panel@0 {
 -- 
 2.11.0
 
