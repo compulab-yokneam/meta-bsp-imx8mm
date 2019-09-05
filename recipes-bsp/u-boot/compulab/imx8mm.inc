@@ -30,5 +30,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0028-ucm-imx8m-mini-Add-4G-DRAM-support.patch \
 	file://0029-ucm-imx8m-mini-defconfig-Add-d1-d4-configs.patch \
 	file://0030-dts-Enable-USB-OTG-support.patch \
+	file://0031-env-Change-boot-sequence.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
