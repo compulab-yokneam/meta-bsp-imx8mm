@@ -1,0 +1,29 @@
+From 0d5ac5d769f0d9c90dcd40c9ac86d67dd2356573 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sat, 31 Aug 2019 20:18:05 +0300
+Subject: [PATCH 30/31] dts: Enable USB OTG support
+
+Enable USB OTG support, necessary for USB load and UMS.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/ucm-imx8m-mini.dts | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index 2e68d13e87..1ef45fe9da 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -472,7 +472,8 @@
+ };
+ 
+ &usbotg1 {
+-	status = "disabled";
++	dr_mode = "otg";
++	status = "okay";
+ };
+ 
+ &usbotg2 {
+-- 
+2.11.0
+
