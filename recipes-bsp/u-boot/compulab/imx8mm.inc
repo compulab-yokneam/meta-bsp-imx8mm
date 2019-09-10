@@ -32,5 +32,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0030-dts-Enable-USB-OTG-support.patch \
 	file://0031-env-Change-boot-sequence.patch \
 	file://0032-Add-support-for-RAM-size-detection.patch \
+	file://0033-Enable-usb-ethernet-dongle-asix-88179.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
