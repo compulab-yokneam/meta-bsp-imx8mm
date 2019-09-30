@@ -1,0 +1,23 @@
+From 4af48f73162007615f606a701c9bf7c84d4299db Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 29 Sep 2019 21:29:56 +0300
+Subject: [PATCH 36/36] Enable iwlwifi Intel wireless mPCI card
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/ucm-imx8m-mini_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+index d02d663471bb..a533e2a32b2c 100644
+--- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
++++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+@@ -570,3 +570,5 @@ CONFIG_CRYPTO_GHASH_ARM64_CE=y
+ CONFIG_CRYPTO_AES_ARM64_CE_CCM=y
+ CONFIG_CRYPTO_AES_ARM64_CE_BLK=y
+ CONFIG_CRYPTO_AES_ARM64_BS=m
++CONFIG_IWLWIFI=m
++CONFIG_IWLMVM=m
+-- 
+2.11.0
+

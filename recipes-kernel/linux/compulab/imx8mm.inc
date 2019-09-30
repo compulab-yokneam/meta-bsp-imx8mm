@@ -35,5 +35,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0033-Enable-GPU-workaround-on-4GB-LPDDR4-platform-for-imx.patch \
 	file://0034-Move-usb-eth-dongle-asix-88179-driver-into-kernel.patch \
 	file://0035-Enable-usb-to-serial-converters.patch \
+	file://0036-Enable-iwlwifi-Intel-wireless-mPCI-card.patch \
 	file://defconfig \
 "
