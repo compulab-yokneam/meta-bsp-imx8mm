@@ -1,4 +1,4 @@
-DESCRIPTION = "CompuLab XFCE desktop demo image."
+DESCRIPTION = "CompuLab demo image."
 LICENSE = "MIT"
 
 export IMAGE_NAME="${MACHINE}-${DATETIME}"
