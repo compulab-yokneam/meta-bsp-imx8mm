@@ -1,0 +1,67 @@
+#!/bin/bash -xv
+
+user_local_conf=$(mktemp --dry-run --tmpdir=/tmp userXXX)
+local_conf="conf/local.conf"
+
+chrome=( yes no )
+cfg_chrome() {
+if [[ $1 == "yes" ]];then
+cat << EOP >> ${user_local_conf}
+# Add Chromium
+IMAGE_INSTALL_append = \\
+    "\${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' chromium-ozone-wayland', \\
+        bb.utils.contains('DISTRO_FEATURES',     'x11', ' chromium-x11', \\
+                                                        '', d), d)}"
+EOP
+fi
+}
+
+rootfs=( ro rw )
+cfg_rootfs() {
+if [[ $1 == "ro" ]];then
+cat << EOP >> ${user_local_conf}
+IMAGE_FEATURES += "read-only-rootfs"
+EOP
+fi
+}
+
+declare -A ARRAYNAME=( [chrome]="yes" [rootfs]="rw" )
+
+cat << EOG
+--- Users' Configurations started ---
+EOG
+
+for ARRAY in ${!ARRAYNAME[@]}; do
+select_string='default '
+eval array=\${${ARRAY}[@]}
+for value in ${array[@]}; do
+select_string+=${value}" "
+done # for value
+PS3="${ARRAY} configuration [ ${ARRAYNAME[${ARRAY}]} ] (Ctrl^C -- exit) : "
+select i in $select_string; do
+[[ -z ${i} ]] && echo "Invalid option -(" || case $i in
+	default)
+	break
+	;;
+	*)
+	ARRAYNAME[${ARRAY}]=${i}
+	break
+	;;
+esac
+done # select
+done # for ARRAY
+
+for ARRAY in ${!ARRAYNAME[@]}; do
+command -v cfg_${ARRAY} &>/dev/null
+[[ $? -eq 0 ]] && cfg_${ARRAY} ${ARRAYNAME[${ARRAY}]}
+done
+
+if [[ -f ${local_conf} ]];then
+cat << EOH >> ${local_conf}
+
+# Users' Configurations
+EOH
+cat ${user_local_conf} >> ${local_conf}
+fi
+
+rm -rf ${user_local_conf}

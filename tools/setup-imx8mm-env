@@ -1,22 +1,13 @@
+#!/bin/bash -x
 MACHINE=${MACHINE:-ucm-imx8m-mini}
 DISTRO=${DISTRO:-fsl-imx-xwayland}
 EULA=1
 
 . fsl-setup-release.sh $@
 
-declare -a ENVIRONMENT=('../sources/meta-bsp-imx8mm/tools/setup-compulab-env')
+declare -a ENVIRONMENT=('../sources/meta-bsp-imx8mm/tools/setup-compulab-env \
+		../sources/meta-bsp-imx8mm/tools/setup-user-env')
 
 for env in ${ENVIRONMENT[@]};do
 [ -f ${env} ] && FORCE=Yes source ${env}
 done
-
-eval DISTRO=$(awk '(/DISTRO.*=/)&&($0=$NF)' conf/local.conf)
-[[ ${DISTRO} == 'fsl-imx-fb' ]] && return
-
-cat << eom
---------------------- Chromium ---------------------
-eom
-echo -n "Would you like to add Chromium to the buid? (y/n) "
-read value
-
-[[ ${value} == 'y' ]] && awk '/IMAGE_INSTALL_append = \\/' RS="" ../README-IMXBSP >> conf/local.conf
