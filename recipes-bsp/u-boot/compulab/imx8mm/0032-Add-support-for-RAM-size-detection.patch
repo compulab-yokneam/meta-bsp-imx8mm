@@ -9,9 +9,9 @@ Possible values are:
 | GPIO 1:0 | GPIO 1:15 | RAM SIZE in GiB |
 +----------+-----------+-----------------+
 | 0        | 0         | 1               |
-| 0        | 1         | 4               |
+| 1        | 0         | 4               |
 | 1        | 1         | 2               |
-| 0        | 0         | unallowed       |
+| 0        | 1         | unallowed       |
 +----------+-----------+-----------------+
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
