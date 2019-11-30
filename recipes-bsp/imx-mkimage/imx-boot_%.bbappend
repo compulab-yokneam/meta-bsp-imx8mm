@@ -7,4 +7,4 @@ do_compile_preppend () {
 
 addtask compile_preppend before do_compile after do_configure
 
-COMPATIBLE_MACHINE = "(ucm-imx8m-mini)"
+COMPATIBLE_MACHINE_ucm-imx8m-mini = "ucm-imx8m-mini"

@@ -35,3 +35,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0033-Enable-usb-ethernet-dongle-asix-88179.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
+
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+COMPATIBLE_MACHINE_ucm-imx8m-mini = "ucm-imx8m-mini"
