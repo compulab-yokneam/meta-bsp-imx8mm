@@ -1,0 +1,69 @@
+From d00a752b9096a418ae124b64d0a3919a6e0d89ba Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 9 Dec 2019 21:03:37 +0200
+Subject: [PATCH 37/37] dts: Enable eb-dsi2lvds extention board
+
+Enable the extention board: DSI to LVDS bridge based on TI sn65dsi83 chip.
+Tested with LCD model KD070HDTLA020-C030A.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ ...ini-lvds.dts => ucm-imx8m-mini-eb-dsi2lvds.dts} | 28 +++++++++++-----------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+ rename arch/arm64/boot/dts/compulab/{ucm-imx8m-mini-lvds.dts => ucm-imx8m-mini-eb-dsi2lvds.dts} (76%)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-eb-dsi2lvds.dts
+similarity index 76%
+rename from arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
+rename to arch/arm64/boot/dts/compulab/ucm-imx8m-mini-eb-dsi2lvds.dts
+index e9511ef185f5..1f540cc66531 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-eb-dsi2lvds.dts
+@@ -52,30 +52,30 @@
+     ti_bridge: sn65dsi83@2c {
+         compatible = "ti,sn65dsi83";
+         reg = <0x2c>;
+-        ti,dsi-lanes = <2>;
++        ti,dsi-lanes = <4>;
+         ti,lvds-format = <2>;
+         ti,lvds-bpp = <24>;
+         ti,width-mm = <149>;
+         ti,height-mm = <93>;
+-        enable-gpios = <&gpio1 6 GPIO_ACTIVE_HIGH>;
++        enable-gpios = <&pca9555 6 GPIO_ACTIVE_HIGH>;
+         pinctrl-names = "default";
+         pinctrl-0 = <&pinctrl_dsi_lvds>;
+         status = "okay";
+ 
+         display-timings {
+             lvds {
+-                clock-frequency = <62500000>;
+-                hactive = <1280>;
+-                vactive = <800>;
+-                hback-porch = <6>;
+-                hfront-porch = <5>;
+-                vback-porch = <2>;
+-                vfront-porch = <3>;
+-                hsync-len = <2>;
+-                vsync-len = <1>;
+-                hsync-active = <0>;
+-                vsync-active = <0>;
+-                de-active = <0>;
++                clock-frequency = <44000000>;
++                hactive = <1024>;
++                vactive = <600>;
++                hback-porch = <60>;
++                hfront-porch = <60>;
++                vback-porch = <10>;
++                vfront-porch = <5>;
++                hsync-len = <10>;
++                vsync-len = <2>;
++                hsync-active = <1>;
++                vsync-active = <1>;
++                de-active = <1>;
+                 pixelclk-active = <0>;
+             };
+         };
+-- 
+2.11.0
+

@@ -36,5 +36,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0034-Move-usb-eth-dongle-asix-88179-driver-into-kernel.patch \
 	file://0035-Enable-usb-to-serial-converters.patch \
 	file://0036-Enable-iwlwifi-Intel-wireless-mPCI-card.patch \
+	file://0037-dts-Enable-eb-dsi2lvds-extention-board.patch \
 	file://defconfig \
 "
