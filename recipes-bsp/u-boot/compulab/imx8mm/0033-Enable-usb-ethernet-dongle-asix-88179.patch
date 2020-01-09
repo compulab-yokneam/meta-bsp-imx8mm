@@ -1,7 +1,7 @@
-From 2b1532d95b85f63c1e7e370660948604b7d5f576 Mon Sep 17 00:00:00 2001
+From dbc17bb83681650cdc4d3e6580b217f8c25402a8 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 10 Sep 2019 20:49:44 +0300
-Subject: [PATCH 33/33] Enable usb ethernet dongle asix-88179
+Subject: [PATCH 33/46] Enable usb ethernet dongle asix-88179
 
 Enable the dongle. In order to use it issue:
 usb start

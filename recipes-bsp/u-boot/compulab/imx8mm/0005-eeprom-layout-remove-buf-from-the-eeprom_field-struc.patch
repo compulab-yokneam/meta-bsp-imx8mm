@@ -1,7 +1,7 @@
-From a30ba71e11fa5e187676bc5f011a3fffa6b4b231 Mon Sep 17 00:00:00 2001
+From 0ec7880868802686a84f25680bb4b6eae0dc6c78 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Mon, 18 Sep 2017 19:49:32 +0300
-Subject: [PATCH 05/25] eeprom: layout: remove buf from the eeprom_field
+Subject: [PATCH 05/46] eeprom: layout: remove buf from the eeprom_field
  structure
 
 The layout structure contains a pointer to a buffer that contain the
@@ -24,7 +24,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  4 files changed, 148 insertions(+), 125 deletions(-)
 
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
-index 65ba3d3..a312e89 100644
+index 65ba3d3a1f..a312e898da 100644
 --- a/board/compulab/common/eeprom.c
 +++ b/board/compulab/common/eeprom.c
 @@ -199,17 +199,18 @@ int cl_eeprom_get_product_name(uchar *buf, uint eeprom_bus)
@@ -260,7 +260,7 @@ index 65ba3d3..a312e89 100644
  
  void eeprom_layout_assign(struct eeprom_layout *layout, int layout_version)
 diff --git a/common/eeprom/eeprom_field.c b/common/eeprom/eeprom_field.c
-index 7f095a6..7099b8d 100644
+index 7f095a64a2..7099b8d8b4 100644
 --- a/common/eeprom/eeprom_field.c
 +++ b/common/eeprom/eeprom_field.c
 @@ -12,7 +12,7 @@
@@ -482,7 +482,7 @@ index 7f095a6..7099b8d 100644
  	printf(PRINT_FIELD_SEGMENT, "Reserved fields\t");
  	printf("(%d bytes)\n", field->size);
 diff --git a/common/eeprom/eeprom_layout.c b/common/eeprom/eeprom_layout.c
-index c059233..363d8bb 100644
+index c05923328a..363d8bb96d 100644
 --- a/common/eeprom/eeprom_layout.c
 +++ b/common/eeprom/eeprom_layout.c
 @@ -15,8 +15,8 @@
@@ -554,7 +554,7 @@ index c059233..363d8bb 100644
  	layout->print = eeprom_layout_print;
  	layout->update = eeprom_layout_update_field;
 diff --git a/include/eeprom_field.h b/include/eeprom_field.h
-index 94e259f..0ada7f3 100644
+index 94e259ff73..0ada7f3cfe 100644
 --- a/include/eeprom_field.h
 +++ b/include/eeprom_field.h
 @@ -15,25 +15,30 @@
@@ -602,5 +602,5 @@ index 94e259f..0ada7f3 100644
  
  #endif
 -- 
-1.9.1
+2.11.0
 

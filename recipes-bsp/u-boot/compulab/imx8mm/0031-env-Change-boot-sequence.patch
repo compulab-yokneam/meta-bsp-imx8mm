@@ -1,7 +1,7 @@
-From c6c2c3cb630000b61298c451c7af2fda1a02a248 Mon Sep 17 00:00:00 2001
+From db36e1690ba696e899bd4a2ba2076ac17902b16b Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 31 Aug 2019 20:20:34 +0300
-Subject: [PATCH 31/31] env: Change boot sequence
+Subject: [PATCH 31/46] env: Change boot sequence
 
 Boot commands have been refactored to make them uniform and simplify a boot
 sequence edition.
@@ -16,7 +16,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 28 insertions(+), 27 deletions(-)
 
 diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
-index 175b41ccf6..cd023a6200 100644
+index 175b41ccf6..983209fd19 100644
 --- a/include/configs/ucm-imx8m-mini.h
 +++ b/include/configs/ucm-imx8m-mini.h
 @@ -122,7 +122,7 @@

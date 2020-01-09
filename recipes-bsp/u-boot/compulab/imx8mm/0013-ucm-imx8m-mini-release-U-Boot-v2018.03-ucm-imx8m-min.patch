@@ -1,7 +1,7 @@
-From ee5512ff4b37793e82a035e705bb80758466265a Mon Sep 17 00:00:00 2001
+From dcbcc8803dea7ddab61f1d76440d7371acc29c77 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 12 Feb 2019 13:50:09 +0200
-Subject: [PATCH 13/25] ucm-imx8m-mini: release U-Boot
+Subject: [PATCH 13/46] ucm-imx8m-mini: release U-Boot
  v2018.03-ucm-imx8m-mini-1.0
 
 Release U-Boot v2018.03-ucm-imx8m-mini-1.0
@@ -12,7 +12,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 225fa68..e6cc0f1 100644
+index 225fa6828c..e6cc0f10a0 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -5,7 +5,7 @@
@@ -25,5 +25,5 @@ index 225fa68..e6cc0f1 100644
  
  # *DOCUMENTATION*
 -- 
-1.9.1
+2.11.0
 

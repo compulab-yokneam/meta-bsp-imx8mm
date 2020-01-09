@@ -1,7 +1,7 @@
-From f8434321ff74e779efc763da881a9a061ee2d057 Mon Sep 17 00:00:00 2001
+From 090d7a409a8bb93c0fd8244a35be7f7709916b0b Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 12:12:44 +0200
-Subject: [PATCH 16/25] ucm-imx8m-mini: Enable mipi dsi panel in device tree
+Subject: [PATCH 16/43] ucm-imx8m-mini: Enable mipi dsi panel in device tree
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -12,7 +12,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts
 
 diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
-index 5c6e24d..8ddfb2f 100644
+index 5c6e24d79c8b..8ddfb2fdadc6 100644
 --- a/arch/arm64/boot/dts/compulab/Makefile
 +++ b/arch/arm64/boot/dts/compulab/Makefile
 @@ -1,6 +1,7 @@
@@ -25,7 +25,7 @@ index 5c6e24d..8ddfb2f 100644
  subdir-y       := $(dts-dirs)
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts
 new file mode 100644
-index 0000000..27dc899
+index 000000000000..27dc899c9b88
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-dsi2.dts
 @@ -0,0 +1,19 @@
@@ -49,7 +49,7 @@ index 0000000..27dc899
 +	dsi-lanes = <2>;
 +};
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index 0b51586..ab66f04 100644
+index 0b5158642423..ab66f04bc34f 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -677,3 +677,18 @@
@@ -72,5 +72,5 @@ index 0b51586..ab66f04 100644
 +	};
 +};
 -- 
-1.9.1
+2.11.0
 

@@ -1,7 +1,7 @@
-From f674928e7c1ea9481a84f8947e39a48cbcb47a1e Mon Sep 17 00:00:00 2001
+From a6ffa8bb3f60dd98f6126dcef4ba3494c04de219 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Sep 2017 10:07:26 +0300
-Subject: [PATCH 06/25] eeprom: layout: add field functions read
+Subject: [PATCH 06/46] eeprom: layout: add field functions read
 
 Read option is missing in the EEPROM layout feature
 
@@ -19,7 +19,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  5 files changed, 119 insertions(+), 53 deletions(-)
 
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
-index a312e89..7899eb8 100644
+index a312e898da..7899eb8625 100644
 --- a/board/compulab/common/eeprom.c
 +++ b/board/compulab/common/eeprom.c
 @@ -402,16 +402,20 @@ int eeprom_field_update_date(struct eeprom_field *field, uchar *fbuf,
@@ -156,7 +156,7 @@ index a312e89..7899eb8 100644
  
  void eeprom_layout_assign(struct eeprom_layout *layout, int layout_version)
 diff --git a/common/eeprom/eeprom_field.c b/common/eeprom/eeprom_field.c
-index 7099b8d..42e1d7d 100644
+index 7099b8d8b4..42e1d7ddeb 100644
 --- a/common/eeprom/eeprom_field.c
 +++ b/common/eeprom/eeprom_field.c
 @@ -131,6 +131,28 @@ int eeprom_field_update_bin(struct eeprom_field *field, uchar *fbuf,
@@ -189,7 +189,7 @@ index 7099b8d..42e1d7d 100644
   *				    binary form
   *
 diff --git a/common/eeprom/eeprom_layout.c b/common/eeprom/eeprom_layout.c
-index 363d8bb..3d8b4ec 100644
+index 363d8bb96d..3d8b4ec1b6 100644
 --- a/common/eeprom/eeprom_layout.c
 +++ b/common/eeprom/eeprom_layout.c
 @@ -97,6 +97,42 @@ static int eeprom_layout_update_field(struct eeprom_layout *layout,
@@ -242,7 +242,7 @@ index 363d8bb..3d8b4ec 100644
 +	layout->read = eeprom_layout_read_field;
  }
 diff --git a/include/eeprom_field.h b/include/eeprom_field.h
-index 0ada7f3..d068980 100644
+index 0ada7f3cfe..d068980fdd 100644
 --- a/include/eeprom_field.h
 +++ b/include/eeprom_field.h
 @@ -19,11 +19,15 @@ struct eeprom_field {
@@ -262,7 +262,7 @@ index 0ada7f3..d068980 100644
  void eeprom_field_print_bin_rev(const struct eeprom_field *field, uchar *fbuf);
  int eeprom_field_update_bin_rev(struct eeprom_field *field, uchar *fbuf,
 diff --git a/include/eeprom_layout.h b/include/eeprom_layout.h
-index 459b99d..808a458 100644
+index 459b99d861..808a458ab0 100644
 --- a/include/eeprom_layout.h
 +++ b/include/eeprom_layout.h
 @@ -23,6 +23,8 @@ struct eeprom_layout {
@@ -275,5 +275,5 @@ index 459b99d..808a458 100644
  
  void eeprom_layout_setup(struct eeprom_layout *layout, unsigned char *buf,
 -- 
-1.9.1
+2.11.0
 

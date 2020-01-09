@@ -1,7 +1,7 @@
-From 8e3dada31bb79910d0f5bbf0e5f6f270806ac726 Mon Sep 17 00:00:00 2001
+From 379ceb93986e598fb320f415cded5f197292303e Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 13 Feb 2019 15:04:59 +0200
-Subject: [PATCH 03/25] ucm-imx8m-mini: enable status LED
+Subject: [PATCH 03/46] ucm-imx8m-mini: enable status LED
 
 Use the status LED feature to turn on the status LED.
 
@@ -11,7 +11,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  1 file changed, 6 insertions(+)
 
 diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
-index 2212e76..36cfe1b 100644
+index 2212e76acb..36cfe1b2e1 100644
 --- a/configs/ucm-imx8m-mini_defconfig
 +++ b/configs/ucm-imx8m-mini_defconfig
 @@ -24,6 +24,7 @@ CONFIG_CMD_MEMTEST=y
@@ -35,5 +35,5 @@ index 2212e76..36cfe1b 100644
  CONFIG_DM_SPI_FLASH=y
  CONFIG_SPI_FLASH=y
 -- 
-1.9.1
+2.11.0
 

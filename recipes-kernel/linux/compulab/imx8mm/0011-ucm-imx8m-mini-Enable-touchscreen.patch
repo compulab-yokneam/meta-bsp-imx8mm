@@ -1,7 +1,7 @@
-From f1cefcbdb071e58348cae0adde1b0fbe733da323 Mon Sep 17 00:00:00 2001
+From 62eaf39fc68f7a7683df0deed5ff5956bde8fee2 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 17 Feb 2019 18:21:29 +0200
-Subject: [PATCH 11/25] ucm-imx8m-mini: Enable touchscreen
+Subject: [PATCH 11/43] ucm-imx8m-mini: Enable touchscreen
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  2 files changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index 561a4bb..0b51586 100644
+index 561a4bbd78c6..0b5158642423 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -292,6 +292,12 @@
@@ -49,7 +49,7 @@ index 561a4bb..0b51586 100644
  
  &mipi_csi_1 {
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index 32ea503..5e1e79f 100644
+index 32ea50300e75..5e1e79f040b6 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -213,7 +213,7 @@ CONFIG_INPUT_EVDEV=y
@@ -62,5 +62,5 @@ index 32ea503..5e1e79f 100644
  CONFIG_INPUT_MPL3115=y
  CONFIG_INPUT_ISL29023=y
 -- 
-1.9.1
+2.11.0
 

@@ -1,17 +1,17 @@
-From 8f8c940a3c2e4fa837a8f86c0d76ecdf962c1898 Mon Sep 17 00:00:00 2001
+From 4e131e898720b4ecb9243b42478191d507b8ec91 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 3 May 2019 23:00:08 +0300
-Subject: [PATCH 3/3] set extended temperature range
+Subject: [PATCH 26/46] set extended temperature range
 
 ---
  arch/arm/dts/ucm-imx8m-mini.dts | 7 +++++++
  1 file changed, 7 insertions(+)
 
 diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
-index 899899c1c6..b7a2cf0afd 100644
+index 003cc857df..2e68d13e87 100644
 --- a/arch/arm/dts/ucm-imx8m-mini.dts
 +++ b/arch/arm/dts/ucm-imx8m-mini.dts
-@@ -450,3 +450,10 @@
+@@ -478,3 +478,10 @@
  &usbotg2 {
  	status = "disabled";
  };

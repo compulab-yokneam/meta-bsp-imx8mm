@@ -1,7 +1,7 @@
-From 5192394d11f57ccd74c3aedcb7689fbf6147280c Mon Sep 17 00:00:00 2001
+From 0d822456eb93502243eb515fb8fff2678f489eb7 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 12:04:29 +0200
-Subject: [PATCH 15/25] startek-ili9881c: Add panel driver
+Subject: [PATCH 15/43] startek-ili9881c: Add panel driver
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -12,7 +12,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 drivers/gpu/drm/panel/panel-startek-ili9881c.c
 
 diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index eb2a746..99cb1b4 100644
+index eb2a74629a4b..99cb1b4e9d4b 100644
 --- a/drivers/gpu/drm/panel/Kconfig
 +++ b/drivers/gpu/drm/panel/Kconfig
 @@ -28,6 +28,15 @@ config DRM_PANEL_SIMPLE
@@ -32,7 +32,7 @@ index eb2a746..99cb1b4 100644
  	tristate "Innolux P079ZCA panel"
  	depends on OF
 diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index 68a80b1..67a920c 100644
+index 68a80b13403f..67a920c02b3b 100644
 --- a/drivers/gpu/drm/panel/Makefile
 +++ b/drivers/gpu/drm/panel/Makefile
 @@ -12,4 +12,5 @@ obj-$(CONFIG_DRM_PANEL_SEIKO_43WVF1G) += panel-seiko-43wvf1g.o
@@ -43,7 +43,7 @@ index 68a80b1..67a920c 100644
  obj-$(CONFIG_DRM_PANEL_RAYDIUM_RM67191) += panel-raydium-rm67191.o
 diff --git a/drivers/gpu/drm/panel/panel-startek-ili9881c.c b/drivers/gpu/drm/panel/panel-startek-ili9881c.c
 new file mode 100644
-index 0000000..ca7b7c6
+index 000000000000..ca7b7c6629e1
 --- /dev/null
 +++ b/drivers/gpu/drm/panel/panel-startek-ili9881c.c
 @@ -0,0 +1,648 @@
@@ -696,5 +696,5 @@ index 0000000..ca7b7c6
 +MODULE_DESCRIPTION("Startek Panel Driver with Ilitek ILI9881C Controller");
 +MODULE_LICENSE("GPL v2");
 -- 
-1.9.1
+2.11.0
 

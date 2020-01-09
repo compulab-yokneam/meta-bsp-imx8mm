@@ -1,7 +1,7 @@
-From 6f0cddcd68384262b8b1fb315bd1323de4888ecb Mon Sep 17 00:00:00 2001
+From af1d6dd4faacec4c22a066444b5ef237709bdf05 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 11 Sep 2019 22:33:42 +0300
-Subject: [PATCH 35/36] Enable usb to serial converters
+Subject: [PATCH 35/43] Enable usb to serial converters
 
 Enable the following USB to serial converters that are necessary polular WWAN
 modules such as SIMCOM-7100, SIMCOM-5360, Telit xx910.

@@ -1,7 +1,7 @@
-From 9a33e936452fb9343a580cddc0ef7b53009fe277 Mon Sep 17 00:00:00 2001
+From e555705fcb3e7acb1671e04fa38b13fa9cfb60b9 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 27 Mar 2019 13:28:51 +0200
-Subject: [PATCH 17/25] ucm-imx8m-mini: defconfig: Disable CONFIG_NXP_TMU
+Subject: [PATCH 17/46] ucm-imx8m-mini: defconfig: Disable CONFIG_NXP_TMU
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 1 deletion(-)
 
 diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
-index b4a9975..75531ac 100644
+index b4a9975b33..75531acb20 100644
 --- a/configs/ucm-imx8m-mini_defconfig
 +++ b/configs/ucm-imx8m-mini_defconfig
 @@ -53,7 +53,6 @@ CONFIG_DM_REGULATOR_FIXED=y
@@ -21,5 +21,5 @@ index b4a9975..75531ac 100644
  CONFIG_DM_USB=y
  CONFIG_USB_EHCI_HCD=y
 -- 
-1.9.1
+2.11.0
 

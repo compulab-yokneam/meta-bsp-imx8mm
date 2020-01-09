@@ -1,7 +1,7 @@
-From 481d532e5f40eea6f61b5ec818c403ddce15a392 Mon Sep 17 00:00:00 2001
+From c991ddefa29e2f80840e606b3bbce5d5603fed26 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 4 Sep 2019 22:33:07 +0300
-Subject: [PATCH 32/32] Add support for RAM size detection
+Subject: [PATCH 32/46] Add support for RAM size detection
 
 DDR size on UCM-iMX8M-Mini rev.1.1 is hardwired and must be read via GPIOs.
 Possible values are:

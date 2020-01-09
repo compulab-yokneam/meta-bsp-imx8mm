@@ -1,7 +1,7 @@
-From a914b8f5f2caa5a8dd4124f257c193f87a8dd47b Mon Sep 17 00:00:00 2001
+From 81f64d10b5cfe796fcc6f54d4ea4a006465156f5 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 16:26:29 +0200
-Subject: [PATCH 18/25] ucm-imx8m-mini: defconfig: Update defconfig
+Subject: [PATCH 18/43] ucm-imx8m-mini: defconfig: Update defconfig
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index 8a067a3..57d2aee 100644
+index 8a067a38a5e8..57d2aee4039e 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -56,6 +56,7 @@ CONFIG_XEN=y
@@ -45,5 +45,5 @@ index 8a067a3..57d2aee 100644
  CONFIG_EXT3_FS=y
  CONFIG_EXT4_FS_POSIX_ACL=y
 -- 
-1.9.1
+2.11.0
 

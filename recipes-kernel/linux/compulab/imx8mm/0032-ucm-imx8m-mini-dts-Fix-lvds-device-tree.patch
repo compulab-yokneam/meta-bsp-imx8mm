@@ -1,7 +1,7 @@
-From 239c493c4951ad56fb246272cda75041f792979e Mon Sep 17 00:00:00 2001
+From 7687e2b608b24e330178d39fbfc73587e807bd83 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Fri, 12 Jul 2019 09:52:14 +0300
-Subject: [PATCH 32/33] ucm-imx8m-mini: dts: Fix lvds device tree
+Subject: [PATCH 32/43] ucm-imx8m-mini: dts: Fix lvds device tree
 
 Fix lvds device tree.
 Disable panel in order to allow lvds port get active.
@@ -12,7 +12,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
-index 4e749ef..e9511ef 100644
+index 4e749efd5316..e9511ef185f5 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
 @@ -35,6 +35,10 @@
@@ -27,5 +27,5 @@ index 4e749ef..e9511ef 100644
      status = "okay";
      port@1 {
 -- 
-1.9.1
+2.11.0
 

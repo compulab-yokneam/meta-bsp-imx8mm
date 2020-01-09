@@ -1,7 +1,7 @@
-From 5071f70211f3019c8c9642d83e45d259dacf1d9f Mon Sep 17 00:00:00 2001
+From 280ec2866753271c63bc7c40992366107735ef5f Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 18:22:40 +0200
-Subject: [PATCH 10/25] i2c: prevent dual functions with CONFIG_DM_I2C_COMPAT
+Subject: [PATCH 10/46] i2c: prevent dual functions with CONFIG_DM_I2C_COMPAT
 
 Dual definition of functions exists when CONFIG_DM_I2C_COMPAT is
 enabled.
@@ -15,7 +15,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  2 files changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/i2c/i2c_core.c b/drivers/i2c/i2c_core.c
-index 911563b..7806d14 100644
+index 911563be0b..7806d14e9d 100644
 --- a/drivers/i2c/i2c_core.c
 +++ b/drivers/i2c/i2c_core.c
 @@ -209,6 +209,7 @@ void i2c_init_all(void)
@@ -51,7 +51,7 @@ index 911563b..7806d14 100644
  __weak void i2c_init(int speed, int slaveaddr)
  {
 diff --git a/include/i2c.h b/include/i2c.h
-index 695cb76..98c0dcf 100644
+index 695cb7655f..98c0dcf841 100644
 --- a/include/i2c.h
 +++ b/include/i2c.h
 @@ -16,7 +16,6 @@
@@ -104,5 +104,5 @@ index 695cb76..98c0dcf 100644
  
  #endif	/* _I2C_H_ */
 -- 
-1.9.1
+2.11.0
 

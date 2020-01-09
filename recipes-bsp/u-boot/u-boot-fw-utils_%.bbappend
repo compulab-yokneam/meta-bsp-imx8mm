@@ -7,7 +7,7 @@ SRCBRANCH = "imx_v2018.03_4.14.98_2.0.0_ga"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 SRCREV = "87a19df5e462f1f63e8a6d2973c7fb9e95284d04"
 
-include compulab/imx8mm.inc
+require compulab/${MACHINE}.inc
 
 SRC_URI =+ "file://fw_env.config \
 "
@@ -17,4 +17,4 @@ do_compile () {
 	oe_runmake envtools
 }
 
-COMPATIBLE_MACHINE = "(ucm-imx8m-mini)"
+COMPATIBLE_MACHINE = "(ucm-imx8m-mini|iot-gate-imx8)"

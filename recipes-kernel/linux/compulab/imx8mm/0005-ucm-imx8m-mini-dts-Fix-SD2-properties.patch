@@ -1,7 +1,7 @@
-From 2431ba2df8d3637457c63f702cea6572d92959eb Mon Sep 17 00:00:00 2001
+From 19eb3ef7e6de5efffeebaaa5c023455c660f8ee7 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 9 Feb 2019 21:05:39 +0200
-Subject: [PATCH 05/25] ucm-imx8m-mini:dts: Fix SD2 properties
+Subject: [PATCH 05/43] ucm-imx8m-mini:dts: Fix SD2 properties
 
 Define WP GPIO. Add no-1-8-v, that's necessary for some uSD cards.
 
@@ -11,7 +11,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index a36af39..64173c7 100644
+index a36af398a094..64173c7e8147 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -143,6 +143,7 @@
@@ -32,5 +32,5 @@ index a36af39..64173c7 100644
  	vmmc-supply = <&reg_usdhc2_vmmc>;
  	status = "okay";
 -- 
-1.9.1
+2.11.0
 

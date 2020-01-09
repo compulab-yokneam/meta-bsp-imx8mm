@@ -1,7 +1,7 @@
-From 8b685a88b3b168df58f0afbd39c7d67293ece116 Mon Sep 17 00:00:00 2001
+From 91b4131bd1946dccc1bac7d604515b9c4df6cd05 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Fri, 12 Jul 2019 09:49:10 +0300
-Subject: [PATCH 31/33] ucm-imx8m-mini: dts: Add m4 device tree
+Subject: [PATCH 31/43] ucm-imx8m-mini: dts: Add m4 device tree
 
 Add m4 device tree.
 Release uart1 for m4.
@@ -14,7 +14,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-m4.dts
 
 diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
-index 8ddfb2f..357eac5 100644
+index 8ddfb2fdadc6..357eac58c464 100644
 --- a/arch/arm64/boot/dts/compulab/Makefile
 +++ b/arch/arm64/boot/dts/compulab/Makefile
 @@ -2,6 +2,7 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini.dtb
@@ -27,7 +27,7 @@ index 8ddfb2f..357eac5 100644
  subdir-y       := $(dts-dirs)
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-m4.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-m4.dts
 new file mode 100644
-index 0000000..4de240d
+index 000000000000..4de240dc4496
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-m4.dts
 @@ -0,0 +1,29 @@
@@ -61,5 +61,5 @@ index 0000000..4de240d
 +	status = "disabled";
 +};
 -- 
-1.9.1
+2.11.0
 

@@ -1,0 +1,150 @@
+From 1baf26d9c18ee9a9292d208d02ac5b79a77e8425 Mon Sep 17 00:00:00 2001
+From: Raghuram Hegde <raghuram.hegde@intel.com>
+Date: Fri, 17 Apr 2020 17:37:11 +0300
+Subject: [PATCH 41/43] Bluetooth: btusb: Add support for Intel bluetooth
+ device 8087:0029
+
+Include the new USB product ID for Intel Bluetooth device 22260
+family(CcPeak)
+
+The /sys/kernel/debug/usb/devices portion for this device is:
+
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=02 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 2.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=8087 ProdID=0029 Rev= 0.01
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+
+Signed-off-by: Raghuram Hegde <raghuram.hegde@intel.com>
+Signed-off-by: Chethan T N <chethan.tumkur.narayan@intel.com>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+[Adapted to kernel v4.14.98]
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ drivers/bluetooth/btusb.c | 52 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 44 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index b8dffe937f4f..82d8aec37b6b 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -344,6 +344,7 @@ static const struct usb_device_id blacklist_table[] = {
+ 
+ 	/* Intel Bluetooth devices */
+ 	{ USB_DEVICE(0x8087, 0x0025), .driver_info = BTUSB_INTEL_NEW },
++	{ USB_DEVICE(0x8087, 0x0029), .driver_info = BTUSB_INTEL_NEW },
+ 	{ USB_DEVICE(0x8087, 0x07da), .driver_info = BTUSB_CSR },
+ 	{ USB_DEVICE(0x8087, 0x07dc), .driver_info = BTUSB_INTEL },
+ 	{ USB_DEVICE(0x8087, 0x0a2a), .driver_info = BTUSB_INTEL },
+@@ -2045,6 +2046,35 @@ static int btusb_send_frame_intel(struct hci_dev *hdev, struct sk_buff *skb)
+ 	return -EILSEQ;
+ }
+ 
++static bool btusb_setup_intel_new_get_fw_name(struct intel_version *ver,
++					     struct intel_boot_params *params,
++					     char *fw_name, size_t len,
++					     const char *suffix)
++{
++	switch (ver->hw_variant) {
++	case 0x0b:	/* SfP */
++	case 0x0c:	/* WsP */
++		snprintf(fw_name, len, "intel/ibt-%u-%u.%s",
++			le16_to_cpu(ver->hw_variant),
++			le16_to_cpu(params->dev_revid),
++			suffix);
++		break;
++	case 0x11:	/* JfP */
++	case 0x12:	/* ThP */
++	case 0x13:	/* HrP */
++	case 0x14:	/* CcP */
++		snprintf(fw_name, len, "intel/ibt-%u-%u-%u.%s",
++			le16_to_cpu(ver->hw_variant),
++			le16_to_cpu(ver->hw_revision),
++			le16_to_cpu(ver->fw_revision),
++			suffix);
++		break;
++	default:
++		return false;
++	}
++	return true;
++}
++
+ static int btusb_setup_intel_new(struct hci_dev *hdev)
+ {
+ 	static const u8 reset_param[] = { 0x00, 0x01, 0x00, 0x01,
+@@ -2093,6 +2123,7 @@ static int btusb_setup_intel_new(struct hci_dev *hdev)
+ 	case 0x0c:	/* WsP */
+ 	case 0x11:	/* JfP */
+ 	case 0x12:	/* ThP */
++	case 0x14:	/* CcP */
+ 		break;
+ 	default:
+ 		BT_ERR("%s: Unsupported Intel hardware variant (%u)",
+@@ -2197,9 +2228,12 @@ static int btusb_setup_intel_new(struct hci_dev *hdev)
+ 	 *   17 (0x11) for iBT3.5 (JfP)
+ 	 *   18 (0x12) for iBT3.5 (ThP)
+ 	 */
+-	snprintf(fwname, sizeof(fwname), "intel/ibt-%u-%u.sfi",
+-		 le16_to_cpu(ver.hw_variant),
+-		 le16_to_cpu(params->dev_revid));
++	err = btusb_setup_intel_new_get_fw_name(&ver, params, fwname,
++						sizeof(fwname), "sfi");
++	if (!err) {
++		bt_dev_err(hdev, "Unsupported Intel firmware naming");
++		return -EINVAL;
++	}
+ 
+ 	err = request_firmware(&fw, fwname, &hdev->dev);
+ 	if (err < 0) {
+@@ -2208,17 +2242,19 @@ static int btusb_setup_intel_new(struct hci_dev *hdev)
+ 		kfree_skb(skb);
+ 		return err;
+ 	}
++	kfree_skb(skb);
+ 
+ 	BT_INFO("%s: Found device firmware: %s", hdev->name, fwname);
+ 
+ 	/* Save the DDC file name for later use to apply once the firmware
+ 	 * downloading is done.
+ 	 */
+-	snprintf(fwname, sizeof(fwname), "intel/ibt-%u-%u.ddc",
+-		 le16_to_cpu(ver.hw_variant),
+-		 le16_to_cpu(params->dev_revid));
+-
+-	kfree_skb(skb);
++	err = btusb_setup_intel_new_get_fw_name(&ver, params, fwname,
++						sizeof(fwname), "ddc");
++	if (!err) {
++		bt_dev_err(hdev, "Unsupported Intel firmware naming");
++		return -EINVAL;
++	}
+ 
+ 	if (fw->size < 644) {
+ 		BT_ERR("%s: Invalid size of firmware file (%zu)",
+-- 
+2.11.0
+

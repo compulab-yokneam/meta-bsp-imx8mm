@@ -1,7 +1,7 @@
-From 59efe4700168c99a9b8654e06b821b34cd86fc38 Mon Sep 17 00:00:00 2001
+From f150f8abb73d030ac4b25ddac03c6d285909790a Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 14 Feb 2019 17:42:19 +0200
-Subject: [PATCH 08/25] ucm-imx8m-mini:dts: Enable onboard EEPROM
+Subject: [PATCH 08/43] ucm-imx8m-mini:dts: Enable onboard EEPROM
 
 Enable onboard EEPROM type of Atmel 24c08 at 0x50@i2c2.
 
@@ -12,7 +12,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  2 files changed, 40 insertions(+), 144 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index b9a3ef8..369b2bf 100644
+index b9a3ef84d229..369b2bf36e8d 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -413,6 +413,12 @@
@@ -29,7 +29,7 @@ index b9a3ef8..369b2bf 100644
  
  &i2c3 {
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index 8875442..a0cc6e4 100644
+index 8875442e489d..a0cc6e4873bf 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -28,39 +28,10 @@ CONFIG_RELAY=y
@@ -514,5 +514,5 @@ index 8875442..a0cc6e4 100644
 -CONFIG_CRYPTO_CRC32_ARM64=y
 +CONFIG_CRYPTO_AES_ARM64_BS=m
 -- 
-1.9.1
+2.11.0
 

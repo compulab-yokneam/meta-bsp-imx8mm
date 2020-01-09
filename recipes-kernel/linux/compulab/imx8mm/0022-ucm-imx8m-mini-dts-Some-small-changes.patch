@@ -1,7 +1,7 @@
-From d4344065f5a895dea7823d36fccf2013c4c5247d Mon Sep 17 00:00:00 2001
+From 749a52c0b9f742a538c9d8eef9dd1042322f7749 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 30 Apr 2019 15:52:55 +0300
-Subject: [PATCH 23/25] ucm-imx8m-mini: dts: Some small changes
+Subject: [PATCH 22/43] ucm-imx8m-mini: dts: Some small changes
 
 1) Defibed gpioledgrp ping group.
 2) Cahnged GPIO3_IO16 init pad value.
@@ -12,7 +12,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index e1de792..10cd529 100644
+index e1de79294430..10cd529b0874 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -28,6 +28,9 @@
@@ -49,5 +49,5 @@ index e1de792..10cd529 100644
  			fsl,pins = <
  				MX8MM_IOMUXC_I2C1_SCL_I2C1_SCL			0x400001c3
 -- 
-1.9.1
+2.11.0
 

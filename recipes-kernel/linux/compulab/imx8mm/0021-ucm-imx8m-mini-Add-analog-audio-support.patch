@@ -1,7 +1,7 @@
-From 61398457cf72bc14e32ee069da9392b8e6647f8c Mon Sep 17 00:00:00 2001
+From b844264ce74e9c75814e13d203359803266d95e3 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 15 Apr 2019 07:27:58 +0300
-Subject: [PATCH 22/25] ucm-imx8m-mini: Add analog audio support
+Subject: [PATCH 21/43] ucm-imx8m-mini: Add analog audio support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 67 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index a23bd0b..e1de792 100644
+index a23bd0bb4a0a..e1de79294430 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -113,6 +113,43 @@
@@ -108,5 +108,5 @@ index a23bd0b..e1de792 100644
  	status = "okay";
  };
 -- 
-1.9.1
+2.11.0
 

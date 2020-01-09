@@ -1,7 +1,7 @@
-From 9f4b425a19198f162a6ca7cc52d6262ccd00aa7c Mon Sep 17 00:00:00 2001
+From 17402f0e29455855f50129cbfdf586c75a1a659d Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 10 Jun 2019 08:49:49 +0300
-Subject: [PATCH 27/29] ucm-imx8m-mini: Update memory init code
+Subject: [PATCH 27/46] ucm-imx8m-mini: Update memory init code
 
 Add 1/2G configurations.
 TBD: memory configuration gpio to read from the board.
@@ -35,7 +35,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
 
 diff --git a/board/compulab/ucm-imx8m-mini/Kconfig b/board/compulab/ucm-imx8m-mini/Kconfig
-index e6b3341..a6f0c65 100644
+index e6b334134f..a6f0c65666 100644
 --- a/board/compulab/ucm-imx8m-mini/Kconfig
 +++ b/board/compulab/ucm-imx8m-mini/Kconfig
 @@ -10,24 +10,20 @@ config SYS_CONFIG_NAME
@@ -73,7 +73,7 @@ index e6b3341..a6f0c65 100644
 -
  endif
 diff --git a/board/compulab/ucm-imx8m-mini/Makefile b/board/compulab/ucm-imx8m-mini/Makefile
-index 02d3393..a75f779 100644
+index 02d3393232..a75f779961 100644
 --- a/board/compulab/ucm-imx8m-mini/Makefile
 +++ b/board/compulab/ucm-imx8m-mini/Makefile
 @@ -8,6 +8,5 @@ obj-y += ucm-imx8m-mini.o
@@ -86,7 +86,7 @@ index 02d3393..a75f779 100644
  endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/Makefile b/board/compulab/ucm-imx8m-mini/ddr/Makefile
 deleted file mode 100644
-index 05bc991..0000000
+index 05bc99156c..0000000000
 --- a/board/compulab/ucm-imx8m-mini/ddr/Makefile
 +++ /dev/null
 @@ -1,11 +0,0 @@
@@ -102,7 +102,7 @@ index 05bc991..0000000
 -obj-y += ddrphy_train.o
 -endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.h b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
-index 252b11e..980a728 100644
+index 252b11ed5b..980a728ee4 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 @@ -1,59 +1,13 @@
@@ -173,7 +173,7 @@ index 252b11e..980a728 100644
  #endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c b/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
 deleted file mode 100644
-index b3f82ad..0000000
+index b3f82adf41..0000000000
 --- a/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
 +++ /dev/null
 @@ -1,260 +0,0 @@
@@ -440,7 +440,7 @@ index b3f82ad..0000000
 \ No newline at end of file
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c b/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
 deleted file mode 100644
-index e4577e0..0000000
+index e4577e0a21..0000000000
 --- a/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
 +++ /dev/null
 @@ -1,1044 +0,0 @@
@@ -1491,7 +1491,7 @@ index e4577e0..0000000
 \ No newline at end of file
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/helper.c b/board/compulab/ucm-imx8m-mini/ddr/helper.c
 deleted file mode 100644
-index 050c87b..0000000
+index 050c87b7fc..0000000000
 --- a/board/compulab/ucm-imx8m-mini/ddr/helper.c
 +++ /dev/null
 @@ -1,103 +0,0 @@
@@ -1600,7 +1600,7 @@ index 050c87b..0000000
 -}
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_1g.c b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_1g.c
 new file mode 100644
-index 0000000..7676e2e
+index 0000000000..7676e2e1f6
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_1g.c
 @@ -0,0 +1,1848 @@
@@ -3454,7 +3454,7 @@ index 0000000..7676e2e
 +};
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_2g.c b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_2g.c
 new file mode 100644
-index 0000000..bb658a6
+index 0000000000..bb658a6c2c
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_2g.c
 @@ -0,0 +1,1848 @@
@@ -5308,7 +5308,7 @@ index 0000000..bb658a6
 +};
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c b/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c
 deleted file mode 100644
-index d85e345..0000000
+index d85e3456d5..0000000000
 --- a/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c
 +++ /dev/null
 @@ -1,103 +0,0 @@
@@ -5417,7 +5417,7 @@ index d85e345..0000000
 -}
 diff --git a/board/compulab/ucm-imx8m-mini/lpddr4_timing.c b/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
 deleted file mode 100644
-index dfd68ea..0000000
+index dfd68ea9d8..0000000000
 --- a/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
 +++ /dev/null
 @@ -1,1985 +0,0 @@
@@ -7407,7 +7407,7 @@ index dfd68ea..0000000
 -	.ddrphy_pie_num = ARRAY_SIZE(lpddr4_phy_pie),
 -};
 diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
-index 8331835..88c4435 100644
+index 833183597a..88c4435f46 100644
 --- a/board/compulab/ucm-imx8m-mini/spl.c
 +++ b/board/compulab/ucm-imx8m-mini/spl.c
 @@ -19,24 +19,22 @@
@@ -7445,7 +7445,7 @@ index 8331835..88c4435 100644
  
  #define I2C_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS | PAD_CTL_PUE)
 diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
-index 80d9a5b..6351ae1 100644
+index 80d9a5b8bd..6351ae1af3 100644
 --- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 +++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 @@ -30,6 +30,7 @@
@@ -7494,7 +7494,7 @@ index 80d9a5b..6351ae1 100644
  }
 diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
 new file mode 100644
-index 0000000..0755201
+index 0000000000..0755201726
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
 @@ -0,0 +1,15 @@
@@ -7514,7 +7514,7 @@ index 0000000..0755201
 +
 +#endif
 diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
-index d457d26..04228dc 100644
+index d457d263c4..04228dc016 100644
 --- a/configs/ucm-imx8m-mini_defconfig
 +++ b/configs/ucm-imx8m-mini_defconfig
 @@ -3,7 +3,6 @@ CONFIG_ARCH_IMX8M=y
@@ -7534,5 +7534,5 @@ index d457d26..04228dc 100644
  CONFIG_DM_I2C=y
  CONFIG_DM_I2C_COMPAT=y
 -- 
-1.9.1
+2.11.0
 

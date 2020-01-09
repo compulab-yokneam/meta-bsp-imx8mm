@@ -1,7 +1,7 @@
-From d16771fa30413c39792e4108b173993796eb58fc Mon Sep 17 00:00:00 2001
+From 0f51a38c88395d709d5af26eb9e1fa67ba3b9113 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 13 Feb 2019 08:56:03 +0200
-Subject: [PATCH 02/25] ucm-imx8m-mini: Fix KConfig warning
+Subject: [PATCH 02/46] ucm-imx8m-mini: Fix KConfig warning
 
 The following compilation warning is generated:
 choice value used outside its choice group
@@ -18,7 +18,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  3 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/board/compulab/ucm-imx8m-mini/Kconfig b/board/compulab/ucm-imx8m-mini/Kconfig
-index 02b0e86..1da11b2 100644
+index 02b0e8638f..1da11b2046 100644
 --- a/board/compulab/ucm-imx8m-mini/Kconfig
 +++ b/board/compulab/ucm-imx8m-mini/Kconfig
 @@ -11,16 +11,16 @@ config SYS_CONFIG_NAME
@@ -42,7 +42,7 @@ index 02b0e86..1da11b2 100644
  	help
  	 imx8mm_val board configuration approach
 diff --git a/board/compulab/ucm-imx8m-mini/Makefile b/board/compulab/ucm-imx8m-mini/Makefile
-index e335f9f..b092c28 100644
+index e335f9f556..b092c281ab 100644
 --- a/board/compulab/ucm-imx8m-mini/Makefile
 +++ b/board/compulab/ucm-imx8m-mini/Makefile
 @@ -8,7 +8,7 @@ obj-y += ucm-imx8m-mini.o
@@ -55,7 +55,7 @@ index e335f9f..b092c28 100644
  else
  obj-y += ddr/
 diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
-index 6d9cccd..34f7683 100644
+index 6d9cccdbcb..34f7683d2d 100644
 --- a/board/compulab/ucm-imx8m-mini/spl.c
 +++ b/board/compulab/ucm-imx8m-mini/spl.c
 @@ -20,9 +20,9 @@
@@ -84,5 +84,5 @@ index 6d9cccd..34f7683 100644
  	ddr_init();
  #endif
 -- 
-1.9.1
+2.11.0
 

@@ -1,7 +1,7 @@
-From 48d258e75cd0f0ff0cb68f5173741b91941a8ab4 Mon Sep 17 00:00:00 2001
+From a153cf2556f647b64cb13d5a0794cd5b883c3e7c Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 26 Mar 2019 10:36:45 +0200
-Subject: [PATCH 16/25] ucm-imx8m-mini: ddr: Validate new setting
+Subject: [PATCH 16/46] ucm-imx8m-mini: ddr: Validate new setting
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  2 files changed, 62 insertions(+), 57 deletions(-)
 
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c b/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
-index 6093d1b..b3f82ad 100644
+index 6093d1bd6d..b3f82adf41 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
 @@ -35,6 +35,11 @@ volatile unsigned int tmp, tmp_t, i;
@@ -87,7 +87,7 @@ index 6093d1b..b3f82ad 100644
 +}
 \ No newline at end of file
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c b/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
-index 8116069..e4577e0 100644
+index 8116069dfb..e4577e0a21 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
 @@ -61,11 +61,11 @@ void ddr_cfg_phy(void) {
@@ -324,5 +324,5 @@ index 8116069..e4577e0 100644
 +}
 \ No newline at end of file
 -- 
-1.9.1
+2.11.0
 

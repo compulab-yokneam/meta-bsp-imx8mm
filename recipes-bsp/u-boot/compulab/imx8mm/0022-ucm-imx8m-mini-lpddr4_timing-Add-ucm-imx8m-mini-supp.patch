@@ -1,7 +1,7 @@
-From a0f46186089019084987f4f22054bb36b9e2e68c Mon Sep 17 00:00:00 2001
+From 384b2fac6122ffc9822f4a3965f93a13d773066d Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 24 Apr 2019 13:55:44 +0300
-Subject: [PATCH 22/25] ucm-imx8m-mini: lpddr4_timing: Add ucm-imx8m-mini
+Subject: [PATCH 22/46] ucm-imx8m-mini: lpddr4_timing: Add ucm-imx8m-mini
  support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
@@ -10,7 +10,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 26 insertions(+), 21 deletions(-)
 
 diff --git a/board/compulab/ucm-imx8m-mini/lpddr4_timing.c b/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
-index 72ba6ee..dfd68ea 100644
+index 72ba6ee81b..dfd68ea9d8 100644
 --- a/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
 +++ b/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
 @@ -4,39 +4,44 @@
@@ -124,5 +124,5 @@ index 72ba6ee..dfd68ea 100644
  	.ddrc_cfg_num = ARRAY_SIZE(lpddr4_ddrc_cfg),
  	.ddrphy_cfg = lpddr4_ddrphy_cfg,
 -- 
-1.9.1
+2.11.0
 

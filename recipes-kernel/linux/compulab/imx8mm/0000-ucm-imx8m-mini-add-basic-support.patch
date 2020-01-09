@@ -1,7 +1,7 @@
-From c4a92b149db3c8090208c0f92cfb810469e49b69 Mon Sep 17 00:00:00 2001
+From c51b02f560c824e230b9bd673626b788d7f83e84 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 5 Feb 2019 11:49:11 +0200
-Subject: [PATCH 00/25] ucm-imx8m-mini: add basic support
+Subject: [PATCH 00/43] ucm-imx8m-mini: add basic support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -15,7 +15,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 arch/arm64/configs/ucm-imx8m-mini_defconfig
 
 diff --git a/arch/arm64/boot/dts/Makefile b/arch/arm64/boot/dts/Makefile
-index c6684ab..34a8515 100644
+index c6684ab8e201..34a851523876 100644
 --- a/arch/arm64/boot/dts/Makefile
 +++ b/arch/arm64/boot/dts/Makefile
 @@ -9,6 +9,7 @@ dts-dirs += apm
@@ -28,7 +28,7 @@ index c6684ab..34a8515 100644
  dts-dirs += hisilicon
 diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
 new file mode 100644
-index 0000000..2b52042
+index 000000000000..2b520424ab4b
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/Makefile
 @@ -0,0 +1,5 @@
@@ -39,7 +39,7 @@ index 0000000..2b52042
 +clean-files    := *.dtb
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 new file mode 100644
-index 0000000..ca50fc1
+index 000000000000..ca50fc1bf5f3
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -0,0 +1,603 @@
@@ -648,7 +648,7 @@ index 0000000..ca50fc1
 +};
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 new file mode 100644
-index 0000000..8875442
+index 000000000000..8875442e489d
 --- /dev/null
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -0,0 +1,670 @@
@@ -1323,5 +1323,5 @@ index 0000000..8875442
 +CONFIG_CRYPTO_AES_ARM64_CE_BLK=y
 +CONFIG_CRYPTO_CRC32_ARM64=y
 -- 
-1.9.1
+2.11.0
 

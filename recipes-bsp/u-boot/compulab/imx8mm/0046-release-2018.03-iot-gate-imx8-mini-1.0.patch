@@ -1,0 +1,26 @@
+From 3b495fda95920e152618963d117f973b78188e83 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Mon, 27 Apr 2020 14:00:24 +0300
+Subject: [PATCH 46/46] release 2018.03-iot-gate-imx8-mini-1.0
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index e6cc0f10a0..58dd339a22 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,7 +5,7 @@
+ VERSION = 2018
+ PATCHLEVEL = 03
+ SUBLEVEL =
+-EXTRAVERSION = -ucm-imx8m-mini-1.0
++EXTRAVERSION = -iot-gate-imx8-1.0
+ NAME =
+ 
+ # *DOCUMENTATION*
+-- 
+2.11.0
+

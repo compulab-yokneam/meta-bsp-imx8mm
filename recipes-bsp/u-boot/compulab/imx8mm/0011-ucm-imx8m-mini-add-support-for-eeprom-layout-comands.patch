@@ -1,7 +1,7 @@
-From 65e0b15c35ea91fb40569aeacd46a56bfc9fe912 Mon Sep 17 00:00:00 2001
+From 0d88091eb8bc989e3f5e59c2c7f47ddfaa61a63f Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 18:48:29 +0200
-Subject: [PATCH 11/25] ucm-imx8m-mini: add support for eeprom layout comands
+Subject: [PATCH 11/46] ucm-imx8m-mini: add support for eeprom layout comands
 
 Add support for EEPROM and EEPROM layout commands for the
 UCM-iMX8M-Mini.
@@ -13,7 +13,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  2 files changed, 12 insertions(+)
 
 diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
-index 36cfe1b..b4a9975 100644
+index 36cfe1b2e1..b4a9975b33 100644
 --- a/configs/ucm-imx8m-mini_defconfig
 +++ b/configs/ucm-imx8m-mini_defconfig
 @@ -19,6 +19,8 @@ CONFIG_FASTBOOT_BUF_ADDR=0x42800000
@@ -34,7 +34,7 @@ index 36cfe1b..b4a9975 100644
  CONFIG_LED=y
  CONFIG_LED_STATUS=y
 diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
-index 1605ab7..f464ed8 100644
+index 1605ab7281..f464ed822b 100644
 --- a/include/configs/ucm-imx8m-mini.h
 +++ b/include/configs/ucm-imx8m-mini.h
 @@ -319,6 +319,15 @@
@@ -54,5 +54,5 @@ index 1605ab7..f464ed8 100644
  #ifndef CONFIG_SPL_BUILD
  #define CONFIG_CMD_USB
 -- 
-1.9.1
+2.11.0
 

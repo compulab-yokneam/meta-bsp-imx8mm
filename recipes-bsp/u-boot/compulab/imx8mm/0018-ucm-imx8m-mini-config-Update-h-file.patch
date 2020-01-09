@@ -1,7 +1,7 @@
-From d3ace7ca397d491c73fa3bb706e24182f3dcbc77 Mon Sep 17 00:00:00 2001
+From 9f50ed478974b56cbb2366c47cddb1b34a695bd2 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 22 Apr 2019 12:06:29 +0300
-Subject: [PATCH 18/25] ucm-imx8m-mini: config : Update h-file
+Subject: [PATCH 18/46] ucm-imx8m-mini: config : Update h-file
 
 1) Add a missing include
 2) Remove duplications
@@ -12,7 +12,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 2 insertions(+), 7 deletions(-)
 
 diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
-index 214dad4..046dc24 100644
+index 214dad40ed..046dc243bc 100644
 --- a/include/configs/ucm-imx8m-mini.h
 +++ b/include/configs/ucm-imx8m-mini.h
 @@ -10,6 +10,8 @@
@@ -46,5 +46,5 @@ index 214dad4..046dc24 100644
  
  #define CONFIG_CMD_USB_MASS_STORAGE
 -- 
-1.9.1
+2.11.0
 

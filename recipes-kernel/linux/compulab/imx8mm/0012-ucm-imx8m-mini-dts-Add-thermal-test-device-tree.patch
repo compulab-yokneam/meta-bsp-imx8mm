@@ -1,7 +1,7 @@
-From b3029ce50e5b91362b2c2d3af879e83bc0c4c7b3 Mon Sep 17 00:00:00 2001
+From c92194ef24c636f9c97c8f14cfa1028a914d8d9a Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 11:46:39 +0200
-Subject: [PATCH 12/25] ucm-imx8m-mini: dts: Add thermal test device tree
+Subject: [PATCH 12/43] ucm-imx8m-mini: dts: Add thermal test device tree
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -11,7 +11,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts
 
 diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
-index 2b52042..711d726 100644
+index 2b520424ab4b..711d726a6d13 100644
 --- a/arch/arm64/boot/dts/compulab/Makefile
 +++ b/arch/arm64/boot/dts/compulab/Makefile
 @@ -1,4 +1,5 @@
@@ -22,7 +22,7 @@ index 2b52042..711d726 100644
  subdir-y       := $(dts-dirs)
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts
 new file mode 100644
-index 0000000..750589d
+index 000000000000..750589df52d6
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts
 @@ -0,0 +1,30 @@
@@ -57,5 +57,5 @@ index 0000000..750589d
 +	temperature = <155000>;
 +};
 -- 
-1.9.1
+2.11.0
 

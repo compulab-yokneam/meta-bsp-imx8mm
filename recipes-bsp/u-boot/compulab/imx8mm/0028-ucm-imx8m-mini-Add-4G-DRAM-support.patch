@@ -1,7 +1,7 @@
-From 9995438752b4a5d2f73d4544b1f7a65e60ed08d2 Mon Sep 17 00:00:00 2001
+From cc2bb955676e2a2952461e46b5022d7fe675c814 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 22 Jul 2019 16:46:52 +0300
-Subject: [PATCH 28/29] ucm-imx8m-mini: Add 4G DRAM support
+Subject: [PATCH 28/46] ucm-imx8m-mini: Add 4G DRAM support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -17,7 +17,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_4g.c
 
 diff --git a/board/compulab/ucm-imx8m-mini/Kconfig b/board/compulab/ucm-imx8m-mini/Kconfig
-index a6f0c65..d687db7 100644
+index a6f0c65666..d687db7686 100644
 --- a/board/compulab/ucm-imx8m-mini/Kconfig
 +++ b/board/compulab/ucm-imx8m-mini/Kconfig
 @@ -25,5 +25,10 @@ config RAM_2G
@@ -32,7 +32,7 @@ index a6f0c65..d687db7 100644
  endchoice
  endif
 diff --git a/board/compulab/ucm-imx8m-mini/Makefile b/board/compulab/ucm-imx8m-mini/Makefile
-index a75f779..4148bfd 100644
+index a75f779961..4148bfd3d2 100644
 --- a/board/compulab/ucm-imx8m-mini/Makefile
 +++ b/board/compulab/ucm-imx8m-mini/Makefile
 @@ -8,5 +8,5 @@ obj-y += ucm-imx8m-mini.o
@@ -43,7 +43,7 @@ index a75f779..4148bfd 100644
 +obj-y += ddr/lpddr4_timing_1g.o ddr/lpddr4_timing_2g.o ddr/lpddr4_timing_4g.o
  endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.h b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
-index 980a728..c8241ee 100644
+index 980a728ee4..c8241ee6e6 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 @@ -7,6 +7,7 @@
@@ -56,7 +56,7 @@ index 980a728..c8241ee 100644
  
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_4g.c b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_4g.c
 new file mode 100644
-index 0000000..60e0e99
+index 0000000000..60e0e992e0
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_4g.c
 @@ -0,0 +1,1848 @@
@@ -1909,7 +1909,7 @@ index 0000000..60e0e99
 +	.fsp_table = { 3000, 400, 100, },
 +};
 diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
-index 88c4435..0eb0d3b 100644
+index 88c4435f46..0eb0d3b249 100644
 --- a/board/compulab/ucm-imx8m-mini/spl.c
 +++ b/board/compulab/ucm-imx8m-mini/spl.c
 @@ -31,10 +31,19 @@ void spl_dram_init(void)
@@ -1936,7 +1936,7 @@ index 88c4435..0eb0d3b 100644
  
  #define I2C_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS | PAD_CTL_PUE)
 diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
-index 6351ae1..27838f2 100644
+index 6351ae1af3..27838f22d5 100644
 --- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 +++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 @@ -158,6 +158,9 @@ int get_baseboard_id(void)
@@ -2021,7 +2021,7 @@ index 6351ae1..27838f2 100644
  int ft_board_setup(void *blob, bd_t *bd)
  {
 diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
-index 0755201..5e787d4 100644
+index 0755201726..5e787d41fb 100644
 --- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
 +++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
 @@ -9,6 +9,7 @@
@@ -2033,7 +2033,7 @@ index 0755201..5e787d4 100644
  int get_baseboard_id(void);
  
 diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
-index 8b55fd6..175b41c 100644
+index 8b55fd61e9..175b41ccf6 100644
 --- a/include/configs/ucm-imx8m-mini.h
 +++ b/include/configs/ucm-imx8m-mini.h
 @@ -201,10 +201,26 @@
@@ -2068,5 +2068,5 @@ index 8b55fd6..175b41c 100644
  #define CONFIG_SYS_MEMTEST_START    PHYS_SDRAM
  #define CONFIG_SYS_MEMTEST_END      (CONFIG_SYS_MEMTEST_START + (PHYS_SDRAM_SIZE >> 1))
 -- 
-1.9.1
+2.11.0
 

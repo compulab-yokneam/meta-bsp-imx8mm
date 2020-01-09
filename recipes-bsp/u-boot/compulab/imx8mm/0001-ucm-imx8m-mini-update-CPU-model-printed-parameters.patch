@@ -1,7 +1,7 @@
-From 9a00a0ef365dd6c9b9e7616b37b2d7522162ba38 Mon Sep 17 00:00:00 2001
+From 922f809730089d8fb786faf9de308e6eed1d510d Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 12 Feb 2019 17:51:20 +0200
-Subject: [PATCH 01/25] ucm-imx8m-mini: update CPU/model printed parameters
+Subject: [PATCH 01/46] ucm-imx8m-mini: update CPU/model printed parameters
 
 Update the startup messages of the CPU and model parameters
 
@@ -12,7 +12,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  2 files changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
-index 112345b..899899c 100644
+index 112345b6a3..899899c1c6 100644
 --- a/arch/arm/dts/ucm-imx8m-mini.dts
 +++ b/arch/arm/dts/ucm-imx8m-mini.dts
 @@ -17,7 +17,7 @@
@@ -25,7 +25,7 @@ index 112345b..899899c 100644
  
  	chosen {
 diff --git a/arch/arm/mach-imx/cpu.c b/arch/arm/mach-imx/cpu.c
-index 111f1e4..0ea375b 100644
+index 111f1e4682..0ea375b1d0 100644
 --- a/arch/arm/mach-imx/cpu.c
 +++ b/arch/arm/mach-imx/cpu.c
 @@ -235,7 +235,11 @@ int print_cpuinfo(void)
@@ -71,5 +71,5 @@ index 111f1e4..0ea375b 100644
  			debug(" - invalid sensor data\n");
  	} else {
 -- 
-1.9.1
+2.11.0
 

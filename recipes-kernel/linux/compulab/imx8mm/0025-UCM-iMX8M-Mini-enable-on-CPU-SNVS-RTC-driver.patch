@@ -1,7 +1,7 @@
-From eef6e97f7cfbf82aa6b1666ab507134678513e5c Mon Sep 17 00:00:00 2001
+From f45efa0a9c3970109292b7949c4251b1c4526e13 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 19 Mar 2019 12:11:02 +0200
-Subject: [PATCH 1/1] UCM-iMX8M-Mini: enable on-CPU SNVS-RTC driver
+Subject: [PATCH 25/43] UCM-iMX8M-Mini: enable on-CPU SNVS-RTC driver
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index 22b11f10f0dd..da34ab273580 100644
+index 8b95764b1b09..0dceda45d8ac 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-@@ -443,6 +443,7 @@ CONFIG_LEDS_TRIGGER_HEARTBEAT=y
+@@ -445,6 +445,7 @@ CONFIG_LEDS_TRIGGER_HEARTBEAT=y
  CONFIG_LEDS_TRIGGER_CPU=y
  CONFIG_RTC_CLASS=y
  CONFIG_RTC_DRV_ABX80X=y

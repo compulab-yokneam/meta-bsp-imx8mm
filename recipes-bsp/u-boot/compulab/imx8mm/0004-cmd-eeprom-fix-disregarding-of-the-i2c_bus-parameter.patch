@@ -1,7 +1,7 @@
-From f70346c777ec784380d52448507348f411746dc3 Mon Sep 17 00:00:00 2001
+From 7d7feb043354d268edf1d69fa7498088aeedf2c9 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 09:59:20 +0200
-Subject: [PATCH 04/25] cmd: eeprom: fix disregarding of the i2c_bus parameter
+Subject: [PATCH 04/46] cmd: eeprom: fix disregarding of the i2c_bus parameter
 
 The eeprom commands are disregarding the i2c_bus parameter if
 CONFIG_SYS_I2C_EEPROM_BUS is defined - setting the i2c bus to
@@ -26,7 +26,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  10 files changed, 35 insertions(+), 26 deletions(-)
 
 diff --git a/board/corscience/tricorder/tricorder-eeprom.c b/board/corscience/tricorder/tricorder-eeprom.c
-index aeacd6a..f7772a9 100644
+index aeacd6a253..f7772a9bb9 100644
 --- a/board/corscience/tricorder/tricorder-eeprom.c
 +++ b/board/corscience/tricorder/tricorder-eeprom.c
 @@ -168,12 +168,12 @@ int tricorder_eeprom_write(unsigned devaddr, const char *name,
@@ -45,7 +45,7 @@ index aeacd6a..f7772a9 100644
  		printf("Tricorder: Could not read EEPROM content!\n");
  
 diff --git a/board/freescale/mpc8323erdb/mpc8323erdb.c b/board/freescale/mpc8323erdb/mpc8323erdb.c
-index 7726881..dc0d68c 100644
+index 772688186b..dc0d68c306 100644
 --- a/board/freescale/mpc8323erdb/mpc8323erdb.c
 +++ b/board/freescale/mpc8323erdb/mpc8323erdb.c
 @@ -197,7 +197,8 @@ int mac_read_from_eeprom(void)
@@ -59,7 +59,7 @@ index 7726881..dc0d68c 100644
  		       CONFIG_SYS_I2C_EEPROM_ADDR);
  	} else {
 diff --git a/board/kosagi/novena/novena.c b/board/kosagi/novena/novena.c
-index f0ace03..aa51e51 100644
+index f0ace03009..aa51e513ff 100644
 --- a/board/kosagi/novena/novena.c
 +++ b/board/kosagi/novena/novena.c
 @@ -251,7 +251,7 @@ int misc_init_r(void)
@@ -72,7 +72,7 @@ index f0ace03..aa51e51 100644
  		puts("Cannot read I2C EEPROM.\n");
  		return 0;
 diff --git a/board/samtec/vining_fpga/socfpga.c b/board/samtec/vining_fpga/socfpga.c
-index 229b12f..c332e81 100644
+index 229b12f308..c332e81e38 100644
 --- a/board/samtec/vining_fpga/socfpga.c
 +++ b/board/samtec/vining_fpga/socfpga.c
 @@ -60,7 +60,8 @@ int misc_init_r(void)
@@ -86,7 +86,7 @@ index 229b12f..c332e81 100644
  		puts("Cannot read I2C EEPROM.\n");
  		return 0;
 diff --git a/board/xilinx/zynq/board.c b/board/xilinx/zynq/board.c
-index fb8eab0..bf8631f 100644
+index fb8eab07d7..bf8631fe48 100644
 --- a/board/xilinx/zynq/board.c
 +++ b/board/xilinx/zynq/board.c
 @@ -132,7 +132,7 @@ int zynq_board_read_rom_ethaddr(unsigned char *ethaddr)
@@ -99,7 +99,7 @@ index fb8eab0..bf8631f 100644
  #endif
  
 diff --git a/board/xilinx/zynqmp/zynqmp.c b/board/xilinx/zynqmp/zynqmp.c
-index ff0b3c7..9a0bbbe 100644
+index ff0b3c75f5..9a0bbbe049 100644
 --- a/board/xilinx/zynqmp/zynqmp.c
 +++ b/board/xilinx/zynqmp/zynqmp.c
 @@ -309,7 +309,7 @@ int zynq_board_read_rom_ethaddr(unsigned char *ethaddr)
@@ -112,7 +112,7 @@ index ff0b3c7..9a0bbbe 100644
  #endif
  
 diff --git a/cmd/eeprom.c b/cmd/eeprom.c
-index c61b396..48352e4 100644
+index c61b396a62..48352e4d14 100644
 --- a/cmd/eeprom.c
 +++ b/cmd/eeprom.c
 @@ -126,7 +126,7 @@ static int eeprom_len(unsigned offset, unsigned end)
@@ -222,7 +222,7 @@ index c61b396..48352e4 100644
  
  	return rcode;
 diff --git a/env/eeprom.c b/env/eeprom.c
-index 63842d6..861f219 100644
+index 63842d6ff3..861f219508 100644
 --- a/env/eeprom.c
 +++ b/env/eeprom.c
 @@ -32,7 +32,7 @@ static int eeprom_bus_read(unsigned dev_addr, unsigned offset,
@@ -244,7 +244,7 @@ index 63842d6..861f219 100644
  #if defined(CONFIG_I2C_ENV_EEPROM_BUS)
  	i2c_set_bus_num(old_bus);
 diff --git a/include/common.h b/include/common.h
-index 0554752..058253c 100644
+index 0554752abf..058253c352 100644
 --- a/include/common.h
 +++ b/include/common.h
 @@ -392,16 +392,18 @@ void	fdc_hw_init   (void);
@@ -271,7 +271,7 @@ index 0554752..058253c 100644
  
  /*
 diff --git a/include/configs/tam3517-common.h b/include/configs/tam3517-common.h
-index 02bfca1..370e6d1 100644
+index 02bfca1633..370e6d1672 100644
 --- a/include/configs/tam3517-common.h
 +++ b/include/configs/tam3517-common.h
 @@ -282,7 +282,7 @@ struct tam3517_module_info {
@@ -284,5 +284,5 @@ index 02bfca1..370e6d1 100644
  	else							\
  		ret = 0;					\
 -- 
-1.9.1
+2.11.0
 

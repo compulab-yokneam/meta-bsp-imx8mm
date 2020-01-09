@@ -1,7 +1,7 @@
-From 8c0150a6dbc73e0d2ee60945bf0a4bf2dcf912e6 Mon Sep 17 00:00:00 2001
+From 08c58e362ae28fda46b6ac4080fd97f9e425bfd2 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Thu, 7 Mar 2019 13:42:24 +0200
-Subject: [PATCH 21/25] ucm-imx8m-mini: dts: Enable bluetooth
+Subject: [PATCH 20/43] ucm-imx8m-mini: dts: Enable bluetooth
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 74 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index ab66f04..a23bd0b 100644
+index ab66f04bc34f..a23bd0bb4a0a 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -78,6 +78,41 @@
@@ -128,5 +128,5 @@ index ab66f04..a23bd0b 100644
  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
  	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
 -- 
-1.9.1
+2.11.0
 

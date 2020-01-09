@@ -1,7 +1,7 @@
-From 7bdf5b0eb3da6011e7a5b214a43a95b603e61030 Mon Sep 17 00:00:00 2001
+From 26a19e640fc2dcae9e24ae350834cf5d846bdc31 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 9 Feb 2019 20:15:02 +0200
-Subject: [PATCH 04/25] ucm-imx8m-mini: dts: Fix CSI reset GPIO
+Subject: [PATCH 04/43] ucm-imx8m-mini: dts: Fix CSI reset GPIO
 
 Fix the camera rst-gpio in accordance with SB-UCM-iMX8 Rev2.0 topology.
 
@@ -11,7 +11,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index 991279f..a36af39 100644
+index 991279fe008f..a36af398a094 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -466,7 +466,7 @@
@@ -24,5 +24,5 @@ index 991279f..a36af39 100644
  		mclk = <24000000>;
  		mclk_source = <0>;
 -- 
-1.9.1
+2.11.0
 

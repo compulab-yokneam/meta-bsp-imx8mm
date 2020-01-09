@@ -1,7 +1,7 @@
-From 47dc5593e0fac92ff62082ccb0fd4ce818204f1e Mon Sep 17 00:00:00 2001
+From 43359979bad7c9650b652141ab751612fa6ff5c1 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sun, 21 Apr 2019 22:19:27 +0300
-Subject: [PATCH 20/25] ucm-imx8m-mini: Kconfig: Refacoring ddr init config
+Subject: [PATCH 20/46] ucm-imx8m-mini: Kconfig: Refacoring ddr init config
  option
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
@@ -10,7 +10,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/board/compulab/ucm-imx8m-mini/Kconfig b/board/compulab/ucm-imx8m-mini/Kconfig
-index 1da11b2..e6b3341 100644
+index 1da11b2046..e6b334134f 100644
 --- a/board/compulab/ucm-imx8m-mini/Kconfig
 +++ b/board/compulab/ucm-imx8m-mini/Kconfig
 @@ -16,12 +16,15 @@ choice
@@ -32,5 +32,5 @@ index 1da11b2..e6b3341 100644
  	 imx8mm_val board configuration approach
  
 -- 
-1.9.1
+2.11.0
 

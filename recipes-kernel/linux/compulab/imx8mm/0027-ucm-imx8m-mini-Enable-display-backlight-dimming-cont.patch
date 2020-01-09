@@ -1,7 +1,7 @@
-From 3955dd92b834b89913cc8addc602d3a447d86659 Mon Sep 17 00:00:00 2001
+From 90d9a151df430a0c3177226dbb0d48f34eea438b Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 15 Aug 2019 20:31:52 +0300
-Subject: [PATCH 27/27] ucm-imx8m-mini: Enable display backlight dimming
+Subject: [PATCH 27/43] ucm-imx8m-mini: Enable display backlight dimming
  control
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>

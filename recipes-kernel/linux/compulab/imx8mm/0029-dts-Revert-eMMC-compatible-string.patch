@@ -1,7 +1,7 @@
-From 3e3e4f354ee21e6e7242bf2c302d33473a291471 Mon Sep 17 00:00:00 2001
+From b679962d630f7f704b0a1ae9fc96c7dd42cabb08 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 7 May 2019 19:34:21 +0300
-Subject: [PATCH 29/29] dts: Revert eMMC "compatible" string
+Subject: [PATCH 29/43] dts: Revert eMMC "compatible" string
 
 Set the "compatible" property for USDHC3 to "fsl,imx7d-usdhc". With this value
 eMMC storage works stable.
@@ -12,7 +12,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index 9854cf5087de..fa6ca04653ba 100644
+index 57fe7d024319..3a4aacfa95c9 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -785,6 +785,7 @@

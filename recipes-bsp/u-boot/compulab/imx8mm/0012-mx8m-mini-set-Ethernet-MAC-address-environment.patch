@@ -1,7 +1,7 @@
-From 7990034c06db7a525a7d45a1095ac7ea9cf90a12 Mon Sep 17 00:00:00 2001
+From 9c3e6a557f02f29e518d3098c7c816868eb5584c Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 21:46:54 +0200
-Subject: [PATCH 12/25] mx8m-mini: set Ethernet MAC address environment
+Subject: [PATCH 12/46] mx8m-mini: set Ethernet MAC address environment
 
 If the environment variable "ethaddr" is empty:
 * Read the MAC address from the EEPROM.
@@ -13,7 +13,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  1 file changed, 37 insertions(+)
 
 diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
-index ef5d1ff..80d9a5b 100644
+index ef5d1ffa55..80d9a5b8bd 100644
 --- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 +++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 @@ -24,6 +24,7 @@
@@ -86,5 +86,5 @@ index ef5d1ff..80d9a5b 100644
  }
  
 -- 
-1.9.1
+2.11.0
 

@@ -1,0 +1,35 @@
+From 44683ab4cfb4c54de22fdf018c6d73760d7816c8 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 1 Apr 2020 14:52:21 +0300
+Subject: [PATCH 35/46] ucm-ims8m-mini: dts: wp enable
+
+Write protection enables for uSD card (the device usdhc2).
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/ucm-imx8m-mini.dts | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index c93cf1ac7a..3d8be3a09a 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -141,6 +141,7 @@
+ 		pinctrl_usdhc2_gpio: usdhc2grpgpio {
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
++				MX8MM_IOMUXC_SD2_WP_USDHC2_WP		0
+ 			>;
+ 		};
+ 
+@@ -447,6 +448,7 @@
+ 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+ 	bus-width = <4>;
++	fsl,wp-controller;
+ 	non-removable;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+ 	status = "okay";
+-- 
+2.11.0
+

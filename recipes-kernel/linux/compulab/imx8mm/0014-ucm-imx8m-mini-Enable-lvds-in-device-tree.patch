@@ -1,7 +1,7 @@
-From a52d69d2fecd4e13a0d0d85a0f116f80a50fa14e Mon Sep 17 00:00:00 2001
+From 24baa0c3c119989d9a16fdc82e29b07f10286c1d Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 19 Feb 2019 11:51:38 +0200
-Subject: [PATCH 14/25] ucm-imx8m-mini: Enable lvds in device tree
+Subject: [PATCH 14/43] ucm-imx8m-mini: Enable lvds in device tree
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -11,7 +11,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
 
 diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
-index 711d726..5c6e24d 100644
+index 711d726a6d13..5c6e24d79c8b 100644
 --- a/arch/arm64/boot/dts/compulab/Makefile
 +++ b/arch/arm64/boot/dts/compulab/Makefile
 @@ -1,5 +1,6 @@
@@ -23,7 +23,7 @@ index 711d726..5c6e24d 100644
  subdir-y       := $(dts-dirs)
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
 new file mode 100644
-index 0000000..4e749ef
+index 000000000000..4e749efd5316
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-lvds.dts
 @@ -0,0 +1,85 @@
@@ -113,5 +113,5 @@ index 0000000..4e749ef
 +    };
 +};
 -- 
-1.9.1
+2.11.0
 

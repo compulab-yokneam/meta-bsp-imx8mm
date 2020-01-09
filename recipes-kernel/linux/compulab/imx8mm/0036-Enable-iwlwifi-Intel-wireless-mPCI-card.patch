@@ -1,7 +1,7 @@
-From 4af48f73162007615f606a701c9bf7c84d4299db Mon Sep 17 00:00:00 2001
+From d6b16addef4d3911780ec92bffcc187fad2c5845 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 29 Sep 2019 21:29:56 +0300
-Subject: [PATCH 36/36] Enable iwlwifi Intel wireless mPCI card
+Subject: [PATCH 36/43] Enable iwlwifi Intel wireless mPCI card
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

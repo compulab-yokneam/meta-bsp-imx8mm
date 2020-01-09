@@ -1,0 +1,58 @@
+From fb2977eb42a54e81e85b0106c2aa94ae3ffca427 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Fri, 1 May 2020 17:52:00 +0300
+Subject: [PATCH 45/46] iot-gate-imx8: update boot sequence
+
+Remove the SD card from the boot sequence.
+Update the rootfs mount option to read/write.
+Add boot messages.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ include/configs/ucm-imx8m-mini.h | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index 3fa32c72d2..bc0ca0cde9 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -134,12 +134,12 @@
+ 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
+ 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
+ 	"mmcautodetect=yes\0" \
+-	"emmc_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/mmcblk2p2;\0" \
++	"emmc_ul=setenv boot_dev_str eMMC; setenv iface mmc; setenv dev 1; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk2p2 rw;\0" \
+ 	"sd_ul=setenv iface mmc; setenv dev 0; setenv part 1;" \
+ 	"setenv bootargs console=${console} root=/dev/mmcblk1p2;\0" \
+-	"usb_ul=usb start; setenv iface usb; setenv dev 0; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/sda2;\0" \
++	"usb_ul=setenv boot_dev_str USB; usb reset; setenv iface usb; setenv dev 0; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/sda2 rw;\0" \
+ 	"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
+ 	"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
+ 	"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
+@@ -165,13 +165,17 @@
+ 			"fi; " \
+ 		"else " \
+ 			"booti; " \
+-		"fi;\0"
++		"fi;\0" \
++	"boot_nsg=echo Booting from ${boot_dev_str} ...;\0" \
++	"boot_nsg_scr=echo Booting from ${boot_dev_str} script ...;\0"
+ #define CONFIG_BOOTCOMMAND \
+-	"for src in sd_ul usb_ul emmc_ul; do " \
++	"for src in usb_ul emmc_ul; do " \
+ 		"run ${src}; " \
+ 		"if run ulbootscript; then " \
++			"run boot_nsg_scr; " \
+ 			"run bootscript; " \
+ 		"else " \
++			"run boot_nsg; " \
+ 			"if run ulimage; then " \
+ 				"if run ulfdt; then " \
+ 					"booti ${loadaddr} - ${fdt_addr}; " \
+-- 
+2.11.0
+

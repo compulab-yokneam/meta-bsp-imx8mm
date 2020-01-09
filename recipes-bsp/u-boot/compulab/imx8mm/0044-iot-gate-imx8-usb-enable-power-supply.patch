@@ -1,0 +1,60 @@
+From 571402b12aecbb13e38c69bb96d30dbc73529cdd Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 30 Apr 2020 12:35:54 +0300
+Subject: [PATCH 44/46] iot-gate-imx8: usb: enable power supply
+
+Connect the 5V power supply to the USB ports.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm/dts/sb-iotgimx8.dts | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/arch/arm/dts/sb-iotgimx8.dts b/arch/arm/dts/sb-iotgimx8.dts
+index 903d34e262..b28490c7ab 100644
+--- a/arch/arm/dts/sb-iotgimx8.dts
++++ b/arch/arm/dts/sb-iotgimx8.dts
+@@ -17,6 +17,15 @@
+ / {
+ 	model = "CompuLab IOT-GATE-iMX8";
+ 	compatible = "sb-iotgimx8", "cpl,ucm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
++
++	reg_vusb_5v: regulator-usdhc2 {
++		compatible = "regulator-fixed";
++		regulator-name = "VUSB_5V";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio4 28 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
+ };
+ 
+ &usdhc2 {
+@@ -28,6 +37,13 @@
+ 	status = "okay";
+ };
+ 
++&usbotg1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctl_usb_gpio>;
++	dr_mode = "host";
++	status = "okay";
++};
++
+ &iomuxc {
+ 	sb-iotgimx8 {
+ 		pinctrl_sb_usdhc2: usdhc2grp {
+@@ -42,4 +58,10 @@
+ 			>;
+ 		};
+ 	};
++
++	pinctl_usb_gpio: usb_gpio_grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x00
++		>;
++	};
+ };
+-- 
+2.11.0
+

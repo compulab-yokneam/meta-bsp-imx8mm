@@ -1,7 +1,7 @@
-From a2ae076a2c2d867f6ced3b4b97b507105903c196 Mon Sep 17 00:00:00 2001
+From 92ac03c8090f798b01d97b4c0a2731f1e5f10767 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 11 Sep 2019 19:55:41 +0300
-Subject: [PATCH 34/36] Move usb-eth dongle asix-88179 driver into kernel
+Subject: [PATCH 34/43] Move usb-eth dongle asix-88179 driver into kernel
 
 The driver has been compiled into the kernel (instead a module) in order to
 provide NFS rootfs over the dongle.

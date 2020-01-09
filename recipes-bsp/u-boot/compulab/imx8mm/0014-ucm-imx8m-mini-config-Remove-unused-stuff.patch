@@ -1,7 +1,7 @@
-From 31c05913ba70ca95119ee279d44e3f229672f67c Mon Sep 17 00:00:00 2001
+From b1ad0428d081d0c238ff6d50720440c6200d96cf Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 20 Feb 2019 08:21:05 +0200
-Subject: [PATCH 14/25] ucm-imx8m-mini: config: Remove unused stuff
+Subject: [PATCH 14/46] ucm-imx8m-mini: config: Remove unused stuff
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 53 deletions(-)
 
 diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
-index f464ed8..214dad4 100644
+index f464ed822b..214dad40ed 100644
 --- a/include/configs/ucm-imx8m-mini.h
 +++ b/include/configs/ucm-imx8m-mini.h
 @@ -191,16 +191,7 @@
@@ -81,5 +81,5 @@ index f464ed8..214dad4 100644
  
  #define CONFIG_MXC_OCOTP
 -- 
-1.9.1
+2.11.0
 

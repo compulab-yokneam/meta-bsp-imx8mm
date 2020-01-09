@@ -1,7 +1,7 @@
-From 6ef5d7622b35bd4b84b7a368194792690379eb31 Mon Sep 17 00:00:00 2001
+From 5d6c09984ede7d7a28c0318516a70b15754fa650 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 9 Feb 2019 21:40:45 +0200
-Subject: [PATCH 06/25] sb-ucm-imx8m-rev2.0: dts: Enable I2C GPIO expander
+Subject: [PATCH 06/43] sb-ucm-imx8m-rev2.0: dts: Enable I2C GPIO expander
 
 Enable PCA9555 @i2c1 GPIO expander. i2c1 bus descriptor has been moved to
 baseboard include file.
@@ -15,7 +15,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 
 diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
 new file mode 100644
-index 0000000..d413d8d
+index 000000000000..d413d8dea57d
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
 @@ -0,0 +1,29 @@
@@ -49,7 +49,7 @@ index 0000000..d413d8d
 +	};
 +};
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index 64173c7..b9a3ef8 100644
+index 64173c7e8147..b9a3ef84d229 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -15,6 +15,7 @@
@@ -90,5 +90,5 @@ index 64173c7..b9a3ef8 100644
  	clock-frequency = <400000>;
  	pinctrl-names = "default";
 -- 
-1.9.1
+2.11.0
 

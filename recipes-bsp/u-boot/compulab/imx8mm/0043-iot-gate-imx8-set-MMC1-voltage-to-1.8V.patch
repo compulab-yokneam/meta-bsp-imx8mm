@@ -1,0 +1,83 @@
+From cdc7ebaccb408685a3b3583468d320f98757f750 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Mon, 27 Apr 2020 12:36:46 +0300
+Subject: [PATCH 43/46] iot-gate-imx8: set MMC1 voltage to 1.8V
+
+SPL: use the signal USDHC2_VSEL to set MMC1 voltage to 1.8V.
+U-Boot: update the PINMUX of MMC1 - set signal USDHC2_VSEL to GPIO.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm/dts/sb-iotgimx8.dts        | 25 +++++++++++++++++++++++++
+ board/compulab/ucm-imx8m-mini/spl.c |  8 ++++++--
+ 2 files changed, 31 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/dts/sb-iotgimx8.dts b/arch/arm/dts/sb-iotgimx8.dts
+index 99d8b9846f..903d34e262 100644
+--- a/arch/arm/dts/sb-iotgimx8.dts
++++ b/arch/arm/dts/sb-iotgimx8.dts
+@@ -18,3 +18,28 @@
+ 	model = "CompuLab IOT-GATE-iMX8";
+ 	compatible = "sb-iotgimx8", "cpl,ucm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
+ };
++
++&usdhc2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_sb_usdhc2>, <&pinctrl_usdhc2_gpio>;
++	bus-width = <4>;
++	non-removable;
++	vmmc-supply = <&reg_usdhc2_vmmc>;
++	status = "okay";
++};
++
++&iomuxc {
++	sb-iotgimx8 {
++		pinctrl_sb_usdhc2: usdhc2grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
++				MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d0
++				MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d0
++				MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d0
++				MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d0
++				MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d0
++				MX8MM_IOMUXC_GPIO1_IO04_GPIO1_IO4	0x000
++			>;
++		};
++	};
++};
+diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
+index 379b2ba04a..5147eb0cf2 100644
+--- a/board/compulab/ucm-imx8m-mini/spl.c
++++ b/board/compulab/ucm-imx8m-mini/spl.c
+@@ -40,8 +40,9 @@ struct i2c_pads_info i2c_pad_info1 = {
+ 	},
+ };
+ 
+-#define USDHC2_CD_GPIO	IMX_GPIO_NR(2, 18)
+-#define USDHC2_PWR_GPIO IMX_GPIO_NR(2, 19)
++#define USDHC2_VSEL_GPIO	IMX_GPIO_NR(1, 4)
++#define USDHC2_CD_GPIO		IMX_GPIO_NR(2, 18)
++#define USDHC2_PWR_GPIO		IMX_GPIO_NR(2, 19)
+ 
+ #define USDHC_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS | PAD_CTL_PUE |PAD_CTL_PE | \
+ 			 PAD_CTL_FSEL2)
+@@ -68,6 +69,7 @@ static iomux_v3_cfg_t const usdhc2_pads[] = {
+ 	IMX8MM_PAD_SD2_DATA2_USDHC2_DATA2 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+ 	IMX8MM_PAD_SD2_DATA3_USDHC2_DATA3 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+ 	IMX8MM_PAD_SD2_RESET_B_GPIO2_IO19 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL),
++	IMX8MM_PAD_GPIO1_IO04_GPIO1_IO4 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL),
+ };
+ 
+ /*
+@@ -102,6 +104,8 @@ int board_mmc_init(bd_t *bis)
+ 			usdhc_cfg[0].sdhc_clk = mxc_get_clock(MXC_ESDHC2_CLK);
+ 			imx_iomux_v3_setup_multiple_pads(
+ 				usdhc2_pads, ARRAY_SIZE(usdhc2_pads));
++			gpio_request(USDHC2_VSEL_GPIO, "usdhc2_vsel");
++			gpio_direction_output(USDHC2_VSEL_GPIO, 1);
+ 			gpio_request(USDHC2_PWR_GPIO, "usdhc2_reset");
+ 			gpio_direction_output(USDHC2_PWR_GPIO, 0);
+ 			udelay(500);
+-- 
+2.11.0
+

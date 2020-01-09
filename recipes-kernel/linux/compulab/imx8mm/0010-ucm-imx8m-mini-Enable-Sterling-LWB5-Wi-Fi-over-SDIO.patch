@@ -1,7 +1,7 @@
-From 60061b9c12b1e360e7ba26f5a39cf79e96ef826d Mon Sep 17 00:00:00 2001
+From 3e5e0bfec8cc89aeea51593b66300fe245e339d8 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 13 Feb 2019 22:08:03 +0200
-Subject: [PATCH 10/25] ucm-imx8m-mini: Enable Sterling-LWB5 Wi-Fi over SDIO
+Subject: [PATCH 10/43] ucm-imx8m-mini: Enable Sterling-LWB5 Wi-Fi over SDIO
 
 	Enable Wi-Fi over SDIO using Sterling-LWB5 Dual-Band 802.11ac Wi-Fi +
 	Bluetooth v4.2 Combo Module.
@@ -16,7 +16,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  2 files changed, 71 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index 369b2bf..561a4bb 100644
+index 369b2bf36e8d..561a4bbd78c6 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 @@ -34,6 +34,18 @@
@@ -111,7 +111,7 @@ index 369b2bf..561a4bb 100644
  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
  	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index a0cc6e4..32ea503 100644
+index a0cc6e4873bf..32ea50300e75 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -204,6 +204,7 @@ CONFIG_USB_NET_SMSC75XX=m
@@ -123,5 +123,5 @@ index a0cc6e4..32ea503 100644
  CONFIG_RTL_CARDS=m
  CONFIG_XEN_NETDEV_BACKEND=m
 -- 
-1.9.1
+2.11.0
 
