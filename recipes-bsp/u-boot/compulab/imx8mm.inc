@@ -33,8 +33,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0031-env-Change-boot-sequence.patch \
 	file://0032-Add-support-for-RAM-size-detection.patch \
 	file://0033-Enable-usb-ethernet-dongle-asix-88179.patch \
+	file://0034-fsl-esdhc-wp-refactoring.patch \
+	file://0035-ucm-ims8m-mini-dts-wp-enable.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
-
-PACKAGE_ARCH = "${MACHINE_ARCH}"
-COMPATIBLE_MACHINE_ucm-imx8m-mini = "ucm-imx8m-mini"
