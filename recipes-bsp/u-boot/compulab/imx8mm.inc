@@ -37,5 +37,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0035-ucm-ims8m-mini-dts-wp-enable.patch \
 	file://0036-SPL-Enable-bus-I2C2.patch \
 	file://0037-SPL-Adjust-voltage-for-correct-DDR-initialisation.patch \
+	file://0038-spl-enable-memory-id-interpretation.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
