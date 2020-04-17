@@ -50,6 +50,7 @@ CORE_IMAGE_EXTRA_INSTALL += "${CORE_IMAGE_EXTRA_INSTALL}"
 IMAGE_FEATURES += "${IMAGE_FEATURES}"
 LICENSE_FLAGS_WHITELIST = "commercial"
 PREFERRED_RPROVIDER_u-boot-fw-utils = "u-boot-fw-utils"
+HOSTTOOLS += " git-lfs"
 eof
 }
 
