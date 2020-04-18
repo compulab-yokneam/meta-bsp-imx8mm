@@ -1,0 +1,26 @@
+From 1d83a25d915589bb9bc0530da92bbfb915c23658 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Fri, 17 Apr 2020 20:38:46 +0300
+Subject: [PATCH 39/39] Enable env import/export commands
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ include/configs/ucm-imx8m-mini.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index dececa051f..cd1ed129f9 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -76,8 +76,6 @@
+ /* Flat Device Tree Definitions */
+ #define CONFIG_OF_BOARD_SETUP
+ 
+-#undef CONFIG_CMD_EXPORTENV
+-#undef CONFIG_CMD_IMPORTENV
+ #undef CONFIG_CMD_IMLS
+ 
+ #undef CONFIG_CMD_CRC32
+-- 
+2.11.0
+
