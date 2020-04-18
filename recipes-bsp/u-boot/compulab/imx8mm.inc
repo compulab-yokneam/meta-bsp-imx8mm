@@ -39,5 +39,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0037-SPL-Adjust-voltage-for-correct-DDR-initialisation.patch \
 	file://0038-spl-enable-memory-id-interpretation.patch \
 	file://0039-Enable-env-import-export-commands.patch \
+	file://0040-env-Add-env_mmcdev-variable-handling.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
