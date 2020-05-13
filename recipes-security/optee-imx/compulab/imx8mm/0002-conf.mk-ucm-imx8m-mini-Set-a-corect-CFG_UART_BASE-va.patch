@@ -1,0 +1,26 @@
+From 994a8cc6431794691de696ac0298f74be4312199 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 13 May 2020 16:04:20 +0300
+Subject: [PATCH 1/1] conf.mk: ucm-imx8m-mini: Set a corect CFG_UART_BASE value
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ core/arch/arm/plat-imx/conf.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index 7dd1d7e2..a4a76345 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -439,7 +439,7 @@ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mmevk))
+ CFG_DDR_SIZE ?= 0x80000000
+-CFG_UART_BASE ?= UART2_BASE
++CFG_UART_BASE ?= UART3_BASE
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8qmmek))
+-- 
+2.11.0
+
