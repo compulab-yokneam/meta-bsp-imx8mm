@@ -16,3 +16,5 @@ do_compile () {
 	oe_runmake ${UBOOT_MACHINE}
 	oe_runmake envtools
 }
+
+RPROVIDES_${PN} += "u-boot-fw-utils"
