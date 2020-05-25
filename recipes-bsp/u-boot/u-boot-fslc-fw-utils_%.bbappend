@@ -18,3 +18,5 @@ do_compile () {
 }
 
 RPROVIDES_${PN} += "u-boot-fw-utils"
+
+COMPATIBLE_MACHINE = "(ucm-imx8m-mini|mcm-imx8m-mini)"

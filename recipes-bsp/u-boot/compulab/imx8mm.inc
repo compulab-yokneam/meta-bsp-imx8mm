@@ -1,4 +1,4 @@
-SRC_URI_append_ucm-imx8m-mini = " \
+FILE_LIST = " \
 	file://0000-ucm-imx8m-mini-Add-basic-support.patch \
 	file://0001-ucm-imx8m-mini-update-CPU-model-printed-parameters.patch \
 	file://0002-ucm-imx8m-mini-Fix-KConfig-warning.patch \
@@ -42,5 +42,10 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0040-env-Add-env_mmcdev-variable-handling.patch \
 	file://0041-ucm-imx8m-mini-Add-1G-DRAM-support.patch \
 	file://0042-plat-imx8mm-Move-common-code-to-platform.patch \
+	file://0043-mcm-imx8m-mini-Add-basic-support.patch \
 	file://ucm-imx8m-mini_defconfig \
+	file://mcm-imx8m-mini_defconfig \
 "
+
+SRC_URI_append_ucm-imx8m-mini += "${FILE_LIST}"
+SRC_URI_append_mcm-imx8m-mini += "${FILE_LIST}"
