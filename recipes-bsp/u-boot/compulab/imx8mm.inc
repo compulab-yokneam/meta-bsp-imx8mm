@@ -41,5 +41,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0039-Enable-env-import-export-commands.patch \
 	file://0040-env-Add-env_mmcdev-variable-handling.patch \
 	file://0041-ucm-imx8m-mini-Add-1G-DRAM-support.patch \
+	file://0042-plat-imx8mm-Move-common-code-to-platform.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
