@@ -1,4 +1,4 @@
-SRC_URI_append_ucm-imx8m-mini = " \
+FILE_LIST = " \
 	file://0000-ucm-imx8m-mini-add-basic-support.patch \
 	file://0001-ov5640_mipi_v2-gpio_set_value_cansleep.patch \
 	file://0002-ucm-imx8m-mini-dts-remove-phy-supply.patch \
@@ -38,5 +38,9 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0036-Enable-iwlwifi-Intel-wireless-mPCI-card.patch \
 	file://0037-dts-Enable-eb-dsi2lvds-extention-board.patch \
 	file://0038-dts-makefile-Add-eb-dsi2lvds-extention-board-dtb-to-.patch \
+	file://0039-mcm-imx8m-mini-Add-basic-support.patch \
 	file://defconfig \
 "
+
+SRC_URI_append_ucm-imx8m-mini = "${FILE_LIST}"
+SRC_URI_append_mcm-imx8m-mini = "${FILE_LIST}"

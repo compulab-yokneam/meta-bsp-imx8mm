@@ -8,4 +8,4 @@ do_configure_append () {
 
 KERNEL_MODULE_AUTOLOAD += "goodix"
 
-COMPATIBLE_MACHINE_ucm-imx8m-mini = "ucm-imx8m-mini"
+COMPATIBLE_MACHINE = "(ucm-imx8m-mini|mcm-imx8m-mini)"
