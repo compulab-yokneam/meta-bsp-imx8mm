@@ -1,0 +1,26 @@
+From 52537c3e8353cd473482fc696f7bacbec8706aba Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 25 May 2020 23:25:23 +0300
+Subject: [PATCH 38/39] dts: makefile: Add eb-dsi2lvds extention board dtb to
+ build
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
+index 357eac58c464..f5218c4e0381 100644
+--- a/arch/arm64/boot/dts/compulab/Makefile
++++ b/arch/arm64/boot/dts/compulab/Makefile
+@@ -1,6 +1,6 @@
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini.dtb
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-thermal.dtb
+-dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-lvds.dtb
++dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-eb-dsi2lvds.dts
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-dsi2.dtb
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-m4.dtb
+ 
+-- 
+2.11.0
+

@@ -37,5 +37,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0035-Enable-usb-to-serial-converters.patch \
 	file://0036-Enable-iwlwifi-Intel-wireless-mPCI-card.patch \
 	file://0037-dts-Enable-eb-dsi2lvds-extention-board.patch \
+	file://0038-dts-makefile-Add-eb-dsi2lvds-extention-board-dtb-to-.patch \
 	file://defconfig \
 "
