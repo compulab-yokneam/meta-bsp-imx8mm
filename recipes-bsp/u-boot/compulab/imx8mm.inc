@@ -3,7 +3,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0001-ucm-imx8m-mini-update-CPU-model-printed-parameters.patch \
 	file://0002-ucm-imx8m-mini-Fix-KConfig-warning.patch \
 	file://0003-ucm-imx8m-mini-enable-status-LED.patch \
-	file://0004-cmd-eeprom-fix-disregarding-of-the-i2c_bus-parameter.patch \
 	file://0005-eeprom-layout-remove-buf-from-the-eeprom_field-struc.patch \
 	file://0006-eeprom-layout-add-field-functions-read.patch \
 	file://0007-compulab-eeprom-layout-add-read-serial-function.patch \
@@ -27,6 +26,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0025-ucm-imx8m-mini-config-CONFIG_IMX_OPTEE-y.patch \
 	file://0026-set-extended-temperature-range.patch \
 	file://0027-ucm-imx8m-mini-Update-memory-init-code.patch \
+	file://0027-ucm-imx8m-mini-Update-memory-init-code.patch.bak \
 	file://0028-ucm-imx8m-mini-Add-4G-DRAM-support.patch \
 	file://0029-ucm-imx8m-mini-defconfig-Add-d1-d4-configs.patch \
 	file://0030-dts-Enable-USB-OTG-support.patch \
@@ -41,5 +41,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0039-Enable-env-import-export-commands.patch \
 	file://0040-env-Add-env_mmcdev-variable-handling.patch \
 	file://0041-ucm-imx8m-mini-Add-1G-DRAM-support.patch \
+	file://0042-Trivial-cleaning.patch \
+	file://0043-Migration-to-rel_imx_5.4.3_2.0.0.patch \
 	file://ucm-imx8m-mini_defconfig \
 "

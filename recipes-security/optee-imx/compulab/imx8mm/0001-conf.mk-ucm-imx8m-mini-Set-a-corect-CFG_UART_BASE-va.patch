@@ -8,11 +8,12 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  core/arch/arm/plat-imx/conf.mk | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
+
 diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
-index 7dd1d7e2..a4a76345 100644
+index 6d4742d5..b565628d 100644
 --- a/core/arch/arm/plat-imx/conf.mk
 +++ b/core/arch/arm/plat-imx/conf.mk
-@@ -439,7 +439,7 @@ endif
+@@ -327,7 +327,7 @@ endif
  
  ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mmevk))
  CFG_DDR_SIZE ?= 0x80000000
@@ -20,7 +21,7 @@ index 7dd1d7e2..a4a76345 100644
 +CFG_UART_BASE ?= UART3_BASE
  endif
  
- ifneq (,$(filter $(PLATFORM_FLAVOR),mx8qmmek))
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mnevk))
 -- 
 2.11.0
 

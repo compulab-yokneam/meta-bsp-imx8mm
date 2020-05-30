@@ -1,7 +1,7 @@
-From 5071f70211f3019c8c9642d83e45d259dacf1d9f Mon Sep 17 00:00:00 2001
-From: Uri Mashiach <uri.mashiach@compulab.co.il>
-Date: Tue, 19 Feb 2019 18:22:40 +0200
-Subject: [PATCH 10/25] i2c: prevent dual functions with CONFIG_DM_I2C_COMPAT
+From 0207d04446fa5317188c1c70785a1a865ff1a4a4 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 26 May 2020 21:22:05 +0300
+Subject: [PATCH 10/10] i2c: prevent dual functions with CONFIG_DM_I2C_COMPAT
 
 Dual definition of functions exists when CONFIG_DM_I2C_COMPAT is
 enabled.
@@ -15,10 +15,10 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  2 files changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/i2c/i2c_core.c b/drivers/i2c/i2c_core.c
-index 911563b..7806d14 100644
+index 234277a299..b6b4172f52 100644
 --- a/drivers/i2c/i2c_core.c
 +++ b/drivers/i2c/i2c_core.c
-@@ -209,6 +209,7 @@ void i2c_init_all(void)
+@@ -208,6 +208,7 @@ void i2c_init_all(void)
  	return;
  }
  
@@ -26,7 +26,7 @@ index 911563b..7806d14 100644
  /*
   * i2c_get_bus_num():
   * ------------------
-@@ -299,6 +300,7 @@ int i2c_write(uint8_t chip, unsigned int addr, int alen,
+@@ -298,6 +299,7 @@ int i2c_write(uint8_t chip, unsigned int addr, int alen,
  {
  	return I2C_ADAP->write(I2C_ADAP, chip, addr, alen, buffer, len);
  }
@@ -34,7 +34,7 @@ index 911563b..7806d14 100644
  
  unsigned int i2c_set_bus_speed(unsigned int speed)
  {
-@@ -319,6 +321,7 @@ unsigned int i2c_get_bus_speed(void)
+@@ -318,6 +320,7 @@ unsigned int i2c_get_bus_speed(void)
  	return cur->speed;
  }
  
@@ -42,7 +42,7 @@ index 911563b..7806d14 100644
  uint8_t i2c_reg_read(uint8_t addr, uint8_t reg)
  {
  	uint8_t buf;
-@@ -342,6 +345,7 @@ void i2c_reg_write(uint8_t addr, uint8_t reg, uint8_t val)
+@@ -341,6 +344,7 @@ void i2c_reg_write(uint8_t addr, uint8_t reg, uint8_t val)
  
  	i2c_write(addr, reg, 1, &val, 1);
  }
@@ -51,10 +51,10 @@ index 911563b..7806d14 100644
  __weak void i2c_init(int speed, int slaveaddr)
  {
 diff --git a/include/i2c.h b/include/i2c.h
-index 695cb76..98c0dcf 100644
+index ccffc19552..946fb12fc4 100644
 --- a/include/i2c.h
 +++ b/include/i2c.h
-@@ -16,7 +16,6 @@
+@@ -15,7 +15,6 @@
  
  #ifndef _I2C_H_
  #define _I2C_H_
@@ -62,7 +62,7 @@ index 695cb76..98c0dcf 100644
  /*
   * For now there are essentially two parts to this file - driver model
   * here at the top, and the older code below (with CONFIG_SYS_I2C being
-@@ -348,7 +347,7 @@ void board_i2c_init(const void *blob);
+@@ -347,7 +346,7 @@ void board_i2c_init(const void *blob);
  uint8_t i2c_reg_read(uint8_t addr, uint8_t reg);
  void i2c_reg_write(uint8_t addr, uint8_t reg, uint8_t val);
  
@@ -71,15 +71,15 @@ index 695cb76..98c0dcf 100644
  
  /**
   * struct dm_i2c_ops - driver operations for I2C uclass
-@@ -538,7 +537,6 @@ int i2c_chip_ofdata_to_platdata(struct udevice *dev, struct dm_i2c_chip *chip);
- void i2c_dump_msgs(struct i2c_msg *msg, int nmsgs);
+@@ -558,7 +557,6 @@ int i2c_emul_find(struct udevice *dev, struct udevice **emulp);
+ struct udevice *i2c_emul_get_device(struct udevice *emul);
  
  #ifndef CONFIG_DM_I2C
 -
  /*
   * WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
   *
-@@ -879,6 +877,7 @@ unsigned int i2c_get_bus_speed(void);
+@@ -899,6 +897,7 @@ unsigned int i2c_get_bus_speed(void);
  # define I2C_MULTI_BUS				0
  #endif
  
@@ -87,7 +87,7 @@ index 695cb76..98c0dcf 100644
  /* NOTE: These two functions MUST be always_inline to avoid code growth! */
  static inline unsigned int I2C_GET_BUS(void) __attribute__((always_inline));
  static inline unsigned int I2C_GET_BUS(void)
-@@ -892,6 +891,7 @@ static inline void I2C_SET_BUS(unsigned int bus)
+@@ -912,6 +911,7 @@ static inline void I2C_SET_BUS(unsigned int bus)
  	if (I2C_MULTI_BUS)
  		i2c_set_bus_num(bus);
  }
@@ -95,7 +95,7 @@ index 695cb76..98c0dcf 100644
  
  /* Multi I2C definitions */
  enum {
-@@ -924,7 +924,6 @@ int i2c_get_bus_num_fdt(int node);
+@@ -944,7 +944,6 @@ int i2c_get_bus_num_fdt(int node);
   * @return 0 if port was reset, -1 if not found
   */
  int i2c_reset_port_fdt(const void *blob, int node);
@@ -104,5 +104,5 @@ index 695cb76..98c0dcf 100644
  
  #endif	/* _I2C_H_ */
 -- 
-1.9.1
+2.11.0
 

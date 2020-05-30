@@ -1,23 +1,23 @@
-From 37fcabc3b11fe7c8332fdd63900733e34d1d398e Mon Sep 17 00:00:00 2001
+From 13dd116f3bcf2cb37d9a0d3cbb81731d3d68fdd6 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-Date: Fri, 17 Apr 2020 20:24:46 +0300
+Date: Wed, 27 May 2020 21:09:33 +0300
 Subject: [PATCH 38/38] spl: enable memory id interpretation
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- board/compulab/ucm-imx8m-mini/Makefile             |   9 +-
+ board/compulab/ucm-imx8m-mini/Makefile             |   8 +-
  board/compulab/ucm-imx8m-mini/ddr/ddr.c            | 199 +++++++++++++++++++++
- board/compulab/ucm-imx8m-mini/ddr/ddr.h            |   8 +-
- ...lpddr4_timing_1g.c => lpddr4_timing_01061010.c} |   5 +-
- ...lpddr4_timing_4g.c => lpddr4_timing_ff000110.c} |   2 +-
- ...lpddr4_timing_2g.c => lpddr4_timing_ff020008.c} |   2 +-
+ board/compulab/ucm-imx8m-mini/ddr/ddr.h            |  10 +-
+ ...lpddr4_timing_1g.c => lpddr4_timing_01061010.c} |   4 +-
+ ...lpddr4_timing_4g.c => lpddr4_timing_ff000110.c} |   4 +-
+ ...lpddr4_timing_2g.c => lpddr4_timing_ff020008.c} |   4 +-
  board/compulab/ucm-imx8m-mini/eeprom.c             | 192 ++++++++++++++++++++
  board/compulab/ucm-imx8m-mini/eeprom.h             |  30 ++++
  board/compulab/ucm-imx8m-mini/eeprom_spl.c         | 147 +++++++++++++++
  board/compulab/ucm-imx8m-mini/spl.c                |  74 --------
  board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c     |  58 +++---
  board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h     |   2 +-
- 12 files changed, 614 insertions(+), 114 deletions(-)
+ 11 files changed, 615 insertions(+), 43 deletions(-)
  create mode 100644 board/compulab/ucm-imx8m-mini/ddr/ddr.c
  rename board/compulab/ucm-imx8m-mini/ddr/{lpddr4_timing_1g.c => lpddr4_timing_01061010.c} (99%)
  rename board/compulab/ucm-imx8m-mini/ddr/{lpddr4_timing_4g.c => lpddr4_timing_ff000110.c} (99%)
@@ -27,10 +27,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  create mode 100644 board/compulab/ucm-imx8m-mini/eeprom_spl.c
 
 diff --git a/board/compulab/ucm-imx8m-mini/Makefile b/board/compulab/ucm-imx8m-mini/Makefile
-index 4148bfd3d2..af0e76daec 100644
+index 4148bfd3d2..46f2ec9164 100644
 --- a/board/compulab/ucm-imx8m-mini/Makefile
 +++ b/board/compulab/ucm-imx8m-mini/Makefile
-@@ -8,5 +8,12 @@ obj-y += ucm-imx8m-mini.o
+@@ -8,5 +8,11 @@ obj-y += ucm-imx8m-mini.o
  
  ifdef CONFIG_SPL_BUILD
  obj-y += spl.o
@@ -43,10 +43,9 @@ index 4148bfd3d2..af0e76daec 100644
 +else
 +obj-y += ucm-imx8m-mini.o eeprom.o
  endif
-+
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.c b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
 new file mode 100644
-index 0000000000..156a1b4f0c
+index 0000000000..b58516c667
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
 @@ -0,0 +1,199 @@
@@ -55,7 +54,7 @@ index 0000000000..156a1b4f0c
 +#include <asm/io.h>
 +#include <errno.h>
 +#include <asm/io.h>
-+#include <asm/arch-imx8m/imx8m_ddr.h>
++#include <asm/arch/ddr.h>
 +#include <asm/mach-imx/iomux-v3.h>
 +#include <asm/mach-imx/gpio.h>
 +#include <asm-generic/gpio.h>
@@ -120,7 +119,7 @@ index 0000000000..156a1b4f0c
 +
 +#define DEFAULT (('D' << 24) + ('E' << 16 ) + ( 'F' << 8 ) + 'A')
 +static const struct lpddr4_desc lpddr4_array[] = {
-+	{ .name = "Micron", .id = 0xff020008, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008}, //Only the first timing entry is in use
++	{ .name = "Micron", .id = 0xff020008, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
 +	{ .name = "Micron", .id = 0xff000110, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
 +	{ .name = "Samsung",.id = 0x01061010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
 +	{ .name = "Nanya",  .id = 0x05000010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
@@ -250,9 +249,16 @@ index 0000000000..156a1b4f0c
 +	}
 +}
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.h b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
-index c8241ee6e6..4e47c6aea1 100644
+index c8241ee6e6..ef38851324 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright 2017 NXP
++ * Copyright 2020 Compulab Ltd.
+  *
+  * SPDX-License-Identifier:	GPL-2.0+
+  */
 @@ -7,8 +7,10 @@
  #ifndef __DDR_H__
  #define __DDR_H__
@@ -271,18 +277,18 @@ diff --git a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_1g.c b/board/compul
 similarity index 99%
 rename from board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_1g.c
 rename to board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_01061010.c
-index 7676e2e1f6..ef7085d909 100644
+index 4a4cd4dfea..8ea663bb5e 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_1g.c
 +++ b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_01061010.c
-@@ -54,7 +54,7 @@ static struct dram_cfg_param ddr_ddrc_cfg[] = {
- 	{0x3d400210,0x1f1f},
- 	{0x3d400204,0x80808},
- 	{0x3d400214,0x7070707},
--	{0x3d400218,0xf070707},
-+	{0x3d400218,0x7070707},
- 	{0x3d400250,0x29001701},
- 	{0x3d400254,0x2c},
- 	{0x3d40025c,0x4000030},
+@@ -8,7 +8,7 @@
+  */
+ 
+ #include <linux/kernel.h>
+-#include <asm/arch/imx8m_ddr.h>
++#include <asm/arch/ddr.h>
+ 
+ static struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	/** Initialize DDRC registers **/
 @@ -1833,7 +1833,7 @@ static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
  };
  
@@ -292,18 +298,22 @@ index 7676e2e1f6..ef7085d909 100644
  	.ddrc_cfg = ddr_ddrc_cfg,
  	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
  	.ddrphy_cfg = ddr_ddrphy_cfg,
-@@ -1846,3 +1846,4 @@ struct dram_timing_info ucm_dram_timing_1g = {
- 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
- 	.fsp_table = { 3000, 400, 100, },
- };
-+
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_4g.c b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_ff000110.c
 similarity index 99%
 rename from board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_4g.c
 rename to board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_ff000110.c
-index 60e0e992e0..4401282800 100644
+index 5ebb487c43..53b823cd36 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_4g.c
 +++ b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_ff000110.c
+@@ -8,7 +8,7 @@
+  */
+ 
+ #include <linux/kernel.h>
+-#include <asm/arch/imx8m_ddr.h>
++#include <asm/arch/ddr.h>
+ 
+ static struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	/** Initialize DDRC registers **/
 @@ -1833,7 +1833,7 @@ static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
  };
  
@@ -317,9 +327,18 @@ diff --git a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_2g.c b/board/compul
 similarity index 99%
 rename from board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_2g.c
 rename to board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_ff020008.c
-index bb658a6c2c..7473c96e8d 100644
+index cf0e5c7148..014add061e 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_2g.c
 +++ b/board/compulab/ucm-imx8m-mini/ddr/lpddr4_timing_ff020008.c
+@@ -8,7 +8,7 @@
+  */
+ 
+ #include <linux/kernel.h>
+-#include <asm/arch/imx8m_ddr.h>
++#include <asm/arch/ddr.h>
+ 
+ static struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	/** Initialize DDRC registers **/
 @@ -1833,7 +1833,7 @@ static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
  };
  
@@ -331,7 +350,7 @@ index bb658a6c2c..7473c96e8d 100644
  	.ddrphy_cfg = ddr_ddrphy_cfg,
 diff --git a/board/compulab/ucm-imx8m-mini/eeprom.c b/board/compulab/ucm-imx8m-mini/eeprom.c
 new file mode 100644
-index 0000000000..fd1fa49e21
+index 0000000000..373219bf7d
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/eeprom.c
 @@ -0,0 +1,192 @@
@@ -565,7 +584,7 @@ index 0000000000..9de4aadd43
 +#endif
 diff --git a/board/compulab/ucm-imx8m-mini/eeprom_spl.c b/board/compulab/ucm-imx8m-mini/eeprom_spl.c
 new file mode 100644
-index 0000000000..09a04fda92
+index 0000000000..66ec41dd81
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/eeprom_spl.c
 @@ -0,0 +1,147 @@
@@ -838,67 +857,6 @@ index 5f3377e656..c0b70fa438 100644
  	/* Get the top of usable RAM */
  ulong board_get_usable_ram_top(ulong total_size)
  {
-@@ -167,54 +184,33 @@ ulong board_get_usable_ram_top(ulong total_size)
- 
- int dram_init(void)
- {
--	int ddr_size = get_ddr_size();
--
--	switch (ddr_size) {
--	case 1:
--	case 2:
--	case 4:
--		gd->ram_size = (phys_size_t)ddr_size * 0x40000000;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	/* rom_pointer[1] contains the size of TEE occupies */
--	if (rom_pointer[1])
--		gd->ram_size -= rom_pointer[1];
--
-+	gd->ram_size =imx8_ddr_size() - rom_pointer[1];
- 	return 0;
- }
- 
- int dram_init_banksize(void)
- {
--	int ddr_size = get_ddr_size();
-+	phys_size_t ddr_size = imx8_ddr_size();
- 
- 	gd->bd->bi_dram[0].start = PHYS_SDRAM;
- 	gd->bd->bi_dram[1].start = PHYS_SDRAM_2;
- 
--	if(4 == ddr_size){
-+	if((4096l << 20) == ddr_size){
- 		gd->bd->bi_dram[0].size = (phys_size_t)3 * 0x40000000;
- 		gd->bd->bi_dram[1].size = (phys_size_t)1 * 0x40000000;
- 	} else {
--		gd->bd->bi_dram[0].size = (phys_size_t)ddr_size * 0x40000000;
-+		gd->bd->bi_dram[0].size = ddr_size;
- 		gd->bd->bi_dram[1].size = 0;
- 	}
- 
--	if (rom_pointer[1])
--		gd->bd->bi_dram[0].size -= rom_pointer[1];
-+	gd->bd->bi_dram[0].size -= rom_pointer[1];
- 
- 	return 0;
- }
- 
- phys_size_t get_effective_memsize(void)
- {
--	int ddr_size = get_ddr_size();
--
--	if (rom_pointer[1])
--		return (phys_size_t)ddr_size * 0x40000000 - rom_pointer[1];
--	else
--		return (phys_size_t)ddr_size * 0x40000000;
-+	return imx8_ddr_size() - rom_pointer[1];
- }
- 
- #ifdef CONFIG_OF_BOARD_SETUP
 diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
 index 7810295206..be698941da 100644
 --- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h

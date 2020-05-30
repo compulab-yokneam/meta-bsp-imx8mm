@@ -1,7 +1,7 @@
-From d83db5bb0ca12a7d374099424c60b511d809c15e Mon Sep 17 00:00:00 2001
-From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Sun, 21 Apr 2019 22:20:29 +0300
-Subject: [PATCH 21/25] ucm-imx8m-mini: Makefile: Refacoring ddr init build
+From c8efe2ebe0e766936c0307337245d973156ecc20 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 26 May 2020 21:33:48 +0300
+Subject: [PATCH 21/21] ucm-imx8m-mini: Makefile: Refacoring ddr init build
  option
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
@@ -10,7 +10,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/board/compulab/ucm-imx8m-mini/Makefile b/board/compulab/ucm-imx8m-mini/Makefile
-index b092c28..02d3393 100644
+index b092c281ab..02d3393232 100644
 --- a/board/compulab/ucm-imx8m-mini/Makefile
 +++ b/board/compulab/ucm-imx8m-mini/Makefile
 @@ -8,9 +8,6 @@ obj-y += ucm-imx8m-mini.o
@@ -26,5 +26,5 @@ index b092c28..02d3393 100644
 +obj-$(CONFIG_UCM_IMX8M_LPDDR4_VAL) += ddr/
  endif
 -- 
-1.9.1
+2.11.0
 

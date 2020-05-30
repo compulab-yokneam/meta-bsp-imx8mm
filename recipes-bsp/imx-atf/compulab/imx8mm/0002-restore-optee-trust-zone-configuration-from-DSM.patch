@@ -9,10 +9,10 @@ Subject: [PATCH 2/2] restore optee trust zone configuration from DSM
  2 files changed, 31 insertions(+), 2 deletions(-)
 
 diff --git a/plat/imx/imx8mm/gpc.c b/plat/imx/imx8mm/gpc.c
-index 4c434c4..e037a17 100644
+index 4067c8773..39b1730ff 100644
 --- a/plat/imx/imx8mm/gpc.c
 +++ b/plat/imx/imx8mm/gpc.c
-@@ -574,6 +574,14 @@ void imx_anamix_post_resume(void)
+@@ -585,6 +585,14 @@ void imx_anamix_post_resume(void)
  #define GPR_TZASC_EN		(1 << 0)
  #define GPR_TZASC_EN_LOCK	(1 << 16)
  
@@ -27,7 +27,7 @@ index 4c434c4..e037a17 100644
  static void imx8mm_tz380_init(void)
  {
  	unsigned int val;
-@@ -584,8 +592,27 @@ static void imx8mm_tz380_init(void)
+@@ -595,8 +603,27 @@ static void imx8mm_tz380_init(void)
  
  	tzc380_init(IMX_TZASC_BASE);
  
@@ -56,9 +56,9 @@ index 4c434c4..e037a17 100644
 +
  }
  
- void noc_wrapper_pre_suspend(unsigned int proc_num)
+ #define CCGR(x)		(0x4000 + (x) * 16)
 diff --git a/plat/imx/imx8mm/include/platform_def.h b/plat/imx/imx8mm/include/platform_def.h
-index 9f1f1fa..04a4f6f 100644
+index a14971851..8acc393aa 100644
 --- a/plat/imx/imx8mm/include/platform_def.h
 +++ b/plat/imx/imx8mm/include/platform_def.h
 @@ -29,6 +29,8 @@
@@ -71,5 +71,5 @@ index 9f1f1fa..04a4f6f 100644
  #define BL31_LIMIT			0x940000
  
 -- 
-1.9.1
+2.11.0
 

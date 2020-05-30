@@ -25,7 +25,7 @@ index c26d3f154e..7f9f3625e4 100644
 -	/* increase VDD_DRAM to 0.9v for 3Ghz DDR */
 -	pmic_reg_write(p, BD71837_BUCK5_VOLT, 0x2);
 +	/* decrease VDD_ARM to 0.85V for 1.2GHz operation */
-+	pmic_reg_write(p, BD71837_BUCK2_VOLT_RUN, 0x0f);
++	/*pmic_reg_write(p, BD71837_BUCK2_VOLT_RUN, 0x0f);*/
 +
 +	/* increase VDD_SOC to 0.85V for 3Ghz DDR */
 +	pmic_reg_write(p, BD71837_BUCK1_VOLT_RUN, 0x0f);

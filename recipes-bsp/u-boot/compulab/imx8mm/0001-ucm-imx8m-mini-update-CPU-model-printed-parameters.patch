@@ -1,7 +1,7 @@
-From 9a00a0ef365dd6c9b9e7616b37b2d7522162ba38 Mon Sep 17 00:00:00 2001
-From: Uri Mashiach <uri.mashiach@compulab.co.il>
-Date: Tue, 12 Feb 2019 17:51:20 +0200
-Subject: [PATCH 01/25] ucm-imx8m-mini: update CPU/model printed parameters
+From 694ebce8f9f84e5ca70373d25e1953c46f2d2c4d Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 26 May 2020 20:55:00 +0300
+Subject: [PATCH 1/1] ucm-imx8m-mini: update CPU/model printed parameters
 
 Update the startup messages of the CPU and model parameters
 
@@ -12,7 +12,7 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  2 files changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
-index 112345b..899899c 100644
+index 112345b6a3..899899c1c6 100644
 --- a/arch/arm/dts/ucm-imx8m-mini.dts
 +++ b/arch/arm/dts/ucm-imx8m-mini.dts
 @@ -17,7 +17,7 @@
@@ -25,10 +25,10 @@ index 112345b..899899c 100644
  
  	chosen {
 diff --git a/arch/arm/mach-imx/cpu.c b/arch/arm/mach-imx/cpu.c
-index 111f1e4..0ea375b 100644
+index 0c89dc98c6..aa2279f720 100644
 --- a/arch/arm/mach-imx/cpu.c
 +++ b/arch/arm/mach-imx/cpu.c
-@@ -235,7 +235,11 @@ int print_cpuinfo(void)
+@@ -253,7 +253,11 @@ int print_cpuinfo(void)
  
  #if defined(CONFIG_IMX_THERMAL) || defined(CONFIG_NXP_TMU)
  	struct udevice *thermal_dev;
@@ -39,8 +39,8 @@ index 111f1e4..0ea375b 100644
 +#endif /* CONFIG_TARGET_UCM_IMX8M_MINI */
  
  	printf("CPU:   Freescale i.MX%s rev%d.%d",
- 	       get_imx_type((cpurev & 0xFF000) >> 12),
-@@ -257,7 +261,9 @@ int print_cpuinfo(void)
+ 	       get_imx_type((cpurev & 0x1FF000) >> 12),
+@@ -275,7 +279,9 @@ int print_cpuinfo(void)
  #endif
  
  #if defined(CONFIG_IMX_THERMAL) || defined(CONFIG_NXP_TMU)
@@ -50,7 +50,7 @@ index 111f1e4..0ea375b 100644
  	switch (get_cpu_temp_grade(&minc, &maxc)) {
  	case TEMP_AUTOMOTIVE:
  		puts("Automotive temperature grade ");
-@@ -273,6 +279,7 @@ int print_cpuinfo(void)
+@@ -291,6 +297,7 @@ int print_cpuinfo(void)
  		break;
  	}
  	printf("(%dC to %dC)", minc, maxc);
@@ -58,7 +58,7 @@ index 111f1e4..0ea375b 100644
  #if	defined(CONFIG_NXP_TMU)
  	ret = uclass_get_device_by_name(UCLASS_THERMAL, "cpu-thermal", &thermal_dev);
  #else
-@@ -282,7 +289,11 @@ int print_cpuinfo(void)
+@@ -300,7 +307,11 @@ int print_cpuinfo(void)
  		ret = thermal_get_temp(thermal_dev, &cpu_tmp);
  
  		if (!ret)
@@ -71,5 +71,5 @@ index 111f1e4..0ea375b 100644
  			debug(" - invalid sensor data\n");
  	} else {
 -- 
-1.9.1
+2.11.0
 
