@@ -35,14 +35,14 @@ export LAYER_DIR=$(pwd)/meta-bsp-imx8mm
 * Download the mkimage from:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-mkimage.git
-git -C imx-mkimage checkout -f rel_imx_5.4.3_2.0.0
+git -C imx-mkimage checkout rel_imx_5.4.3_2.0.0
 </pre>
 
 ## Arm Trusted Firmware Setup
 Download the ATF from:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-atf.git
-git -C imx-atf checkout -f rel_imx_5.4.3_2.0.0
+git -C imx-atf checkout rel_imx_5.4.3_2.0.0
 git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
 </pre>
 * Make bl31.bin
@@ -63,7 +63,7 @@ cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${SRC_ROOT}/im
 * Download the U-Boot source and apply the CompuLab BSP patches:
 <pre>
 git clone https://source.codeaurora.org/external/imx/uboot-imx.git
-git -C uboot-imx checkout -f rel_imx_5.4.3_2.0.0
+git -C uboot-imx checkout rel_imx_5.4.3_2.0.0
 git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
 </pre>
 
@@ -82,7 +82,7 @@ cp -v $(find uboot-imx | awk '/u-boot-spl.bin$|u-boot.bin$|u-boot-nodtb.bin$|cl-
 Download the OP-TEE from:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-optee-os
-git -C imx-optee-os checkout -f rel_imx_5.4.3_2.0.0
+git -C imx-optee-os checkout rel_imx_5.4.3_2.0.0
 git -C imx-atf am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
 </pre>
 
