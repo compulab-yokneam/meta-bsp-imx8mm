@@ -5,4 +5,4 @@ WARNING: **This is a develment branch for testing purpouse only. !!!Not tested/N
 
 * `ucm-imx8m-mini`
 
-All the documetation is moved to the dedicated folder <b>Documentation</b>
+All the documetation is moved to the dedicated folder Documentation
