@@ -39,6 +39,12 @@ FILE_LIST = " \
 	file://0037-dts-Enable-eb-dsi2lvds-extention-board.patch \
 	file://0038-dts-makefile-Add-eb-dsi2lvds-extention-board-dtb-to-.patch \
 	file://0039-mcm-imx8m-mini-Add-basic-support.patch \
+	file://0040-Add-w25q16-support.patch \
+	file://0041-mcm-imx8m-mini-Separate-the-sb-and-the-som-stuff.patch \
+	file://0042-mcm-imx8m-mini-Add-a-MCP2518FD-on-ecspi1.patch \
+	file://0043-can-mcp25xxfd-Microchip-MCP25xxFD-Family-CAN-control.patch \
+	file://0044-mcm-imx8m-mini-Update-defconfig.patch \
+	file://0045-mcm-imx8m-mini-dts-Disable-regulator_bt_reg_on-regul.patch \
 	file://defconfig \
 "
 

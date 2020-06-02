@@ -1,0 +1,49 @@
+From 6bc3707523f9e021cab147d4ad050871b5a97d01 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 2 Jun 2020 20:45:33 +0300
+Subject: [PATCH 45/45] mcm-imx8m-mini: dts: Disable regulator_bt_reg_on
+ regulator
+
+Disable regulator_bt_reg_on regulator.
+Now the bt-start changes the bt_reg_on gpio value.
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+index 556e7c67d5f1..253e3bf45e5e 100644
+--- a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+@@ -92,18 +92,6 @@
+ 		startup-delay-us = <500>;
+ 	};
+ 
+-	regulator_bt_reg_on: bt_reg_on {
+-		compatible = "regulator-fixed";
+-		regulator-name = "bt_reg_on";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio2 6 GPIO_ACTIVE_HIGH>;
+-		regulator-always-on;
+-		enable-active-high;
+-		startup-delay-us = <500>;
+-		vin-supply = <&regulator_bt_dev_wake>;
+-	};
+-
+ 	regulator_bt_host_wake: bt_host_wake {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "bt_host_wake";
+@@ -113,7 +101,7 @@
+ 		regulator-always-on;
+ 		regulator-boot-on;
+ 		enable-active-high;
+-		vin-supply = <&regulator_bt_reg_on>;
++		vin-supply = <&regulator_bt_dev_wake>;
+ 	};
+ 
+ 	backlight {
+-- 
+2.11.0
+

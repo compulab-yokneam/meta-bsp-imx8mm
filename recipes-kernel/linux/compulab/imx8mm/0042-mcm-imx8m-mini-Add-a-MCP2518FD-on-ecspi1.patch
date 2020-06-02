@@ -1,0 +1,101 @@
+From 9ce4d71d6830a67b54051865e0e30932f1234afc Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 1 Jun 2020 23:44:00 +0300
+Subject: [PATCH 42/45] mcm-imx8m-mini: Add a MCP2518FD on ecspi1
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi | 77 ++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi b/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
+index 3548e99fded2..d3c1f632875a 100644
+--- a/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
++++ b/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
+@@ -45,6 +45,83 @@
+ 			system-clock-type = "mclk";
+ 		};
+ 	};
++
++	clocks {
++		clk40m: clk@1 {
++			compatible = "fixed-clock";
++			reg = <1>;
++			#clock-cells = <0>;
++			clock-frequency = <40000000>;
++			clock-output-names = "clk40m";
++		};
++	};
++
++	regulator-can0term@0 {
++		compatible = "regulator-fixed";
++		regulator-name = "can0_term0";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio4 2 GPIO_ACTIVE_LOW>;
++		regulator-always-on;
++		enable-active-low;
++	};
++
++	regulator-can0term@1 {
++		compatible = "regulator-fixed";
++		regulator-name = "can0_term1";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio4 12 GPIO_ACTIVE_LOW>;
++		regulator-always-on;
++		enable-active-low;
++	};
++};
++
++&iomuxc {
++	sb-mcm-imx8 {
++		pinctrl_ecspi1: ecspi1grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK	0x02
++				MX8MM_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI	0x02
++				MX8MM_IOMUXC_ECSPI1_MISO_ECSPI1_MISO	0x102
++			>;
++		};
++
++		pinctrl_ecspi1_cs: ecspi1_csgrp {
++			fsl,pins = <
++				MX8MM_IOMUXC_ECSPI1_SS0_GPIO5_IO9	0x40000
++			>;
++		};
++
++		pinctrl_can0: can0grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_SAI1_TXFS_GPIO4_IO10	0x00
++				MX8MM_IOMUXC_SAI1_TXD0_GPIO4_IO12	0x00
++				MX8MM_IOMUXC_SAI1_RXD0_GPIO4_IO2	0x00
++			>;
++		};
++	};
++};
++
++&ecspi1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	fsl,spi-num-chipselects = <1>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
++	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
++	status = "okay";
++
++	can0: can@0 {
++		compatible = "microchip,mcp2518fd";
++		reg = <0>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_can0>;
++		interrupt-parent = <&gpio4>;
++		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
++		spi-max-frequency = <10000000>;
++		clocks = <&clk40m>;
++	};
+ };
+ 
+ &pcie0 {
+-- 
+2.11.0
+
