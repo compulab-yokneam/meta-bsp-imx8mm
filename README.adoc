@@ -1,8 +1,10 @@
 # Quick Start Guide
 
+WARNING: **This is a develment branch for testing purpouse only. !!!Not tested/Not released/Not supported!!!**
+
 ## Supported CompuLab Machines
 
-* `ucm-imx8m-mini`
+* `mcm-imx8m-mini`
 
 # Prepare NXP BSP
 [source,console]
@@ -11,12 +13,12 @@ repo sync
 
 # Download CompuLab meta layer
 [source,console]
-git clone -b master https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
+git clone -b mcm-imx8m-mini https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
 
 # Set a desire machine
-* `ucm-imx8m-mini`
+* `mcm-imx8m-mini`
 [source,console]
-COMPULAB_MACHINE=ucm-imx8m-mini
+COMPULAB_MACHINE=mcm-imx8m-mini
 
 # Build Images
 Refer to the http://source.codeaurora.org/external/imx/meta-fsl-bsp-release/tree/imx/README?h=sumo-4.14.98-2.0.0_ga[`NXP Readme`] for details about how to select a correct `backend` & `distro`.
