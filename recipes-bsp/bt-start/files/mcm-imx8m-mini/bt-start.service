@@ -1,0 +1,10 @@
+[Unit]
+Description=CompuLab BLueThooth Start Script
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/bt-start start
+ExecStop=/usr/sbin/bt-start stop
+
+[Install]
+WantedBy=multi-user.target

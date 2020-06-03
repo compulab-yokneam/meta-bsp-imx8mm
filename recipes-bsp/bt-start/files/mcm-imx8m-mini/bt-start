@@ -1,0 +1,51 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:		bt-start
+# Required-Start:	$syslog
+# Required-Stop:	$syslog
+# Default-Start:	2 3 4 5
+# Default-Stop:
+# Short-Description:	CompuLab bt-start
+### END INIT INFO
+
+PID=/var/run/bt.pid
+GPIO=38
+
+bt_init() {
+	[[ -f ${PID} ]] && return
+	[[ -d /sys/class/gpio/gpio${GPIO} ]] || ( echo ${GPIO} > /sys/class/gpio/export ; echo out > /sys/class/gpio/gpio${GPIO}/direction )
+	echo 0 > /sys/class/gpio/gpio${GPIO}/value; sleep 1; echo 1 > /sys/class/gpio/gpio${GPIO}/value
+	brcm_patchram_plus --patchram /lib/firmware/brcm/4339.hcd --enable_hci --no2bytes --baudrate 3000000 --tosleep 1000 /dev/ttymxc3 &
+	echo $! >> ${PID}
+}
+
+bt_fini() {
+	[[ ! -f ${PID} ]] && return
+	kill -9 $(cat ${PID}); rm -rf ${PID}
+	echo 0 > /sys/class/gpio/gpio${GPIO}/value
+}
+
+case "$1" in
+start)
+	bt_init; sleep 2;
+	if [[ -d /sys/class/bluetooth/hci0 ]];then
+	hciconfig hci0 up
+	hciconfig hci0 class 0x200414
+	fi
+	;;
+stop)
+	hciconfig hci0 down
+	bt_fini
+	;;
+status)
+	hciconfig -a
+	;;
+*)
+cat << eom
+	Usage: $0 {start|stop|status}
+eom
+	exit 1
+esac
+
+exit 0
