@@ -43,6 +43,9 @@ FILE_LIST = " \
 	file://0041-ucm-imx8m-mini-Add-1G-DRAM-support.patch \
 	file://0042-plat-imx8mm-Move-common-code-to-platform.patch \
 	file://0043-mcm-imx8m-mini-Add-basic-support.patch \
+	file://0044-Makefile-Clean-up-EXTRAVERSION.patch \
+	file://0045-mcm-imx8m-mini-defconfig-Add-CONFIG_LOCALVERSION.patch \
+	file://0046-mcm-imx8m-mini-env-Generate-all-options-conf-file.patch \
 	file://ucm-imx8m-mini_defconfig \
 	file://mcm-imx8m-mini_defconfig \
 "

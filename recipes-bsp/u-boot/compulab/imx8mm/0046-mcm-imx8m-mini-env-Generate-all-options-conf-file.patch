@@ -1,0 +1,33 @@
+From 337b9cf2e6d6b42a633610fa7e6947ec5cc162bb Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 16 Jun 2020 15:33:24 +0300
+Subject: [PATCH 46/46] mcm-imx8m-mini: env: Generate all options conf file
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ tools/env/fw_env_main.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/tools/env/fw_env_main.c b/tools/env/fw_env_main.c
+index f4573e0507..59b6aa0fd5 100644
+--- a/tools/env/fw_env_main.c
++++ b/tools/env/fw_env_main.c
+@@ -142,11 +142,10 @@ static void parse_common_args(int argc, char *argv[])
+ 			exit(EXIT_SUCCESS);
+ 			break;
+ 		case 'e':
+-#ifdef CONFIG_SYS_MMC_ENV_PART
+-			fprintf(stderr, "/dev/mmcblk%dboot%d 0x%x 0x%x\n", CONFIG_SYS_MMC_ENV_DEV, CONFIG_SYS_MMC_ENV_PART-1, CONFIG_ENV_OFFSET, CONFIG_ENV_SIZE);
+-#else
+-			fprintf(stderr, "/dev/mmcblk%d 0x%x 0x%x\n", CONFIG_SYS_MMC_ENV_DEV, CONFIG_ENV_OFFSET, CONFIG_ENV_SIZE);
+-#endif
++			fprintf(stderr, "# eMMC\n");
++			fprintf(stderr, "/dev/mmcblk2boot0 0x%x 0x%x\n", CONFIG_ENV_OFFSET, CONFIG_ENV_SIZE);
++			fprintf(stderr, "# MMC\n");
++			fprintf(stderr, "/dev/mmcblk1 0x%x 0x%x\n", CONFIG_ENV_OFFSET, CONFIG_ENV_SIZE);
+ 			exit(EXIT_SUCCESS);
+ 			break;
+ 		default:
+-- 
+2.11.0
+
