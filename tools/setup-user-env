@@ -56,12 +56,12 @@ command -v cfg_${ARRAY} &>/dev/null
 [[ $? -eq 0 ]] && cfg_${ARRAY} ${ARRAYNAME[${ARRAY}]}
 done
 
-if [[ -f ${local_conf} ]];then
+if [[ -f ${local_conf} ]] && [[ -f ${user_local_conf} ]];then
 cat << EOH >> ${local_conf}
 
 # Users' Configurations
 EOH
 cat ${user_local_conf} >> ${local_conf}
+rm -f ${user_local_conf}
 fi
 
-rm -rf ${user_local_conf}
