@@ -46,6 +46,7 @@ FILE_LIST = " \
 	file://0044-Makefile-Clean-up-EXTRAVERSION.patch \
 	file://0045-mcm-imx8m-mini-defconfig-Add-CONFIG_LOCALVERSION.patch \
 	file://0046-mcm-imx8m-mini-env-Generate-all-options-conf-file.patch \
+	file://0047-mcm-imx8m-mini-config-Add-rootwait-rw-to-all-root-de.patch \
 	file://ucm-imx8m-mini_defconfig \
 	file://mcm-imx8m-mini_defconfig \
 "
