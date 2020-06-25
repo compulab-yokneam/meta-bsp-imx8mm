@@ -11,7 +11,7 @@ export MACHINE=mcm-imx8m-mini
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download a tool chain from [Linaro](https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/)
+* Download a tool chain from [Linaro](https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/)
 * Set environment variables:
 <pre>
 export ARCH=arm64
@@ -77,6 +77,7 @@ make -C uboot-imx
 cp -v $(find uboot-imx | awk '/u-boot-spl.bin$|u-boot.bin$|u-boot-nodtb.bin$|cl-som.*\.dtb$|mkimage$/' ORS=" ") ${SRC_ROOT}/imx-mkimage/iMX8M/                                                                     
 </pre>
 
+<!---
 ## OP-TEE Setup
 Download the OP-TEE from:
 <pre>
@@ -98,6 +99,7 @@ cd imx-optee-os
 ./scripts/imx_build.sh mx8mmevk
 cp -v build.mx8mmevk/core/tee.bin ${SRC_ROOT}/imx-mkimage/iMX8M/
 </pre>
+-->
 
 ## Compiling the **flash.bin** imx-boot image:
 * Unset these variables:
