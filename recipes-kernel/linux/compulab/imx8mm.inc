@@ -45,6 +45,10 @@ FILE_LIST = " \
 	file://0043-can-mcp25xxfd-Microchip-MCP25xxFD-Family-CAN-control.patch \
 	file://0044-mcm-imx8m-mini-Update-defconfig.patch \
 	file://0045-mcm-imx8m-mini-dts-Disable-regulator_bt_reg_on-regul.patch \
+	file://0046-mcm-imx8m-mini-dts-Remove-simple-audio-card-bitclock.patch \
+	file://0047-serial-imx-allow-passing-rs485-options.patch \
+	file://0048-mcm-imx8m-mini-dst-Restore-UART4-dma-names.patch \
+	file://0049-mcm-imx8m-mini-dst-Add-sbc-mcm-imx8m-mini-rs485.dts.patch \
 	file://defconfig \
 "
 
