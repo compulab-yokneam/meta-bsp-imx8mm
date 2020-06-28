@@ -11,7 +11,7 @@ repo sync
 
 # Download CompuLab meta layer
 [source,console]
-git clone -b iot-gate-imx8 https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
+git clone -b iot-gate-imx8_r1.0 https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
 
 # Set a desire machine
 * `iot-gate-imx8`
@@ -25,4 +25,4 @@ Refer to the http://source.codeaurora.org/external/imx/meta-fsl-bsp-release/tree
 This example shows how to build an NXP supported image for the `${COMPULAB_MACHINE}`
 [source,console]
 MACHINE=${COMPULAB_MACHINE} source sources/meta-bsp-imx8mm/tools/setup-iot-get-imx8-env -b build-xwayland
-bitbake -k fsl-image-qt5-validation-imx
+bitbake -k fsl-image-validation-imx
