@@ -20,7 +20,7 @@ get_meta ${url} ${branch} ${dir}
 
 get_meta_compulab_bsp() {
 dir="../sources/meta-compulab-bsp"
-branch="-b devel-imx8mm-4.14.98"
+branch="-b master"
 url="https://github.com/compulab-yokneam/meta-compulab-bsp"
 get_meta ${url} ${branch} ${dir}
 }
