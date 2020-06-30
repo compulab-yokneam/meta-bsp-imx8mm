@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -A SUPPORTED_MACHINE=([ucm-imx8m-mini]=1)
+declare -A SUPPORTED_MACHINE=([mcm-imx8m-mini]=1)
 
 get_meta() {
 if [[ -d ${dir} ]];then
