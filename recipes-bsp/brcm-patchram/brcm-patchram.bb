@@ -1,35 +1,25 @@
-SUMMARY = "Broadcom brcm_patchram_plus"
-DESCRIPTION = "Broadcom brcm_patchram_plus"
-LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=691691b063f1b4034300dc452e36b68d"
+# Copyright (C) 2015 Romain Perier <romain.perier@gmail.com>
+# Released under the MIT license (see COPYING.MIT for the terms)
 
-PR = "r0"
+inherit base
 
-FILES_${PN} = "${bindir}/brcm_patchram_plus"
+DESCRIPTION = "Chromium OS Broadcom patchram utility"
+HOMEPAGE = "https://chromium.googlesource.com/chromiumos/third_party/broadcom/"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://${S}/LICENSE.broadcom;md5=4ff9e0bf45dfdad0b7756c07b65ed24a"
+S = "${WORKDIR}/git/bluetooth"
+SECTION = "console/utils"
 
-SRC_URI = "https://github.com/LairdCP/brcm_patchram/archive/brcm_patchram_plus_1.1.tar.gz"
+DEPENDS = "bluez5"
+PR = "r1"
+PV = "git+4070e71"
 
-S = "${WORKDIR}/brcm_patchram-brcm_patchram_plus_1.1"
+SRCREV = "4070e7161f2f1a1a22027a744eb868500688f0b6"
+SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/broadcom;protocol=http;branch=master"
 
-SRC_URI[md5sum] = "3c03e03ce4ce11ea131702779906c6b3"
-SRC_URI[sha256sum] = "02397334a7a797c936ae5739beccb5f2a3dc6e512f685cbc27fc944d17cc4f79"
+FILES_${PN} = "/usr/bin/*"
 
-inherit pkgconfig bluetooth
-PACKAGECONFIG ??= "${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', '${BLUEZ}', '', d)}"
-PACKAGECONFIG[bluez4] = "--enable-bluetooth,--disable-bluetooth,bluez4"
-PACKAGECONFIG[bluez5] = "--enable-bluez5,--disable-bluez5,bluez5"
-
-do_configure () {
-	exit 0
+do_install_append() {
+	install -d ${D}/usr/bin
+	install -m 755 brcm_patchram_plus ${D}/usr/bin
 }
-
-do_compile () {
-	oe_runmake brcm_patchram_plus
-}
-
-do_install () {
-	install -d ${D}/${bindir}
-	cp ${S}/brcm_patchram_plus ${D}/${bindir}
-}
-
-RDEPENDES = "bluetooth"
