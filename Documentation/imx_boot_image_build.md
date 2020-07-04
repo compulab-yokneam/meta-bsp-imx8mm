@@ -9,6 +9,16 @@ Define a `MACHINE` environment variable with respect to a required machine:
 export MACHINE=mcm-imx8m-mini
 </pre>
 
+
+Define these envaronment variables:
+
+|Description|Environment|
+|---|---|
+|NXP release name|export NXP_RELEASE=rel_imx_5.4.3_2.0.0|
+|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.7.bin|
+|CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.3_2.0.0-mcm|
+
+
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
 * Download a tool chain from [Linaro](https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/)
@@ -26,7 +36,7 @@ export SRC_ROOT=$(pwd)
 
 * Download CompuLab BSP
 <pre>
-git clone -b mcm-imx8m-mini https://github.com/compulab-yokneam/meta-bsp-imx8mm.git
+git clone -b ${CPL_BRANCH} https://github.com/compulab-yokneam/meta-bsp-imx8mm.git
 export LAYER_DIR=$(pwd)/meta-bsp-imx8mm
 </pre>
 
@@ -34,27 +44,27 @@ export LAYER_DIR=$(pwd)/meta-bsp-imx8mm
 * Download the mkimage from:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-mkimage.git
-git -C imx-mkimage checkout rel_imx_4.14.98_2.0.0_ga
+git -C imx-mkimage checkout ${NXP_RELEASE}
 </pre>
 
 ## Arm Trusted Firmware Setup
 Download the ATF from:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-atf.git
-git -C imx-atf checkout rel_imx_4.14.98_2.0.0_ga
+git -C imx-atf checkout ${NXP_RELEASE}
 git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
 </pre>
 * Make bl31.bin
 <pre>
-make -C imx-atf PLAT=imx8mm SPD=opteed bl31
+make -C imx-atf PLAT=imx8mm bl31
 cp -v imx-atf/build/imx8mm/release/bl31.bin ${SRC_ROOT}/imx-mkimage/iMX8M/
 </pre>
 
 ## Firmware iMX setup
 Download the firmware-imx file from:
 <pre>
-wget http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.1.bin
-bash -x firmware-imx-8.1.bin --auto-accept
+wget http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${NXP_FIRMWARE}
+bash -x ${NXP_FIRMWARE} --auto-accept
 cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${SRC_ROOT}/imx-mkimage/iMX8M/
 </pre>
 
@@ -62,7 +72,7 @@ cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${SRC_ROOT}/im
 * Download the U-Boot source and apply the CompuLab BSP patches:
 <pre>
 git clone https://source.codeaurora.org/external/imx/uboot-imx.git
-git -C uboot-imx checkout rel_imx_4.14.98_2.0.0_ga
+git -C uboot-imx checkout ${NXP_RELEASE}
 git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
 </pre>
 
@@ -82,7 +92,7 @@ cp -v $(find uboot-imx | awk '/u-boot-spl.bin$|u-boot.bin$|u-boot-nodtb.bin$|cl-
 Download the OP-TEE from:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-optee-os
-git -C imx-optee-os checkout rel_imx_4.14.98_2.0.0_ga
+git -C imx-optee-os checkout ${NXP_RELEASE}
 git -C imx-atf am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
 </pre>
 
