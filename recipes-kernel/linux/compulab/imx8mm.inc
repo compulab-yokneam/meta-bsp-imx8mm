@@ -18,6 +18,8 @@ FILE_LIST = " \
 	file://0016-mcm-imx8m-mini_defconfig-Update-defconfig.patch \
 	file://0017-mcm-imx8m-mini-dts-Remove-unused-stuff.patch \
 	file://0018-mcm-imx8m-mini-dts-Update-usbotg1-flags-for-otg.patch \
+	file://0019-mcm-imx8m-mini-dts-Update-sai2-definition.patch \
+	file://0020-mcm-imx8m-mini-dts-Update-pmic-definition.patch \
 	file://defconfig \
 "
 
