@@ -35,6 +35,7 @@ BBLAYERS += " \\
 	\${BSPDIR}/sources/meta-compulab \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-desktop \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-multimedia \\
+	\${BSPDIR}/sources/meta-compulab-bsp/meta-graphics \\
 	\${BSPDIR}/sources/meta-bsp-imx8mm \\
 "
 eof
@@ -49,7 +50,7 @@ cat << eof | tee -a ${LOCAL_CONF} > /dev/null
 CORE_IMAGE_EXTRA_INSTALL += "${CORE_IMAGE_EXTRA_INSTALL}"
 IMAGE_FEATURES += "${IMAGE_FEATURES}"
 LICENSE_FLAGS_WHITELIST = "commercial"
-PREFERRED_RPROVIDER_u-boot-fw-utils = "u-boot-fslc-fw-utils"
+PREFERRED_RPROVIDER_u-boot-fw-utils = "u-boot-imx-fw-utils"
 HOSTTOOLS += " git-lfs"
 eof
 }
@@ -85,16 +86,6 @@ eom
     ${EXIT} 0
 fi
 
-add_bbmask() {
-declare -a bbmask=('meta-compulab/recipes-xfce')
-
-for i in  ${bbmask[@]}; do
-cat << eof | tee -a ${LOCAL_CONF} > /dev/null
-BBMASK += "${i}"
-eof
-done
-}
-
 eval $(awk '(/MACHINE|DISTRO/)&&(gsub(/'"'"'/,"")&&($0=$1"="$NF))' ORS=";" ${LOCAL_CONF})
 
 if [[ ${SUPPORTED_MACHINE[${MACHINE}]} -ne 1 ]];then
@@ -111,7 +102,6 @@ eom
 
 mod_bblayer
 mod_local
-add_bbmask
 
 cat << eom
     Note: Files ${BBLAYERS_CONF} and ${LOCAL_CONF} updated successfully.
