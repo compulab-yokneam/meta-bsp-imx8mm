@@ -1,0 +1,28 @@
+From 71d34cb44a6fd1c29b8e5ef3f582795920e1cae4 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 25 Jun 2020 18:40:59 +0300
+Subject: [PATCH 07/14] dts: Fix pmic interrupt configuration
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+index 40fd1e4fa788..2d70cf4df1f2 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+@@ -292,7 +292,9 @@
+ 		compatible = "rohm,bd71837";
+ 		/* PMIC BD71837 PMIC_nINT GPIO1_IO3 */
+ 		pinctrl-0 = <&pinctrl_pmic>;
+-		gpio_intr = <&gpio1 3 GPIO_ACTIVE_LOW>;
++		interrupts = <3 GPIO_ACTIVE_LOW>;
++		interrupt-parent = <&gpio1>;
++//		gpio_intr = <&gpio1 3 GPIO_ACTIVE_LOW>;
+ 
+ 		gpo {
+ 			rohm,drv = <0x0C>;	/* 0b0000_1100 all gpos with cmos output mode */
+-- 
+2.11.0
+

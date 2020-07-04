@@ -1,7 +1,7 @@
-From 4b27cd415780d1ff01da4cb13a098c7f9ef9c422 Mon Sep 17 00:00:00 2001
+From 6e42494fc4cf406eddfb24fbaaecc7ba04392ea2 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 13 Feb 2019 21:43:15 +0200
-Subject: [PATCH 03/25] ucm-imx8m-mini: dts: Enable onboard LED
+Subject: [PATCH 04/14] ucm-imx8m-mini: dts: Enable onboard LED
 
 Enable onboard LED and set 'Heartbeat' as its default trigger.
 
@@ -11,10 +11,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 9 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index a03a2e8..991279f 100644
+index aa8900e91a90..a4c8661889d1 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-@@ -25,6 +25,15 @@
+@@ -26,6 +26,15 @@
  		stdout-patch = &uart3;
  	};
  
@@ -31,5 +31,5 @@ index a03a2e8..991279f 100644
  		compatible = "regulator-fixed";
  		regulator-name = "VSD_3V3";
 -- 
-1.9.1
+2.11.0
 

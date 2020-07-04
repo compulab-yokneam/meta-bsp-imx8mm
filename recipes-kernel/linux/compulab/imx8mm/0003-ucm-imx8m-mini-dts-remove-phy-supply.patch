@@ -1,7 +1,7 @@
-From a00d10cdbc29b9fddaae31ff68ea78d0b8cdbcf0 Mon Sep 17 00:00:00 2001
+From 4eba5ce7af433ad54fdd4a81514e6f2fe9732091 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 5 Feb 2019 17:39:39 +0200
-Subject: [PATCH 02/25] ucm-imx8m-mini: dts: remove phy-supply
+Subject: [PATCH 03/14] ucm-imx8m-mini: dts: remove phy-supply
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 12 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-index ca50fc1..a03a2e8 100644
+index 8df796e4a246..aa8900e91a90 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
-@@ -56,17 +56,6 @@
+@@ -57,17 +57,6 @@
  		enable-active-high;
  		startup-delay-us = <500>;
  	};
@@ -30,7 +30,7 @@ index ca50fc1..a03a2e8 100644
  };
  
  &iomuxc {
-@@ -519,7 +508,6 @@
+@@ -522,7 +511,6 @@
  	pinctrl-0 = <&pinctrl_fec1>;
  	phy-mode = "rgmii-id";
  	phy-handle = <&ethphy0>;
@@ -39,5 +39,5 @@ index ca50fc1..a03a2e8 100644
  	fsl,rgmii_rxc_dly;
  	status = "okay";
 -- 
-1.9.1
+2.11.0
 

@@ -1,0 +1,49 @@
+From c32ef84ce89060b0324dd1a3bde64139da3e344e Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 25 Jun 2020 22:28:04 +0300
+Subject: [PATCH 08/14] defconfig: Enable regualtor
+
+Enable CONFIG_REGULATOR in order to CONFIG_REGULATOR_FIXED_VOLTAGE has its
+effect.
+This is necessary for Wi-Fi enablement
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/ucm-imx8m-mini_defconfig | 20 ++------------------
+ 1 file changed, 2 insertions(+), 18 deletions(-)
+
+diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+index 2455d062c73a..4ac6f9cf91ec 100644
+--- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
++++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+@@ -545,25 +545,9 @@ CONFIG_MFD_RK808=y
+ CONFIG_MFD_SEC_CORE=y
+ CONFIG_MFD_ROHM_BD718XX=y
+ CONFIG_MFD_PCA9450=y
++CONFIG_REGULATOR=y
++CONFIG_REGULATOR_DEBUG=y
+ CONFIG_REGULATOR_FIXED_VOLTAGE=y
+-CONFIG_REGULATOR_AXP20X=y
+-CONFIG_REGULATOR_BD718XX=y
+-CONFIG_REGULATOR_BD9571MWV=y
+-CONFIG_REGULATOR_FAN53555=y
+-CONFIG_REGULATOR_GPIO=y
+-CONFIG_REGULATOR_HI6421V530=y
+-CONFIG_REGULATOR_HI655X=y
+-CONFIG_REGULATOR_MAX77620=y
+-CONFIG_REGULATOR_MAX8973=y
+-CONFIG_REGULATOR_PCA9450=y
+-CONFIG_REGULATOR_PFUZE100=y
+-CONFIG_REGULATOR_PWM=y
+-CONFIG_REGULATOR_QCOM_RPMH=y
+-CONFIG_REGULATOR_QCOM_SMD_RPM=y
+-CONFIG_REGULATOR_QCOM_SPMI=y
+-CONFIG_REGULATOR_RK808=y
+-CONFIG_REGULATOR_S2MPS11=y
+-CONFIG_REGULATOR_VCTRL=m
+ CONFIG_RC_CORE=m
+ CONFIG_RC_DECODERS=y
+ CONFIG_RC_DEVICES=y
+-- 
+2.11.0
+

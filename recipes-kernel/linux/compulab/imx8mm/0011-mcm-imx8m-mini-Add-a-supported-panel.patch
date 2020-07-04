@@ -1,7 +1,7 @@
-From 5192394d11f57ccd74c3aedcb7689fbf6147280c Mon Sep 17 00:00:00 2001
+From fb6bc4bbd9f1ffff9fda20adc922ce27f5c5367f Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Tue, 19 Feb 2019 12:04:29 +0200
-Subject: [PATCH 15/25] startek-ili9881c: Add panel driver
+Date: Fri, 3 Jul 2020 15:10:16 +0300
+Subject: [PATCH 11/14] mcm-imx8m-mini: Add a supported panel
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -12,12 +12,12 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 drivers/gpu/drm/panel/panel-startek-ili9881c.c
 
 diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index eb2a746..99cb1b4 100644
+index f152bc4eeb53..b9fc3dfce6e2 100644
 --- a/drivers/gpu/drm/panel/Kconfig
 +++ b/drivers/gpu/drm/panel/Kconfig
-@@ -28,6 +28,15 @@ config DRM_PANEL_SIMPLE
- 	  that it can be automatically turned off when the panel goes into a
- 	  low power state.
+@@ -65,6 +65,15 @@ config DRM_PANEL_ILITEK_ILI9881C
+ 	  Say Y if you want to enable support for panels based on the
+ 	  Ilitek ILI9881c controller.
  
 +config DRM_PANEL_STARTEK_ILI9881C
 +	tristate "Startek ILI9881C-based panels"
@@ -32,18 +32,20 @@ index eb2a746..99cb1b4 100644
  	tristate "Innolux P079ZCA panel"
  	depends on OF
 diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index 68a80b1..67a920c 100644
+index b6cd39fe0f20..523b5636539a 100644
 --- a/drivers/gpu/drm/panel/Makefile
 +++ b/drivers/gpu/drm/panel/Makefile
-@@ -12,4 +12,5 @@ obj-$(CONFIG_DRM_PANEL_SEIKO_43WVF1G) += panel-seiko-43wvf1g.o
- obj-$(CONFIG_DRM_PANEL_SHARP_LQ101R1SX01) += panel-sharp-lq101r1sx01.o
+@@ -33,6 +33,7 @@ obj-$(CONFIG_DRM_PANEL_SHARP_LS037V7DW01) += panel-sharp-ls037v7dw01.o
  obj-$(CONFIG_DRM_PANEL_SHARP_LS043T1LE01) += panel-sharp-ls043t1le01.o
+ obj-$(CONFIG_DRM_PANEL_SITRONIX_ST7701) += panel-sitronix-st7701.o
  obj-$(CONFIG_DRM_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
 +obj-$(CONFIG_DRM_PANEL_STARTEK_ILI9881C) += panel-startek-ili9881c.o
- obj-$(CONFIG_DRM_PANEL_RAYDIUM_RM67191) += panel-raydium-rm67191.o
+ obj-$(CONFIG_DRM_PANEL_SONY_ACX565AKM) += panel-sony-acx565akm.o
+ obj-$(CONFIG_DRM_PANEL_TPO_TD028TTEC1) += panel-tpo-td028ttec1.o
+ obj-$(CONFIG_DRM_PANEL_TPO_TD043MTEA1) += panel-tpo-td043mtea1.o
 diff --git a/drivers/gpu/drm/panel/panel-startek-ili9881c.c b/drivers/gpu/drm/panel/panel-startek-ili9881c.c
 new file mode 100644
-index 0000000..ca7b7c6
+index 000000000000..f832d055be4e
 --- /dev/null
 +++ b/drivers/gpu/drm/panel/panel-startek-ili9881c.c
 @@ -0,0 +1,648 @@
@@ -77,7 +79,7 @@ index 0000000..ca7b7c6
 +
 +#define   LCD_XSIZE_TFT   720
 +#define   LCD_YSIZE_TFT   1280
-+#define   PCLOCK          80000
++#define   PCLOCK          62000
 +#define   LCD_VBPD        20
 +#define   LCD_VFPD        10
 +#define   LCD_VSPW        10
@@ -696,5 +698,5 @@ index 0000000..ca7b7c6
 +MODULE_DESCRIPTION("Startek Panel Driver with Ilitek ILI9881C Controller");
 +MODULE_LICENSE("GPL v2");
 -- 
-1.9.1
+2.11.0
 
