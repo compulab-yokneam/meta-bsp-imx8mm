@@ -14,6 +14,10 @@ FILE_LIST = " \
 	file://0012-mcm-imx8m-mini-config-Add-defconfig.patch \
 	file://0013-ov5640_mipi_v2-gpio_set_value_cansleep.patch \
 	file://0014-mcm-imx8m-mini-uart4-Add-modem-reset.patch \
+	file://0015-Add-w25q16-support.patch \
+	file://0016-mcm-imx8m-mini_defconfig-Update-defconfig.patch \
+	file://0017-mcm-imx8m-mini-dts-Remove-unused-stuff.patch \
+	file://0018-mcm-imx8m-mini-dts-Update-usbotg1-flags-for-otg.patch \
 	file://defconfig \
 "
 
