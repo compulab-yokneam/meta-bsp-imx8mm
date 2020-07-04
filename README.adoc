@@ -28,3 +28,6 @@ This example shows how to build an NXP supported image for the `${COMPULAB_MACHI
 [source,console]
 MACHINE=${COMPULAB_MACHINE} source sources/meta-bsp-imx8mm/tools/setup-imx8mm-env -b build-xwayland
 bitbake -k fsl-image-qt5-validation-imx
+
+## Pre-built image
+* https://drive.google.com/drive/folders/1YBVkbQVl8pub3IbBey1JLv_m3V0frV1r[XWayland Qt5 Image]
