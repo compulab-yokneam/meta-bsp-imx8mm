@@ -1,7 +1,7 @@
-From b219b5c84de317da38822d1c34cb6a3abf395927 Mon Sep 17 00:00:00 2001
-From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Thu, 7 Feb 2019 08:14:46 +0200
-Subject: [PATCH 00/25] ucm-imx8m-mini: Add basic support
+From da9110e5be25b04f0a2f7c2f3ecf0ffd57621e0a Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 26 May 2020 20:38:08 +0300
+Subject: [PATCH 00/52] ucm-imx8m-mini: Add basic support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -50,21 +50,21 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 include/configs/ucm-imx8m-mini.h
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index c841df0..126b4d3 100644
+index 7d9a287e59..84d6037b1a 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -479,6 +479,8 @@ dtb-$(CONFIG_ARCH_IMX8) += fsl-imx8dx-17x17-val.dtb \
- 		fsl-imx8qxp-lpddr4-arm2.dtb \
- 		fsl-imx8qxp-mek.dtb
+@@ -652,6 +652,8 @@ dtb-$(CONFIG_RCAR_GEN2) += \
+ 	r8a7794-alt-u-boot.dtb \
+ 	r8a7794-silk-u-boot.dtb
  
 +dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
 +
  dtb-$(CONFIG_RCAR_GEN3) += \
- 	r8a7795-h3ulcb.dtb \
- 	r8a7795-salvator-x.dtb \
+ 	r8a7795-h3ulcb-u-boot.dtb \
+ 	r8a7795-salvator-x-u-boot.dtb \
 diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
 new file mode 100644
-index 0000000..112345b
+index 0000000000..112345b6a3
 --- /dev/null
 +++ b/arch/arm/dts/ucm-imx8m-mini.dts
 @@ -0,0 +1,452 @@
@@ -521,12 +521,12 @@ index 0000000..112345b
 +	status = "disabled";
 +};
 diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
-index 09779cd..27c020f 100644
+index 95dd5808bf..3772628337 100644
 --- a/arch/arm/mach-imx/imx8m/Kconfig
 +++ b/arch/arm/mach-imx/imx8m/Kconfig
-@@ -66,6 +66,11 @@ config TARGET_IMX8MM_DDR4_EVK
+@@ -100,6 +100,11 @@ config TARGET_IMX8MP_EVK
  	select SUPPORT_SPL
- 	select IMX8M_DDR4
+ 	select IMX8M_LPDDR4
  
 +config TARGET_UCM_IMX8M_MINI
 +	bool "CompuLab ucm-imx8m-mini"
@@ -535,20 +535,21 @@ index 09779cd..27c020f 100644
 +
  endchoice
  
- config SYS_SOC
-@@ -77,5 +82,6 @@ source "board/freescale/imx8mq_phanbell/Kconfig"
+ source "board/freescale/imx8mq_evk/Kconfig"
+@@ -107,6 +112,7 @@ source "board/freescale/imx8mq_arm2/Kconfig"
  source "board/freescale/imx8mq_aiy/Kconfig"
  source "board/freescale/imx8mm_evk/Kconfig"
  source "board/freescale/imx8mm_val/Kconfig"
 +source "board/compulab/ucm-imx8m-mini/Kconfig"
+ source "board/freescale/imx8mn_evk/Kconfig"
+ source "board/freescale/imx8mp_evk/Kconfig"
  
- endif
 diff --git a/board/compulab/common/Makefile b/board/compulab/common/Makefile
-index 286f327..ca75832 100644
+index 7ba92f5db0..1a8b63fb4b 100644
 --- a/board/compulab/common/Makefile
 +++ b/board/compulab/common/Makefile
-@@ -7,6 +7,7 @@
- #
+@@ -5,6 +5,7 @@
+ # Author: Igor Grinberg <grinberg@compulab.co.il>
  
  obj-y				+= common.o
 +obj-y				+= mmc.o
@@ -556,10 +557,10 @@ index 286f327..ca75832 100644
  obj-$(CONFIG_LCD)		+= omap3_display.o
  obj-$(CONFIG_SMC911X)		+= omap3_smc911x.o
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
-index bb4c9e9..65ba3d3 100644
+index a2e386f67d..13ef45c8ea 100644
 --- a/board/compulab/common/eeprom.c
 +++ b/board/compulab/common/eeprom.c
-@@ -11,8 +11,8 @@
+@@ -10,8 +10,8 @@
  #include <i2c.h>
  #include <eeprom_layout.h>
  #include <eeprom_field.h>
@@ -569,7 +570,7 @@ index bb4c9e9..65ba3d3 100644
  #include "eeprom.h"
  
  #ifndef CONFIG_SYS_I2C_EEPROM_ADDR
-@@ -83,7 +83,7 @@ static int cl_eeprom_setup(uint eeprom_bus)
+@@ -82,7 +82,7 @@ static int cl_eeprom_setup(uint eeprom_bus)
  	return 0;
  }
  
@@ -580,7 +581,7 @@ index bb4c9e9..65ba3d3 100644
  	uint offset;
 diff --git a/board/compulab/common/mmc.c b/board/compulab/common/mmc.c
 new file mode 100644
-index 0000000..9fc3e68
+index 0000000000..9fc3e68728
 --- /dev/null
 +++ b/board/compulab/common/mmc.c
 @@ -0,0 +1,50 @@
@@ -636,7 +637,7 @@ index 0000000..9fc3e68
 +}
 diff --git a/board/compulab/common/pfuze.c b/board/compulab/common/pfuze.c
 new file mode 100644
-index 0000000..f194d0b
+index 0000000000..f194d0b79d
 --- /dev/null
 +++ b/board/compulab/common/pfuze.c
 @@ -0,0 +1,174 @@
@@ -816,7 +817,7 @@ index 0000000..f194d0b
 +#endif
 diff --git a/board/compulab/common/pfuze.h b/board/compulab/common/pfuze.h
 new file mode 100644
-index 0000000..b799417
+index 0000000000..b799417070
 --- /dev/null
 +++ b/board/compulab/common/pfuze.h
 @@ -0,0 +1,19 @@
@@ -841,7 +842,7 @@ index 0000000..b799417
 +#endif
 diff --git a/board/compulab/common/pfuze_dm.c b/board/compulab/common/pfuze_dm.c
 new file mode 100644
-index 0000000..c6af627
+index 0000000000..c6af627827
 --- /dev/null
 +++ b/board/compulab/common/pfuze_dm.c
 @@ -0,0 +1,89 @@
@@ -936,7 +937,7 @@ index 0000000..c6af627
 +}
 diff --git a/board/compulab/common/tcpc.h b/board/compulab/common/tcpc.h
 new file mode 100644
-index 0000000..e1193c3
+index 0000000000..e1193c3f84
 --- /dev/null
 +++ b/board/compulab/common/tcpc.h
 @@ -0,0 +1,454 @@
@@ -1396,7 +1397,7 @@ index 0000000..e1193c3
 +#endif /* __TCPCI_H */
 diff --git a/board/compulab/ucm-imx8m-mini/Kconfig b/board/compulab/ucm-imx8m-mini/Kconfig
 new file mode 100644
-index 0000000..02b0e86
+index 0000000000..02b0e8638f
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/Kconfig
 @@ -0,0 +1,30 @@
@@ -1432,7 +1433,7 @@ index 0000000..02b0e86
 +endif
 diff --git a/board/compulab/ucm-imx8m-mini/Makefile b/board/compulab/ucm-imx8m-mini/Makefile
 new file mode 100644
-index 0000000..e335f9f
+index 0000000000..e335f9f556
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/Makefile
 @@ -0,0 +1,16 @@
@@ -1454,7 +1455,7 @@ index 0000000..e335f9f
 +endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/Makefile b/board/compulab/ucm-imx8m-mini/ddr/Makefile
 new file mode 100644
-index 0000000..05bc991
+index 0000000000..05bc99156c
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/Makefile
 @@ -0,0 +1,11 @@
@@ -1471,7 +1472,7 @@ index 0000000..05bc991
 +endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.h b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 new file mode 100644
-index 0000000..252b11e
+index 0000000000..252b11ed5b
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.h
 @@ -0,0 +1,59 @@
@@ -1536,7 +1537,7 @@ index 0000000..252b11e
 +#endif
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c b/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
 new file mode 100644
-index 0000000..6093d1b
+index 0000000000..ee2d4ad174
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
 @@ -0,0 +1,255 @@
@@ -1749,7 +1750,7 @@ index 0000000..6093d1b
 +	reg32_write(DDRC_SWCTL(0), 0x0000);
 +	/*
 +	 * ------------------- 9 -------------------
-+	 * Set DFIMISC.dfi_init_start to 1 
++	 * Set DFIMISC.dfi_init_start to 1
 +	 *  -----------------------------------------
 +	 */
 +	reg32_write(DDRC_DFIMISC(0), 0x00000030);
@@ -1797,7 +1798,7 @@ index 0000000..6093d1b
 +}
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c b/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
 new file mode 100644
-index 0000000..8116069
+index 0000000000..8116069dfb
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c
 @@ -0,0 +1,1044 @@
@@ -2847,7 +2848,7 @@ index 0000000..8116069
 +}
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/helper.c b/board/compulab/ucm-imx8m-mini/ddr/helper.c
 new file mode 100644
-index 0000000..050c87b
+index 0000000000..050c87b7fc
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/helper.c
 @@ -0,0 +1,103 @@
@@ -2956,7 +2957,7 @@ index 0000000..050c87b
 +}
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c b/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c
 new file mode 100644
-index 0000000..d85e345
+index 0000000000..d85e3456d5
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ddr/wait_ddrphy_training_complete.c
 @@ -0,0 +1,103 @@
@@ -3065,7 +3066,7 @@ index 0000000..d85e345
 +}
 diff --git a/board/compulab/ucm-imx8m-mini/lpddr4_timing.c b/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
 new file mode 100644
-index 0000000..72ba6ee
+index 0000000000..9c80caea8b
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
 @@ -0,0 +1,1980 @@
@@ -3103,11 +3104,11 @@ index 0000000..72ba6ee
 +	{ DDRC_DRAMTMG13(0), 0x0C100002 },
 +	{ DDRC_DRAMTMG14(0), 0x000000E6 },
 +	{ DDRC_DRAMTMG17(0), 0x00A00050 },
-+  
++
 +	{ DDRC_ZQCTL0(0), 0x03200018 },
 +	{ DDRC_ZQCTL1(0), 0x028061A8 },
 +	{ DDRC_ZQCTL2(0), 0x00000000 },
-+  
++
 +	{ DDRC_DFITMG0(0), 0x0497820A },
 +	{ DDRC_DFITMG2(0), 0x0000170A },
 +	{ DDRC_DRAMTMG2(0), 0x070E171a },
@@ -3118,7 +3119,7 @@ index 0000000..72ba6ee
 +	{ DDRC_DFIUPD1(0), 0x00DF00E4 },
 +	{ DDRC_DFIUPD2(0), 0x80000000 },
 +	{ DDRC_DFIMISC(0), 0x00000011 },
-+  
++
 +	{ DDRC_DFIPHYMSTR(0), 0x00000000 },
 +	{ DDRC_RANKCTL(0), 0x00000c99 },
 +
@@ -4837,7 +4838,7 @@ index 0000000..72ba6ee
 +	{ 0x90159, 0x400 },
 +	{ 0x9015a, 0x10e },
 +	{ 0x9015b, 0x8 },
-+	{ 0x9015c, 0xe8 }, 
++	{ 0x9015c, 0xe8 },
 +	{ 0x9015d, 0x109 },
 +	{ 0x9015e, 0x0 },
 +	{ 0x9015f, 0x8140 },
@@ -5051,7 +5052,7 @@ index 0000000..72ba6ee
 +};
 diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
 new file mode 100644
-index 0000000..6d9cccd
+index 0000000000..6d9cccdbcb
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/spl.c
 @@ -0,0 +1,258 @@
@@ -5315,7 +5316,7 @@ index 0000000..6d9cccd
 +}
 diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 new file mode 100644
-index 0000000..ef5d1ff
+index 0000000000..ef5d1ffa55
 --- /dev/null
 +++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
 @@ -0,0 +1,734 @@
@@ -6055,7 +6056,7 @@ index 0000000..ef5d1ff
 +#endif /*CONFIG_FSL_FASTBOOT*/
 diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
 new file mode 100644
-index 0000000..2212e76
+index 0000000000..2212e76acb
 --- /dev/null
 +++ b/configs/ucm-imx8m-mini_defconfig
 @@ -0,0 +1,56 @@
@@ -6117,7 +6118,7 @@ index 0000000..2212e76
 +CONFIG_FS_FAT=y
 diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
 new file mode 100644
-index 0000000..1605ab7
+index 0000000000..1605ab7281
 --- /dev/null
 +++ b/include/configs/ucm-imx8m-mini.h
 @@ -0,0 +1,361 @@
@@ -6483,5 +6484,5 @@ index 0000000..1605ab7
 +#endif
 +#endif
 -- 
-1.9.1
+2.11.0
 

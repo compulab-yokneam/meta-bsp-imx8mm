@@ -1,0 +1,106 @@
+From 31ceb5e87f9f89b63932c75fdad055013bd82fee Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 24 Apr 2019 13:55:44 +0300
+Subject: [PATCH 21/52] ucm-imx8m-mini: lpddr4_timing: Add ucm-imx8m-mini
+ support
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/ucm-imx8m-mini/lpddr4_timing.c | 39 +++++++++++++++------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
+
+diff --git a/board/compulab/ucm-imx8m-mini/lpddr4_timing.c b/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
+index 9c80caea8b..dfd68ea9d8 100644
+--- a/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
++++ b/board/compulab/ucm-imx8m-mini/lpddr4_timing.c
+@@ -4,34 +4,39 @@
+  * SPDX-License-Identifier: GPL-2.0+
+  */
+ #include <linux/kernel.h>
+-#include <asm/arch/ddr_memory_map.h>
++#include <common.h>
++#include <asm/arch/ddr.h>
+ #include <asm/arch/lpddr4_define.h>
+ #include <asm/arch/imx8m_ddr.h>
+ 
++#undef LPDDR4_CS
++#define LPDDR4_CS 0x3
++
+ struct dram_cfg_param lpddr4_ddrc_cfg[] = {
+ 	/* Start to config, default 3200mbps */
+ 	{ DDRC_DBG1(0),	0x00000001 },
+ 	{ DDRC_PWRCTL(0), 0x00000001 },
+-	{ DDRC_MSTR(0),	0xa1080020 },
++	{ DDRC_MSTR(0),	0xa3080020 },
+ 	{ DDRC_RFSHTMG(0), 0x005b00d2 },
+-	{ DDRC_INIT0(0), 0xC003061B },
+-	{ DDRC_INIT1(0), 0x009D0000 },
++	{ DDRC_INIT0(0), 0xC00305BA },
++	{ DDRC_INIT1(0), 0x00940000 },
+ 	{ DDRC_INIT3(0), 0x00D4002D },
+ 	{ DDRC_INIT4(0), (LPDDR4_MR3 << 16) | 0x0000 },
+-	{ DDRC_INIT6(0), 0x0066004a },
+-	{ DDRC_INIT7(0), 0x0006004a },
++	{ DDRC_INIT6(0), 0x0066004d },
++	{ DDRC_INIT7(0), 0x0016004d },
+ 
+-	{ DDRC_DRAMTMG0(0), 0x1A201B22 },
+-	{ DDRC_DRAMTMG1(0), 0x00060633 },
+-	{ DDRC_DRAMTMG3(0), 0x00C0C000 },
+-	{ DDRC_DRAMTMG4(0), 0x0F04080F },
++	{ DDRC_DRAMTMG0(0), 0x191e1920 },
++	{ DDRC_DRAMTMG1(0), 0x00060630 },
++	{ DDRC_DRAMTMG2(0), 0x070e1617},
++	{ DDRC_DRAMTMG3(0), 0x00b0b000},
++	{ DDRC_DRAMTMG4(0), 0x0e04080e},
+ 	{ DDRC_DRAMTMG5(0), 0x02040C0C },
+ 	{ DDRC_DRAMTMG6(0), 0x01010007 },
+ 	{ DDRC_DRAMTMG7(0), 0x00000401 },
+ 	{ DDRC_DRAMTMG12(0), 0x00020600 },
+ 	{ DDRC_DRAMTMG13(0), 0x0C100002 },
+-	{ DDRC_DRAMTMG14(0), 0x000000E6 },
+-	{ DDRC_DRAMTMG17(0), 0x00A00050 },
++	{ DDRC_DRAMTMG14(0), 0x000000d8 },
++	{ DDRC_DRAMTMG17(0), 0x0096004b },
+ 
+ 	{ DDRC_ZQCTL0(0), 0x03200018 },
+ 	{ DDRC_ZQCTL1(0), 0x028061A8 },
+@@ -52,14 +57,14 @@ struct dram_cfg_param lpddr4_ddrc_cfg[] = {
+ 	{ DDRC_RANKCTL(0), 0x00000c99 },
+ 
+ 	/* address mapping */
+-	{ DDRC_ADDRMAP0(0), 0x0000001f },
++	{ DDRC_ADDRMAP0(0), 0x00000016 },
+ 	{ DDRC_ADDRMAP1(0), 0x00080808 },
+ 	{ DDRC_ADDRMAP2(0), 0x00000000 },
+ 	{ DDRC_ADDRMAP3(0), 0x00000000 },
+ 	{ DDRC_ADDRMAP4(0), 0x00001f1f },
+ 	{ DDRC_ADDRMAP5(0), 0x07070707 },
+-	{ DDRC_ADDRMAP6(0), 0x07070707 },
+-	{ DDRC_ADDRMAP7(0), 0x00000f0f },
++	{ DDRC_ADDRMAP6(0), 0x0f070707 },
++	{ DDRC_ADDRMAP7(0), 0x00000000 },
+ 
+ 	/* performance setting */
+ 	{ DDRC_SCHED(0), 0x29001701 },
+@@ -84,7 +89,7 @@ struct dram_cfg_param lpddr4_ddrc_cfg[] = {
+ 	{ DDRC_FREQ1_DRAMTMG5(0), 0x0d0e0504 },
+ 	{ DDRC_FREQ1_DRAMTMG6(0), 0x0a060004 },
+ 	{ DDRC_FREQ1_DRAMTMG7(0), 0x0000090e },
+-	{ DDRC_FREQ1_DRAMTMG14(0), 0x00000032 },
++	{ DDRC_FREQ1_DRAMTMG14(0), 0x0000001d },
+ 	{ DDRC_FREQ1_DRAMTMG15(0), 0x00000000 },
+ 	{ DDRC_FREQ1_DRAMTMG17(0), 0x0036001b },
+ 	{ DDRC_FREQ1_DERATEINT(0), 0x7e9fbeb1 },
+@@ -1966,7 +1971,7 @@ struct dram_fsp_msg lpddr4_dram_fsp_msg[] = {
+ };
+ 
+ /* lpddr4 timing config params on EVK board */
+-struct dram_timing_info lpddr4_timing = {
++struct dram_timing_info dram_timing = {
+ 	.ddrc_cfg = lpddr4_ddrc_cfg,
+ 	.ddrc_cfg_num = ARRAY_SIZE(lpddr4_ddrc_cfg),
+ 	.ddrphy_cfg = lpddr4_ddrphy_cfg,
+-- 
+2.11.0
+

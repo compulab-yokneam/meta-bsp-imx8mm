@@ -1,0 +1,81 @@
+From bdcb55d53f5464dafc57a6938d21ca3a112eaed3 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Fri, 3 Jul 2020 16:04:42 +0300
+Subject: [PATCH 52/52] mcm-imx8m-mini: Fix basic support #2
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c |  8 ++++----
+ include/configs/mcm-imx8m-mini.h               | 13 +++++++------
+ 2 files changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
+index 598030ac01..4d3d4e74f5 100644
+--- a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
++++ b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
+@@ -287,7 +287,7 @@ int board_mmc_get_env_dev(int devno)
+ 		printf("User Environment dev# is (%lu)\n", user_env_devno);
+ 		return (int)user_env_devno;
+ 	}
+-	return devno - 1 ;
++	return devno;
+ }
+ 
+ static int _mmc_get_env_part(void)
+@@ -309,7 +309,7 @@ uint mmc_get_env_part(struct mmc *mmc)
+ }
+ 
+ int mmc_map_to_kernel_blk(int devno){
+-	return devno + 1;
++	return devno;
+ }
+ 
+ static void board_bootdev_init(void)
+@@ -317,10 +317,10 @@ static void board_bootdev_init(void)
+ 	u32 bootdev = get_boot_device();
+ 	switch (bootdev) {
+ 	case MMC3_BOOT:
+-		bootdev = 1;
++		bootdev = 2;
+ 		break;
+ 	case SD2_BOOT:
+-		bootdev = 0;
++		bootdev = 1;
+ 		break;
+ 	default:
+ 		env_set("bootdev", NULL);
+diff --git a/include/configs/mcm-imx8m-mini.h b/include/configs/mcm-imx8m-mini.h
+index 10239c8d8d..d38ab70433 100644
+--- a/include/configs/mcm-imx8m-mini.h
++++ b/include/configs/mcm-imx8m-mini.h
+@@ -133,12 +133,13 @@
+ 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
+ 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
+ 	"mmcautodetect=yes\0" \
+-	"emmc_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/mmcblk2p2;\0" \
+-	"sd_ul=setenv iface mmc; setenv dev 0; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/mmcblk1p2;\0" \
++	"root_opt=rootwait rw\0" \
++	"emmc_ul=setenv iface mmc; setenv dev 2; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk2p2 ${root_opt};\0" \
++	"sd_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk1p2 ${root_opt};\0" \
+ 	"usb_ul=usb start; setenv iface usb; setenv dev 0; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/sda2;\0" \
++	"setenv bootargs console=${console} root=/dev/sda2 ${root_opt};\0" \
+ 	"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
+ 	"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
+ 	"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
+@@ -199,7 +200,7 @@
+ #define CONFIG_ENV_OVERWRITE
+ #define CONFIG_ENV_OFFSET               0x1000
+ #define CONFIG_ENV_SIZE                 0x4000
+-#define CONFIG_SYS_MMC_ENV_DEV		0   /* USDHC2 */
++#define CONFIG_SYS_MMC_ENV_DEV		1   /* USDHC2 */
+ #define CONFIG_SYS_MMC_ENV_PART		1
+ #define CONFIG_MMCROOT			"/dev/mmcblk1p2"  /* USDHC2 */
+ 
+-- 
+2.11.0
+

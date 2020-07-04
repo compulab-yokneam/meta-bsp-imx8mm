@@ -1,0 +1,47 @@
+From b0b76ba4d5ca7981e4e1e67f84eab82c559f0f75 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Sun, 21 Apr 2019 22:17:20 +0300
+Subject: [PATCH 18/52] ucm-imx8m-mini: spl: Refacoring ddr_init() call
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/ucm-imx8m-mini/spl.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
+index 34f7683d2d..833183597a 100644
+--- a/board/compulab/ucm-imx8m-mini/spl.c
++++ b/board/compulab/ucm-imx8m-mini/spl.c
+@@ -22,21 +22,21 @@
+ 
+ #ifdef CONFIG_UCM_IMX8M_LPDDR4
+ #include <asm/arch/imx8m_ddr.h>
+-#else /* CONFIG_UCM_IMX8M_LPDDR4_VAL */
++static void __dram_init(void) {
++	ddr_init(&dram_timing);
++}
++#else
+ #include "ddr/ddr.h"
++static void __dram_init(void) {
++	ddr_init();
++}
+ #endif
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+ void spl_dram_init(void)
+ {
+-#ifdef CONFIG_UCM_IMX8M_LPDDR4
+-	/* ddr train */
+-	ddr_init(&lpddr4_timing);
+-#else /* CONFIG_UCM_IMX8M_LPDDR4_VAL */
+-	/* ddr train */
+-	ddr_init();
+-#endif
++	__dram_init();
+ }
+ 
+ #define I2C_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS | PAD_CTL_PUE)
+-- 
+2.11.0
+

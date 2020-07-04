@@ -1,0 +1,147 @@
+From deaf6b4523e385492bff6f33f026f71cf67946fc Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 27 May 2020 22:48:57 +0300
+Subject: [PATCH 41/52] Trivial cleaning
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/Makefile                          | 4 ++--
+ board/compulab/common/Makefile                 | 4 +++-
+ board/compulab/common/common.c                 | 3 ++-
+ board/compulab/common/common.h                 | 3 ++-
+ board/compulab/common/eeprom.c                 | 3 ++-
+ board/compulab/common/eeprom.h                 | 3 ++-
+ board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c | 2 +-
+ cmd/mem.c                                      | 3 ++-
+ 8 files changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 84d6037b1a..7de31e4128 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -642,6 +642,8 @@ dtb-$(CONFIG_ARCH_IMX8M) += fsl-imx8mq-evk.dtb \
+ 		fsl-imx8mq-aiy.dtb \
+ 		fsl-imx8mp-evk.dtb
+ 
++dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
++
+ dtb-$(CONFIG_RCAR_GEN2) += \
+ 	r8a7790-lager-u-boot.dtb \
+ 	r8a7790-stout-u-boot.dtb \
+@@ -652,8 +654,6 @@ dtb-$(CONFIG_RCAR_GEN2) += \
+ 	r8a7794-alt-u-boot.dtb \
+ 	r8a7794-silk-u-boot.dtb
+ 
+-dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
+-
+ dtb-$(CONFIG_RCAR_GEN3) += \
+ 	r8a7795-h3ulcb-u-boot.dtb \
+ 	r8a7795-salvator-x-u-boot.dtb \
+diff --git a/board/compulab/common/Makefile b/board/compulab/common/Makefile
+index 500858035f..0a26fdb426 100644
+--- a/board/compulab/common/Makefile
++++ b/board/compulab/common/Makefile
+@@ -1,8 +1,10 @@
+-# SPDX-License-Identifier: GPL-2.0+
+ #
+ # (C) Copyright 2011 - 2013 CompuLab, Ltd. <www.compulab.co.il>
+ #
+ # Author: Igor Grinberg <grinberg@compulab.co.il>
++#
++# SPDX-License-Identifier:	GPL-2.0+
++#
+ 
+ obj-y				+= common.o
+ obj-y				+= mmc.o
+diff --git a/board/compulab/common/common.c b/board/compulab/common/common.c
+index cbac112dd8..bf2ac7bd7f 100644
+--- a/board/compulab/common/common.c
++++ b/board/compulab/common/common.c
+@@ -1,8 +1,9 @@
+-// SPDX-License-Identifier: GPL-2.0+
+ /*
+  * (C) Copyright 2014 CompuLab, Ltd. <www.compulab.co.il>
+  *
+  * Authors: Igor Grinberg <grinberg@compulab.co.il>
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
+  */
+ 
+ #include <common.h>
+diff --git a/board/compulab/common/common.h b/board/compulab/common/common.h
+index 17cfbb6f27..759ec31317 100644
+--- a/board/compulab/common/common.h
++++ b/board/compulab/common/common.h
+@@ -1,8 +1,9 @@
+-/* SPDX-License-Identifier: GPL-2.0+ */
+ /*
+  * (C) Copyright 2014 CompuLab, Ltd. <www.compulab.co.il>
+  *
+  * Authors: Igor Grinberg <grinberg@compulab.co.il>
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
+  */
+ 
+ #ifndef _CL_COMMON_
+diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
+index 8e5f35eda3..cc91f8a195 100644
+--- a/board/compulab/common/eeprom.c
++++ b/board/compulab/common/eeprom.c
+@@ -1,9 +1,10 @@
+-// SPDX-License-Identifier: GPL-2.0+
+ /*
+  * (C) Copyright 2011 CompuLab, Ltd. <www.compulab.co.il>
+  *
+  * Authors: Nikita Kiryanov <nikita@compulab.co.il>
+  *	    Igor Grinberg <grinberg@compulab.co.il>
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
+  */
+ 
+ #include <common.h>
+diff --git a/board/compulab/common/eeprom.h b/board/compulab/common/eeprom.h
+index 2628d4ab86..09804ee146 100644
+--- a/board/compulab/common/eeprom.h
++++ b/board/compulab/common/eeprom.h
+@@ -1,9 +1,10 @@
+-/* SPDX-License-Identifier: GPL-2.0+ */
+ /*
+  * (C) Copyright 2011 CompuLab, Ltd. <www.compulab.co.il>
+  *
+  * Authors: Nikita Kiryanov <nikita@compulab.co.il>
+  *	    Igor Grinberg <grinberg@compulab.co.il>
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
+  */
+ 
+ #ifndef _EEPROM_
+diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+index fca256439b..cf3cefb30d 100644
+--- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
++++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+@@ -153,7 +153,7 @@ int board_postclk_init(void)
+ static phys_size_t imx8_ddr_size(void)
+ {
+     unsigned long value = readl(TCM_DATA_CFG);
+-    phys_size_t dram_size = 0x40000000;;
++    phys_size_t dram_size = 0x40000000;
+ 
+     switch (value) {
+     case 4096:
+diff --git a/cmd/mem.c b/cmd/mem.c
+index 3c04faa124..94c3bbe004 100644
+--- a/cmd/mem.c
++++ b/cmd/mem.c
+@@ -869,7 +869,8 @@ static int do_mem_mtest(cmd_tbl_t *cmdtp, int flag, int argc,
+ #else
+ 	const int alt_test = 0;
+ #endif
+-	/* Test only first bank */
++
++	/* Test only the first bank */
+ 	start = gd->bd->bi_dram[0].start;
+ 	end = start + gd->bd->bi_dram[0].size *
+ 		MEMTEST_NUMERATOR / MEMTEST_DIVIDER;
+-- 
+2.11.0
+
