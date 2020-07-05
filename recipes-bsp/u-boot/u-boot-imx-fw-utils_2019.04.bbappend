@@ -8,7 +8,8 @@ SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 SRCREV = "47c19229783cd51821d1cc13bedb0dd5850f00da"
 include compulab/imx8mm.inc
 
-SRC_URI =+ "file://fw_env.config \
+SRC_URI_append_mcm-imx8m-mini += "\
+	file://cl_setenv \
 "
 
 do_compile () {
@@ -16,6 +17,15 @@ do_compile () {
 	oe_runmake envtools
 }
 
+do_install_append () {
+	install -d ${D}/sbin
+	install -m 0755 ${WORKDIR}/cl_setenv ${D}/sbin/
+}
+
+RDEPENDS_${PN} += "bash"
+
+FILES_${PN} += "/sbin/cl_setenv"
+
 RPROVIDES_${PN} += "u-boot-fw-utils"
 
-COMPATIBLE_MACHINE = "(ucm-imx8m-mini|mcm-imx8m-mini)"
+COMPATIBLE_MACHINE = "mcm-imx8m-mini"
