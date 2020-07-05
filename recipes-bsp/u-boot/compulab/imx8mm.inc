@@ -1,4 +1,4 @@
-FILE_LIST = " \
+SRC_URI_append_mcm-imx8m-mini += "\
 	file://0000-ucm-imx8m-mini-Add-basic-support.patch \
 	file://0001-ucm-imx8m-mini-update-CPU-model-printed-parameters.patch \
 	file://0002-ucm-imx8m-mini-Fix-KConfig-warning.patch \
@@ -53,8 +53,6 @@ FILE_LIST = " \
 	file://0051-mcm-imx8m-mini-Fix-basic-support-1.patch \
 	file://0052-mcm-imx8m-mini-Fix-basic-support-2.patch \
 	file://0053-mcm-imx8m-mini-Fix-basic-support-3.patch \
+	file://0054-mcm-imx8m-mini-env-Update-config-and-main-file.patch \
 	file://mcm-imx8m-mini_defconfig \
 "
-
-SRC_URI_append_ucm-imx8m-mini += "${FILE_LIST}"
-SRC_URI_append_mcm-imx8m-mini += "${FILE_LIST}"
