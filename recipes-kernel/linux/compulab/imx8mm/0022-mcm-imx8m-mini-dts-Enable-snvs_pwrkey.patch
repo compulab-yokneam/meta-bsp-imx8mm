@@ -1,0 +1,28 @@
+From eea0813f99cfe69913d9ea88aed971f87ee87840 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 6 Jul 2020 16:46:05 +0300
+Subject: [PATCH 22/23] mcm-imx8m-mini: dts: Enable snvs_pwrkey
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+index 54b46a73ec9d..d3fcb0c55e17 100644
+--- a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+@@ -580,6 +580,10 @@
+ 	status = "okay";
+ };
+ 
++&snvs_pwrkey {
++	status = "okay";
++};
++
+ &fec1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_fec1>;
+-- 
+2.11.0
+

@@ -1,4 +1,4 @@
-FILE_LIST = " \
+SRC_URI_append_mcm-imx8m-mini = " \
 	file://0000-imx8m-mini-add-basic-support.patch \
 	file://0001-dts-Fix-usdhc1-properties.patch \
 	file://0002-defconfig-Delete-some-unnecessary-drivers.patch \
@@ -20,8 +20,8 @@ FILE_LIST = " \
 	file://0018-mcm-imx8m-mini-dts-Update-usbotg1-flags-for-otg.patch \
 	file://0019-mcm-imx8m-mini-dts-Update-sai2-definition.patch \
 	file://0020-mcm-imx8m-mini-dts-Update-pmic-definition.patch \
+	file://0021-mcm-imx8m-mini-dts-Enable-UART2.patch \
+	file://0022-mcm-imx8m-mini-dts-Enable-snvs_pwrkey.patch \
+	file://0023-mcm-imx8m-mini-config-Update-defconfig.patch \
 	file://defconfig \
 "
-
-SRC_URI_append_ucm-imx8m-mini = "${FILE_LIST}"
-SRC_URI_append_mcm-imx8m-mini = "${FILE_LIST}"

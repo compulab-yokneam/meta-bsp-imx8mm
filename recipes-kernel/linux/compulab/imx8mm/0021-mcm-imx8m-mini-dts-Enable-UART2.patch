@@ -1,0 +1,46 @@
+From 54ad8eb8d4f7ec4ad8d4f094fb5a3c838f36d01c Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 6 Jul 2020 16:30:58 +0300
+Subject: [PATCH 21/23] mcm-imx8m-mini: dts: Enable UART2
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+index 70e54eec9f90..54b46a73ec9d 100644
+--- a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+@@ -197,6 +197,13 @@
+ 			>;
+ 		};
+ 
++		pinctrl_uart2: uart2grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX	0x140
++				MX8MM_IOMUXC_UART2_TXD_UART2_DCE_TX	0x140
++			>;
++		};
++
+ 		pinctrl_uart3: uart3grp {
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_UART3_RXD_UART3_DCE_RX	0x49
+@@ -604,6 +611,14 @@
+ 	status = "okay";
+ };
+ 
++&uart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++	assigned-clocks = <&clk IMX8MM_CLK_UART2>;
++	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
++	status = "okay";
++};
++
+ &uart3 { /* console */
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart3>;
+-- 
+2.11.0
+
