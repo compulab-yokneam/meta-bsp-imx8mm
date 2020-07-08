@@ -1,6 +1,4 @@
-FILE_LIST = " \
-	file://0001-imx8mm_bl31_setup-Unassign-DOM1-resources.patch \
+SRC_URI_append_mcm-imx8m-mini = " \
+	file://0001-imx8mm-Set-IMX_BOOT_UART_BASE-for-CompuLab-boards.patch \
+	file://0002-imx8mm-Assign-RDC_PDAP_UART4-to-D0.patch \
 "
-
-SRC_URI_append_ucm-imx8m-mini = "${FILE_LIST}"
-SRC_URI_append_mcm-imx8m-mini = "${FILE_LIST}"
