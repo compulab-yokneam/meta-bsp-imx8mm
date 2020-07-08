@@ -1,7 +1,7 @@
-From 878dd060bbab08314cbfb401635efd001efced66 Mon Sep 17 00:00:00 2001
+From 147fd3b0611beb362eb73509a69680d9b9c2e1aa Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sat, 4 Jul 2020 14:19:49 +0300
-Subject: [PATCH 17/18] mcm-imx8m-mini: dts:Remove unused stuff
+Subject: [PATCH 17/23] mcm-imx8m-mini: dts:Remove unused stuff
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

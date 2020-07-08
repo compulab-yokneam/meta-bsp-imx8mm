@@ -1,7 +1,7 @@
-From 65d6ed44670f7e5d17a7d68ae8153523ab321e1a Mon Sep 17 00:00:00 2001
+From 7eaa2bf598df11e31b709ca1a3f1ea3b748f27e3 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 15 Jun 2020 15:14:46 +0300
-Subject: [PATCH 00/14] imx8m-mini: add basic support
+Subject: [PATCH 00/23] imx8m-mini: add basic support
 
 The first working build of Linux 5.4.3 for Compulab ucm-imx8m-mini
 

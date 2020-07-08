@@ -1,7 +1,7 @@
-From 49e2acd8e7c209eee63ae61bf3ac89b23406bf32 Mon Sep 17 00:00:00 2001
+From 43833c54262cca8c934d2516ae32f3c9f1f127a3 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sat, 4 Jul 2020 14:20:26 +0300
-Subject: [PATCH 18/18] mcm-imx8m-mini: dts: Update usbotg1 flags for otg
+Subject: [PATCH 18/23] mcm-imx8m-mini: dts: Update usbotg1 flags for otg
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
