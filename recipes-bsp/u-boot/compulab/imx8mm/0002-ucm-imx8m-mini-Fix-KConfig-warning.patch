@@ -1,7 +1,7 @@
-From b11dfac4c8349c7047b0532724749ffb36e6a936 Mon Sep 17 00:00:00 2001
+From 5cbe06aecf9361587b480f043b57e31a82548135 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 13 Feb 2019 08:56:03 +0200
-Subject: [PATCH 02/52] ucm-imx8m-mini: Fix KConfig warning
+Subject: [PATCH 02/49] ucm-imx8m-mini: Fix KConfig warning
 
 The following compilation warning is generated:
 choice value used outside its choice group

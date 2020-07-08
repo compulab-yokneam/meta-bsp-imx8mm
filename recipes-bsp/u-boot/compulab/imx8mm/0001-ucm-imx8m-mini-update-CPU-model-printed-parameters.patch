@@ -1,15 +1,14 @@
-From 9137fcfa153220ad809adc066cb3bcc884c21309 Mon Sep 17 00:00:00 2001
+From 162394fe735ff4bede610aa53901de2e3b025bd2 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 26 May 2020 20:55:00 +0300
-Subject: [PATCH 01/52] ucm-imx8m-mini: update CPU/model printed parameters
+Subject: [PATCH 01/49] ucm-imx8m-mini: update CPU/model printed parameters
 
 Update the startup messages of the CPU and model parameters
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
- arch/arm/dts/ucm-imx8m-mini.dts |  2 +-
- arch/arm/mach-imx/cpu.c         | 11 +++++++++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ arch/arm/dts/ucm-imx8m-mini.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
 index 112345b6a3..899899c1c6 100644
@@ -24,52 +23,6 @@ index 112345b6a3..899899c1c6 100644
  	compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
  
  	chosen {
-diff --git a/arch/arm/mach-imx/cpu.c b/arch/arm/mach-imx/cpu.c
-index 0c89dc98c6..aa2279f720 100644
---- a/arch/arm/mach-imx/cpu.c
-+++ b/arch/arm/mach-imx/cpu.c
-@@ -253,7 +253,11 @@ int print_cpuinfo(void)
- 
- #if defined(CONFIG_IMX_THERMAL) || defined(CONFIG_NXP_TMU)
- 	struct udevice *thermal_dev;
-+#ifdef CONFIG_TARGET_UCM_IMX8M_MINI
-+	int cpu_tmp, ret;
-+#else /* !CONFIG_TARGET_UCM_IMX8M_MINI */
- 	int cpu_tmp, minc, maxc, ret;
-+#endif /* CONFIG_TARGET_UCM_IMX8M_MINI */
- 
- 	printf("CPU:   Freescale i.MX%s rev%d.%d",
- 	       get_imx_type((cpurev & 0x1FF000) >> 12),
-@@ -275,7 +279,9 @@ int print_cpuinfo(void)
- #endif
- 
- #if defined(CONFIG_IMX_THERMAL) || defined(CONFIG_NXP_TMU)
-+
- 	puts("CPU:   ");
-+#ifndef CONFIG_TARGET_UCM_IMX8M_MINI
- 	switch (get_cpu_temp_grade(&minc, &maxc)) {
- 	case TEMP_AUTOMOTIVE:
- 		puts("Automotive temperature grade ");
-@@ -291,6 +297,7 @@ int print_cpuinfo(void)
- 		break;
- 	}
- 	printf("(%dC to %dC)", minc, maxc);
-+#endif/* !CONFIG_TARGET_UCM_IMX8M_MINI */
- #if	defined(CONFIG_NXP_TMU)
- 	ret = uclass_get_device_by_name(UCLASS_THERMAL, "cpu-thermal", &thermal_dev);
- #else
-@@ -300,7 +307,11 @@ int print_cpuinfo(void)
- 		ret = thermal_get_temp(thermal_dev, &cpu_tmp);
- 
- 		if (!ret)
-+#ifdef CONFIG_TARGET_UCM_IMX8M_MINI
-+			printf("Running at %dC\n", cpu_tmp);
-+#else /* !CONFIG_TARGET_UCM_IMX8M_MINI */
- 			printf(" at %dC\n", cpu_tmp);
-+#endif /* CONFIG_TARGET_UCM_IMX8M_MINI */
- 		else
- 			debug(" - invalid sensor data\n");
- 	} else {
 -- 
 2.11.0
 

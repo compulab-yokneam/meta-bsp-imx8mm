@@ -1,0 +1,85 @@
+From 1fa44f3fb6b0913b1fbdbba858c8cf4c41b837c2 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 20 Feb 2019 08:21:05 +0200
+Subject: [PATCH 10/49] ucm-imx8m-mini: config: Remove unused stuff
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ include/configs/ucm-imx8m-mini.h | 53 ----------------------------------------
+ 1 file changed, 53 deletions(-)
+
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index f464ed822b..214dad40ed 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -191,16 +191,7 @@
+         (CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_SP_OFFSET)
+ 
+ #define CONFIG_ENV_OVERWRITE
+-#if defined(CONFIG_ENV_IS_IN_MMC)
+ #define CONFIG_ENV_OFFSET               (64 * SZ_64K)
+-#elif defined(CONFIG_ENV_IS_IN_SPI_FLASH)
+-#define CONFIG_ENV_OFFSET		(4 * 1024 * 1024)
+-#define CONFIG_ENV_SECT_SIZE		(64 * 1024)
+-#define CONFIG_ENV_SPI_BUS		CONFIG_SF_DEFAULT_BUS
+-#define CONFIG_ENV_SPI_CS		CONFIG_SF_DEFAULT_CS
+-#define CONFIG_ENV_SPI_MODE		CONFIG_SF_DEFAULT_MODE
+-#define CONFIG_ENV_SPI_MAX_HZ		CONFIG_SF_DEFAULT_SPEED
+-#endif
+ #define CONFIG_ENV_SIZE			0x1000
+ #define CONFIG_SYS_MMC_ENV_DEV		0   /* USDHC2 */
+ #define CONFIG_MMCROOT			"/dev/mmcblk1p2"  /* USDHC2 */
+@@ -262,50 +253,6 @@
+ #define CONFIG_SUPPORT_EMMC_BOOT	/* eMMC specific */
+ #define CONFIG_SYS_MMC_IMG_LOAD_PART	1
+ 
+-#ifdef CONFIG_FSL_FSPI
+-#define CONFIG_SF_DEFAULT_BUS		0
+-#define CONFIG_SF_DEFAULT_CS		0
+-#define CONFIG_SF_DEFAULT_SPEED	40000000
+-#define CONFIG_SF_DEFAULT_MODE		SPI_MODE_0
+-#define FSL_FSPI_FLASH_SIZE		SZ_32M
+-#define FSL_FSPI_FLASH_NUM		1
+-#define FSPI0_BASE_ADDR			0x30bb0000
+-#define FSPI0_AMBA_BASE			0x0
+-#define	CONFIG_SPI_FLASH_BAR
+-#define CONFIG_FSPI_QUAD_SUPPORT
+-
+-#define CONFIG_SYS_FSL_FSPI_AHB
+-#endif
+-
+-/* Enable SPI */
+-#ifndef CONFIG_NAND_MXS
+-#ifndef CONFIG_FSL_FSPI
+-#ifdef CONFIG_CMD_SF
+-#define CONFIG_SPI_FLASH
+-#define CONFIG_SPI_FLASH_STMICRO
+-#define CONFIG_MXC_SPI
+-#define CONFIG_SF_DEFAULT_BUS  0
+-#define CONFIG_SF_DEFAULT_SPEED 20000000
+-#define CONFIG_SF_DEFAULT_MODE (SPI_MODE_0)
+-#endif
+-#endif
+-#endif
+-
+-#ifdef CONFIG_NAND_MXS
+-#define CONFIG_CMD_NAND_TRIMFFS
+-
+-/* NAND stuff */
+-#define CONFIG_SYS_MAX_NAND_DEVICE     1
+-#define CONFIG_SYS_NAND_BASE           0x20000000
+-#define CONFIG_SYS_NAND_5_ADDR_CYCLE
+-#define CONFIG_SYS_NAND_ONFI_DETECTION
+-
+-/* DMA stuff, needed for GPMI/MXS NAND support */
+-#define CONFIG_APBH_DMA
+-#define CONFIG_APBH_DMA_BURST
+-#define CONFIG_APBH_DMA_BURST8
+-#endif
+-
+ #define CONFIG_MXC_GPIO
+ 
+ #define CONFIG_MXC_OCOTP
+-- 
+2.11.0
+

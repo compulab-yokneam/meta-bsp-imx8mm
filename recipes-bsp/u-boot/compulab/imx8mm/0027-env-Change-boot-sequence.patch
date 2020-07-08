@@ -1,0 +1,103 @@
+From d36276cb0ec4089e420fa61c5fbd154c6efdbf5f Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sat, 31 Aug 2019 20:20:34 +0300
+Subject: [PATCH 27/49] env: Change boot sequence
+
+Boot commands have been refactored to make them uniform and simplify a boot
+sequence edition.
+The actual boot sequence is:
+uSD - USB storage - eMMC - UMS.
+On each of the stages sequentially try to load from part 1: a script boot.scr;
+if not, a pair of files Image + default DTB.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ include/configs/ucm-imx8m-mini.h | 55 ++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 27 deletions(-)
+
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index 175b41ccf6..983209fd19 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -122,7 +122,7 @@
+ 	"console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200\0" \
+ 	"fdt_addr=0x43000000\0"			\
+ 	"fdt_high=0xffffffffffffffff\0"		\
+-	"boot_fdt=try\0" \
++	"boot_fdt=yes\0" \
+ 	"fdt_file="CONFIG_DEFAULT_DEVICE_TREE".dtb\0" \
+ 	"initrd_addr=0x43800000\0"		\
+ 	"initrd_high=0xffffffffffffffff\0" \
+@@ -130,23 +130,18 @@
+ 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
+ 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
+ 	"mmcautodetect=yes\0" \
+-	"mmcargs=setenv bootargs console=${console} root=${mmcroot}\0 " \
+-	"loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};\0" \
++	"emmc_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk2p2;\0" \
++	"sd_ul=setenv iface mmc; setenv dev 0; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk1p2;\0" \
++	"usb_ul=usb start; setenv iface usb; setenv dev 0; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/sda2;\0" \
++	"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
++	"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
++	"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
++		"load ${iface} ${dev}:${part} ${fdt_addr} ${fdt_file}; fi;\0" \
+ 	"bootscript=echo Running bootscript from mmc ...; " \
+ 		"source\0" \
+-	"loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}\0" \
+-	"loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}\0" \
+-	"mmcboot=echo Booting from mmc ...; " \
+-		"run mmcargs; " \
+-		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
+-			"if run loadfdt; then " \
+-				"booti ${loadaddr} - ${fdt_addr}; " \
+-			"else " \
+-				"echo WARN: Cannot load the DT; " \
+-			"fi; " \
+-		"else " \
+-			"echo wait for boot; " \
+-		"fi;\0" \
+ 	"netargs=setenv bootargs console=${console} " \
+ 		"root=/dev/nfs " \
+ 		"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
+@@ -167,18 +162,24 @@
+ 		"else " \
+ 			"booti; " \
+ 		"fi;\0"
+-
+ #define CONFIG_BOOTCOMMAND \
+-	   "mmc dev ${mmcdev}; if mmc rescan; then " \
+-		   "if run loadbootscript; then " \
+-			   "run bootscript; " \
+-		   "else " \
+-			   "if run loadimage; then " \
+-				   "run mmcboot; " \
+-			   "else run netboot; " \
+-			   "fi; " \
+-		   "fi; " \
+-	   "else booti ${loadaddr} - ${fdt_addr}; fi"
++	"for src in sd_ul usb_ul emmc_ul; do " \
++		"run ${src}; " \
++		"if run ulbootscript; then " \
++			"run bootscript; " \
++		"else " \
++			"if run ulimage; then " \
++				"if run ulfdt; then " \
++					"booti ${loadaddr} - ${fdt_addr}; " \
++				"else " \
++					"if test ${boot_fdt} != yes; then " \
++						"booti ${loadaddr}; " \
++					"fi; " \
++				"fi; " \
++			"fi; " \
++		"fi; " \
++	"done; " \
++	"usb start; ums 0 mmc ${mmcdev};"
+ 
+ /* Link Definitions */
+ #define CONFIG_LOADADDR			0x40480000
+-- 
+2.11.0
+

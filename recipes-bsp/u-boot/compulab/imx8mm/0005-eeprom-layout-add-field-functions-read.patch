@@ -1,7 +1,7 @@
-From e8e9442cd2a03cbfff4e12a1e7d360e9ff7c6e3f Mon Sep 17 00:00:00 2001
+From 0e6514fd48b6c544ffc51f6c25203ae7f69bdc61 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Sep 2017 10:07:26 +0300
-Subject: [PATCH 05/52] eeprom: layout: add field functions read
+Subject: [PATCH 05/49] eeprom: layout: add field functions read
 
 Read option is missing in the EEPROM layout feature
 
@@ -11,28 +11,24 @@ provided buffer without manipulation.
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
- board/compulab/common/eeprom.c | 107 +++++++++++++++++++++--------------------
- common/eeprom/eeprom_field.c   |  22 +++++++++
- common/eeprom/eeprom_layout.c  |  37 ++++++++++++++
- include/eeprom_field.h         |   4 ++
- include/eeprom_layout.h        |   2 +
- 5 files changed, 119 insertions(+), 53 deletions(-)
+ board/compulab/common/eeprom.c | 91 +++++++++++++++++++++---------------------
+ common/eeprom/eeprom_field.c   | 22 ++++++++++
+ common/eeprom/eeprom_layout.c  | 37 +++++++++++++++++
+ include/eeprom_field.h         |  4 ++
+ include/eeprom_layout.h        |  2 +
+ 5 files changed, 111 insertions(+), 45 deletions(-)
 
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
-index 72cd5dabbb..e12ad15176 100644
+index 9a9581403d..fdb367550d 100644
 --- a/board/compulab/common/eeprom.c
 +++ b/board/compulab/common/eeprom.c
-@@ -401,16 +401,20 @@ int eeprom_field_update_date(struct eeprom_field *field, uchar *fbuf,
+@@ -402,14 +402,15 @@ int eeprom_field_update_date(struct eeprom_field *field, uchar *fbuf,
  
  extern struct eeprom_field layout_unknown[1];
  
 -#define DEFINE_PRINT_UPDATE(x) eeprom_field_print_##x, eeprom_field_update_##x
 +#define DEFINE_FIELD_FUNC(x) eeprom_field_print_##x, eeprom_field_update_##x, \
 +			     eeprom_field_read_bin
-+
-+#define FIELD_FUNC_RES_LAST eeprom_field_print_reserved, \
-+			    eeprom_field_update_ascii,   \
-+			    eeprom_field_read_bin
  
  #ifdef CONFIG_CM_T3X
  struct eeprom_field layout_legacy[5] = {
@@ -40,19 +36,16 @@ index 72cd5dabbb..e12ad15176 100644
 -	{ "Board Revision",       2, DEFINE_PRINT_UPDATE(bin) },
 -	{ "Serial Number",        8, DEFINE_PRINT_UPDATE(bin) },
 -	{ "Board Configuration", 64, DEFINE_PRINT_UPDATE(ascii) },
--	{ RESERVED_FIELDS,      176, eeprom_field_print_reserved,
--				     eeprom_field_update_ascii },
 +	{ "MAC address",          6, DEFINE_FIELD_FUNC(mac) },
 +	{ "Board Revision",       2, DEFINE_FIELD_FUNC(bin) },
 +	{ "Serial Number",        8, DEFINE_FIELD_FUNC(bin) },
 +	{ "Board Configuration", 64, DEFINE_FIELD_FUNC(ascii) },
-+	{ RESERVED_FIELDS,      176, FIELD_FUNC_RES_LAST }
+ 	{ RESERVED_FIELDS,      176, eeprom_field_print_reserved,
+ 				     eeprom_field_update_ascii },
  };
- #else
- #define layout_legacy layout_unknown
-@@ -418,61 +422,58 @@ struct eeprom_field layout_legacy[5] = {
+@@ -419,17 +420,17 @@ struct eeprom_field layout_legacy[5] = {
  
- #if defined(CONFIG_CM_T3X) || defined(CONFIG_CM_T3517)
+ #if defined(CONFIG_CM_T3X)
  struct eeprom_field layout_v1[12] = {
 -	{ "Major Revision",      2, DEFINE_PRINT_UPDATE(bin_ver) },
 -	{ "Minor Revision",      2, DEFINE_PRINT_UPDATE(bin_ver) },
@@ -65,8 +58,6 @@ index 72cd5dabbb..e12ad15176 100644
 -	{ "Product Options #1", 16, DEFINE_PRINT_UPDATE(ascii) },
 -	{ "Product Options #2", 16, DEFINE_PRINT_UPDATE(ascii) },
 -	{ "Product Options #3", 16, DEFINE_PRINT_UPDATE(ascii) },
--	{ RESERVED_FIELDS,      64, eeprom_field_print_reserved,
--				    eeprom_field_update_ascii },
 +	{ "Major Revision",      2, DEFINE_FIELD_FUNC(bin_ver) },
 +	{ "Minor Revision",      2, DEFINE_FIELD_FUNC(bin_ver) },
 +	{ "1st MAC Address",     6, DEFINE_FIELD_FUNC(mac) },
@@ -78,10 +69,10 @@ index 72cd5dabbb..e12ad15176 100644
 +	{ "Product Options #1", 16, DEFINE_FIELD_FUNC(ascii) },
 +	{ "Product Options #2", 16, DEFINE_FIELD_FUNC(ascii) },
 +	{ "Product Options #3", 16, DEFINE_FIELD_FUNC(ascii) },
-+	{ RESERVED_FIELDS,      64, FIELD_FUNC_RES_LAST }
+ 	{ RESERVED_FIELDS,      64, eeprom_field_print_reserved,
+ 				    eeprom_field_update_ascii },
  };
- #else
- #define layout_v1 layout_unknown
+@@ -438,40 +439,40 @@ struct eeprom_field layout_v1[12] = {
  #endif
  
  struct eeprom_field layout_v2[15] = {
@@ -99,8 +90,6 @@ index 72cd5dabbb..e12ad15176 100644
 -	{ "Product Options #1",       16, DEFINE_PRINT_UPDATE(ascii) },
 -	{ "Product Options #2",       16, DEFINE_PRINT_UPDATE(ascii) },
 -	{ "Product Options #3",       16, DEFINE_PRINT_UPDATE(ascii) },
--	{ RESERVED_FIELDS,            64, eeprom_field_print_reserved,
--					  eeprom_field_update_ascii },
 +	{ "Major Revision",            2, DEFINE_FIELD_FUNC(bin_ver) },
 +	{ "Minor Revision",            2, DEFINE_FIELD_FUNC(bin_ver) },
 +	{ "1st MAC Address",           6, DEFINE_FIELD_FUNC(mac) },
@@ -115,7 +104,8 @@ index 72cd5dabbb..e12ad15176 100644
 +	{ "Product Options #1",       16, DEFINE_FIELD_FUNC(ascii) },
 +	{ "Product Options #2",       16, DEFINE_FIELD_FUNC(ascii) },
 +	{ "Product Options #3",       16, DEFINE_FIELD_FUNC(ascii) },
-+	{ RESERVED_FIELDS,            64, FIELD_FUNC_RES_LAST },
+ 	{ RESERVED_FIELDS,            64, eeprom_field_print_reserved,
+ 					  eeprom_field_update_ascii },
  };
  
  struct eeprom_field layout_v3[16] = {
@@ -134,8 +124,6 @@ index 72cd5dabbb..e12ad15176 100644
 -	{ "Product Options #1",       16, DEFINE_PRINT_UPDATE(ascii) },
 -	{ "Product Options #2",       16, DEFINE_PRINT_UPDATE(ascii) },
 -	{ "Product Options #3",       16, DEFINE_PRINT_UPDATE(ascii) },
--	{ RESERVED_FIELDS,            64, eeprom_field_print_reserved,
--					  eeprom_field_update_ascii },
 +	{ "Major Revision",            2, DEFINE_FIELD_FUNC(bin_ver) },
 +	{ "Minor Revision",            2, DEFINE_FIELD_FUNC(bin_ver) },
 +	{ "1st MAC Address",           6, DEFINE_FIELD_FUNC(mac) },
@@ -151,10 +139,9 @@ index 72cd5dabbb..e12ad15176 100644
 +	{ "Product Options #1",       16, DEFINE_FIELD_FUNC(ascii) },
 +	{ "Product Options #2",       16, DEFINE_FIELD_FUNC(ascii) },
 +	{ "Product Options #3",       16, DEFINE_FIELD_FUNC(ascii) },
-+	{ RESERVED_FIELDS,            64, FIELD_FUNC_RES_LAST },
+ 	{ RESERVED_FIELDS,            64, eeprom_field_print_reserved,
+ 					  eeprom_field_update_ascii },
  };
- 
- void eeprom_layout_assign(struct eeprom_layout *layout, int layout_version)
 diff --git a/common/eeprom/eeprom_field.c b/common/eeprom/eeprom_field.c
 index 38827f1180..e588b0943f 100644
 --- a/common/eeprom/eeprom_field.c

@@ -1,13 +1,13 @@
-From da9110e5be25b04f0a2f7c2f3ecf0ffd57621e0a Mon Sep 17 00:00:00 2001
+From 0b540f1b98880277181ccb9a0bb454f26b27bb4f Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 26 May 2020 20:38:08 +0300
-Subject: [PATCH 00/52] ucm-imx8m-mini: Add basic support
+Subject: [PATCH 00/49] ucm-imx8m-mini: Add basic support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
  arch/arm/dts/Makefile                              |    2 +
  arch/arm/dts/ucm-imx8m-mini.dts                    |  452 +++++
- arch/arm/mach-imx/imx8m/Kconfig                    |    6 +
+ arch/arm/mach-imx/imx8m/Kconfig                    |    7 +
  board/compulab/common/Makefile                     |    1 +
  board/compulab/common/eeprom.c                     |    4 +-
  board/compulab/common/mmc.c                        |   50 +
@@ -28,7 +28,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c     |  734 ++++++++
  configs/ucm-imx8m-mini_defconfig                   |   56 +
  include/configs/ucm-imx8m-mini.h                   |  361 ++++
- 23 files changed, 6259 insertions(+), 2 deletions(-)
+ 23 files changed, 6260 insertions(+), 2 deletions(-)
  create mode 100644 arch/arm/dts/ucm-imx8m-mini.dts
  create mode 100644 board/compulab/common/mmc.c
  create mode 100644 board/compulab/common/pfuze.c
@@ -50,10 +50,10 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  create mode 100644 include/configs/ucm-imx8m-mini.h
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 7d9a287e59..84d6037b1a 100644
+index cd506c2e7a..944c8d13bb 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -652,6 +652,8 @@ dtb-$(CONFIG_RCAR_GEN2) += \
+@@ -809,6 +809,8 @@ dtb-$(CONFIG_RCAR_GEN2) += \
  	r8a7794-alt-u-boot.dtb \
  	r8a7794-silk-u-boot.dtb
  
@@ -521,29 +521,29 @@ index 0000000000..112345b6a3
 +	status = "disabled";
 +};
 diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
-index 95dd5808bf..3772628337 100644
+index fb6dfe3355..7a059a10a5 100644
 --- a/arch/arm/mach-imx/imx8m/Kconfig
 +++ b/arch/arm/mach-imx/imx8m/Kconfig
-@@ -100,6 +100,11 @@ config TARGET_IMX8MP_EVK
- 	select SUPPORT_SPL
- 	select IMX8M_LPDDR4
+@@ -129,6 +129,12 @@ config TARGET_VERDIN_IMX8MM
+        select SUPPORT_SPL
+        select IMX8M_LPDDR4
  
 +config TARGET_UCM_IMX8M_MINI
 +	bool "CompuLab ucm-imx8m-mini"
 +	select IMX8MM
 +	select SUPPORT_SPL
++	select IMX8M_LPDDR4
 +
  endchoice
  
  source "board/freescale/imx8mq_evk/Kconfig"
-@@ -107,6 +112,7 @@ source "board/freescale/imx8mq_arm2/Kconfig"
- source "board/freescale/imx8mq_aiy/Kconfig"
- source "board/freescale/imx8mm_evk/Kconfig"
- source "board/freescale/imx8mm_val/Kconfig"
-+source "board/compulab/ucm-imx8m-mini/Kconfig"
+@@ -139,5 +145,6 @@ source "board/freescale/imx8mm_val/Kconfig"
  source "board/freescale/imx8mn_evk/Kconfig"
  source "board/freescale/imx8mp_evk/Kconfig"
+ source "board/toradex/verdin-imx8mm/Kconfig"
++source "board/compulab/ucm-imx8m-mini/Kconfig"
  
+ endif
 diff --git a/board/compulab/common/Makefile b/board/compulab/common/Makefile
 index 7ba92f5db0..1a8b63fb4b 100644
 --- a/board/compulab/common/Makefile
@@ -557,10 +557,10 @@ index 7ba92f5db0..1a8b63fb4b 100644
  obj-$(CONFIG_LCD)		+= omap3_display.o
  obj-$(CONFIG_SMC911X)		+= omap3_smc911x.o
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
-index a2e386f67d..13ef45c8ea 100644
+index 5206cf5c0a..e23dd68437 100644
 --- a/board/compulab/common/eeprom.c
 +++ b/board/compulab/common/eeprom.c
-@@ -10,8 +10,8 @@
+@@ -11,8 +11,8 @@
  #include <i2c.h>
  #include <eeprom_layout.h>
  #include <eeprom_field.h>
@@ -570,7 +570,7 @@ index a2e386f67d..13ef45c8ea 100644
  #include "eeprom.h"
  
  #ifndef CONFIG_SYS_I2C_EEPROM_ADDR
-@@ -82,7 +82,7 @@ static int cl_eeprom_setup(uint eeprom_bus)
+@@ -83,7 +83,7 @@ static int cl_eeprom_setup(uint eeprom_bus)
  	return 0;
  }
  

@@ -1,7 +1,7 @@
-From ab596b0b63dccf4998e3ad79933152896573ffbf Mon Sep 17 00:00:00 2001
+From 094f9eb761cccfe60a7851057131a6a18c26a8b7 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Mon, 18 Sep 2017 19:49:32 +0300
-Subject: [PATCH 04/52] eeprom: layout: remove buf from the eeprom_field
+Subject: [PATCH 04/49] eeprom: layout: remove buf from the eeprom_field
  structure
 
 The layout structure contains a pointer to a buffer that contain the
@@ -17,17 +17,17 @@ pointer parameter to the field functions.
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
- board/compulab/common/eeprom.c | 148 +++++++++++++++++++++--------------------
+ board/compulab/common/eeprom.c | 150 +++++++++++++++++++++--------------------
  common/eeprom/eeprom_field.c   |  73 ++++++++++++--------
  common/eeprom/eeprom_layout.c  |  21 +++---
  include/eeprom_field.h         |  31 +++++----
- 4 files changed, 148 insertions(+), 125 deletions(-)
+ 4 files changed, 149 insertions(+), 126 deletions(-)
 
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
-index 13ef45c8ea..72cd5dabbb 100644
+index e23dd68437..9a9581403d 100644
 --- a/board/compulab/common/eeprom.c
 +++ b/board/compulab/common/eeprom.c
-@@ -198,17 +198,18 @@ int cl_eeprom_get_product_name(uchar *buf, uint eeprom_bus)
+@@ -199,17 +199,18 @@ int cl_eeprom_get_product_name(uchar *buf, uint eeprom_bus)
   *      Field Name      123.45
   *
   * @field:	an initialized field to print
@@ -39,10 +39,11 @@ index 13ef45c8ea..72cd5dabbb 100644
 -	if ((field->buf[0] == 0xff) && (field->buf[1] == 0xff)) {
 -		field->buf[0] = 0;
 -		field->buf[1] = 0;
+-	}
 +	if ((fbuf[0] == 0xff) && (fbuf[1] == 0xff)) {
 +		fbuf[0] = 0;
 +		fbuf[1] = 0;
- 	}
++	};
  
  	printf(PRINT_FIELD_SEGMENT, field->name);
 -	int major = (field->buf[1] << 8 | field->buf[0]) / 100;
@@ -52,7 +53,7 @@ index 13ef45c8ea..72cd5dabbb 100644
  	printf("%d.%02d\n", major, minor);
  }
  
-@@ -224,11 +225,13 @@ void eeprom_field_print_bin_ver(const struct eeprom_field *field)
+@@ -225,11 +226,13 @@ void eeprom_field_print_bin_ver(const struct eeprom_field *field)
   * field if there's any deviation from it. It also protects from overflow.
   *
   * @field:	an initialized field
@@ -67,7 +68,7 @@ index 13ef45c8ea..72cd5dabbb 100644
  {
  	char *endptr;
  	char *tok = strtok(value, ".");
-@@ -251,8 +254,8 @@ int eeprom_field_update_bin_ver(struct eeprom_field *field, char *value)
+@@ -252,8 +255,8 @@ int eeprom_field_update_bin_ver(struct eeprom_field *field, char *value)
  	if (num >> 16)
  		return -1;
  
@@ -78,7 +79,7 @@ index 13ef45c8ea..72cd5dabbb 100644
  
  	return 0;
  }
-@@ -269,17 +272,18 @@ char *months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+@@ -270,17 +273,18 @@ char *months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
   *      Field Name      56/BAD/9999
   *
   * @field:	an initialized field to print
@@ -102,7 +103,7 @@ index 13ef45c8ea..72cd5dabbb 100644
  }
  
  static int validate_date(unsigned char day, unsigned char month,
-@@ -337,11 +341,13 @@ static int validate_date(unsigned char day, unsigned char month,
+@@ -338,11 +342,13 @@ static int validate_date(unsigned char day, unsigned char month,
   * year value, and checks the validity of the date.
   *
   * @field:	an initialized field
@@ -117,7 +118,7 @@ index 13ef45c8ea..72cd5dabbb 100644
  {
  	char *endptr;
  	char *tok1 = strtok(value, "/");
-@@ -380,10 +386,10 @@ int eeprom_field_update_date(struct eeprom_field *field, char *value)
+@@ -381,10 +387,10 @@ int eeprom_field_update_date(struct eeprom_field *field, char *value)
  		return -1;
  	}
  
@@ -132,7 +133,7 @@ index 13ef45c8ea..72cd5dabbb 100644
  
  	return 0;
  }
-@@ -399,12 +405,12 @@ extern struct eeprom_field layout_unknown[1];
+@@ -400,12 +406,12 @@ extern struct eeprom_field layout_unknown[1];
  
  #ifdef CONFIG_CM_T3X
  struct eeprom_field layout_legacy[5] = {
@@ -151,9 +152,9 @@ index 13ef45c8ea..72cd5dabbb 100644
  };
  #else
  #define layout_legacy layout_unknown
-@@ -412,61 +418,61 @@ struct eeprom_field layout_legacy[5] = {
+@@ -413,61 +419,61 @@ struct eeprom_field layout_legacy[5] = {
  
- #if defined(CONFIG_CM_T3X) || defined(CONFIG_CM_T3517)
+ #if defined(CONFIG_CM_T3X)
  struct eeprom_field layout_v1[12] = {
 -	{ "Major Revision",      2, NULL, DEFINE_PRINT_UPDATE(bin_ver) },
 -	{ "Minor Revision",      2, NULL, DEFINE_PRINT_UPDATE(bin_ver) },

@@ -1,0 +1,446 @@
+From 4d37b34a02f8a155fc1357af5a74eb5c0bc74c1f Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 26 May 2020 22:33:31 +0300
+Subject: [PATCH 28/49] Add support for RAM size detection
+
+DDR size on UCM-iMX8M-Mini rev.1.1 is hardwired and must be read via GPIOs.
+Possible values are:
++----------+-----------+-----------------+
+| GPIO 1:0 | GPIO 1:15 | RAM SIZE in GiB |
++----------+-----------+-----------------+
+| 0        | 0         | 1               |
+| 1        | 0         | 4               |
+| 1        | 1         | 2               |
+| 0        | 1         | unallowed       |
++----------+-----------+-----------------+
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/ucm-imx8m-mini.dts                |   4 +-
+ arch/arm/lib/bootm.c                           |   2 +
+ arch/arm/lib/cache-cp15.c                      |   2 +
+ arch/arm/mach-imx/imx8m/soc.c                  |   6 +-
+ arch/arm/mach-imx/misc.c                       |   2 +
+ board/compulab/ucm-imx8m-mini/spl.c            |  71 ++++++++++++++--
+ board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c | 111 ++++++++++++++-----------
+ board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h |   6 +-
+ cmd/mem.c                                      |   7 +-
+ configs/ucm-imx8m-mini_defconfig               |   1 +
+ include/configs/ucm-imx8m-mini.h               |  22 +----
+ 11 files changed, 148 insertions(+), 86 deletions(-)
+
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index 1ef45fe9da..c93cf1ac7a 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -56,7 +56,9 @@
+ 	ucm-imx8m-mini {
+ 		pinctrl_hog_1: hoggrp-1 {
+ 			fsl,pins = <
+-				MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x19
++				MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8       0x19
++				MX8MM_IOMUXC_GPIO1_IO00_GPIO1_IO0       0x140
++				MX8MM_IOMUXC_GPIO1_IO15_GPIO1_IO15      0x140
+ 			>;
+ 		};
+ 
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index 1640307c74..55616a4a6b 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -143,6 +143,8 @@ static void setup_memory_tags(bd_t *bd)
+ 	int i;
+ 
+ 	for (i = 0; i < CONFIG_NR_DRAM_BANKS; i++) {
++		if(!bd->bi_dram[i].size)
++			continue;
+ 		params->hdr.tag = ATAG_MEM;
+ 		params->hdr.size = tag_size (tag_mem32);
+ 
+diff --git a/arch/arm/lib/cache-cp15.c b/arch/arm/lib/cache-cp15.c
+index f44efed6ec..73f6b2e31d 100644
+--- a/arch/arm/lib/cache-cp15.c
++++ b/arch/arm/lib/cache-cp15.c
+@@ -96,6 +96,8 @@ __weak void dram_bank_mmu_setup(int bank)
+ 	     i < (bd->bi_dram[bank].start >> MMU_SECTION_SHIFT) +
+ 		 (bd->bi_dram[bank].size >> MMU_SECTION_SHIFT);
+ 	     i++) {
++		 if(!bd->bi_dram[bank].size)
++			continue;
+ #if defined(CONFIG_SYS_ARM_CACHE_WRITETHROUGH)
+ 		set_section_dcache(i, DCACHE_WRITETHROUGH);
+ #elif defined(CONFIG_SYS_ARM_CACHE_WRITEALLOC)
+diff --git a/arch/arm/mach-imx/imx8m/soc.c b/arch/arm/mach-imx/imx8m/soc.c
+index e71b3755c4..2b2f791348 100644
+--- a/arch/arm/mach-imx/imx8m/soc.c
++++ b/arch/arm/mach-imx/imx8m/soc.c
+@@ -206,7 +206,7 @@ __weak int board_phys_sdram_size(phys_size_t *size)
+ 	return 0;
+ }
+ 
+-int dram_init(void)
++__weak int dram_init(void)
+ {
+ 	phys_size_t sdram_size;
+ 	int ret;
+@@ -228,7 +228,7 @@ int dram_init(void)
+ 	return 0;
+ }
+ 
+-int dram_init_banksize(void)
++__weak int dram_init_banksize(void)
+ {
+ 	int bank = 0;
+ 	int ret;
+@@ -270,7 +270,7 @@ int dram_init_banksize(void)
+ 	return 0;
+ }
+ 
+-phys_size_t get_effective_memsize(void)
++__weak phys_size_t get_effective_memsize(void)
+ {
+ 	/* return the first bank as effective memory */
+ 	if (rom_pointer[1])
+diff --git a/arch/arm/mach-imx/misc.c b/arch/arm/mach-imx/misc.c
+index 6bd74a45d7..e438b91263 100644
+--- a/arch/arm/mach-imx/misc.c
++++ b/arch/arm/mach-imx/misc.c
+@@ -98,6 +98,8 @@ void board_lmb_reserve(struct lmb *lmb)
+ 	for (bank = 0; bank < CONFIG_NR_DRAM_BANKS; bank++) {
+ 		if (sp < gd->bd->bi_dram[bank].start)
+ 			continue;
++		if (!gd->bd->bi_dram[bank].size)
++			continue;
+ 		bank_end = gd->bd->bi_dram[bank].start +
+ 			gd->bd->bi_dram[bank].size;
+ 		if (sp >= bank_end)
+diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
+index 0eb0d3b249..c26d3f154e 100644
+--- a/board/compulab/ucm-imx8m-mini/spl.c
++++ b/board/compulab/ucm-imx8m-mini/spl.c
+@@ -25,24 +25,77 @@
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+-void spl_dram_init(void)
++static int const memopt_gpios[] = {
++	IMX_GPIO_NR(1, 0),
++	IMX_GPIO_NR(1, 15),
++};
++static iomux_v3_cfg_t const memopt_gpio_pads[] = {/* internal pull-up */
++	IMX8MM_PAD_GPIO1_IO00_GPIO1_IO0 | MUX_PAD_CTRL(0x140),
++	IMX8MM_PAD_GPIO1_IO15_GPIO1_IO15 | MUX_PAD_CTRL(0x140),
++};
++/* Read GPIO input to find out memory size */
++static int get_wired_ddr_size(void)
+ {
+-	/* ddr init */
+-	int board_id = get_baseboard_id();
++	unsigned int memopt = 0;
++	int ddr_size;
++	int pin_val;
++
++	imx_iomux_v3_setup_multiple_pads(memopt_gpio_pads,
++			ARRAY_SIZE(memopt_gpio_pads));
++
++	for(int i=0; ARRAY_SIZE(memopt_gpios) > i; ++i) {
++		gpio_request(memopt_gpios[i], "memopt");
++		gpio_direction_input(memopt_gpios[i]);
++		pin_val = gpio_get_value(memopt_gpios[i]);
++		if(0 > pin_val) {
++			printf("%s: GPIO[%i] read error %i\n",
++					__func__, memopt_gpios[i], -pin_val);
++			gpio_free(memopt_gpios[i]);
++			return -EINVAL;
++		}
++		else {
++			memopt |= pin_val << i;
++		}
++	}
++	switch (memopt) {
++	case 0:
++		ddr_size = 1;
++		break;
++	case 1:
++		ddr_size = 4;
++		break;
++	case 3:
++		ddr_size = 2;
++		break;
++	default:
++		ddr_size=-EINVAL;
++		printf("%s: invalid combination of memopt bits 0x%0x\n",
++				__func__, memopt);
++		break;
++	}
++	printf("DDR size %i GiB detectd\n", ddr_size);
++	writel(ddr_size, TCM_BOARD_CFG);
++	return ddr_size;
++}
+ 
++
++void spl_dram_init(void)
++{
+ 	/* ddr init */
+-	switch (board_id) {
+-		case UCM_IMX8M_MINI_1G:
++	switch (get_wired_ddr_size()) {
++	case 1:
+ 		ddr_init(&ucm_dram_timing_1g);
+ 		break;
+-		case UCM_IMX8M_MINI_2G:
++	case 2:
+ 		ddr_init(&ucm_dram_timing_2g);
+ 		break;
+-		case UCM_IMX8M_MINI_4G:
++	case 4:
+ 		ddr_init(&ucm_dram_timing_4g);
+ 		break;
+-		default:
+-			return;
++	default:
++		printf("*** ERROR ***\n%s: DDR size is unknown -- stop!\n",
++				__func__);
++		while(true);
+ 	}
+ }
+ 
+diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+index 27838f22d5..0febec421b 100644
+--- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
++++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+@@ -150,25 +150,12 @@ int board_postclk_init(void)
+ }
+ #endif
+ 
+-int get_baseboard_id(void)
++int get_ddr_size(void)
+ {
+-#ifdef CONFIG_RAM_1G
+-#define BOARD_ID UCM_IMX8M_MINI_1G
+-#endif
+-#ifdef CONFIG_RAM_2G
+-#define BOARD_ID UCM_IMX8M_MINI_2G
+-#endif
+-#ifdef CONFIG_RAM_4G
+-#define BOARD_ID UCM_IMX8M_MINI_4G
+-#endif
+-#ifdef BOARD_ID
+-	return BOARD_ID;
+-#else
+-#error Invalid memory configuration
+-#endif
++	return readl(TCM_BOARD_CFG);
+ }
+ 
+-/* Get the top of usable RAM */
++	/* Get the top of usable RAM */
+ ulong board_get_usable_ram_top(ulong total_size)
+ {
+ 
+@@ -180,52 +167,82 @@ ulong board_get_usable_ram_top(ulong total_size)
+ 
+ int dram_init(void)
+ {
+-	int board_id = get_baseboard_id();
+-	switch (board_id) {
+-		case UCM_IMX8M_MINI_1G:
+-		gd->ram_size = 0x40000000;
+-		break;
+-		case UCM_IMX8M_MINI_2G:
+-		gd->ram_size = 0x80000000;
+-		break;
+-		case UCM_IMX8M_MINI_4G:
+-		gd->ram_size = PHYS_SDRAM_SIZE;
+-#if CONFIG_NR_DRAM_BANKS > 1
+-		gd->ram_size += PHYS_SDRAM_2_SIZE;
+-#endif
+-		break;
+-		default:
+-			return -EINVAL;
+-	}
++	phys_size_t sdram_size;
++	int ret;
++	ret = board_phys_sdram_size(&sdram_size);
++	if (ret)
++		return ret;
++
+ 	/* rom_pointer[1] contains the size of TEE occupies */
+-	if (rom_pointer[1])
+-		gd->ram_size -= rom_pointer[1];
++	gd->ram_size = sdram_size - rom_pointer[1];
+ 
+ 	return 0;
+ }
+ 
+ int dram_init_banksize(void)
+ {
+-	gd->bd->bi_dram[0].start = PHYS_SDRAM;
+-	if (rom_pointer[1])
+-		gd->bd->bi_dram[0].size = PHYS_SDRAM_SIZE -rom_pointer[1];
+-	else
+-		gd->bd->bi_dram[0].size = PHYS_SDRAM_SIZE;
++	int bank = 0;
++	int ret;
++	phys_size_t total_size, bank_1_size, bank_2_size;
+ 
+-#if CONFIG_NR_DRAM_BANKS > 1
+-	gd->bd->bi_dram[1].start = PHYS_SDRAM_2;
+-	gd->bd->bi_dram[1].size = PHYS_SDRAM_2_SIZE;
+-#endif
++	ret = board_phys_sdram_size(&total_size);
++	if (ret)
++		return ret;
+ 
++	switch (total_size) {
++		case 4 * (1L << 30):
++			bank_1_size = 3 * (1L << 30);
++			bank_2_size = 1 * (1L << 30);
++			break;
++		default:
++			bank_1_size = total_size;
++			bank_2_size = 0;
++			break;
++	}
++
++	gd->bd->bi_dram[bank].start = PHYS_SDRAM;
++	if (rom_pointer[1]) {
++		phys_addr_t optee_start = (phys_addr_t)rom_pointer[0];
++		phys_size_t optee_size = (size_t)rom_pointer[1];
++
++		gd->bd->bi_dram[bank].size = optee_start -gd->bd->bi_dram[bank].start;
++		if ((optee_start + optee_size) < (PHYS_SDRAM + bank_1_size)) {
++			if ( ++bank >= CONFIG_NR_DRAM_BANKS) {
++				puts("CONFIG_NR_DRAM_BANKS is not enough\n");
++				return -1;
++			}
++
++			gd->bd->bi_dram[bank].start = optee_start + optee_size;
++			gd->bd->bi_dram[bank].size = PHYS_SDRAM +
++				bank_1_size - gd->bd->bi_dram[bank].start;
++		}
++	} else {
++		gd->bd->bi_dram[bank].size = bank_1_size;
++	}
++
++	if(bank_2_size) {
++		if ( ++bank >= CONFIG_NR_DRAM_BANKS) {
++			puts("CONFIG_NR_DRAM_BANKS is not enough for SDRAM_2\n");
++			return -1;
++		}
++		gd->bd->bi_dram[bank].start = PHYS_SDRAM_2;
++		gd->bd->bi_dram[bank].size = bank_2_size;
++	}
+ 	return 0;
+ }
+ 
+ phys_size_t get_effective_memsize(void)
+ {
++	/* return the first bank as effective memory */
+ 	if (rom_pointer[1])
+-		return (PHYS_SDRAM_SIZE - rom_pointer[1]);
+-	else
+-		return PHYS_SDRAM_SIZE;
++		return ((phys_addr_t)rom_pointer[0] - PHYS_SDRAM);
++
++	switch(gd->ram_size) {
++		case 4 * (1L<<30):
++			return 3 * (1L<<30);
++		default:
++			return gd->ram_size;
++	}
+ }
+ 
+ #ifdef CONFIG_OF_BOARD_SETUP
+diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
+index 5e787d41fb..7810295206 100644
+--- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
++++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
+@@ -7,10 +7,6 @@
+ #ifndef __UCM_IMX8M_MINI__
+ #define __UCM_IMX8M_MINI__
+ 
+-#define UCM_IMX8M_MINI_1G 0x1
+-#define UCM_IMX8M_MINI_2G 0x2
+-#define UCM_IMX8M_MINI_4G 0x4
+-
+-int get_baseboard_id(void);
++#define TCM_BOARD_CFG 0x7e0000
+ 
+ #endif
+diff --git a/cmd/mem.c b/cmd/mem.c
+index 6d54f19527..01fc1c45d7 100644
+--- a/cmd/mem.c
++++ b/cmd/mem.c
+@@ -880,9 +880,10 @@ static int do_mem_mtest(cmd_tbl_t *cmdtp, int flag, int argc,
+ #else
+ 	const int alt_test = 0;
+ #endif
+-
+-	start = CONFIG_SYS_MEMTEST_START;
+-	end = CONFIG_SYS_MEMTEST_END;
++	/* Test only first bank */
++	start = gd->bd->bi_dram[0].start;
++	end = start + gd->bd->bi_dram[0].size *
++		MEMTEST_NUMERATOR / MEMTEST_DIVIDER;
+ 
+ 	if (argc > 1)
+ 		if (strict_strtoul(argv[1], 16, &start) < 0)
+diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
+index 04228dc016..8dbf544e86 100644
+--- a/configs/ucm-imx8m-mini_defconfig
++++ b/configs/ucm-imx8m-mini_defconfig
+@@ -67,3 +67,4 @@ CONFIG_USB_GADGET_MANUFACTURER="FSL"
+ CONFIG_USB_GADGET_VENDOR_NUM=0x0525
+ CONFIG_USB_GADGET_PRODUCT_NUM=0xa4a5
+ CONFIG_SDP_LOADADDR=0x40400000
++CONFIG_SPL_GPIO_SUPPORT=y
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index 983209fd19..e9e3b2cb1c 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -34,7 +34,6 @@
+ #define CONFIG_SPL_LIBCOMMON_SUPPORT
+ #define CONFIG_SPL_LIBGENERIC_SUPPORT
+ #define CONFIG_SPL_SERIAL_SUPPORT
+-#define CONFIG_SPL_GPIO_SUPPORT
+ #define CONFIG_SPL_BSS_START_ADDR      0x00910000
+ #define CONFIG_SPL_BSS_MAX_SIZE        0x2000	/* 8 KB */
+ #define CONFIG_SYS_SPL_MALLOC_START    0x42200000
+@@ -202,29 +201,16 @@
+ /* Size of malloc() pool */
+ #define CONFIG_SYS_MALLOC_LEN		((CONFIG_ENV_SIZE + (2*1024) + (16*1024)) * 1024)
+ 
+-#ifdef CONFIG_RAM_4G
+-
+ #define PHYS_SDRAM              0x40000000
+-#define PHYS_SDRAM_SIZE         0xC0000000	/* 3GB */
+-
+ #define PHYS_SDRAM_2            0x100000000
+-#define PHYS_SDRAM_2_SIZE       0x40000000	/* 1GB */
+-
+ #define CONFIG_NR_DRAM_BANKS    2
+ 
+-#else
+-
+-#define PHYS_SDRAM              0x40000000
+-#define PHYS_SDRAM_SIZE         0x80000000 /* 2GB */
+-
+-#define CONFIG_NR_DRAM_BANKS    1
+-
+-#endif
+-
+ #define CONFIG_SYS_SDRAM_BASE   PHYS_SDRAM
++#define PHYS_SDRAM_SIZE			0x80000000 /* 2GB DDR */
++#define PHYS_SDRAM_2_SIZE		0x40000000
+ 
+-#define CONFIG_SYS_MEMTEST_START    PHYS_SDRAM
+-#define CONFIG_SYS_MEMTEST_END      (CONFIG_SYS_MEMTEST_START + (PHYS_SDRAM_SIZE >> 1))
++#define MEMTEST_DIVIDER   2
++#define MEMTEST_NUMERATOR 1
+ 
+ #define CONFIG_BAUDRATE			115200
+ 
+-- 
+2.11.0
+
