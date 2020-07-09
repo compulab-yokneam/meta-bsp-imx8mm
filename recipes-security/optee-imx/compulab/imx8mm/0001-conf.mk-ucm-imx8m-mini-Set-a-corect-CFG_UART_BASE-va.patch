@@ -1,0 +1,13 @@
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index 337f6890..4a229ed2 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -330,7 +330,7 @@ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mmevk))
+ CFG_DDR_SIZE ?= 0x80000000
+-CFG_UART_BASE ?= UART2_BASE
++CFG_UART_BASE ?= UART3_BASE
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mnevk))
