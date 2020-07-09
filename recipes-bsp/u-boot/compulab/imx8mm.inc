@@ -49,5 +49,9 @@ SRC_URI_append_mcm-imx8m-mini = " \
 	file://0047-mcm-imx8m-mini-env-config-Set-the-machine-values.patch \
 	file://0048-mcm-imx8m-mini-env-Add-an-option-to-print-the-machin.patch \
 	file://0049-mcm-imx8m-mini-Set-EXTRAVERSION.patch \
+	file://0050-mcm-imx8m-mini-config-Update-defconfig.patch \
+	file://0051-mcm-imx8m-mini-config-Update-.h-config.patch \
+	file://0052-mcm-imx8m-mini-spl-Update-the-board-spl.patch \
+	file://0053-mcm-imx8m-mini-Fix-dram_init_banksize-logics.patch \
 	file://mcm-imx8m-mini_defconfig \
 "

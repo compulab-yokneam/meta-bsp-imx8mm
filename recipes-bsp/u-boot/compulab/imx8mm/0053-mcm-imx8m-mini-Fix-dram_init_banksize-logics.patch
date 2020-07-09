@@ -1,0 +1,36 @@
+From 22446fe1ecf6091b4f06537ac085b203d87b41da Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Thu, 9 Jul 2020 12:35:27 +0300
+Subject: [PATCH 53/53] mcm-imx8m-mini: Fix dram_init_banksize() logics
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
+index 1ec3ecbde7..9ece28b318 100644
+--- a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
++++ b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
+@@ -136,8 +136,7 @@ int dram_init_banksize(void)
+ 		phys_addr_t optee_start = (phys_addr_t)rom_pointer[0];
+ 		phys_size_t optee_size = (size_t)rom_pointer[1];
+ 
+-
+-		if ((optee_start + optee_size) < (PHYS_SDRAM + bank_1_size)) {
++		if ((optee_start + optee_size) <= (PHYS_SDRAM + bank_1_size)) {
+ 
+ 			gd->bd->bi_dram[bank].size = optee_start - gd->bd->bi_dram[bank].start;
+ 
+@@ -146,7 +145,7 @@ int dram_init_banksize(void)
+ 				return -1;
+ 			}
+ 
+-			gd->bd->bi_dram[bank].start = optee_start;
++			gd->bd->bi_dram[bank].start = optee_start + optee_size;
+ 			gd->bd->bi_dram[bank].size = PHYS_SDRAM +
+ 				bank_1_size - gd->bd->bi_dram[bank].start;
+ 		}
+-- 
+2.11.0
+
