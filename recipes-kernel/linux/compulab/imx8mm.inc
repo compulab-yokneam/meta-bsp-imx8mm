@@ -23,5 +23,7 @@ SRC_URI_append_mcm-imx8m-mini = " \
 	file://0021-mcm-imx8m-mini-dts-Enable-UART2.patch \
 	file://0022-mcm-imx8m-mini-dts-Enable-snvs_pwrkey.patch \
 	file://0023-mcm-imx8m-mini-config-Update-defconfig.patch \
+	file://0024-can-mcp25xxfd-Microchip-MCP25xxFD-Family-CAN-control.patch \
+	file://0025-serial-imx-allow-passing-rs485-options.patch \
 	file://defconfig \
 "
