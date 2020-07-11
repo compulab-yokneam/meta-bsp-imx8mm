@@ -8,12 +8,12 @@ WARNING: **This is a develment branch for testing purpouse only. !!!Not tested/N
 
 # Prepare NXP BSP
 [source,console]
-repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-linux-zeus -m imx-5.4.3-2.0.0.xml
+repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-linux-zeus -m imx-5.4.24-2.1.0.xml
 repo sync
 
 # Download CompuLab meta layer
 [source,console]
-git clone -b rel_imx_5.4.3_2.0.0-dev-mcm https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
+git clone -b rel_imx_5.4.24_2.1.0-dev https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
 
 # Set a desire machine
 * `mcm-imx8m-mini`

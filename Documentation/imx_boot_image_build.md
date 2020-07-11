@@ -14,9 +14,9 @@ Define these envaronment variables:
 
 |Description|Environment|
 |---|---|
-|NXP release name|export NXP_RELEASE=rel_imx_5.4.3_2.0.0|
-|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.7.bin|
-|CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.3_2.0.0-mcm|
+|NXP release name|export NXP_RELEASE=rel_imx_5.4.24_2.1.0|
+|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.8.bin|
+|CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.24_2.1.0-dev|
 
 
 ## Prerequisites
