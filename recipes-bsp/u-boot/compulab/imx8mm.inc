@@ -56,5 +56,7 @@ SRC_URI_append_mcm-imx8m-mini = " \
 	file://0054-mcm-imx8m-mini-Add-board_usb_init-and-board_usb_clea.patch \
 	file://0055-mcm-imx8m-mini-dts-Enable-usbotg2-in-host-mode.patch \
 	file://0056-mcm-imx8m-mini-config-Remove-unused-stuff.patch \
+	file://0057-mcm-imx8m-mini-Remove-dram_init_banksize-and-get_eff.patch \
+	file://0058-imx8m-soc-Don-t-reduce-the-memory-amount-by-the-opte.patch \
 	file://mcm-imx8m-mini_defconfig \
 "

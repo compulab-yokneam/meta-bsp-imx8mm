@@ -1,0 +1,27 @@
+From b3106ab4b3351c31a04fe617d9ab43bf2da67a22 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 13 Jul 2020 10:56:49 +0300
+Subject: [PATCH 58/58] imx8m: soc: Don't reduce the memory amount by the optee
+ size
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/mach-imx/imx8m/soc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/imx8m/soc.c b/arch/arm/mach-imx/imx8m/soc.c
+index 68437c297f..e09754bbc7 100644
+--- a/arch/arm/mach-imx/imx8m/soc.c
++++ b/arch/arm/mach-imx/imx8m/soc.c
+@@ -244,7 +244,7 @@ __weak int dram_init_banksize(void)
+ 		return ret;
+ 
+ 	gd->bd->bi_dram[bank].start = PHYS_SDRAM;
+-	if (rom_pointer[1]) {
++	if (0 /*rom_pointer[1]*/) {
+ 		phys_addr_t optee_start = (phys_addr_t)rom_pointer[0];
+ 		phys_size_t optee_size = (size_t)rom_pointer[1];
+ 
+-- 
+2.11.0
+
