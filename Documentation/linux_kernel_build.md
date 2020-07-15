@@ -1,24 +1,25 @@
-# MCM-IMX8M-MINI Linux Kernel Building
+# Building Linux Kernel for CompuLab's i.MX8M Mini products
 
 Supported machines:
 
 * `mcm-imx8m-mini`
 
-Define a `MACHINE` environment variable with respect to a required machine:
-<pre>
-export MACHINE=mcm-imx8m-mini
-</pre>
+Define a `MACHINE` environment variable for the target product:
 
-Define these envaronment variables:
+|Machine|Command Line|
+|---|---|
+|mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
 
-|Description|Environment|
+Define the following environment variables:
+
+|Description|Command Line|
 |---|---|
 |NXP release name|export NXP_RELEASE=rel_imx_5.4.24_2.1.0|
 |CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.24_2.1.0-dev|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download a tool chain from [Linaro](https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/)
+* Download the [Linaro tool chain](https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/)
 * Set environment variables:
 <pre>
 export ARCH=arm64
@@ -35,14 +36,14 @@ git clone -b ${CPL_BRANCH} https://github.com/compulab-yokneam/meta-bsp-imx8mm.g
 export PATCHES=$(pwd)/meta-bsp-imx8mm/recipes-kernel/linux/compulab/imx8mm
 </pre>
 
-# CompuLab Linux Kernel setup
+## CompuLab Linux Kernel setup
 <pre>
 git clone https://source.codeaurora.org/external/imx/linux-imx.git
 git -C linux-imx checkout -b linux-compulab ${NXP_RELEASE}
 git -C linux-imx am ${PATCHES}/*.patch
 </pre>
 
-# Compile the Kernel
+## Compile the Kernel
 <pre>
 make -C linux-imx ${MACHINE}_defconfig
 make -C linux-imx
