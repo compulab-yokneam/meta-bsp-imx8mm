@@ -1,4 +1,4 @@
-SRC_URI_append_mcm-imx8m-mini = " \
+SRC_URI_append = " \
 	file://0000-ucm-imx8m-mini-Add-basic-support.patch \
 	file://0001-ucm-imx8m-mini-update-CPU-model-printed-parameters.patch \
 	file://0002-ucm-imx8m-mini-Fix-KConfig-warning.patch \
@@ -58,5 +58,12 @@ SRC_URI_append_mcm-imx8m-mini = " \
 	file://0056-mcm-imx8m-mini-config-Remove-unused-stuff.patch \
 	file://0057-mcm-imx8m-mini-Remove-dram_init_banksize-and-get_eff.patch \
 	file://0058-imx8m-soc-Don-t-reduce-the-memory-amount-by-the-opte.patch \
+	file://0059-mcm-imx8m-mini-Move-tcm-to-plat-imx8mm.patch \
+	file://0060-mcm-imx8m-mini-Refactor-spl-code.patch \
+	file://0061-ucm-imx8m-mini-Refactor-the-code-for-2020.04.patch \
+	file://0062-cpl-imx8m-mini-Set-LOCALVERSION-intead-of-EXTRAVERSI.patch \
+	file://0063-cpl-imx8m-mini-Refactor-.h-configs.patch \
+	file://0064-cpl-imx8m-mini-Refactor-.dts.patch \
 	file://mcm-imx8m-mini_defconfig \
+	file://ucm-imx8m-mini_defconfig \
 "

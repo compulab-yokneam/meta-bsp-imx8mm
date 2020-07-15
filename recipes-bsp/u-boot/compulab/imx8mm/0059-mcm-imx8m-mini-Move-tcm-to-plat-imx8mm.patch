@@ -1,0 +1,120 @@
+From af6443352f9e37b776b41ec6323f7952b4e5b5f8 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 15 Jul 2020 06:45:58 +0300
+Subject: [PATCH 59/64] mcm-imx8m-mini: Move tcm to plat/imx8mm
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/mcm-imx8m-mini/Makefile         |  3 ++-
+ board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c |  2 +-
+ board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.h | 19 -------------------
+ board/compulab/mcm-imx8m-mini/spl.c            |  1 -
+ board/compulab/plat/imx8mm/ddr/ddr.c           |  7 -------
+ board/compulab/plat/imx8mm/ddr/ddr.h           |  9 +++++++++
+ 6 files changed, 12 insertions(+), 29 deletions(-)
+ delete mode 100644 board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.h
+
+diff --git a/board/compulab/mcm-imx8m-mini/Makefile b/board/compulab/mcm-imx8m-mini/Makefile
+index b926ed9cf9..8ade3b58c5 100644
+--- a/board/compulab/mcm-imx8m-mini/Makefile
++++ b/board/compulab/mcm-imx8m-mini/Makefile
+@@ -6,8 +6,9 @@
+ 
+ obj-y += mcm-imx8m-mini.o
+ 
+-ifdef CONFIG_SPL_BUILD
+ ccflags-y += -I$(srctree)/board/compulab/plat/imx8mm/
++
++ifdef CONFIG_SPL_BUILD
+ obj-y += spl.o
+ endif
+ 
+diff --git a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
+index 7cfed94479..20f322223c 100644
+--- a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
++++ b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
+@@ -27,7 +27,7 @@
+ #include <usb.h>
+ #include <asm/mach-imx/boot_mode.h>
+ #include <asm/mach-imx/video.h>
+-#include "mcm-imx8m-mini.h"
++#include "ddr/ddr.h"
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+diff --git a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.h b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.h
+deleted file mode 100644
+index fc59756161..0000000000
+--- a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.h
++++ /dev/null
+@@ -1,19 +0,0 @@
+-/*
+- * Copyright 2017 NXP
+- *
+- * SPDX-License-Identifier:	GPL-2.0+
+- */
+-
+-#ifndef __MCM_IMX8M_MINI__
+-#define __MCM_IMX8M_MINI__
+-
+-#define TCM_DATA_CFG 0x7e0000
+-
+-struct lpddr4_tcm_desc {
+-	unsigned int size;
+-	unsigned int sign;
+-	unsigned int index;
+-	unsigned int count;
+-};
+-
+-#endif
+diff --git a/board/compulab/mcm-imx8m-mini/spl.c b/board/compulab/mcm-imx8m-mini/spl.c
+index f59bac4cb9..3f6cb65102 100644
+--- a/board/compulab/mcm-imx8m-mini/spl.c
++++ b/board/compulab/mcm-imx8m-mini/spl.c
+@@ -21,7 +21,6 @@
+ #include <fsl_esdhc_imx.h>
+ #include <mmc.h>
+ #include "ddr/ddr.h"
+-#include "mcm-imx8m-mini.h"
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+diff --git a/board/compulab/plat/imx8mm/ddr/ddr.c b/board/compulab/plat/imx8mm/ddr/ddr.c
+index b42cfe33df..b52f871dee 100644
+--- a/board/compulab/plat/imx8mm/ddr/ddr.c
++++ b/board/compulab/plat/imx8mm/ddr/ddr.c
+@@ -59,13 +59,6 @@ struct lpddr4_desc {
+ 	char *desc[4];
+ };
+ 
+-struct lpddr4_tcm_desc {
+-	unsigned int size;
+-	unsigned int sign;
+-	unsigned int index;
+-	unsigned int count;
+-};
+-
+ #define DEFAULT (('D' << 24) + ('E' << 16 ) + ( 'F' << 8 ) + 'A')
+ static const struct lpddr4_desc lpddr4_array[] = {
+ 	{ .name = "Micron", .id = 0xff020008, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008}, //Only the first timing entry is in use
+diff --git a/board/compulab/plat/imx8mm/ddr/ddr.h b/board/compulab/plat/imx8mm/ddr/ddr.h
+index a66e8ec3c4..4d2a238439 100644
+--- a/board/compulab/plat/imx8mm/ddr/ddr.h
++++ b/board/compulab/plat/imx8mm/ddr/ddr.h
+@@ -14,4 +14,13 @@ extern struct dram_timing_info ucm_dram_timing_01050008;
+ 
+ void spl_dram_init(void);
+ 
++#define TCM_DATA_CFG 0x7e0000
++
++struct lpddr4_tcm_desc {
++	unsigned int size;
++	unsigned int sign;
++	unsigned int index;
++	unsigned int count;
++};
++
+ #endif
+-- 
+2.11.0
+
