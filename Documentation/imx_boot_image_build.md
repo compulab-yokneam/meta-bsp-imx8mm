@@ -1,14 +1,16 @@
-# MCM-IMX8M-MINI imx-boot image build
+# imx-boot image build
 
 Supported machine:
 
-* `MCM-IMX8M-MINI`
+* `mcm-imxi8-mini`
+* `ucm-imxi8-mini`
 
 Define a `MACHINE` environment variable with respect to a required machine:
-<pre>
-export MACHINE=mcm-imx8m-mini
-</pre>
 
+|Machine|Environment|
+|---|---|
+|mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
+|ucm-imx8m-mini|export MACHINE=ucm-imx8m-mini
 
 Define these envaronment variables:
 
