@@ -64,6 +64,10 @@ SRC_URI_append = " \
 	file://0062-cpl-imx8m-mini-Set-LOCALVERSION-intead-of-EXTRAVERSI.patch \
 	file://0063-cpl-imx8m-mini-Refactor-.h-configs.patch \
 	file://0064-cpl-imx8m-mini-Refactor-.dts.patch \
+	file://0065-iot-gate-imx8-Add-basic-support.patch \
+	file://0066-mcm-imx8m-mini-config-Update-env-size-offest.patch \
+	file://0067-imx8m-mini-env-config-Update-size-offset-value.patch \
 	file://mcm-imx8m-mini_defconfig \
 	file://ucm-imx8m-mini_defconfig \
+	file://iot-gate-imx8_defconfig \
 "

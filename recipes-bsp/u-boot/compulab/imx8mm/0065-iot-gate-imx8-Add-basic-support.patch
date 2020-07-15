@@ -1,0 +1,578 @@
+From 3d779ec1c5d9b141d2a9df935072f816cf98b25e Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 15 Jul 2020 14:38:59 +0300
+Subject: [PATCH 65/67] iot-gate-imx8: Add basic support
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/dts/Makefile                        |   1 +
+ arch/arm/dts/iot-gate-imx8.dts               |  49 +++++
+ arch/arm/mach-imx/imx8m/Kconfig              |   7 +
+ board/compulab/iot-gate-imx8/Kconfig         |  17 ++
+ board/compulab/iot-gate-imx8/Makefile        |  15 ++
+ board/compulab/iot-gate-imx8/iot-gate-imx8.c | 265 +++++++++++++++++++++++++++
+ board/compulab/iot-gate-imx8/spl.c           |   9 +
+ configs/iot-gate-imx8_defconfig              | 102 +++++++++++
+ include/configs/iot-gate-imx8.h              |  15 ++
+ 9 files changed, 480 insertions(+)
+ create mode 100644 arch/arm/dts/iot-gate-imx8.dts
+ create mode 100644 board/compulab/iot-gate-imx8/Kconfig
+ create mode 100644 board/compulab/iot-gate-imx8/Makefile
+ create mode 100644 board/compulab/iot-gate-imx8/iot-gate-imx8.c
+ create mode 100644 board/compulab/iot-gate-imx8/spl.c
+ create mode 100644 configs/iot-gate-imx8_defconfig
+ create mode 100644 include/configs/iot-gate-imx8.h
+
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index ea61797add..c1a88c8f74 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -801,6 +801,7 @@ dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb
+ 
+ dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
+ dtb-$(CONFIG_TARGET_MCM_IMX8M_MINI) += mcm-imx8m-mini.dtb
++dtb-$(CONFIG_TARGET_IOT_GATE_IMX8) += iot-gate-imx8.dtb
+ 
+ dtb-$(CONFIG_RCAR_GEN2) += \
+ 	r8a7790-lager-u-boot.dtb \
+diff --git a/arch/arm/dts/iot-gate-imx8.dts b/arch/arm/dts/iot-gate-imx8.dts
+new file mode 100644
+index 0000000000..6b6b2d69c7
+--- /dev/null
++++ b/arch/arm/dts/iot-gate-imx8.dts
+@@ -0,0 +1,49 @@
++/*
++ * Copyright 2020 CompuLab
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++/dts-v1/;
++
++#include "cpl-imx8m-mini.dtsi"
++
++/ {
++	model = "CompuLab IOT-GATE-iMX8";
++	compatible = "sb-iotgimx8", "cpl,ucm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
++
++	reg_vusb_5v: regulator-usdhc2 {
++		compatible = "regulator-fixed";
++		regulator-name = "VUSB_5V";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio4 28 GPIO_ACTIVE_HIGH>;
++		regulator-boot-on;
++		enable-active-high;
++	};
++};
++
++&usbotg1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctl_usb_gpio>;
++	dr_mode = "host";
++	status = "okay";
++};
++
++&iomuxc {
++	sb-iotgimx8 {
++		pinctl_usb_gpio: usb_gpio_grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x00
++			>;
++		};
++	};
++};
+diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
+index 24c7dc4b4e..63377ef40e 100644
+--- a/arch/arm/mach-imx/imx8m/Kconfig
++++ b/arch/arm/mach-imx/imx8m/Kconfig
+@@ -141,6 +141,12 @@ config TARGET_MCM_IMX8M_MINI
+ 	select SUPPORT_SPL
+ 	select IMX8M_LPDDR4
+ 
++config TARGET_IOT_GATE_IMX8
++	bool "CompuLab iot-gate-imx8"
++	select IMX8MM
++	select SUPPORT_SPL
++	select IMX8M_LPDDR4
++
+ endchoice
+ 
+ source "board/freescale/imx8mq_evk/Kconfig"
+@@ -153,5 +159,6 @@ source "board/freescale/imx8mp_evk/Kconfig"
+ source "board/toradex/verdin-imx8mm/Kconfig"
+ source "board/compulab/ucm-imx8m-mini/Kconfig"
+ source "board/compulab/mcm-imx8m-mini/Kconfig"
++source "board/compulab/iot-gate-imx8/Kconfig"
+ 
+ endif
+diff --git a/board/compulab/iot-gate-imx8/Kconfig b/board/compulab/iot-gate-imx8/Kconfig
+new file mode 100644
+index 0000000000..84f53ca6b9
+--- /dev/null
++++ b/board/compulab/iot-gate-imx8/Kconfig
+@@ -0,0 +1,17 @@
++if TARGET_IOT_GATE_IMX8
++
++config SYS_BOARD
++	default "iot-gate-imx8"
++
++config SYS_VENDOR
++	default "compulab"
++
++config SYS_CONFIG_NAME
++	default "iot-gate-imx8"
++
++config DEFAULT_DTB
++	string "U-Boot Default Device Tree File"
++	depends on TARGET_IOT_GATE_IMX8
++	default "sb-iotgimx8-can.dtb"
++
++endif
+diff --git a/board/compulab/iot-gate-imx8/Makefile b/board/compulab/iot-gate-imx8/Makefile
+new file mode 100644
+index 0000000000..af743b977b
+--- /dev/null
++++ b/board/compulab/iot-gate-imx8/Makefile
+@@ -0,0 +1,15 @@
++#
++# Copyright 2018 CompuLab
++#
++# SPDX-License-Identifier:      GPL-2.0+
++#
++
++ccflags-y += -I$(srctree)/board/compulab/plat/imx8mm/
++
++ifdef CONFIG_SPL_BUILD
++obj-y += spl.o
++else 
++obj-y += iot-gate-imx8.o
++endif
++
++obj-y += ../plat/imx8mm/
+diff --git a/board/compulab/iot-gate-imx8/iot-gate-imx8.c b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+new file mode 100644
+index 0000000000..d01b8f8767
+--- /dev/null
++++ b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+@@ -0,0 +1,265 @@
++/*
++ * Copyright 2020 CompuLab
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#include <common.h>
++#include <malloc.h>
++#include <errno.h>
++#include <asm/io.h>
++#include <miiphy.h>
++#include <netdev.h>
++#include <asm/mach-imx/iomux-v3.h>
++#include <asm-generic/gpio.h>
++#include <fsl_esdhc.h>
++#include <mmc.h>
++#include <asm/arch/imx8mm_pins.h>
++#include <asm/arch/sys_proto.h>
++#include <asm/mach-imx/gpio.h>
++#include <asm/mach-imx/mxc_i2c.h>
++#include <asm/arch/clock.h>
++#include <spl.h>
++#include <asm/mach-imx/dma.h>
++#include <power/pmic.h>
++#include <power/bd71837.h>
++#include "../common/eeprom.h"
++#include <usb.h>
++#include <asm/mach-imx/boot_mode.h>
++#include <asm/mach-imx/video.h>
++#include "ddr/ddr.h"
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#ifdef CONFIG_BOARD_POSTCLK_INIT
++int board_postclk_init(void)
++{
++	/* TODO */
++	return 0;
++}
++#endif
++int board_phys_sdram_size(phys_size_t *size)
++{
++	struct lpddr4_tcm_desc *lpddr4_tcm_desc = (struct lpddr4_tcm_desc *) TCM_DATA_CFG;
++
++	switch (lpddr4_tcm_desc->size) {
++	case 4096:
++	case 2048:
++	case 1024:
++		*size = (1L << 20) * lpddr4_tcm_desc->size;
++		break;
++	default:
++		printf("%s: DRAM size %uM is not supported \n", __func__,
++				lpddr4_tcm_desc->size);
++		while ( 1 ) {};
++		break;
++	};
++	return 0;
++}
++	/* Get the top of usable RAM */
++ulong board_get_usable_ram_top(ulong total_size)
++{
++
++        if(gd->ram_top > 0x100000000)
++            gd->ram_top = 0x100000000;
++
++        return gd->ram_top;
++}
++
++int dram_init(void)
++{
++	phys_size_t sdram_size;
++	int ret;
++	ret = board_phys_sdram_size(&sdram_size);
++	printf("%s: size %llu\n", __func__, sdram_size);
++	if (ret)
++		return ret;
++
++	/* rom_pointer[1] contains the size of TEE occupies */
++	gd->ram_size = sdram_size - rom_pointer[1];
++
++	return 0;
++}
++
++#ifdef CONFIG_OF_BOARD_SETUP
++int ft_board_setup(void *blob, bd_t *bd)
++{
++	return 0;
++}
++#endif
++
++#ifdef CONFIG_FEC_MXC
++#define FEC_RST_PAD IMX_GPIO_NR(1, 10)
++static iomux_v3_cfg_t const fec1_rst_pads[] = {
++	IMX8MM_PAD_GPIO1_IO10_GPIO1_IO10 | MUX_PAD_CTRL(NO_PAD_CTRL),
++};
++
++static void setup_iomux_fec(void)
++{
++	imx_iomux_v3_setup_multiple_pads(fec1_rst_pads,
++					 ARRAY_SIZE(fec1_rst_pads));
++
++	gpio_request(FEC_RST_PAD, "fec1_rst");
++	gpio_direction_output(FEC_RST_PAD, 0);
++	udelay(500);
++	gpio_direction_output(FEC_RST_PAD, 1);
++}
++
++/*
++ * setup_mac_address() - set Ethernet MAC address environment.
++ *
++ * @return: 0 on success, -1 on failure
++ */
++static int setup_mac_address(void)
++{
++        int ret;
++        unsigned char enetaddr[6];
++
++        ret = eth_env_get_enetaddr("ethaddr", enetaddr);
++        if (ret)
++                return 0;
++
++        ret = cl_eeprom_read_mac_addr(enetaddr, CONFIG_SYS_I2C_EEPROM_BUS);
++        if (ret)
++                return ret;
++
++        ret = is_valid_ethaddr(enetaddr);
++        if (!ret)
++                return -1;
++
++	ret = eth_env_set_enetaddr("ethaddr", enetaddr);
++	if (ret)
++		return -1;
++
++        return 0;
++}
++
++static int setup_fec(void)
++{
++	struct iomuxc_gpr_base_regs *const iomuxc_gpr_regs
++		= (struct iomuxc_gpr_base_regs *) IOMUXC_GPR_BASE_ADDR;
++
++	setup_iomux_fec();
++
++	/* Use 125M anatop REF_CLK1 for ENET1, not from external */
++	clrsetbits_le32(&iomuxc_gpr_regs->gpr[1],
++			IOMUXC_GPR_GPR1_GPR_ENET1_TX_CLK_SEL_SHIFT, 0);
++	return set_clk_enet(ENET_125MHZ);
++}
++
++int board_phy_config(struct phy_device *phydev)
++{
++	/* enable rgmii rxc skew and phy mode select to RGMII copper */
++	phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x1f);
++	phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x8);
++
++	phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x00);
++	phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x82ee);
++	phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x05);
++	phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x100);
++
++	if (phydev->drv->config)
++		phydev->drv->config(phydev);
++	return 0;
++}
++#endif
++
++int board_usb_init(int index, enum usb_init_type init)
++{
++	debug("board_usb_init %d, type %d\n", index, init);
++
++	imx8m_usb_power(index, true);
++
++	return 0;
++}
++
++int board_usb_cleanup(int index, enum usb_init_type init)
++{
++	debug("board_usb_cleanup %d, type %d\n", index, init);
++
++	imx8m_usb_power(index, false);
++
++	return 0;
++}
++int board_init(void)
++{
++
++#ifdef CONFIG_FEC_MXC
++	setup_fec();
++#endif
++	return 0;
++}
++
++int board_mmc_get_env_dev(int devno)
++{
++	const ulong user_env_devno = env_get_hex("env_dev", ULONG_MAX);
++	if (user_env_devno != ULONG_MAX) {
++		printf("User Environment dev# is (%lu)\n", user_env_devno);
++		return (int)user_env_devno;
++	}
++	return devno;
++}
++
++static int _mmc_get_env_part(void)
++{
++	const ulong user_env_part = env_get_hex("env_part", ULONG_MAX);
++	if (user_env_part != ULONG_MAX) {
++		printf("User Environment part# is (%lu)\n", user_env_part);
++		return (int)user_env_part;
++	}
++	return CONFIG_SYS_MMC_ENV_PART;
++}
++
++uint mmc_get_env_part(struct mmc *mmc)
++{
++	if (mmc->part_support)
++	    return _mmc_get_env_part();
++
++	return 0;
++}
++
++int mmc_map_to_kernel_blk(int devno){
++	return devno;
++}
++
++static void board_bootdev_init(void)
++{
++	u32 bootdev = get_boot_device();
++	switch (bootdev) {
++	case MMC3_BOOT:
++		bootdev = 2;
++		break;
++	case SD2_BOOT:
++		bootdev = 1;
++		break;
++	default:
++		env_set("bootdev", NULL);
++		return;
++	}
++	env_set_ulong("bootdev", bootdev);
++}
++
++int board_late_init(void)
++{
++	int ret;
++
++#ifdef CONFIG_ENV_IS_IN_MMC
++	board_late_mmc_env_init();
++	board_bootdev_init();
++#endif
++
++	ret = setup_mac_address();
++	if (ret < 0)
++		printf("%s: Can't set MAC address\n", __func__);
++
++	return 0;
++}
++
++#ifdef CONFIG_FSL_FASTBOOT
++#ifdef CONFIG_ANDROID_RECOVERY
++int is_recovery_key_pressing(void)
++{
++	return 0; /*TODO*/
++}
++#endif /*CONFIG_ANDROID_RECOVERY*/
++#endif /*CONFIG_FSL_FASTBOOT*/
+diff --git a/board/compulab/iot-gate-imx8/spl.c b/board/compulab/iot-gate-imx8/spl.c
+new file mode 100644
+index 0000000000..d6ece8ef3e
+--- /dev/null
++++ b/board/compulab/iot-gate-imx8/spl.c
+@@ -0,0 +1,9 @@
++#include <asm/io.h>
++#include <asm/mach-imx/iomux-v3.h>
++#include <asm/arch/imx8mm_pins.h>
++#include <asm/arch/clock.h>
++#include <asm/arch/sys_proto.h>
++
++int spl_board_private_init(void) {
++	return 0;
++}
+diff --git a/configs/iot-gate-imx8_defconfig b/configs/iot-gate-imx8_defconfig
+new file mode 100644
+index 0000000000..39c448eca0
+--- /dev/null
++++ b/configs/iot-gate-imx8_defconfig
+@@ -0,0 +1,102 @@
++CONFIG_ARM=y
++CONFIG_SPL_SYS_ICACHE_OFF=y
++CONFIG_SPL_SYS_DCACHE_OFF=y
++CONFIG_ARCH_IMX8M=y
++CONFIG_SYS_TEXT_BASE=0x40200000
++CONFIG_SPL_GPIO_SUPPORT=y
++CONFIG_ENV_SIZE=0x1000
++CONFIG_ENV_OFFSET=0x4400
++CONFIG_DM_GPIO=y
++CONFIG_TARGET_IOT_GATE_IMX8=y
++CONFIG_DEFAULT_DTB="sb-iotgimx8-can.dtb"
++CONFIG_SPL_MMC_SUPPORT=y
++CONFIG_SPL_SERIAL_SUPPORT=y
++CONFIG_SPL=y
++CONFIG_CSF_SIZE=0x2000
++CONFIG_SPL_TEXT_BASE=0x7E1000
++CONFIG_LOCALVERSION="-iot-gate-imx8-1.0"
++CONFIG_FIT=y
++CONFIG_FIT_EXTERNAL_OFFSET=0x3000
++CONFIG_SPL_LOAD_FIT=y
++CONFIG_SPL_FIT_GENERATOR="arch/arm/mach-imx/mkimage_fit_atf.sh"
++CONFIG_OF_SYSTEM_SETUP=y
++CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/mach-imx/imx8m/imximage-8mm-lpddr4.cfg"
++CONFIG_CONSOLE_MUX=y
++CONFIG_DEFAULT_FDT_FILE="sb-iotgimx8-can.dtb"
++CONFIG_BOARD_LATE_INIT=y
++CONFIG_ARCH_MISC_INIT=y
++CONFIG_BOARD_EARLY_INIT_F=y
++CONFIG_SPL_BOARD_INIT=y
++CONFIG_SPL_SEPARATE_BSS=y
++CONFIG_SPL_POWER_SUPPORT=y
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="u-boot=> "
++# CONFIG_BOOTM_NETBSD is not set
++CONFIG_CMD_EEPROM=y
++CONFIG_CMD_EEPROM_LAYOUT=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_FUSE=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MII=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_REGULATOR=y
++CONFIG_CMD_EXT2=y
++CONFIG_CMD_EXT4=y
++CONFIG_CMD_FAT=y
++CONFIG_CMD_FS_GENERIC=y
++CONFIG_EFI_PARTITION=y
++CONFIG_OF_CONTROL=y
++CONFIG_DEFAULT_DEVICE_TREE="iot-gate-imx8"
++CONFIG_ENV_IS_IN_MMC=y
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG=y
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_CLK_COMPOSITE_CCF=y
++CONFIG_CLK_IMX8MM=y
++CONFIG_MXC_GPIO=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_MXC=y
++CONFIG_DM_MMC=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_MMC_IO_VOLTAGE=y
++CONFIG_MMC_UHS_SUPPORT=y
++CONFIG_MMC_HS400_ES_SUPPORT=y
++CONFIG_MMC_HS400_SUPPORT=y
++CONFIG_FSL_ESDHC_IMX=y
++CONFIG_DM_ETH=y
++CONFIG_FEC_MXC=y
++CONFIG_MII=y
++CONFIG_PINCTRL=y
++CONFIG_PINCTRL_IMX8M=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_DM_RESET=y
++CONFIG_MXC_UART=y
++CONFIG_SYSRESET=y
++CONFIG_SYSRESET_PSCI=y
++CONFIG_DM_THERMAL=y
++CONFIG_NXP_TMU=y
++CONFIG_USB=y
++CONFIG_DM_USB=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_MANUFACTURER="FSL"
++CONFIG_USB_GADGET_VENDOR_NUM=0x0525
++CONFIG_USB_GADGET_PRODUCT_NUM=0xa4a5
++CONFIG_CI_UDC=y
++CONFIG_SDP_LOADADDR=0x40400000
++CONFIG_USB_GADGET_DOWNLOAD=y
++CONFIG_USB_HOST_ETHER=y
++CONFIG_USB_ETHER_ASIX88179=y
++CONFIG_EXT4_WRITE=y
++CONFIG_FAT_WRITE=y
++CONFIG_OF_LIBFDT_OVERLAY=y
++# CONFIG_EFI_LOADER is not set
+diff --git a/include/configs/iot-gate-imx8.h b/include/configs/iot-gate-imx8.h
+new file mode 100644
+index 0000000000..b3d6082a66
+--- /dev/null
++++ b/include/configs/iot-gate-imx8.h
+@@ -0,0 +1,15 @@
++/*
++ * Copyright 2020 CompuLab
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __UCM_IMX8M_MINI_H
++#define __UCM_IMX8M_MINI_H
++
++#include "cpl-imx8m-mini.h"
++
++#if defined(CONFIG_ANDROID_SUPPORT)
++#include "ucm-imx8m-mini_android.h"
++#endif
++#endif
+-- 
+2.11.0
+
