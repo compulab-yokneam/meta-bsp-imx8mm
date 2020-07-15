@@ -1,22 +1,22 @@
-# imx-boot image build
+# Building Boot Firmware for CompuLab's i.MX8M Mini products
 
-Supported machine:
+Supported machines:
 
 * `mcm-imxi8-mini`
 * `ucm-imxi8-mini`
 * `iot-gate-imx8`
 
-Define a `MACHINE` environment variable with respect to a required machine:
+Define a `MACHINE` environment variable for the target product:
 
-|Machine|Environment|
+|Machine|Command Line|
 |---|---|
 |mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
 |ucm-imx8m-mini|export MACHINE=ucm-imx8m-mini
 |iot-gate-imx8|export MACHINE=iot-gate-imx8
 
-Define these envaronment variables:
+Define the following environment variables:
 
-|Description|Environment|
+|Description|Command Line|
 |---|---|
 |NXP release name|export NXP_RELEASE=rel_imx_5.4.24_2.1.0|
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.8.bin|
@@ -25,7 +25,7 @@ Define these envaronment variables:
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download a tool chain from [Linaro](https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/)
+* Download the [Linaro tool chain](https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/)
 * Set environment variables:
 <pre>
 export ARCH=arm64
@@ -44,15 +44,15 @@ git clone -b ${CPL_BRANCH} https://github.com/compulab-yokneam/meta-bsp-imx8mm.g
 export LAYER_DIR=$(pwd)/meta-bsp-imx8mm
 </pre>
 
-## Mkimage Setup
-* Download the mkimage from:
+## Mkimage setup
+* Download the mkimage:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-mkimage.git
 git -C imx-mkimage checkout ${NXP_RELEASE}
 </pre>
 
-## Arm Trusted Firmware Setup
-Download the ATF from:
+## Arm Trusted Firmware (ATF) setup
+* Download the ATF:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-atf.git
 git -C imx-atf checkout ${NXP_RELEASE}
@@ -65,7 +65,7 @@ cp -v imx-atf/build/imx8mm/release/bl31.bin ${SRC_ROOT}/imx-mkimage/iMX8M/
 </pre>
 
 ## Firmware iMX setup
-Download the firmware-imx file from:
+* Download the firmware-imx file:
 <pre>
 wget http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${NXP_FIRMWARE}
 bash -x ${NXP_FIRMWARE} --auto-accept
@@ -73,14 +73,14 @@ cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${SRC_ROOT}/im
 </pre>
 
 ## U-Boot
-* Download the U-Boot source and apply the CompuLab BSP patches:
+* Download the U-Boot source and apply CompuLab BSP patches:
 <pre>
 git clone https://source.codeaurora.org/external/imx/uboot-imx.git
 git -C uboot-imx checkout ${NXP_RELEASE}
 git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
 </pre>
 
-* Compile the U-Boot
+* Compile U-Boot:
 <pre>
 make -C uboot-imx ${MACHINE}_defconfig
 make -C uboot-imx
