@@ -8,4 +8,4 @@ do_compile_preppend () {
 
 addtask compile_preppend before do_compile after do_configure
 
-COMPATIBLE_MACHINE = "(ucm-imx8m-mini|mcm-imx8m-mini)"
+COMPATIBLE_MACHINE = "(ucm-imx8m-mini|mcm-imx8m-mini|iot-gate-imx8)"
