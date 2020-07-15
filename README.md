@@ -29,5 +29,3 @@ MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source sources/meta-bsp-imx8
 ```
 bitbake -k fsl-image-qt5-validation-imx
 ```
-## 2.4 Download a pre-built image
-* [XWayland Qt5 Image](https://drive.google.com/drive/folders/1f1g2ib4R80PFCBMu50t-KazBsO-KRaio)
