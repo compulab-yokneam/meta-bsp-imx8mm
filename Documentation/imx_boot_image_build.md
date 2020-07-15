@@ -4,6 +4,7 @@ Supported machine:
 
 * `mcm-imxi8-mini`
 * `ucm-imxi8-mini`
+* `iot-gate-imx8`
 
 Define a `MACHINE` environment variable with respect to a required machine:
 
@@ -11,6 +12,7 @@ Define a `MACHINE` environment variable with respect to a required machine:
 |---|---|
 |mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
 |ucm-imx8m-mini|export MACHINE=ucm-imx8m-mini
+|iot-gate-imx8|export MACHINE=iot-gate-imx8
 
 Define these envaronment variables:
 
