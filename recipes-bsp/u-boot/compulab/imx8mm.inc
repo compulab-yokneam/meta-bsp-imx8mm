@@ -67,4 +67,11 @@ SRC_URI_append = " \
 	file://0065-iot-gate-imx8-Add-basic-support.patch \
 	file://0066-mcm-imx8m-mini-config-Update-env-size-offest.patch \
 	file://0067-imx8m-mini-env-config-Update-size-offset-value.patch \
+	file://0068-imx8-eeprom-Move-to-the-imx8-platform-independent-fo.patch \
+	file://0069-imx8-eeprom-Remove-duplicated-code.patch \
+	file://0070-imx8mm-plat-Add-the-common-board-file-for-imx8mm-SoC.patch \
+	file://0071-imx8m-mini-Refactor-the-usdhc2.patch \
+	file://0072-mcm-imx8m-mini-reset-Refactor-the-reset.patch \
+	file://0073-imx8m-mini-ddr-Change-the-memory-presets-order.patch \
+	file://0074-imx8m-mini-env-Fix-getopt_long-parameters-string.patch \
 "
