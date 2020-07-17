@@ -67,7 +67,4 @@ SRC_URI_append = " \
 	file://0065-iot-gate-imx8-Add-basic-support.patch \
 	file://0066-mcm-imx8m-mini-config-Update-env-size-offest.patch \
 	file://0067-imx8m-mini-env-config-Update-size-offset-value.patch \
-	file://mcm-imx8m-mini_defconfig \
-	file://ucm-imx8m-mini_defconfig \
-	file://iot-gate-imx8_defconfig \
 "
