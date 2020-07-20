@@ -25,5 +25,6 @@ SRC_URI_append_mcm-imx8m-mini = " \
 	file://0023-mcm-imx8m-mini-config-Update-defconfig.patch \
 	file://0024-can-mcp25xxfd-Microchip-MCP25xxFD-Family-CAN-control.patch \
 	file://0025-serial-imx-allow-passing-rs485-options.patch \
+	file://0026-mcm-imx8m-mini-defconfig-Update-defconfig.patch \
 	file://defconfig \
 "
