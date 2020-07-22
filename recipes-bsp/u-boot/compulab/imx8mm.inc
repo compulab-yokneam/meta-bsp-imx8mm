@@ -74,4 +74,5 @@ SRC_URI_append = " \
 	file://0072-mcm-imx8m-mini-reset-Refactor-the-reset.patch \
 	file://0073-imx8m-mini-ddr-Change-the-memory-presets-order.patch \
 	file://0074-imx8m-mini-env-Fix-getopt_long-parameters-string.patch \
+	file://0075-ucm-imx8m-mini-Fix-reset.patch \
 "
