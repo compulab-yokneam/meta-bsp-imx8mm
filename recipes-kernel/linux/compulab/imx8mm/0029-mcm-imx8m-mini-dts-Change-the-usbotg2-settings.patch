@@ -1,0 +1,29 @@
+From 4ba0ef75838e9be30c83ac2c80c9ba6d72f9b13b Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 21 Jul 2020 09:20:39 +0300
+Subject: [PATCH 29/29] mcm-imx8m-mini: dts: Change the usbotg2 settings
+
+1) Disable session request protocol.
+2) Disable host negotiation protocol.
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+index d3fcb0c55e17..f217ceecf685 100644
+--- a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+@@ -723,6 +723,8 @@
+ 
+ &usbotg2 {
+ 	dr_mode = "host";
++	hnp-disable;
++	srp-disable;
+ 	status = "okay";
+ };
+ 
+-- 
+2.11.0
+

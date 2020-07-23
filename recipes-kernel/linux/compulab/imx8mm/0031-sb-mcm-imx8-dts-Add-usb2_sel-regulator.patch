@@ -1,0 +1,45 @@
+From 139b898bd67aa53bdd4b8a4f0d6b2f1c35b3c069 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 22 Jul 2020 15:01:41 +0300
+Subject: [PATCH 31/31] sb-mcm-imx8: dts: Add usb2_sel regulator
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This regulator is in charge of driving a high level on the USB2.0MUX.SEL input.
+True table:
+E14 USB2.0MUX.SEL RESULT
+0   0             J3 – N/A usb2_sel is always on
+0   1             J3 – jumper closed
+1   0             J3 – N/A usb2_sel is always on
+1   1             P11 – Jumper opened
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi b/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
+index 1a9db125ac85..657683c5e6fb 100644
+--- a/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
++++ b/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
+@@ -85,6 +85,16 @@
+ 		enable-active-low;
+ 	};
+ 
++	usb2_sel: usb2sel {
++		compatible = "regulator-fixed";
++		regulator-name = "usb2_sel";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&pca9555 1 GPIO_ACTIVE_HIGH>;
++		regulator-always-on;
++		enable-active-high;
++	};
++
+ 	pcie0_refclk: pcie0-refclk {
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+-- 
+2.11.0
+

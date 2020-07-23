@@ -26,5 +26,11 @@ SRC_URI_append_mcm-imx8m-mini = " \
 	file://0024-can-mcp25xxfd-Microchip-MCP25xxFD-Family-CAN-control.patch \
 	file://0025-serial-imx-allow-passing-rs485-options.patch \
 	file://0026-mcm-imx8m-mini-defconfig-Update-defconfig.patch \
+	file://0027-mcm-imx8m-mini-dts-Add-mcm-imx8m-mini-m4.dts.patch \
+	file://0028-mcm-imx8m-mini-defconfig-Update-defconfig.patch \
+	file://0029-mcm-imx8m-mini-dts-Change-the-usbotg2-settings.patch \
+	file://0030-mcm-imx8m-mini-dts-usbotg-Disable-over-current-contr.patch \
+	file://0031-sb-mcm-imx8-dts-Add-usb2_sel-regulator.patch \
+	file://0032-mcm-imx8m-mini-dts-Expand-backlight-level-list.patch \
 	file://defconfig \
 "
