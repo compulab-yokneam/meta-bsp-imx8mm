@@ -88,7 +88,7 @@ make -C uboot-imx
 
 * Copy files to the mkimage directory:
 <pre>
-cp -v $(find uboot-imx | awk '/u-boot-spl.bin$|u-boot.bin$|u-boot-nodtb.bin$|cl-som.*\.dtb$|mkimage$/' ORS=" ") ${SRC_ROOT}/imx-mkimage/iMX8M/                                                                     
+cp -v $(find uboot-imx | awk -v v=${MACHINE} '(/u-boot-spl.bin$|u-boot.bin$|u-boot-nodtb.bin$|tools\/mkimage$/)||($0~v".dtb$")' ORS=" ") ${SRC_ROOT}/imx-mkimage/iMX8M/
 </pre>
 
 <!---
@@ -123,7 +123,7 @@ unset ARCH CROSS_COMPILE
 * Issue:
 <pre>
 cd ${SRC_ROOT}/imx-mkimage/iMX8M
-sed "s/\(^dtbs = \).*/\1${MACHINE}.dtb/;s/\(mkimage\)_uboot/\1/" soc.mak > Makefile
+sed "s/\(^dtbs = \).*/\1${MACHINE}.dtb/;s/\(mkimage\)_uboot/\1/;s/\(^TEE_LOAD_ADDR \).*/\1= 0x7e000000/g" soc.mak > Makefile
 make clean
 make flash_evk SOC=iMX8MM 2>&1 | tee flash_evk.log
 make print_fit_hab SOC=iMX8MM 2>&1 | tee print_fit_hab.log
