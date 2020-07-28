@@ -1,0 +1,73 @@
+From 44a09b65c5f9e73a6403554f795f0a1d17cbf690 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 28 Jul 2020 19:06:27 +0300
+Subject: [PATCH 42/45] spl: Add handling of DDR PHY training result
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/ucm-imx8m-mini/ddr/ddr.c | 16 +++++++++++++---
+ drivers/ddr/imx8m/ddrphy_utils.c        |  4 ++++
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.c b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
+index c767bca579..7df13c942f 100644
+--- a/board/compulab/ucm-imx8m-mini/ddr/ddr.c
++++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
+@@ -20,6 +20,8 @@ u32 cl_eeprom_set_ddrinfo(u32 ddrinfo);
+ 
+ u32 cl_eeprom_get_osize(void);
+ 
++extern volatile bool ddrphy_train_pass;
++
+ static unsigned int lpddr4_mr_read(unsigned int mr_rank, unsigned int mr_addr)
+ {
+ 	unsigned int tmp;
+@@ -159,9 +161,17 @@ void spl_dram_init(void)
+ 
+ 	ddr_init(lpddr4_array[i].timing);
+ 
+-	ddr_info_mrr = lpddr4_get_mr();
+-	if (ddr_info_mrr == 0xFFFFFFFF ) {
+-		printf("DDRINFO(M): mr5-8 [ 0x%x ] is invalid; reset\n", ddr_info_mrr);
++	if(ddrphy_train_pass) {
++		ddr_info_mrr = lpddr4_get_mr();
++		if (ddr_info_mrr == 0xFFFFFFFF || ddr_info_mrr == 0) {
++			printf("DDRINFO(M): mr5-8 [ 0x%x ] is invalid; reset\n", ddr_info_mrr);
++			ddrphy_train_pass = false;
++		}
++	}
++	else
++		printf("DDR PHY training failed\n");
++
++	if (!ddrphy_train_pass) {
+ 		SPL_TCM_INIT;
+ 		do_reset(NULL,0,0,NULL);
+ 	}
+diff --git a/drivers/ddr/imx8m/ddrphy_utils.c b/drivers/ddr/imx8m/ddrphy_utils.c
+index b7c314ec98..9635176437 100644
+--- a/drivers/ddr/imx8m/ddrphy_utils.c
++++ b/drivers/ddr/imx8m/ddrphy_utils.c
+@@ -14,6 +14,8 @@
+ 
+ #define ddr_printf(args...) debug(args)
+ 
++bool ddrphy_train_pass = false;
++
+ static inline void poll_pmu_message_ready(void)
+ {
+ 	unsigned int reg;
+@@ -97,9 +99,11 @@ void wait_ddrphy_training_complete(void)
+ 			decode_streaming_message();
+ 		} else if (mail == 0x07) {
+ 			printf("Training PASS\n");
++			ddrphy_train_pass = true;
+ 			break;
+ 		} else if (mail == 0xff) {
+ 			printf("Training FAILED\n");
++			ddrphy_train_pass = false;
+ 			break;
+ 		}
+ 	}
+-- 
+2.11.0
+
