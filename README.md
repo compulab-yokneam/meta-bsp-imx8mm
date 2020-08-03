@@ -19,8 +19,10 @@ git clone -b rel_imx_5.4.24_2.1.0-1.0 https://github.com/compulab-yokneam/meta-b
 ## 2.1 Define COMPULAB_MACHINE environment variable
 ```
 COMPULAB_MACHINE=mcm-imx8m-mini
+```
 *or*
-COMPULAB_MACHINE=mcm-imx8m-mini
+```
+COMPULAB_MACHINE=ucm-imx8m-mini
 ```
 ## 2.2 Run CompuLab Linux Yocto Project setup
 |NOTE|Refer to the [NXP Readme](https://source.codeaurora.org/external/imx/meta-imx/tree/README?h=zeus-5.4.24-2.1.0) for details about how to select a correct backend & distro.|
