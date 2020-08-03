@@ -1,4 +1,4 @@
-SRC_URI_append_mcm-imx8m-mini = " \
+SRC_URI_append = " \
 	file://0000-imx8m-mini-add-basic-support.patch \
 	file://0001-dts-Fix-usdhc1-properties.patch \
 	file://0002-defconfig-Delete-some-unnecessary-drivers.patch \

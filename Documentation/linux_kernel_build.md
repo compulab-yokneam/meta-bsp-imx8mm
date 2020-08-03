@@ -3,12 +3,14 @@
 Supported machines:
 
 * `mcm-imx8m-mini`
+* `ucm-imx8m-mini`
 
 Define a `MACHINE` environment variable for the target product:
 
 |Machine|Command Line|
 |---|---|
 |mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
+|ucm-imx8m-mini|export MACHINE=ucm-imx8m-mini
 
 Define the following environment variables:
 

@@ -8,7 +8,7 @@ SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 SRCREV = "4979a99482f7e04a3c1f4fb55e3182395ee8f710"
 include compulab/imx8mm.inc
 
-SRC_URI_append_mcm-imx8m-mini += "\
+SRC_URI_append += "\
 	file://cl_setenv \
 "
 
@@ -28,4 +28,4 @@ FILES_${PN} += "/sbin/cl_setenv"
 
 RPROVIDES_${PN} += "u-boot-fw-utils"
 
-COMPATIBLE_MACHINE = "mcm-imx8m-mini"
+COMPATIBLE_MACHINE = "(mcm-imx8m-mini|ucm-imx8m-mini)"
