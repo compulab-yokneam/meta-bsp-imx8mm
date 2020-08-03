@@ -20,7 +20,7 @@ git clone -b rel_imx_5.4.24_2.1.0-1.0 https://github.com/compulab-yokneam/meta-b
 ```
 COMPULAB_MACHINE=mcm-imx8m-mini
 ```
-*or*
+**or**
 ```
 COMPULAB_MACHINE=ucm-imx8m-mini
 ```
