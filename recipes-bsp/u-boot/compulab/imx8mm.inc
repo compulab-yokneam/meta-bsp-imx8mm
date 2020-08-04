@@ -75,4 +75,8 @@ SRC_URI_append = " \
 	file://0073-imx8m-mini-ddr-Change-the-memory-presets-order.patch \
 	file://0074-imx8m-mini-env-Fix-getopt_long-parameters-string.patch \
 	file://0075-ucm-imx8m-mini-Fix-reset.patch \
+	file://0076-imx8m-mini-spl-Add-__weak-board_fit_config_name_matc.patch \
+	file://0077-mcm-imx8m-mini-spl-Add-board_fit_config_name_match.patch \
+	file://0078-imx8m-mini-u-boot-Add-__weak-uboot_board_private_ini.patch \
+	file://0079-mcm-imx8m-mini-u-boot-Add-uboot_board_private_init.patch \
 "
