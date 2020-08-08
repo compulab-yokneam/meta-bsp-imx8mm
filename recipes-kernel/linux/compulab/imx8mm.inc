@@ -32,5 +32,6 @@ SRC_URI_append = " \
 	file://0030-mcm-imx8m-mini-dts-usbotg-Disable-over-current-contr.patch \
 	file://0031-sb-mcm-imx8-dts-Add-usb2_sel-regulator.patch \
 	file://0032-mcm-imx8m-mini-dts-Expand-backlight-level-list.patch \
+	file://0033-ucm-imx8m-mini-defconf-dt-Migrate-to-kernel-5.4.24.patch \
 	file://defconfig \
 "
