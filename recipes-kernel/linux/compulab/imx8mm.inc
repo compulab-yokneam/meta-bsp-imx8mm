@@ -33,5 +33,10 @@ SRC_URI_append = " \
 	file://0031-sb-mcm-imx8-dts-Add-usb2_sel-regulator.patch \
 	file://0032-mcm-imx8m-mini-dts-Expand-backlight-level-list.patch \
 	file://0033-ucm-imx8m-mini-defconf-dt-Migrate-to-kernel-5.4.24.patch \
+	file://0034-mcm-imx8m-mini-dts-Rearange-pcie1-port-description.patch \
+	file://0035-mcm-imx8m-mini-config-Enable-mcp25xxfd.patch \
+	file://0036-mcm-imx8m-mini-dts-Enable-brcm-bcm4330-bt.patch \
+	file://0037-mcm-imx8m-mini-config-Set-CONFIG_IMX_SDMA-m-for-brcm.patch \
+	file://0039-mcm-imx8m-mini-config-Add-the-brcm-firmware-to-the-k.patch \
 	file://defconfig \
 "

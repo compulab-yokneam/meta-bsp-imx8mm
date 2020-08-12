@@ -1,0 +1,57 @@
+From a7502be290891a8d69d69564294d04c91a5bcef8 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 10 Aug 2020 16:56:12 +0300
+Subject: [PATCH 34/39] mcm-imx8m-mini: dts: Rearange pcie1 port description
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts    | 11 +++++++++++
+ arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi |  4 +++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+index 720967a26a44..5e9548567a6e 100644
+--- a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+@@ -25,6 +25,17 @@
+ 		stdout-patch = &uart3;
+ 	};
+ 
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		rpmsg_reserved: rpmsg@0xb8000000 {
++			no-map;
++			reg = <0 0xb8000000 0 0x400000>;
++		};
++	};
++
+ 	leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+diff --git a/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi b/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
+index 657683c5e6fb..5e148929642c 100644
+--- a/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
++++ b/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
+@@ -150,13 +150,15 @@
+ };
+ 
+ &pcie0 {
++	compatible = "fsl,imx8mm-pcie";
+ 	reset-gpio = <&pca9555 0 GPIO_ACTIVE_LOW>;
+ 	clocks = <&clk IMX8MM_CLK_PCIE1_ROOT>,
+ 		 <&clk IMX8MM_CLK_PCIE1_AUX>,
+ 		 <&clk IMX8MM_CLK_PCIE1_PHY>,
+ 		 <&pcie0_refclk>;
+ 	clock-names = "pcie", "pcie_aux", "pcie_phy", "pcie_bus";
+-	ext_osc = <1>;
++	ext_osc = <0>;
++	reserved-region = <&rpmsg_reserved>;
+ 	status = "okay";
+ };
+ 
+-- 
+2.11.0
+
