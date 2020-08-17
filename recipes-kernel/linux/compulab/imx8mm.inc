@@ -38,5 +38,11 @@ SRC_URI_append = " \
 	file://0036-mcm-imx8m-mini-dts-Enable-brcm-bcm4330-bt.patch \
 	file://0037-mcm-imx8m-mini-config-Set-CONFIG_IMX_SDMA-m-for-brcm.patch \
 	file://0039-mcm-imx8m-mini-config-Add-the-brcm-firmware-to-the-k.patch \
+	file://0040-ucm-imx8m-mini-Fix-DTB-abcense.patch \
+	file://0041-ucm-imx8m-mini-dts-Fix-PMIC-node.patch \
+	file://0042-ucm-imx8m-mini-dts-Cleaning.patch \
+	file://0043-ucm-imx8m-mini-dts-Enable-brcm-bcm4330-bt.patch \
+	file://0044-ucm-imx8m-mini-config-Set-CONFIG_IMX_SDMA-m-for-brcm.patch \
+	file://0045-ucm-imx8m-mini-config-Add-brcm-firmware-to-kernel-bu.patch \
 	file://defconfig \
 "

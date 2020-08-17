@@ -1,0 +1,27 @@
+From bf748b2769d9803733b3b6f4e7ad294266f7e0dd Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 17 Aug 2020 22:08:07 +0300
+Subject: [PATCH 44/45] ucm-imx8m-mini: config: Set CONFIG_IMX_SDMA=m for
+ brcm,bcm4330-bt
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/ucm-imx8m-mini_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+index b2cf1065805b..6572585a40e6 100644
+--- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
++++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+@@ -651,7 +651,7 @@ CONFIG_DMADEVICES=y
+ CONFIG_BCM_SBA_RAID=m
+ CONFIG_FSL_EDMA=y
+ CONFIG_FSL_EDMA_V3=y
+-CONFIG_IMX_SDMA=y
++CONFIG_IMX_SDMA=m
+ CONFIG_MV_XOR_V2=y
+ CONFIG_MXS_DMA=y
+ CONFIG_PL330_DMA=y
+-- 
+2.11.0
+
