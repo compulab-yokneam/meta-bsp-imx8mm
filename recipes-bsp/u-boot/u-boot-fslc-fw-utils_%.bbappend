@@ -17,4 +17,15 @@ do_compile () {
 	oe_runmake envtools
 }
 
+do_install_prepend () {
+	if [ -e ${WORKDIR}/fw_env.config ]; then
+		sed -i -e \
+		's:\(.*/dev/mmcblk[^[:blank:]]*\)[[:blank:]].*$:\1 ${UBOOT_ENV_OFFSET} ${UBOOT_ENV_SIZE}:' \
+			${WORKDIR}/fw_env.config
+	else
+		bbfatal "fw_env.config not found in ${WORKDIR}"
+
+	fi
+}
+
 RPROVIDES_${PN} += "u-boot-fw-utils"
