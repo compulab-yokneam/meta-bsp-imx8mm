@@ -79,4 +79,6 @@ SRC_URI_append = " \
 	file://0077-mcm-imx8m-mini-spl-Add-board_fit_config_name_match.patch \
 	file://0078-imx8m-mini-u-boot-Add-__weak-uboot_board_private_ini.patch \
 	file://0079-mcm-imx8m-mini-u-boot-Add-uboot_board_private_init.patch \
+	file://0080-Add-ddr_init-return-handling.patch \
+	file://0081-spl-Enable-Kingston-DRAM-support.patch \
 "
