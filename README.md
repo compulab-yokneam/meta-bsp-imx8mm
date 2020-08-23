@@ -12,7 +12,7 @@ repo sync
 ```
 ## 1.2 Download CompuLab meta layer
 ```
-git clone -b rel_imx_5.4.24_2.1.0-1.0 https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
+git clone -b rel_imx_5.4.24_2.1.0-dev https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
 ```
 
 # 2 Build
