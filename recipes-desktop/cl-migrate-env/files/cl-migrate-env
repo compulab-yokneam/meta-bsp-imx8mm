@@ -1,0 +1,54 @@
+#!/bin/sh -u
+
+readonly ENV_DEV_LEGACY=/dev/mmcblk2
+readonly ENV_OFF_LEGACY=0x400000
+readonly ENV_DEV=${1:-${ENV_DEV_LEGACY}}
+readonly ENV_OFF=0x4400
+readonly ENV_SIZE=0x1000
+
+readonly FW_CONF=$(mktemp /tmp/fw_XXXX.conf)
+readonly ENV_FILE=$(mktemp /tmp/env_XXXX)
+
+trap "rm $ENV_FILE $FW_CONF" EXIT
+
+function move_env()
+{
+	echo $ENV_DEV $ENV_OFF $ENV_SIZE > $FW_CONF
+	local err_mesage=$(set -o pipefail;\
+			fw_setenv --config $FW_CONF --script $ENV_FILE 2>&1\
+			| sed -ne'/Warning:/p' -e '/Error:/p')
+	local retval=$?
+	if [[ $retval -eq 0 ]] && [[ -z "${err_mesage}" ]]; then
+		dialog --infobox "Environment migration successfull" 0 0
+	else
+		dialog --msgbox "Environment migration ERROR $retval\n$err_mesage" 0 0
+	fi
+}
+
+######## MAIN ########
+echo $ENV_DEV_LEGACY $ENV_OFF_LEGACY $ENV_SIZE > $FW_CONF
+err_count=$(set -o pipefail; fw_printenv -c $FW_CONF 2>&1 >$ENV_FILE \
+		| awk 'BEGIN{i=0}/Warning:|Error:/{i++}END{print i}')
+retval=$?
+
+if [[ $retval -eq 0 ]] && [[ $err_count -eq 0 ]]; then
+	while :; do
+		dialog --extra-button --extra-label View --ok-label Move \
+		--yesno "\nA legacy environment found on ${ENV_DEV_LEGACY}@${ENV_OFF_LEGACY}\n\n\
+Move it to the new location ${ENV_DEV}@${ENV_OFF}?\n" 0 0
+		btn_pressed=$?
+		case $btn_pressed in
+		0)
+			move_env
+			break
+			;;
+		3)
+			dialog --textbox $ENV_FILE 0 0
+			;;
+		*)
+			dialog --infobox "Cancelled by User" 0 0
+			break
+			;;
+		esac
+	done
+fi
