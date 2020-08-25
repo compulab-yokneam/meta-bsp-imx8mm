@@ -25,10 +25,6 @@ UBOOT_SUFFIX = "bin"
 UBOOT_MAKE_TARGET = ""
 IMX_BOOT_SEEK = "33"
 
-# Max GPT size is 34 * 512
-UBOOT_ENV_OFFSET = "0x4400"
-UBOOT_ENV_SIZE = "0x1000"
-
 OPTEE_BIN_EXT = "8mm"
 
 MACHINE_FIRMWARE += "firmware-imx-brcm"

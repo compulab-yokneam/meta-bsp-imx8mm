@@ -17,17 +17,6 @@ do_compile () {
 	oe_runmake envtools
 }
 
-do_install_prepend () {
-	if [ -e ${WORKDIR}/fw_env.config ]; then
-		sed -i -e \
-		's:\(.*/dev/mmcblk[^[:blank:]]*\)[[:blank:]].*$:\1 ${UBOOT_ENV_OFFSET} ${UBOOT_ENV_SIZE}:' \
-			${WORKDIR}/fw_env.config
-	else
-		bbfatal "fw_env.config not found in ${WORKDIR}"
-
-	fi
-}
-
 do_install_append () {
 	install -d ${D}/sbin
 	install -m 0755 ${WORKDIR}/cl_setenv ${D}/sbin/

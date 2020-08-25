@@ -14,10 +14,6 @@ SRC_URI = " \
 S = "${WORKDIR}"
 
 do_install() {
-	sed -i -e "s/\(ENV_OFF=\)[[:alnum:]]*/\1${UBOOT_ENV_OFFSET}/" \
-	-e "s/\(ENV_SIZE=\)[[:alnum:]]*/\1${UBOOT_ENV_SIZE}/" \
-	${S}/cl-migrate-env
-
 	mkdir -p ${D}/usr/local/bin/
 	install -m 0755 ${S}/cl-migrate-env ${D}/usr/local/bin/
 }
