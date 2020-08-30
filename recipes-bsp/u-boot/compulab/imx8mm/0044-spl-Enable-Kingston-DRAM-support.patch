@@ -1,6 +1,6 @@
-From 19c8bf64e652b43d5376e756fb5ba630cc8e31a3 Mon Sep 17 00:00:00 2001
+From 80a5dcbab50996f1aa08dc0de655942ac869a627 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-Date: Tue, 28 Jul 2020 19:22:53 +0300
+Date: Sun, 30 Aug 2020 19:28:37 +0300
 Subject: [PATCH 44/45] spl: Enable Kingston DRAM support
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
@@ -10,7 +10,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  2 files changed, 42 insertions(+), 8 deletions(-)
 
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.c b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
-index 49bce23265..62078bae79 100644
+index caab63ce4c..62078bae79 100644
 --- a/board/compulab/ucm-imx8m-mini/ddr/ddr.c
 +++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
 @@ -17,6 +17,8 @@
@@ -38,7 +38,7 @@ index 49bce23265..62078bae79 100644
  
  #define DEFAULT (('D' << 24) + ('E' << 16 ) + ( 'F' << 8 ) + 'A')
  static const struct lpddr4_desc lpddr4_array[] = {
--	{ .name = "Micron", .id = 0xff020008, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
+-	{ .name = "Micron", .id = 0xff020008, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008}, //Only the first timing entry is in use
 -	{ .name = "Micron", .id = 0xff000110, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
 -	{ .name = "Samsung",.id = 0x01061010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
 -	{ .name = "Nanya",  .id = 0x05000010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
