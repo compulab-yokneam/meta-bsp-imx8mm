@@ -83,4 +83,5 @@ SRC_URI_append = " \
 	file://0081-spl-Enable-Kingston-DRAM-support.patch \
 	file://0082-Add-show_suite-function.patch \
 	file://0083-Clean-debug-printout.patch \
+	file://0084-imx8m-ddr-Add-Nanya-2G-2400-MTS-support.patch \
 "
