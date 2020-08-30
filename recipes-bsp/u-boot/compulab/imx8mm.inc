@@ -81,6 +81,6 @@ SRC_URI_append = " \
 	file://0079-mcm-imx8m-mini-u-boot-Add-uboot_board_private_init.patch \
 	file://0080-Add-ddr_init-return-handling.patch \
 	file://0081-spl-Enable-Kingston-DRAM-support.patch \
-	file://082-Add-show_suite-function.patch \
+	file://0082-Add-show_suite-function.patch \
 	file://0083-Clean-debug-printout.patch \
 "
