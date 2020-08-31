@@ -1,26 +1,27 @@
 #!/bin/bash
 
-declare -A SUPPORTED_MACHINE=([mcm-imx8m-mini]=1 [ucm-imx8m-mini]=1)
+declare -A SUPPORTED_MACHINE=([mcm-imx8m-mini]=1 [ucm-imx8m-mini]=1 [iot-gate-imx8]=1)
 
 get_meta() {
 if [[ -d ${dir} ]];then
 git -C ${dir} remote update
 git -C ${dir} pull
 else
-git clone ${url} ${branch} ${dir}
+git clone ${url} ${dir}
+git -C ${dir} checkout ${branch}
 fi
 }
 
 get_meta_compulab() {
 dir="../sources/meta-compulab"
-branch="-b devel"
+branch="dfbae58a70d41659bce61f7e90e528fa2ed772be"
 url="https://github.com/compulab-yokneam/meta-compulab"
 get_meta ${url} ${branch} ${dir}
 }
 
 get_meta_compulab_bsp() {
 dir="../sources/meta-compulab-bsp"
-branch="-b master"
+branch="ced492114feceb1a04d1489269e3405630c8377d"
 url="https://github.com/compulab-yokneam/meta-compulab-bsp"
 get_meta ${url} ${branch} ${dir}
 }
@@ -44,7 +45,14 @@ eof
 
 mod_local() {
 # Modify local.conf
+if [[ ${MACHINE} == 'iot-gate-imx8' ]];then
+CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy"
+CORE_IMAGE_EXTRA_INSTALL+=" cl-migrate-env cl-stest u-boot-fw-utils"
+CORE_IMAGE_EXTRA_INSTALL+=" modemmanager networkmanager wireless-tools bluez5"
+CORE_IMAGE_EXTRA_INSTALL+=" can-utils gpsd gps-utils minicom wvdial tzdata"
+else
 CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy cl-migrate-env cl-launcher cl-stest cl-camera u-boot-fw-utils imx-gpu-viv-demos"
+fi
 CORE_IMAGE_EXTRA_INSTALL+=" htop iotop tmux iperf3"
 IMAGE_FEATURES+=" package-management ssh-server-openssh "
 cat << eof | tee -a ${LOCAL_CONF} > /dev/null

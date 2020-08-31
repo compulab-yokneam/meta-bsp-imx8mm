@@ -3,7 +3,12 @@
 user_local_conf=$(mktemp --dry-run --tmpdir=/tmp userXXX)
 local_conf="conf/local.conf"
 
-chrome=( yes no )
+if [[ ${MACHINE} == 'iot-gate-imx8' ]];then
+	chrome=( no )
+else
+	chrome=( yes no )
+fi
+
 cfg_chrome() {
 if [[ $1 == "yes" ]];then
 cat << EOP >> ${user_local_conf}
@@ -16,7 +21,12 @@ EOP
 fi
 }
 
-rootfs=( ro rw )
+if [[ ${MACHINE} == 'iot-gate-imx8' ]];then
+	rootfs=( rw )
+else
+	rootfs=( ro rw )
+fi
+
 cfg_rootfs() {
 if [[ $1 == "ro" ]];then
 cat << EOP >> ${user_local_conf}
@@ -34,6 +44,12 @@ EOG
 for ARRAY in ${!ARRAYNAME[@]}; do
 select_string='default '
 eval array=\${${ARRAY}[@]}
+options_arr=( ${array} )
+size=${#options_arr[@]}
+if [[ ${size} -eq 1 ]]; then
+	ARRAYNAME[${ARRAY}]=${options_arr[0]}
+	continue
+fi
 for value in ${array[@]}; do
 select_string+=${value}" "
 done # for value
