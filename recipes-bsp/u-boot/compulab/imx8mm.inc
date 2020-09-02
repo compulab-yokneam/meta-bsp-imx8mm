@@ -84,4 +84,5 @@ SRC_URI_append = " \
 	file://0082-Add-show_suite-function.patch \
 	file://0083-Clean-debug-printout.patch \
 	file://0084-imx8m-ddr-Add-Nanya-2G-2400-MTS-support.patch \
+	file://0085-ucm-imx8m-mini-Enable-status-LED-and-cmd-led.patch \
 "
