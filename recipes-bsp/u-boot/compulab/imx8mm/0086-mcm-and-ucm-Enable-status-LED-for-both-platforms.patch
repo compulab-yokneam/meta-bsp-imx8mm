@@ -1,0 +1,112 @@
+From e503cacbd5d062f081e00b8a1d3580a7c5722ffe Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sat, 5 Sep 2020 17:18:29 +0300
+Subject: [PATCH] mcm and ucm: Enable status LED for both platforms
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/cpl-imx8m-mini.dtsi         | 17 +++++++++++++++++
+ arch/arm/dts/ucm-imx8m-mini.dts          | 20 --------------------
+ board/compulab/plat/imx8mm/board/board.c |  1 +
+ configs/mcm-imx8m-mini_defconfig         |  2 ++
+ configs/ucm-imx8m-mini_defconfig         |  1 -
+ 5 files changed, 20 insertions(+), 21 deletions(-)
+
+diff --git a/arch/arm/dts/cpl-imx8m-mini.dtsi b/arch/arm/dts/cpl-imx8m-mini.dtsi
+index a587c3dda0..c37ad9c71d 100644
+--- a/arch/arm/dts/cpl-imx8m-mini.dtsi
++++ b/arch/arm/dts/cpl-imx8m-mini.dtsi
+@@ -32,6 +32,17 @@
+ 		off-on-delay-us = <12000>;
+ 	};
+ 
++	leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_led>;
++
++		status_led {
++			label = "status";
++			gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
++			default-state = "on";
++		};
++	};
+ };
+ 
+ &iomuxc {
+@@ -219,6 +230,12 @@
+ 				MX8MM_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B		0xc6
+ 			>;
+ 		};
++
++		pinctrl_gpio_led: gpioledgrp {
++			fsl,pins = <
++				MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12	0x19
++			>;
++		};
+ 	};
+ };
+ 
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index ba0e169004..7b81e8a75b 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -19,24 +19,4 @@
+ / {
+ 	model = "CompuLab UCM-iMX8M-Mini board";
+ 	compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
+-
+-	leds {
+-		compatible = "gpio-leds";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_led>;
+-
+-		status_led {
+-			label = "status";
+-			gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
+-			default-state = "on";
+-		};
+-	};
+-};
+-
+-&iomuxc {
+-	pinctrl_gpio_led: gpioledgrp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12	0x19
+-		>;
+-	};
+ };
+diff --git a/board/compulab/plat/imx8mm/board/board.c b/board/compulab/plat/imx8mm/board/board.c
+index ea9b4293d4..5b751e0eb8 100644
+--- a/board/compulab/plat/imx8mm/board/board.c
++++ b/board/compulab/plat/imx8mm/board/board.c
+@@ -21,6 +21,7 @@
+ #include <asm/mach-imx/mxc_i2c.h>
+ #include <asm/arch/clock.h>
+ #include <spl.h>
++#include <led.h>
+ #include <asm/mach-imx/dma.h>
+ #include <power/pmic.h>
+ #include <power/bd71837.h>
+diff --git a/configs/mcm-imx8m-mini_defconfig b/configs/mcm-imx8m-mini_defconfig
+index e0e4f86329..cf388e99a5 100644
+--- a/configs/mcm-imx8m-mini_defconfig
++++ b/configs/mcm-imx8m-mini_defconfig
+@@ -96,3 +96,5 @@ CONFIG_EXT4_WRITE=y
+ CONFIG_FAT_WRITE=y
+ CONFIG_OF_LIBFDT_OVERLAY=y
+ # CONFIG_EFI_LOADER is not set
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
+diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
+index 331ebf7659..9fe7268870 100644
+--- a/configs/ucm-imx8m-mini_defconfig
++++ b/configs/ucm-imx8m-mini_defconfig
+@@ -99,4 +99,3 @@ CONFIG_OF_LIBFDT_OVERLAY=y
+ # CONFIG_EFI_LOADER is not set
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+-
+-- 
+2.11.0
+
