@@ -84,4 +84,19 @@ SRC_URI_append = " \
 	file://0082-Add-show_suite-function.patch \
 	file://0083-Clean-debug-printout.patch \
 	file://0084-imx8m-ddr-Add-Nanya-2G-2400-MTS-support.patch \
+	file://0085-imx8m-ddr-reduce-DDR-messages.patch \
+	file://0086-iot-gate-imx8-remove-driver-reset-functions.patch \
+	file://0087-iot-gate-imx8-dts-set-MMC1-voltage-to-1.8V.patch \
+	file://0088-iot-gate-imx8-usb-VBUS-enable-fix.patch \
+	file://0089-imx8mm-enable-global-functions-implementation-in-sub.patch \
+	file://0090-iot-gate-imx8-RS485-232-selection.patch \
+	file://0091-iot-gate-imx8-add-extension-board-support.patch \
+	file://0092-iot-gate-imx8-update-boot-sequence.patch \
+	file://0093-iot-gate-imx8-prevent-network-interfaces-rename.patch \
+	file://0094-iot-gate-imx8-update-prompt.patch \
+	file://0095-imx8mm-enable-prompt-update-in-sub-projects.patch \
+	file://0096-iot-gate-imx8-hide-temperature-message.patch \
+	file://0097-release-2020.04-iot-gate-imx8-2.0.patch \
+	file://0098-iot-gate-imx8-fix-UART1-mode-GPIO.patch \
+	file://0099-release-2020.04-iot-gate-imx8-2.1.patch \
 "

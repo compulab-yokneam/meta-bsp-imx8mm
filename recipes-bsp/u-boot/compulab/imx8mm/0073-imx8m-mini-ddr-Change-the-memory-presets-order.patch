@@ -1,7 +1,7 @@
-From f243bad7e3af16542c997b1a282e7041e8ec2325 Mon Sep 17 00:00:00 2001
+From bbb3b0ed280fd1637ea384aa0d7000509bbd32b8 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 20 Jul 2020 13:01:28 +0300
-Subject: [PATCH 73/74] imx8m-mini: ddr: Change the memory presets order
+Subject: [PATCH 73/99] imx8m-mini: ddr: Change the memory presets order
 
 Make the simplest one 1-st.
 Nanya 1G has the best ddr-phy settings for reading the mr4-mr8 registers.

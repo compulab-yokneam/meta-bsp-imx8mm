@@ -1,0 +1,44 @@
+From a07e5b7059578ceac1d6b4f07885a407036556a6 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Mon, 31 Aug 2020 15:21:07 +0300
+Subject: [PATCH 85/99] imx8m: ddr: reduce DDR messages
+
+DDR parameters are displayed during the DDR initialization.
+Reduce DDR messages.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/ddr/ddr.c | 4 ++--
+ drivers/ddr/imx/imx8m/ddr_init.c     | 1 -
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/board/compulab/plat/imx8mm/ddr/ddr.c b/board/compulab/plat/imx8mm/ddr/ddr.c
+index 1a7e5c168a..b592a0b14b 100644
+--- a/board/compulab/plat/imx8mm/ddr/ddr.c
++++ b/board/compulab/plat/imx8mm/ddr/ddr.c
+@@ -157,8 +157,8 @@ void spl_dram_init(void)
+ 		ddr_info = lpddr4_array[i].id;
+ 	} else
+ 
+-	printf("DDRINFO(%s): %s %dG @ %d MHz\n", (ddr_found ? "D" : "?" ), lpddr4_array[i].name,
+-			lpddr4_array[i].size, lpddr4_array[i].timing->fsp_table[0]);
++	printf("DDRINFO(%s): %s %dG\n", (ddr_found ? "D" : "?" ), lpddr4_array[i].name,
++			lpddr4_array[i].size);
+ 
+ 	if (ddr_init(lpddr4_array[i].timing)) {
+ 		SPL_TCM_INIT;
+diff --git a/drivers/ddr/imx/imx8m/ddr_init.c b/drivers/ddr/imx/imx8m/ddr_init.c
+index 5dd87c7762..cbf0e56e27 100644
+--- a/drivers/ddr/imx/imx8m/ddr_init.c
++++ b/drivers/ddr/imx/imx8m/ddr_init.c
+@@ -118,7 +118,6 @@ int ddr_init(struct dram_timing_info *dram_timing)
+ 
+ 	initial_drate = dram_timing->fsp_msg[0].drate;
+ 	/* default to the frequency point 0 clock */
+-	printf("DDRINFO: DRAM rate %dMTS\n", initial_drate);
+ 	ddrphy_init_set_dfi_clk(initial_drate);
+ 
+ 	/* D-aasert the presetn */
+-- 
+2.11.0
+

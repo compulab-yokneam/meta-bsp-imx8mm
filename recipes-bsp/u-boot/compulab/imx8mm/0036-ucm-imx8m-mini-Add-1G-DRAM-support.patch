@@ -1,7 +1,7 @@
-From 82796542f58ea3ee3500cb7dc4a193f7131832f0 Mon Sep 17 00:00:00 2001
+From e83825167df2c965bf1743722f2bcc75acf69061 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 26 May 2020 23:05:12 +0300
-Subject: [PATCH 36/49] ucm-imx8m-mini: Add 1G DRAM support
+Subject: [PATCH 36/99] ucm-imx8m-mini: Add 1G DRAM support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

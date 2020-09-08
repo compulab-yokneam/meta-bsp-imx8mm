@@ -1,0 +1,26 @@
+From 24f122465c20c4505688ac9c669bd26f35169609 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Sun, 16 Aug 2020 18:47:34 +0300
+Subject: [PATCH 94/99] iot-gate-imx8: update prompt
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ configs/iot-gate-imx8_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configs/iot-gate-imx8_defconfig b/configs/iot-gate-imx8_defconfig
+index 0e71211da6..3be89f30ae 100644
+--- a/configs/iot-gate-imx8_defconfig
++++ b/configs/iot-gate-imx8_defconfig
+@@ -29,7 +29,7 @@ CONFIG_SPL_BOARD_INIT=y
+ CONFIG_SPL_SEPARATE_BSS=y
+ CONFIG_SPL_POWER_SUPPORT=y
+ CONFIG_HUSH_PARSER=y
+-CONFIG_SYS_PROMPT="u-boot=> "
++CONFIG_SYS_PROMPT="IOT-GATE-iMX8 => "
+ # CONFIG_BOOTM_NETBSD is not set
+ CONFIG_CMD_EEPROM=y
+ CONFIG_CMD_EEPROM_LAYOUT=y
+-- 
+2.11.0
+

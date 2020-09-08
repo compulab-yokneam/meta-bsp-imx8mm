@@ -1,7 +1,7 @@
-From da6a013ad836dd72e2c2b32a254f008d34832b96 Mon Sep 17 00:00:00 2001
+From c400e93b63866f692e603f3181cc66d1097c8eb3 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Fri, 17 Jul 2020 18:59:22 +0300
-Subject: [PATCH 68/69] imx8: eeprom: Move to the imx8 platform independent
+Subject: [PATCH 68/99] imx8: eeprom: Move to the imx8 platform independent
  folder
 
 Move the eeprom code the imx8 platform independent folder.

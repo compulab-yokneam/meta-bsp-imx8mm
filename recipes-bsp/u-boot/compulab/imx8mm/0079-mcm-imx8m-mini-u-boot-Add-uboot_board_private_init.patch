@@ -1,7 +1,7 @@
-From a47b0b06f4d5a204144244c754514e3bfb81fa25 Mon Sep 17 00:00:00 2001
+From 9bc2a927343b22af41966d7f18c9d8bcbd7d09c6 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 5 Aug 2020 00:26:12 +0300
-Subject: [PATCH 79/79] mcm-imx8m-mini: u-boot: Add uboot_board_private_init()
+Subject: [PATCH 79/99] mcm-imx8m-mini: u-boot: Add uboot_board_private_init()
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

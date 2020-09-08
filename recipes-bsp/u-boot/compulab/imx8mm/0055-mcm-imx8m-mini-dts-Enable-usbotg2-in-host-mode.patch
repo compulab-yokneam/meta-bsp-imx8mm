@@ -1,7 +1,7 @@
-From d1ee8bc14b937f272cac515bdb81dbbe8f71c447 Mon Sep 17 00:00:00 2001
+From 0901dc2fa95eee771d4198c6c8f289a9a7dfc138 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Thu, 9 Jul 2020 23:00:55 +0300
-Subject: [PATCH 55/56] mcm-imx8m-mini: dts: Enable usbotg2 in host mode
+Subject: [PATCH 55/99] mcm-imx8m-mini: dts: Enable usbotg2 in host mode
 
 Make the ubsotg2 work in U-Boot in host mode.
 

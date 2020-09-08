@@ -1,7 +1,7 @@
-From 5356f8ee65ca2735ff690412f85f403c97c1b6c3 Mon Sep 17 00:00:00 2001
+From 3ee8605fcec0eda2312b98b401af713f5ddd853a Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 5 Aug 2020 00:25:22 +0300
-Subject: [PATCH 78/79] imx8m-mini: u-boot: Add __weak
+Subject: [PATCH 78/99] imx8m-mini: u-boot: Add __weak
  uboot_board_private_init()
 
 Add a __weak uboot_board_private_init().

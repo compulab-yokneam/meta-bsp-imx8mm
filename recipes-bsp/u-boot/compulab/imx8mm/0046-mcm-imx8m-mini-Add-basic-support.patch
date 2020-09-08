@@ -1,7 +1,7 @@
-From 1d967f928295b7545e63c55f241370afb9cb5bd9 Mon Sep 17 00:00:00 2001
+From bcc39de2b8bf8f5e5bcaaee4aed99150b8e52069 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 08:05:25 +0300
-Subject: [PATCH 46/49] mcm-imx8m-mini: Add basic support
+Subject: [PATCH 46/99] mcm-imx8m-mini: Add basic support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

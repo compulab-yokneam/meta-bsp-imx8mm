@@ -1,7 +1,7 @@
-From f24e3b8cad7ceaec586e33f10e001e9e2f02f52a Mon Sep 17 00:00:00 2001
+From 9854fec10b6f301d53c1b0db9bf661faea471a0a Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 15 Jul 2020 07:58:17 +0300
-Subject: [PATCH 60/64] mcm-imx8m-mini: Refactor spl code
+Subject: [PATCH 60/99] mcm-imx8m-mini: Refactor spl code
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

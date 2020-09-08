@@ -1,7 +1,7 @@
-From d2e352d3d8378b445f342720e7bd227568ea848b Mon Sep 17 00:00:00 2001
+From 93c6c67bb27cd74d96bdb4462b6f5d5f03af1e5d Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 18 Aug 2020 19:10:19 +0300
-Subject: [PATCH 81/81] spl: Enable Kingston DRAM support
+Subject: [PATCH 81/99] spl: Enable Kingston DRAM support
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

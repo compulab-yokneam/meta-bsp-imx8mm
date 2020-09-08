@@ -1,7 +1,7 @@
-From 53fc65048fdd5e68162ea2d2190461909067ca86 Mon Sep 17 00:00:00 2001
+From 14d52681ea4059815081b823486d184bb171fe9c Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 28 May 2020 23:13:18 +0300
-Subject: [PATCH 38/49] Migration to rel_imx_5.4.3_2.0.0
+Subject: [PATCH 38/99] Migration to rel_imx_5.4.3_2.0.0
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

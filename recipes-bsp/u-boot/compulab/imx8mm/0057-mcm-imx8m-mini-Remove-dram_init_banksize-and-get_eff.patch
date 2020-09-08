@@ -1,7 +1,7 @@
-From 5332ea97fce212ea30dbfc0fd9638dcdd5939ac2 Mon Sep 17 00:00:00 2001
+From e7222586988a187f279cc4f52435b7720b208f64 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 13 Jul 2020 10:55:06 +0300
-Subject: [PATCH 57/58] mcm-imx8m-mini: Remove dram_init_banksize() and
+Subject: [PATCH 57/99] mcm-imx8m-mini: Remove dram_init_banksize() and
  get_effective_memsize()
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>

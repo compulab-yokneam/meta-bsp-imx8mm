@@ -1,7 +1,7 @@
-From 6d9c8650f1d1c9ace14f0194f9cc57527362fdd4 Mon Sep 17 00:00:00 2001
+From 4d6fd1eece14d5375308ccb227dc1c84daf7fb5e Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 18 Apr 2020 19:17:47 +0300
-Subject: [PATCH 35/49] env: Add env_mmcdev variable handling
+Subject: [PATCH 35/99] env: Add env_mmcdev variable handling
 
 Handle the variable env_mmcdev the following way:
 If the variable is set to an unsigned value, an actual environment is to be

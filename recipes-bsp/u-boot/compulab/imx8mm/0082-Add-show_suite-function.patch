@@ -1,7 +1,7 @@
-From 4e22d665966c35d233d16d0992a62f371559f173 Mon Sep 17 00:00:00 2001
+From 8893e74d6dd0d838e44109a6151449d9dd2072d5 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 29 Aug 2020 22:14:48 +0300
-Subject: [PATCH 82/82] Add show_suite function
+Subject: [PATCH 82/99] Add show_suite function
 
 The function shows product names of UCM and SB on boot.
 

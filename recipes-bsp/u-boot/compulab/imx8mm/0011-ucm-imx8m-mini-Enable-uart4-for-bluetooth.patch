@@ -1,7 +1,7 @@
-From ef06103f50468f4d3cb6af8052b2cd6d81115608 Mon Sep 17 00:00:00 2001
+From 95f41bef4032f87a541f136b90a4ad26933caed4 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Thu, 7 Mar 2019 14:17:42 +0200
-Subject: [PATCH 11/49] ucm-imx8m-mini: Enable uart4 for bluetooth
+Subject: [PATCH 11/99] ucm-imx8m-mini: Enable uart4 for bluetooth
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

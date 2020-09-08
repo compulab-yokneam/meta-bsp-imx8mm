@@ -1,7 +1,7 @@
-From 094f9eb761cccfe60a7851057131a6a18c26a8b7 Mon Sep 17 00:00:00 2001
+From 05be6f895e1d09b513e1c39d016490513f0caecb Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Mon, 18 Sep 2017 19:49:32 +0300
-Subject: [PATCH 04/49] eeprom: layout: remove buf from the eeprom_field
+Subject: [PATCH 04/99] eeprom: layout: remove buf from the eeprom_field
  structure
 
 The layout structure contains a pointer to a buffer that contain the

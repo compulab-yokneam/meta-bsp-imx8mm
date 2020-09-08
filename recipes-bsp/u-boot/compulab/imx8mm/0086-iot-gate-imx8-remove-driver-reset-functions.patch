@@ -1,0 +1,36 @@
+From e990fdfe98b3525d353bdf4c740a42525dc9bb8c Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 21 Jul 2020 16:27:15 +0300
+Subject: [PATCH 86/99] iot-gate-imx8: remove driver reset functions
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ configs/iot-gate-imx8_defconfig | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/configs/iot-gate-imx8_defconfig b/configs/iot-gate-imx8_defconfig
+index 39c448eca0..ef6e3a7fc3 100644
+--- a/configs/iot-gate-imx8_defconfig
++++ b/configs/iot-gate-imx8_defconfig
+@@ -8,7 +8,6 @@ CONFIG_ENV_SIZE=0x1000
+ CONFIG_ENV_OFFSET=0x4400
+ CONFIG_DM_GPIO=y
+ CONFIG_TARGET_IOT_GATE_IMX8=y
+-CONFIG_DEFAULT_DTB="sb-iotgimx8-can.dtb"
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL=y
+@@ -78,10 +77,7 @@ CONFIG_PINCTRL_IMX8M=y
+ CONFIG_DM_REGULATOR=y
+ CONFIG_DM_REGULATOR_FIXED=y
+ CONFIG_DM_REGULATOR_GPIO=y
+-CONFIG_DM_RESET=y
+ CONFIG_MXC_UART=y
+-CONFIG_SYSRESET=y
+-CONFIG_SYSRESET_PSCI=y
+ CONFIG_DM_THERMAL=y
+ CONFIG_NXP_TMU=y
+ CONFIG_USB=y
+-- 
+2.11.0
+

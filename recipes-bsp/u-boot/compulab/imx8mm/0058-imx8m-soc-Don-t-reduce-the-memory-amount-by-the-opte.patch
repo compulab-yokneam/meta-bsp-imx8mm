@@ -1,7 +1,7 @@
-From b3106ab4b3351c31a04fe617d9ab43bf2da67a22 Mon Sep 17 00:00:00 2001
+From 97dfed59b7e7dee4d558fd6d1bade1f00175fad2 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 13 Jul 2020 10:56:49 +0300
-Subject: [PATCH 58/58] imx8m: soc: Don't reduce the memory amount by the optee
+Subject: [PATCH 58/99] imx8m: soc: Don't reduce the memory amount by the optee
  size
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
