@@ -25,4 +25,4 @@ FILES_${PN} = " \
 
 RDEPENDS_${PN} = "bash dialog util-linux cl-uboot"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-COMPATIBLE_MACHINE = "(ucm-imx8m-mini)"
+COMPATIBLE_MACHINE = "(ucm-imx8m-mini|iot-gate-imx8)"
