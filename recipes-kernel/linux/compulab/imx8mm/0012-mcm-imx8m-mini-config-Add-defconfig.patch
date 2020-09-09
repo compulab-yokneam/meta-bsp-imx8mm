@@ -1,7 +1,7 @@
-From 225650b0a848dacc1c682713ca5d59f91df583fc Mon Sep 17 00:00:00 2001
+From 7f5a56daf2fcfd4b4ddfd03669778e0515798513 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Fri, 3 Jul 2020 15:10:48 +0300
-Subject: [PATCH 12/23] mcm-imx8m-mini: config: Add defconfig
+Subject: [PATCH 12/38] mcm-imx8m-mini: config: Add defconfig
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

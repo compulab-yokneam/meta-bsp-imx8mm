@@ -1,0 +1,32 @@
+From 956498da6c6c524e11cc5d93198e88aa8746eb6d Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Sun, 6 Sep 2020 17:22:21 +0300
+Subject: [PATCH 32/38] iot-gate-imx8: enable CPU temperature read
+
+Enable the user space temperature read from the CPU.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 8bcf3d91ce98..1dbe9585ec70 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -381,6 +381,12 @@ CONFIG_SENSORS_LM90=m
+ CONFIG_SENSORS_PWM_FAN=m
+ CONFIG_SENSORS_INA2XX=m
+ CONFIG_SENSORS_INA3221=m
++CONFIG_CPU_THERMAL=y
++CONFIG_THERMAL_EMULATION=y
++CONFIG_IMX_SC_THERMAL=y
++CONFIG_DEVICE_THERMAL=y
++CONFIG_IMX8MM_THERMAL=y
++CONFIG_QORIQ_THERMAL=y
+ CONFIG_WATCHDOG=y
+ CONFIG_ARM_SP805_WATCHDOG=y
+ CONFIG_ARM_SBSA_WATCHDOG=y
+-- 
+2.11.0
+

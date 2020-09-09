@@ -26,26 +26,17 @@ SRC_URI_append = " \
 	file://0024-can-mcp25xxfd-Microchip-MCP25xxFD-Family-CAN-control.patch \
 	file://0025-serial-imx-allow-passing-rs485-options.patch \
 	file://0026-mcm-imx8m-mini-defconfig-Update-defconfig.patch \
-	file://0027-mcm-imx8m-mini-dts-Add-mcm-imx8m-mini-m4.dts.patch \
-	file://0028-mcm-imx8m-mini-defconfig-Update-defconfig.patch \
-	file://0029-mcm-imx8m-mini-dts-Change-the-usbotg2-settings.patch \
-	file://0030-mcm-imx8m-mini-dts-usbotg-Disable-over-current-contr.patch \
-	file://0031-sb-mcm-imx8-dts-Add-usb2_sel-regulator.patch \
-	file://0032-mcm-imx8m-mini-dts-Expand-backlight-level-list.patch \
-	file://0033-ucm-imx8m-mini-defconf-dt-Migrate-to-kernel-5.4.24.patch \
-	file://0034-mcm-imx8m-mini-dts-Rearange-pcie1-port-description.patch \
-	file://0035-mcm-imx8m-mini-config-Enable-mcp25xxfd.patch \
-	file://0036-mcm-imx8m-mini-dts-Enable-brcm-bcm4330-bt.patch \
-	file://0037-mcm-imx8m-mini-config-Set-CONFIG_IMX_SDMA-m-for-brcm.patch \
-	file://0039-mcm-imx8m-mini-config-Add-the-brcm-firmware-to-the-k.patch \
-	file://0040-ucm-imx8m-mini-Fix-DTB-abcense.patch \
-	file://0041-ucm-imx8m-mini-dts-Fix-PMIC-node.patch \
-	file://0042-ucm-imx8m-mini-dts-Cleaning.patch \
-	file://0043-ucm-imx8m-mini-dts-Enable-brcm-bcm4330-bt.patch \
-	file://0044-ucm-imx8m-mini-config-Set-CONFIG_IMX_SDMA-m-for-brcm.patch \
-	file://0045-ucm-imx8m-mini-config-Add-brcm-firmware-to-kernel-bu.patch \
-	file://0047-rtc-abx80x-Enable-SQW-output.patch \
-	file://0048-rtc-abx80x-Enable-XT-digital-calibration.patch \
-	file://0049-rtc-abx80x-Calibrate-RTC.patch \
+	file://0027-ARM64-dts-imx8mm-update-PINMUX-options.patch \
+	file://0028-ucm-imx8m-mini-dts-rearrange-components.patch \
+	file://0029-iot-gate-imx8-dts-add-support-for-the-IOT-GATE-iMX8.patch \
+	file://0030-iot-gate-imx8-defconfig-Update-defconfig.patch \
+	file://0031-iot-gate-imx8-release-2.0.patch \
+	file://0032-iot-gate-imx8-enable-CPU-temperature-read.patch \
+	file://0033-iot-gate-imx8-eth-enable-ASIX-AX88179-178A.patch \
+	file://0034-iot-gate-imx8-release-2.1.patch \
+	file://0035-rtc-abx80x-Enable-SQW-output.patch \
+	file://0036-rtc-abx80x-Enable-XT-digital-calibration.patch \
+	file://0037-arm64-dts-imx8mm-specify-dma-ranges.patch \
+	file://0038-Sot-gate-imx8-release-2.2.patch \
 	file://defconfig \
 "
