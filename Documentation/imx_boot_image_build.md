@@ -2,17 +2,12 @@
 
 Supported machines:
 
-* `mcm-imxi8-mini`
-* `ucm-imxi8-mini`
 * `iot-gate-imx8`
 
 Define a `MACHINE` environment variable for the target product:
-
-|Machine|Command Line|
-|---|---|
-|mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
-|ucm-imx8m-mini|export MACHINE=ucm-imx8m-mini
-|iot-gate-imx8|export MACHINE=iot-gate-imx8
+<pre>
+export MACHINE=iot-gate-imx8
+</pre>
 
 Define the following environment variables:
 
@@ -20,7 +15,7 @@ Define the following environment variables:
 |---|---|
 |NXP release name|export NXP_RELEASE=rel_imx_5.4.24_2.1.0|
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.8.bin|
-|CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.24_2.1.0-dev|
+|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8_r2.0|
 
 
 ## Prerequisites
@@ -60,7 +55,7 @@ git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
 </pre>
 * Make bl31.bin
 <pre>
-make -C imx-atf PLAT=imx8mm bl31
+make -C imx-atf PLAT=imx8mm SPD=opteed bl31
 cp -v imx-atf/build/imx8mm/release/bl31.bin ${SRC_ROOT}/imx-mkimage/iMX8M/
 </pre>
 
@@ -91,29 +86,27 @@ make -C uboot-imx
 cp -v $(find uboot-imx | awk -v v=${MACHINE} '(/u-boot-spl.bin$|u-boot.bin$|u-boot-nodtb.bin$|tools\/mkimage$/)||($0~v".dtb$")' ORS=" ") ${SRC_ROOT}/imx-mkimage/iMX8M/
 </pre>
 
-<!---
 ## OP-TEE Setup
 Download the OP-TEE from:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-optee-os
 git -C imx-optee-os checkout ${NXP_RELEASE}
-git -C imx-atf am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
+git -C imx-optee-os am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
 </pre>
 
 * Set environment variables:
 <pre>
 export ARCH=arm
 export CROSS_COMPILE=/usr/bin/arm-linux-gnu-
-export CROSS_COMPILE64=/usr/bin/arm-linux-gnu-
+export CROSS_COMPILE64=/usr/bin/aarch64-linux-gnu-
 </pre>
 
 * Make tee.bin
 <pre>
 cd imx-optee-os
-./scripts/imx_build.sh mx8mmevk
-cp -v build.mx8mmevk/core/tee.bin ${SRC_ROOT}/imx-mkimage/iMX8M/
+./scripts/nxp_build.sh mx8mmevk
+cp -v build.mx8mmevk/core/tee-pager.bin ${SRC_ROOT}/imx-mkimage/iMX8M/tee.bin
 </pre>
--->
 
 ## Compiling the **flash.bin** imx-boot image:
 * Unset these variables:
@@ -129,4 +122,15 @@ make flash_evk SOC=iMX8MM
 </pre>
 
 ## Flashing
-`dd if=flash.bin of=/dev/<your device> bs=1K seek=33 status=progress`
+Firmware image update from U-Boot
+* Copy the image (`flash.bin`) to the first partition of a disk-on-key.
+* Install the disk-on-key in the USB port near the power button.
+* Restart the IOT-GATE-iMX8.
+* Stop the boot process during the U-Boot countdown.
+* Use the following commands to write the new image:
+<pre>
+IOT-GATE-iMX8 => usb reset
+IOT-GATE-iMX8 => load usb 0 ${loadaddr} flash.bin
+IOT-GATE-iMX8 => mmc dev 2 1; mmc write ${loadaddr} 0x42 0xB00
+IOT-GATE-iMX8 => reset
+</pre>
