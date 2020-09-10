@@ -28,4 +28,4 @@ FILES_${PN} += "/sbin/cl_setenv"
 
 RPROVIDES_${PN} += "u-boot-fw-utils"
 
-COMPATIBLE_MACHINE = "(mcm-imx8m-mini|ucm-imx8m-mini)"
+COMPATIBLE_MACHINE = "(mcm-imx8m-mini|ucm-imx8m-mini|iot-gate-imx8)"
