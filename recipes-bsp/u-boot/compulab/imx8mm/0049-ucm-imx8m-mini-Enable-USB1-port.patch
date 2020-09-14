@@ -1,0 +1,52 @@
+From c29bf8cbd5f760c2ab8e947aa46510f7f53bf2e0 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 14 Sep 2020 18:16:20 +0300
+Subject: [PATCH 49/49] ucm-imx8m-mini: Enable USB1 port
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/ucm-imx8m-mini.dts                |  3 ++-
+ board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c | 12 ++++++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index 3d8be3a09a..bdb3d476e0 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -481,7 +481,8 @@
+ };
+ 
+ &usbotg2 {
+-	status = "disabled";
++	dr_mode = "host";
++	status = "okay";
+ };
+ 
+ &cpu_alert0 {
+diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+index 198246a24a..ac06bdcfc1 100644
+--- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
++++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+@@ -467,7 +467,19 @@ int board_ehci_usb_phy_mode(struct udevice *dev)
+ 
+ 	return USB_INIT_DEVICE;
+ }
++#else
++int board_usb_init(int index, enum usb_init_type init)
++{
++	debug("board_usb_init %d, type %d\n", index, init);
++	imx8m_usb_power(index, true);
++	return 0;
++}
+ 
++int board_usb_cleanup(int index, enum usb_init_type init)
++{
++	debug("board_usb_cleanup %d, type %d\n", index, init);
++	return 0;
++}
+ #endif
+ 
+ int board_init(void)
+-- 
+2.11.0
+

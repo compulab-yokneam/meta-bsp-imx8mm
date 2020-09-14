@@ -47,5 +47,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0045-LOCALVERSION-1.3.3.patch \
 	file://0046-imx8m-ddr-Add-Nanya-2G-2400-MTS-support.patch \
 	file://0047-LOCALVERSION-1.3.4.patch \
+	file://0048-ucm-defconfig-Delete-d1-and-d4-defconfigs.patch \
+	file://0049-ucm-imx8m-mini-Enable-USB1-port.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
