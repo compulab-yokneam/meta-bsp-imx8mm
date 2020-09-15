@@ -47,5 +47,6 @@ SRC_URI_append = " \
 	file://0047-rtc-abx80x-Enable-SQW-output.patch \
 	file://0048-rtc-abx80x-Enable-XT-digital-calibration.patch \
 	file://0049-rtc-abx80x-Calibrate-RTC.patch \
+	file://0050-ucm-dts-Fix-no-1-8-v-for-mmc2.patch \
 	file://defconfig \
 "
