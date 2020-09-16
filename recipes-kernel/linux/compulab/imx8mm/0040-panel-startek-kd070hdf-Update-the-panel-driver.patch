@@ -1,0 +1,59 @@
+From 33986dd1095da210403f7b32fe5edc02009bf44a Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 9 Sep 2020 10:07:21 +0300
+Subject: [PATCH 40/40] panel-startek-kd070hdf: Update the panel driver
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ drivers/gpu/drm/panel/panel-startek-kd070hdf.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-startek-kd070hdf.c b/drivers/gpu/drm/panel/panel-startek-kd070hdf.c
+index c46dbe266f7e..6f905127f494 100644
+--- a/drivers/gpu/drm/panel/panel-startek-kd070hdf.c
++++ b/drivers/gpu/drm/panel/panel-startek-kd070hdf.c
+@@ -65,7 +65,7 @@ struct panel_instr {
+     }
+ 
+ static const struct panel_instr panel_init[] = {
+-    MIPI_COMMAND_INSTR(0xB2,    0x10),
++    MIPI_COMMAND_INSTR(0xB2,    0x40),
+     MIPI_COMMAND_INSTR(0x80,    0x58),
+     MIPI_COMMAND_INSTR(0x81,    0x47),
+     MIPI_COMMAND_INSTR(0x82,    0xD4),
+@@ -108,9 +108,9 @@ static int kd070hdf_panel_prepare(struct drm_panel *panel)
+ 	msleep(20);
+ 
+ 	gpio_set_value(ctx->reset, 1);
+-	msleep(5);
+-	gpio_set_value(ctx->reset, 0);
+ 	msleep(1);
++	gpio_set_value(ctx->reset, 0);
++	msleep(10);
+ 	gpio_set_value(ctx->reset, 1);
+ 	msleep(120);
+ 
+@@ -173,14 +173,14 @@ static const struct drm_display_mode default_mode = {
+ 	.clock		= 51206,
+ 
+ 	.hdisplay	= 1024,
+-	.hsync_start	= 1024 + 10,
+-	.hsync_end	= 1024 + 10 + 60,
+-	.htotal		= 1024 + 10 + 60 + 60,
++	.hsync_start	= 1024 + 4,
++	.hsync_end	= 1024 + 4 + 200,
++	.htotal		= 1024 + 4 + 200 + 80,
+ 
+ 	.vdisplay	= 600,
+-	.vsync_start	= 600 + 1,
+-	.vsync_end	= 600 + 1 + 8,
+-	.vtotal		= 600 + 1 + 8 + 6,
++	.vsync_start	= 600 + 4,
++	.vsync_end	= 600 + 4 + 30,
++	.vtotal		= 600 + 4 + 30 + 10,
+ 
+ 	.vrefresh	= 60,
+ 
+-- 
+2.11.0
+

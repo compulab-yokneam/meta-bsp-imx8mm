@@ -1,0 +1,497 @@
+From 23e65c7b128f91ffe1eac4777e16773a626ee018 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 16 Sep 2020 22:52:28 +0300
+Subject: [PATCH 39/40] panel-startek-kd070hdf: add panel driver
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/Makefile              |   1 +
+ .../arm64/boot/dts/compulab/ucm-imx8m-mini-kd7.dts |  49 +++
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts    |   2 +-
+ arch/arm64/configs/ucm-imx8m-mini_defconfig        |   1 +
+ drivers/gpu/drm/panel/Kconfig                      |   9 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ drivers/gpu/drm/panel/panel-startek-kd070hdf.c     | 348 +++++++++++++++++++++
+ 7 files changed, 410 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-kd7.dts
+ create mode 100644 drivers/gpu/drm/panel/panel-startek-kd070hdf.c
+
+diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
+index 357eac58c464..9be10562aa4e 100644
+--- a/arch/arm64/boot/dts/compulab/Makefile
++++ b/arch/arm64/boot/dts/compulab/Makefile
+@@ -3,6 +3,7 @@ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-thermal.dtb
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-lvds.dtb
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-dsi2.dtb
+ dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-m4.dtb
++dtb-$(CONFIG_ARCH_FSL_IMX8MM) += ucm-imx8m-mini-kd7.dtb
+ 
+ always         := $(dtb-y)
+ subdir-y       := $(dts-dirs)
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-kd7.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-kd7.dts
+new file mode 100644
+index 000000000000..649e0b9e553e
+--- /dev/null
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-kd7.dts
+@@ -0,0 +1,49 @@
++#include "ucm-imx8m-mini.dts"
++
++&iomuxc {
++	sb-mcm-imx8-kd7 {
++		pinctrl_kd070hdf: kd070hdf_csgrp {
++			fsl,pins = <
++				MX8MM_IOMUXC_SAI5_RXFS_GPIO3_IO19	0x40000	 /* Reset DISP */
++			>;
++		};
++
++		pinctrl_goodix: goodix_gpios {
++			fsl,pins = <
++				MX8MM_IOMUXC_GPIO1_IO01_GPIO1_IO1	0x00
++				MX8MM_IOMUXC_SAI5_RXD0_GPIO3_IO21	0x40000  /* Reset TOUCH */
++			>;
++		};
++	};
++};
++
++&mipi_dsi {
++ 	status = "okay";
++ 	panel: panel@0 {
++		compatible = "startek,kd070hdf";
++		reg = <0>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_kd070hdf>;
++		reset-gpio = <&gpio3 19 GPIO_ACTIVE_LOW>;
++		/* This is a fake gpio, cause the disp_logics is already turned it on */
++		power-gpio = <&gpio3 23 GPIO_ACTIVE_HIGH>;
++		dsi-lanes = <4>;
++		status = "okay";
++	};
++};
++
++&wm8731 {
++	status = "disabled";
++};
++
++&ov5640_mipi {
++	status = "disabled";
++};
++
++&touch_screen {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_goodix>;
++	reset-gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
++	status = "okay";
++};
++
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+index 3a4aacfa95c9..cf1eb2fcc5ce 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+@@ -658,7 +658,7 @@
+ 			};
+ 		};
+ 	};
+-	goodix_ts@5d {
++	touch_screen: goodix_ts@5d {
+ 		compatible = "goodix,gt911";
+ 		reg = <0x5d>;
+ 
+diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+index 314ba5fbb68f..37a45513130f 100644
+--- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
++++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+@@ -325,6 +325,7 @@ CONFIG_DRM_I2C_SIL164=m
+ CONFIG_DRM_VIVANTE=m
+ CONFIG_DRM_PANEL_SIMPLE=y
+ CONFIG_DRM_PANEL_STARTEK_ILI9881C=y
++CONFIG_DRM_PANEL_STARTEK_KD070HDF=y
+ CONFIG_DRM_IMX_PARALLEL_DISPLAY=y
+ CONFIG_DRM_IMX_TVE=y
+ CONFIG_DRM_IMX_LDB=y
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index 99cb1b4e9d4b..1ca09aec8d2b 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -37,6 +37,15 @@ config DRM_PANEL_STARTEK_ILI9881C
+ 	  Say Y if you want to enable support for panels based on the
+ 	  Startek panel with an ILI9881c controller.
+ 
++config DRM_PANEL_STARTEK_KD070HDF
++	tristate "Ronbo Electronics KD070HDF panel"
++	depends on OF
++	depends on DRM_MIPI_DSI
++	depends on BACKLIGHT_CLASS_DEVICE
++	help
++	  Say Y here if you want to enable support for Ronbo Electronics
++	  KD070HDF 1024x600 DSI panel.
++
+ config DRM_PANEL_INNOLUX_P079ZCA
+ 	tristate "Innolux P079ZCA panel"
+ 	depends on OF
+diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
+index 67a920c02b3b..b1df73211367 100644
+--- a/drivers/gpu/drm/panel/Makefile
++++ b/drivers/gpu/drm/panel/Makefile
+@@ -13,4 +13,5 @@ obj-$(CONFIG_DRM_PANEL_SHARP_LQ101R1SX01) += panel-sharp-lq101r1sx01.o
+ obj-$(CONFIG_DRM_PANEL_SHARP_LS043T1LE01) += panel-sharp-ls043t1le01.o
+ obj-$(CONFIG_DRM_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
+ obj-$(CONFIG_DRM_PANEL_STARTEK_ILI9881C) += panel-startek-ili9881c.o
++obj-$(CONFIG_DRM_PANEL_STARTEK_KD070HDF) += panel-startek-kd070hdf.o
+ obj-$(CONFIG_DRM_PANEL_RAYDIUM_RM67191) += panel-raydium-rm67191.o
+diff --git a/drivers/gpu/drm/panel/panel-startek-kd070hdf.c b/drivers/gpu/drm/panel/panel-startek-kd070hdf.c
+new file mode 100644
+index 000000000000..c46dbe266f7e
+--- /dev/null
++++ b/drivers/gpu/drm/panel/panel-startek-kd070hdf.c
+@@ -0,0 +1,348 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2018-2019, Bridge Systems BV
++ * Copyright (C) 2018-2019, Bootlin
++ * Copyright (C) 2017, Free Electrons
++ *
++ * This file based on panel-ilitek-ili9881c.c
++ */
++
++#include <drm/drmP.h>
++#include <linux/backlight.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/errno.h>
++#include <linux/fb.h>
++#include <linux/kernel.h>
++#include <linux/media-bus-format.h>
++#include <linux/module.h>
++
++#include <linux/gpio/consumer.h>
++#include <linux/regulator/consumer.h>
++
++#include <linux/of_device.h>
++#include <linux/of_gpio.h>
++
++#include <drm/drm_connector.h>
++#include <drm/drm_mipi_dsi.h>
++#include <drm/drm_modes.h>
++#include <drm/drm_panel.h>
++#include <drm/drm_print.h>
++
++struct kd070hdf_panel {
++	struct drm_panel panel;
++	struct mipi_dsi_device *dsi;
++	struct backlight_device *backlight;
++	struct regulator *supply;
++
++int power;
++int reset;
++
++	struct {
++#if 0
++		struct gpio_desc *power;
++		struct gpio_desc *reset;
++#endif
++		struct gpio_desc *updn;
++		struct gpio_desc *shlr;
++	} gpios;
++};
++
++struct panel_instr {
++    struct cmd {
++                u8	cmd;
++                u8	data;
++            } cmd;
++};
++
++#define MIPI_COMMAND_INSTR(_cmd, _data)		\
++    {						\
++            .cmd = {			\
++                .cmd = (_cmd),		\
++                .data = (_data),	\
++            },				\
++    }
++
++static const struct panel_instr panel_init[] = {
++    MIPI_COMMAND_INSTR(0xB2,    0x10),
++    MIPI_COMMAND_INSTR(0x80,    0x58),
++    MIPI_COMMAND_INSTR(0x81,    0x47),
++    MIPI_COMMAND_INSTR(0x82,    0xD4),
++    MIPI_COMMAND_INSTR(0x83,    0x88),
++    MIPI_COMMAND_INSTR(0x84,    0xA9),
++    MIPI_COMMAND_INSTR(0x85,    0xC3),
++    MIPI_COMMAND_INSTR(0x86,    0x82),
++};
++
++static int mipi_send_cmd_data(struct kd070hdf_panel *ctx, u8 cmd, u8 data)
++{
++    u8 buf[2] = { cmd, data };
++    int ret;
++
++    ret = mipi_dsi_dcs_write_buffer(ctx->dsi, buf, sizeof(buf));
++    if (ret < 0) {
++        dev_err(&ctx->dsi->dev,"%s:0x%x failed %d\n", __func__,cmd, ret);
++        return ret;
++    }
++    return 0;
++}
++
++static inline struct kd070hdf_panel *panel_to_kd070hdf_panel(struct drm_panel *panel)
++{
++	return container_of(panel, struct kd070hdf_panel, panel);
++}
++
++static int kd070hdf_panel_prepare(struct drm_panel *panel)
++{
++	struct kd070hdf_panel *ctx = panel_to_kd070hdf_panel(panel);
++	int ret,i;
++
++	ret = regulator_enable(ctx->supply);
++	if (ret < 0) {
++		DRM_DEV_ERROR(&ctx->dsi->dev, "Failed to enable supply: %d\n", ret);
++		return ret;
++	}
++
++	gpio_set_value(ctx->power, 1);
++	msleep(20);
++
++	gpio_set_value(ctx->reset, 1);
++	msleep(5);
++	gpio_set_value(ctx->reset, 0);
++	msleep(1);
++	gpio_set_value(ctx->reset, 1);
++	msleep(120);
++
++	for (i = 0; i < ARRAY_SIZE(panel_init); i++) {
++		const struct panel_instr *instr = &panel_init[i];
++
++		ret = mipi_send_cmd_data(ctx, instr->cmd.cmd,
++						      instr->cmd.data);
++
++        printk("%s #: cmd/data/ret = %d: 0x%x/0x%x/%d\n",__func__,
++		i, instr->cmd.cmd, instr->cmd.data, ret);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int kd070hdf_panel_unprepare(struct drm_panel *panel)
++{
++	struct kd070hdf_panel *ctx = panel_to_kd070hdf_panel(panel);
++
++	gpio_set_value(ctx->reset, 0);
++	gpio_set_value(ctx->power, 0);
++	regulator_disable(ctx->supply);
++
++	return 0;
++}
++
++static int kd070hdf_panel_enable(struct drm_panel *panel)
++{
++	struct kd070hdf_panel *ctx = panel_to_kd070hdf_panel(panel);
++	int ret;
++
++	ret = mipi_dsi_dcs_exit_sleep_mode(ctx->dsi);
++	if (ret)
++		return ret;
++
++	ret = backlight_enable(ctx->backlight);
++	if (ret)
++		goto out;
++
++	return 0;
++
++out:
++	mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
++	return ret;
++}
++
++static int kd070hdf_panel_disable(struct drm_panel *panel)
++{
++	struct kd070hdf_panel *ctx = panel_to_kd070hdf_panel(panel);
++
++	backlight_disable(ctx->backlight);
++	return mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
++}
++
++/* Default timings */
++static const struct drm_display_mode default_mode = {
++	.clock		= 51206,
++
++	.hdisplay	= 1024,
++	.hsync_start	= 1024 + 10,
++	.hsync_end	= 1024 + 10 + 60,
++	.htotal		= 1024 + 10 + 60 + 60,
++
++	.vdisplay	= 600,
++	.vsync_start	= 600 + 1,
++	.vsync_end	= 600 + 1 + 8,
++	.vtotal		= 600 + 1 + 8 + 6,
++
++	.vrefresh	= 60,
++
++	.width_mm	= 154,
++	.height_mm	= 86,
++};
++
++static int kd070hdf_panel_get_modes(struct drm_panel *panel)
++{
++	struct drm_connector *connector = panel->connector;
++	struct kd070hdf_panel *ctx = panel_to_kd070hdf_panel(panel);
++	struct drm_display_mode *mode;
++	static const u32 bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++
++	mode = drm_mode_duplicate(panel->drm, &default_mode);
++	if (!mode) {
++		DRM_DEV_ERROR(&ctx->dsi->dev,
++			      "Failed to add mode " DRM_MODE_FMT "\n",
++			      DRM_MODE_ARG(&default_mode));
++		return -EINVAL;
++	}
++
++	drm_mode_set_name(mode);
++
++	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
++	drm_mode_probed_add(connector, mode);
++
++	panel->connector->display_info.bpc = 8;
++	panel->connector->display_info.width_mm = mode->width_mm;
++	panel->connector->display_info.height_mm = mode->height_mm;
++	drm_display_info_set_bus_formats(&connector->display_info,
++					 &bus_format, 1);
++
++	return 1;
++}
++
++static const struct drm_panel_funcs kd070hdf_panel_funcs = {
++	.get_modes	= kd070hdf_panel_get_modes,
++	.prepare	= kd070hdf_panel_prepare,
++	.enable		= kd070hdf_panel_enable,
++	.disable	= kd070hdf_panel_disable,
++	.unprepare	= kd070hdf_panel_unprepare,
++};
++
++static int kd070hdf_panel_dsi_probe(struct mipi_dsi_device *dsi)
++{
++	struct kd070hdf_panel *ctx;
++	struct device_node *np;
++	int ret;
++
++	ctx = devm_kzalloc(&dsi->dev, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++
++	ctx->supply = devm_regulator_get(&dsi->dev, "vcc-lcd");
++	if (IS_ERR(ctx->supply))
++		return PTR_ERR(ctx->supply);
++
++	mipi_dsi_set_drvdata(dsi, ctx);
++	ctx->dsi = dsi;
++
++	drm_panel_init(&ctx->panel);
++	ctx->panel.dev = &dsi->dev;
++	ctx->panel.funcs = &kd070hdf_panel_funcs;
++
++	ctx->reset = of_get_named_gpio(dsi->dev.of_node, "reset-gpio", 0);
++	if (!gpio_is_valid(ctx->reset)) {
++		DRM_DEV_ERROR(&dsi->dev, "Couldn't get our reset GPIO\n");
++		return -EINVAL;
++	}
++
++	ret = devm_gpio_request_one(&dsi->dev, ctx->reset,
++		GPIOF_OUT_INIT_LOW, "kd7_reset");
++
++	if (ret < 0) {
++		dev_err(&dsi->dev, "Couldn't get panel reset pin available 1\n");
++		return ret;
++	}
++
++	ctx->power = of_get_named_gpio(dsi->dev.of_node, "power-gpio", 0);
++	if (!gpio_is_valid(ctx->power)) {
++		DRM_DEV_ERROR(&dsi->dev, "Couldn't get our power GPIO\n");
++		return -EINVAL;
++	}
++
++	ret = devm_gpio_request_one(&dsi->dev, ctx->power,
++		GPIOF_OUT_INIT_LOW, "kd7_power");
++
++	if (ret < 0) {
++		dev_err(&dsi->dev, "Couldn't get panel power pin available 1\n");
++		return ret;
++	}
++	/*
++	 * We don't change the state of that GPIO later on but we need
++	 * to force it into a low state.
++	 */
++#if 0
++	ctx->gpios.updn = devm_gpiod_get(&dsi->dev, "updn", GPIOD_OUT_LOW);
++	if (IS_ERR(ctx->gpios.updn)) {
++		DRM_DEV_ERROR(&dsi->dev, "Couldn't get our updn GPIO\n");
++		return PTR_ERR(ctx->gpios.updn);
++	}
++
++	/*
++	 * We don't change the state of that GPIO later on but we need
++	 * to force it into a low state.
++	 */
++	ctx->gpios.shlr = devm_gpiod_get(&dsi->dev, "shlr", GPIOD_OUT_LOW);
++	if (IS_ERR(ctx->gpios.shlr)) {
++		DRM_DEV_ERROR(&dsi->dev, "Couldn't get our shlr GPIO\n");
++		return PTR_ERR(ctx->gpios.shlr);
++	}
++#endif
++
++	np = of_parse_phandle(dsi->dev.of_node, "backlight", 0);
++	if (np) {
++		ctx->backlight = of_find_backlight_by_node(np);
++		of_node_put(np);
++
++		if (!ctx->backlight) {
++		    DRM_DEV_ERROR(&dsi->dev, "Backlight is not ready\n");
++			return -EPROBE_DEFER;
++        }
++	}
++
++	ret = drm_panel_add(&ctx->panel);
++	if (ret < 0)
++		return ret;
++
++	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_LPM;
++	dsi->format = MIPI_DSI_FMT_RGB888;
++	dsi->lanes = 4;
++
++	return mipi_dsi_attach(dsi);
++}
++
++static int kd070hdf_panel_dsi_remove(struct mipi_dsi_device *dsi)
++{
++	struct kd070hdf_panel *ctx = mipi_dsi_get_drvdata(dsi);
++
++	mipi_dsi_detach(dsi);
++	drm_panel_remove(&ctx->panel);
++
++	return 0;
++}
++
++static const struct of_device_id kd070hdf_panel_of_match[] = {
++	{ .compatible = "startek,kd070hdf" },
++	{ /* sentinel */ },
++};
++MODULE_DEVICE_TABLE(of, kd070hdf_panel_of_match);
++
++static struct mipi_dsi_driver kd070hdf_panel_driver = {
++	.probe = kd070hdf_panel_dsi_probe,
++	.remove = kd070hdf_panel_dsi_remove,
++	.driver = {
++		.name = "panel-startek-kd070hdf",
++		.of_match_table	= kd070hdf_panel_of_match,
++	},
++};
++module_mipi_dsi_driver(kd070hdf_panel_driver);
++
++MODULE_DESCRIPTION("Startek KD070HDF Panel Driver");
++MODULE_LICENSE("GPL");
++
+-- 
+2.11.0
+

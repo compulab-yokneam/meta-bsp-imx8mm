@@ -38,5 +38,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0036-Enable-iwlwifi-Intel-wireless-mPCI-card.patch \
 	file://0037-dts-Enable-eb-dsi2lvds-extention-board.patch \
 	file://0038-ucm-imx8m-mini-defconfig-Disable-DEBUG_PREEMPT.patch \
+	file://0039-panel-startek-kd070hdf-add-panel-driver.patch \
+	file://0040-panel-startek-kd070hdf-Update-the-panel-driver.patch \
 	file://defconfig \
 "
