@@ -86,4 +86,6 @@ SRC_URI_append = " \
 	file://0084-imx8m-ddr-Add-Nanya-2G-2400-MTS-support.patch \
 	file://0085-ucm-imx8m-mini-Enable-status-LED-and-cmd-led.patch \
 	file://0086-mcm-and-ucm-Enable-status-LED-for-both-platforms.patch \
+	file://0087-Enable-env-address-export-via-FDT.patch \
+	file://0088-fw_utils-Enable-actual-env-address-readout.patch \
 "

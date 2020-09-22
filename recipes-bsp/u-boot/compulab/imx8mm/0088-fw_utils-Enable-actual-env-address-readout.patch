@@ -1,0 +1,132 @@
+From 0408484eac7cbb8f18e1be863fbe5740350994cf Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 21 Sep 2020 22:59:00 +0300
+Subject: [PATCH 88/88] fw_utils: Enable actual env address readout
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ tools/env/fw_env_main.c    | 60 +++++++++++++++++++++++++++++++++++++++++++++-
+ tools/env/fw_env_private.h |  1 +
+ 2 files changed, 60 insertions(+), 1 deletion(-)
+
+diff --git a/tools/env/fw_env_main.c b/tools/env/fw_env_main.c
+index ca9ad78014..264cdb7c11 100644
+--- a/tools/env/fw_env_main.c
++++ b/tools/env/fw_env_main.c
+@@ -50,6 +50,7 @@ static struct option long_options[] = {
+ 	{"lock", required_argument, NULL, 'l'},
+ 	{"version", no_argument, NULL, 'v'},
+ 	{"env", no_argument, NULL, 'e'},
++	{"viadt", no_argument, NULL, 'E'},
+ 	{NULL, 0, NULL, 0}
+ };
+ 
+@@ -76,6 +77,9 @@ void usage_printenv(void)
+ 		" -n, --noheader       do not repeat variable name in output\n"
+ 		" -l, --lock           lock node, default:/var/lock\n"
+ 		" -e, --env            print default fw_env.config\n"
++#ifdef CONFIG_DT_NODE
++		" -E, --viadt      print environment passed via devicetree\n"
++#endif
+ 		"\n");
+ }
+ 
+@@ -92,6 +96,9 @@ void usage_env_set(void)
+ #endif
+ 		" -l, --lock           lock node, default:/var/lock\n"
+ 		" -s, --script         batch mode to minimize writes\n"
++#ifdef CONFIG_DT_NODE
++		" -t, --confviadt      obtain environment address via devicetree\n"
++#endif
+ 		"\n"
+ 		"Examples:\n"
+ 		"  fw_setenv foo bar   set variable foo equal bar\n"
+@@ -114,6 +121,52 @@ void usage_env_set(void)
+ 		"\n");
+ }
+ 
++
++#if defined(CONFIG_DT_NODE)
++#define GET_PROP(NAME) int NAME = read_dt_prop_int( CONFIG_DT_NODE "/" #NAME )
++static int read_dt_prop_int(const char *name)
++{
++	FILE *fp;
++	int retval;
++	char *buf = NULL;
++	size_t count = 0;
++
++	fp = fopen(name, "r");
++	if(fp == NULL) {
++		fprintf(stderr, "Can't open property %s %m\n", name);
++		return -1;
++	}
++
++	retval = getline(&buf, &count, fp);
++	fclose(fp);
++	if(0 < retval)
++		retval = strtoul(buf, NULL, 0);
++	if(buf)
++		free(buf);
++
++	return retval;
++}
++
++int get_config_via_dt(void)
++{
++	GET_PROP(env_size);
++	GET_PROP(env_off);
++	GET_PROP(env_part);
++	GET_PROP(env_dev);
++
++	if( 0 > env_dev || 0 >= env_size || 0>= env_off) {
++		fprintf(stderr, "A valid DT node not found\n");
++		return -1;
++	}
++	
++	if(0 <= env_part)
++		printf("/dev/mmcblk%.iboot%i\t0x%x\t0x%x\n", env_dev , env_part - 1, env_off, env_size);
++	else
++		printf("/dev/mmcblk%.i\t0x%x\t0x%x\n", env_dev, env_off, env_size);
++
++	return 0;
++}
++#endif
+ static void parse_common_args(int argc, char *argv[])
+ {
+ 	int c;
+@@ -122,7 +175,7 @@ static void parse_common_args(int argc, char *argv[])
+ 	env_opts.config_file = CONFIG_FILE;
+ #endif
+ 
+-	while ((c = getopt_long(argc, argv, ":a:c:l:h:ve", long_options, NULL)) !=
++	while ((c = getopt_long(argc, argv, ":a:c:l:h:veE", long_options, NULL)) !=
+ 	       EOF) {
+ 		switch (c) {
+ #ifdef CONFIG_FILE
+@@ -146,6 +199,11 @@ static void parse_common_args(int argc, char *argv[])
+ 			fprintf(stdout, "/dev/mmcblk1 0x%x 0x%x\n", CONFIG_ENV_OFFSET, CONFIG_ENV_SIZE);
+ 			exit(EXIT_SUCCESS);
+ 			break;
++#if defined(CONFIG_DT_NODE)
++		case 'E':
++			exit(get_config_via_dt());
++			break;
++#endif
+ 		default:
+ 			/* ignore unknown options */
+ 			break;
+diff --git a/tools/env/fw_env_private.h b/tools/env/fw_env_private.h
+index 86be16dabc..9c3b7bf50c 100644
+--- a/tools/env/fw_env_private.h
++++ b/tools/env/fw_env_private.h
+@@ -22,6 +22,7 @@
+  * for notes on configuration.
+  */
+ #define CONFIG_FILE     "/etc/fw_env.config"
++#define CONFIG_DT_NODE  "/sys/firmware/devicetree/base/fw_env"
+ 
+ #ifndef CONFIG_FILE
+ #define HAVE_REDUND /* For systems with 2 env sectors */
+-- 
+2.11.0
+
