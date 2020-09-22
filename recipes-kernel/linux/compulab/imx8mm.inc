@@ -48,5 +48,6 @@ SRC_URI_append = " \
 	file://0048-rtc-abx80x-Enable-XT-digital-calibration.patch \
 	file://0049-rtc-abx80x-Calibrate-RTC.patch \
 	file://0050-ucm-dts-Fix-no-1-8-v-for-mmc2.patch \
+	file://0051-dts-Fix-ldo1-ldo2-voltage.patch \
 	file://defconfig \
 "
