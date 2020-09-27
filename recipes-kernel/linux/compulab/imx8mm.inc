@@ -50,5 +50,9 @@ SRC_URI_append = " \
 	file://0050-ucm-dts-Fix-no-1-8-v-for-mmc2.patch \
 	file://0051-dts-Fix-ldo1-ldo2-voltage.patch \
 	file://0052-dts-Fix-rtc-enumeration-order.patch \
+	file://0053-rtc-abx80x-Improve-sqw-generation.patch \
+	file://0054-rtc-abx80x-Improve-xt_calibration.patch \
+	file://0055-rtc-abx80x-Add-sqw-binding-doc.patch \
+	file://0056-rtc-abx80x-Add-xt_calibration-binding-doc.patch \
 	file://defconfig \
 "
