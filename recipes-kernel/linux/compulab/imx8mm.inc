@@ -54,5 +54,6 @@ SRC_URI_append = " \
 	file://0054-rtc-abx80x-Improve-xt_calibration.patch \
 	file://0055-rtc-abx80x-Add-sqw-binding-doc.patch \
 	file://0056-rtc-abx80x-Add-xt_calibration-binding-doc.patch \
+	file://0057-ucm-mcm-defconfig-Enable-rfkill.patch \
 	file://defconfig \
 "
