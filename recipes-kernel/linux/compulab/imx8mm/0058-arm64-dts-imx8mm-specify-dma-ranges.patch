@@ -1,0 +1,32 @@
+From 00cc950794f07be0480ea3b876cc5c9dcfaf0860 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 4 Oct 2020 20:59:45 +0300
+Subject: [PATCH 58/58] arm64: dts: imx8mm: specify dma-ranges
+
+Apply the same dma range limitations as on the i.MX8MQ.
+Original commit: ca04fed4706dfb13cb964be2dc294054ed0efb6b
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index 9c8db59982a2..7f2ab9535fe6 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -33,6 +33,11 @@
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 	};
++
++	soc@0 {
++		dma-ranges = <0x40000000 0x0 0x40000000 0xc0000000>;
++	};
++
+ 	//Fake regulator provides WL_REG_ON signal for wireless interface
+ 	wlreg_on: wlregon-regulator {
+ 		compatible = "regulator-fixed";
+-- 
+2.11.0
+
