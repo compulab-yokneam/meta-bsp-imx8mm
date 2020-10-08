@@ -56,5 +56,6 @@ SRC_URI_append = " \
 	file://0056-rtc-abx80x-Add-xt_calibration-binding-doc.patch \
 	file://0057-ucm-mcm-defconfig-Enable-rfkill.patch \
 	file://0058-arm64-dts-imx8mm-specify-dma-ranges.patch \
+	file://0059-defconfig-Disable-fw-user-loader-helper.patch \
 	file://defconfig \
 "
