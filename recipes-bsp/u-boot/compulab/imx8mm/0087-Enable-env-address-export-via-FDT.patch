@@ -1,56 +1,71 @@
-From a03c47222530b13facac0cc35a0af5842482534e Mon Sep 17 00:00:00 2001
+From aaabd5d9fcd15e98ecf8d4cb5fd58d467e26384a Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-Date: Mon, 21 Sep 2020 23:03:57 +0300
+Date: Thu, 8 Oct 2020 20:33:08 +0300
 Subject: [PATCH 87/88] Enable env address export via FDT
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- board/compulab/common/mmc.c              | 13 +++++++++++++
- board/compulab/plat/imx8mm/board/board.c | 18 +++++++++++++-----
- include/configs/cpl-imx8m-mini.h         | 14 +++++++++++++-
- 3 files changed, 39 insertions(+), 6 deletions(-)
+ board/compulab/common/mmc.c              |  2 ++
+ board/compulab/plat/imx8mm/board/board.c | 47 ++++++++++++++++++++++++++++----
+ 2 files changed, 44 insertions(+), 5 deletions(-)
 
 diff --git a/board/compulab/common/mmc.c b/board/compulab/common/mmc.c
-index 9fc3e68728..0ae27737d4 100644
+index 9fc3e68728..a5befbb618 100644
 --- a/board/compulab/common/mmc.c
 +++ b/board/compulab/common/mmc.c
-@@ -10,6 +10,7 @@
- #include <asm/io.h>
- #include <stdbool.h>
- #include <mmc.h>
-+#include <env_internal.h>
- 
- static int check_mmc_autodetect(void)
- {
-@@ -34,6 +35,8 @@ void board_late_mmc_env_init(void)
- 	char cmd[32];
- 	char mmcblk[32];
- 	u32 dev_no = mmc_get_env_dev();
-+	struct mmc *mmc = find_mmc_device(dev_no);
-+	u32 env_addr;
- 
- 	if (!check_mmc_autodetect())
- 		return;
-@@ -47,4 +50,14 @@ void board_late_mmc_env_init(void)
+@@ -47,4 +47,6 @@ void board_late_mmc_env_init(void)
  
  	sprintf(cmd, "mmc dev %d", dev_no);
  	run_command(cmd, 0);
 +
-+	if(!mmc_get_env_addr(mmc, 0, &env_addr)) {
-+		env_set_hex("env_off", env_addr);
-+		env_set_hex("env_size", CONFIG_ENV_SIZE);
-+	} else {
-+		env_set("env_off", NULL);
-+		env_set("env_size", NULL);
-+	}
-+
 +	return;
  }
 diff --git a/board/compulab/plat/imx8mm/board/board.c b/board/compulab/plat/imx8mm/board/board.c
-index 5b751e0eb8..31bf30b7e9 100644
+index 5b751e0eb8..0caa4dc1b8 100644
 --- a/board/compulab/plat/imx8mm/board/board.c
 +++ b/board/compulab/plat/imx8mm/board/board.c
-@@ -230,21 +230,29 @@ int board_mmc_get_env_dev(int devno)
+@@ -33,6 +33,9 @@
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
++static int env_dev = -1;
++static int env_part= -1;
++
+ #ifdef CONFIG_BOARD_POSTCLK_INIT
+ int board_postclk_init(void)
+ {
+@@ -83,8 +86,30 @@ int dram_init(void)
+ }
+ 
+ #ifdef CONFIG_OF_BOARD_SETUP
++static int fdt_set_env_addr(void *blob, bd_t *bd)
++{
++	char tmp[32];
++	int nodeoff = fdt_add_subnode(blob, 0, "fw_env");
++	if(0 > nodeoff)
++		return nodeoff;
++
++	fdt_setprop(blob, nodeoff, "env_off", tmp, sprintf(tmp, "0x%x", CONFIG_ENV_OFFSET));
++	fdt_setprop(blob, nodeoff, "env_size", tmp, sprintf(tmp, "0x%x", CONFIG_ENV_SIZE));
++	if(0 < env_dev) {
++		switch(env_part) {
++		case 1 ... 2:
++			fdt_setprop(blob, nodeoff, "env_dev", tmp, sprintf(tmp, "/dev/mmcblk%iboot%i", env_dev, env_part - 1));
++			break;
++		default:
++			fdt_setprop(blob, nodeoff, "env_dev", tmp, sprintf(tmp, "/dev/mmcblk%i", env_dev));
++			break;
++		}
++	}
++}
++
+ int ft_board_setup(void *blob, bd_t *bd)
+ {
++	fdt_set_env_addr(blob, bd);
+ 	return 0;
+ }
+ #endif
+@@ -230,27 +255,32 @@ int board_mmc_get_env_dev(int devno)
  	return devno;
  }
  
@@ -74,49 +89,34 @@ index 5b751e0eb8..31bf30b7e9 100644
 -
 +	if (mmc->part_support && mmc->part_config != MMCPART_NOAVAILABLE) {
 +		uint partno = _mmc_get_env_part(mmc);
-+		env_set_hex("env_part", partno);
++		env_part = partno;
 +		return partno;
-+	}
-+	else {
-+		printf("%s:%d doesn't support HW part: reset env_part var\n",
-+			mmc->cfg->name, mmc_get_blk_desc(mmc)->devnum);
-+		env_set("env_part", NULL);
 +	}
  	return 0;
  }
  
-diff --git a/include/configs/cpl-imx8m-mini.h b/include/configs/cpl-imx8m-mini.h
-index dd8120f4dc..6f846d080e 100644
---- a/include/configs/cpl-imx8m-mini.h
-+++ b/include/configs/cpl-imx8m-mini.h
-@@ -117,6 +117,17 @@
- 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
- 	"mmcautodetect=yes\0" \
- 	"root_opt=rootwait rw\0" \
-+	"env2dt=" \
-+		"if env exists env_off; then " \
-+			"fdt addr $fdt_addr; fdt resize 100; " \
-+			"fdt mknode / fw_env;" \
-+			"if env exists env_part; then " \
-+				"fdt set /fw_env env_part ${env_part};" \
-+			"fi; " \
-+			"fdt set /fw_env env_dev ${mmcdev};" \
-+			"fdt set /fw_env env_off 0x${env_off}; " \
-+			"fdt set /fw_env env_size 0x${env_size}; " \
-+		"fi; true;\0" \
- 	"emmc_ul=setenv iface mmc; setenv dev 2; setenv part 1;" \
- 	"setenv bootargs console=${console} root=/dev/mmcblk2p2 ${root_opt};\0" \
- 	"sd_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
-@@ -126,7 +137,8 @@
- 	"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
- 	"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
- 	"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
--		"load ${iface} ${dev}:${part} ${fdt_addr} ${fdt_file}; fi;\0" \
-+		"if load ${iface} ${dev}:${part} ${fdt_addr} ${fdt_file};" \
-+		" then run env2dt; fi; fi;\0" \
- 	"bootscript=echo Running bootscript from mmc ...; " \
- 		"source\0" \
- 	"netargs=setenv bootargs console=${console} " \
+ static void board_bootdev_init(void)
+ {
+ 	u32 bootdev = get_boot_device();
++	struct mmc *mmc;
++
+ 	switch (bootdev) {
+ 	case MMC3_BOOT:
+ 		bootdev = 2;
+@@ -262,6 +292,13 @@ static void board_bootdev_init(void)
+ 		env_set("bootdev", NULL);
+ 		return;
+ 	}
++
++	env_dev = bootdev;
++
++	mmc = find_mmc_device(bootdev);
++	if (mmc && mmc->part_support && mmc->part_config != MMCPART_NOAVAILABLE)
++		env_part = EXT_CSD_EXTRACT_BOOT_PART(mmc->part_config);
++
+ 	env_set_ulong("bootdev", bootdev);
+ }
+ 
 -- 
 2.11.0
 
