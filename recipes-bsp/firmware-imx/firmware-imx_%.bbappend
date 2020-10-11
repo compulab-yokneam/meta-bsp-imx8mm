@@ -8,7 +8,7 @@ SRC_URI_append += " \
 
 do_install_append () {
     cp -rfv ${WORKDIR}/lib/firmware/brcm ${D}${base_libdir}/firmware/
-    cp -fv ${WORKDIR}/iwlwifi-8000C-36.ucode?h=20190815 ${D}${base_libdir}/firmware/
+    cp -fv ${WORKDIR}/iwlwifi-8000C-36.ucode?h=20190815 ${D}${base_libdir}/firmware/iwlwifi-8000C-36.ucode
 }
 
 FILES_${PN}-iwlwifi += "${base_libdir}/firmware/iwlwifi*"
