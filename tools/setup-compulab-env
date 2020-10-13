@@ -49,6 +49,7 @@ CORE_IMAGE_EXTRA_INSTALL+=" htop iotop tmux iperf3 wvdial"
 CORE_IMAGE_EXTRA_INSTALL_ucm-imx8m-mini += " cl-migrate-env"
 IMAGE_FEATURES+=" package-management ssh-server-openssh "
 cat << eof | tee -a ${LOCAL_CONF} > /dev/null
+IMAGE_INSTALL_append += "kernel-devicetree" 
 CORE_IMAGE_EXTRA_INSTALL += "${CORE_IMAGE_EXTRA_INSTALL}"
 IMAGE_FEATURES += "${IMAGE_FEATURES}"
 LICENSE_FLAGS_WHITELIST = "commercial"
