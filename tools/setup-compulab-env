@@ -37,6 +37,7 @@ BBLAYERS += " \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-multimedia \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-graphics \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-bsp \\
+	\${BSPDIR}/sources/meta-compulab-bsp/meta-devtool \\
 	\${BSPDIR}/sources/meta-bsp-imx8mm \\
 "
 eof
