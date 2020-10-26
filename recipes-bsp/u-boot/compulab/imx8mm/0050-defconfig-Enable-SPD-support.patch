@@ -1,0 +1,33 @@
+From 4972649003c00df157db7bc8b58087322c02d741 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 26 Oct 2020 19:02:31 +0200
+Subject: [PATCH 50/50] defconfig: Enable SPD support
+
+Enable SPD protocol support that is necessary for UUU tools.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ configs/ucm-imx8m-mini_defconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
+index 46843cdd67..d28373521b 100644
+--- a/configs/ucm-imx8m-mini_defconfig
++++ b/configs/ucm-imx8m-mini_defconfig
+@@ -65,8 +65,13 @@ CONFIG_USB=y
+ CONFIG_DM_USB=y
+ CONFIG_USB_EHCI_HCD=y
+ CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_DOWNLOAD=y
+ CONFIG_USB_GADGET_MANUFACTURER="FSL"
+ CONFIG_USB_GADGET_VENDOR_NUM=0x0525
+ CONFIG_USB_GADGET_PRODUCT_NUM=0xa4a5
+ CONFIG_SDP_LOADADDR=0x40400000
+ CONFIG_SPL_GPIO_SUPPORT=y
++CONFIG_SPL_USB_GADGET_SUPPORT=y
++CONFIG_SPL_USB_HOST_SUPPORT=y
++CONFIG_SPL_USB_SDP_SUPPORT=y
++CONFIG_USB_FUNCTION_SDP=y
+-- 
+2.11.0
+
