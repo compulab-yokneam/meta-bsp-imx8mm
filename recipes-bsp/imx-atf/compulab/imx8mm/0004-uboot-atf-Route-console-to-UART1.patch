@@ -1,0 +1,39 @@
+From b815eda80699cd8c10de002c5390e458a5aa7aa4 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 2 Nov 2020 18:36:10 +0200
+Subject: [PATCH 4/4] uboot:atf: Route console to UART1
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c    | 1 +
+ plat/imx/imx8m/imx8mm/include/platform_def.h | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c b/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
+index 6f98f7304..4f02c40a2 100644
+--- a/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
++++ b/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
+@@ -60,6 +60,7 @@ static const struct imx_rdc_cfg rdc[] = {
+ 	/* peripherals domain permission */
+ 	RDC_PDAPn(RDC_PDAP_UART4, D0R | D0W),
+ 	RDC_PDAPn(RDC_PDAP_UART2, D0R | D0W),
++	RDC_PDAPn(RDC_PDAP_UART1, D0R | D0W),
+ 
+ 	/* memory region */
+ 
+diff --git a/plat/imx/imx8m/imx8mm/include/platform_def.h b/plat/imx/imx8m/imx8mm/include/platform_def.h
+index d3468d869..0ff2e7b16 100644
+--- a/plat/imx/imx8m/imx8mm/include/platform_def.h
++++ b/plat/imx/imx8m/imx8mm/include/platform_def.h
+@@ -51,7 +51,7 @@
+ 
+ #define HAB_RVT_BASE			U(0x00000900) /* HAB_RVT for i.MX8MM */
+ 
+-#define IMX_BOOT_UART_BASE		U(0x30880000)
++#define IMX_BOOT_UART_BASE		U(0x30860000)
+ #define IMX_BOOT_UART_CLK_IN_HZ		24000000 /* Select 24MHz oscillator */
+ 
+ #define PLAT_CRASH_UART_BASE		IMX_BOOT_UART_BASE
+-- 
+2.11.0
+

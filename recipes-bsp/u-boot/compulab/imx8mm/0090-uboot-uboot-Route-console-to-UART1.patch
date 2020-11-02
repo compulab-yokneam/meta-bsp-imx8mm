@@ -1,0 +1,153 @@
+From f8aeba6760e03b1861bb336dcc0dbd04d679ea6b Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 2 Nov 2020 18:32:41 +0200
+Subject: [PATCH 90/90] uboot:uboot: Route console to UART1
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/cpl-imx8m-mini.dtsi        |  3 +-
+ arch/arm/dts/ucm-imx8m-mini.dts         | 22 ++++++++++++++
+ board/compulab/plat/imx8mm/spl/common.c |  3 ++
+ include/configs/ucm-imx8m-mini.h        | 54 +++++++++++++++++++++++++++++++++
+ 4 files changed, 80 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/dts/cpl-imx8m-mini.dtsi b/arch/arm/dts/cpl-imx8m-mini.dtsi
+index c37ad9c71d..b8956f93d6 100644
+--- a/arch/arm/dts/cpl-imx8m-mini.dtsi
++++ b/arch/arm/dts/cpl-imx8m-mini.dtsi
+@@ -117,14 +117,13 @@
+ 			>;
+ 		};
+ 
+-		pinctrl_uart3: uart1grp {
++		pinctrl_uart3: uart3grp {
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_UART3_RXD_UART3_DCE_RX	0x49
+ 				MX8MM_IOMUXC_UART3_TXD_UART3_DCE_TX	0x49
+ 			>;
+ 		};
+ 
+-
+ 		pinctrl_uart4: uart4grp {
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_ECSPI2_MISO_UART4_DCE_CTS_B 0x49
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index 7b81e8a75b..c6045a0631 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -19,4 +19,26 @@
+ / {
+ 	model = "CompuLab UCM-iMX8M-Mini board";
+ 	compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
++
++	chosen {
++		bootargs = "console=ttymxc0,115200 earlycon=ec_imx6q,0x30860000,115200";
++		stdout-patch = &uart1;
++	};
++
++};
++
++&iomuxc {
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX	0x49
++			MX8MM_IOMUXC_UART1_TXD_UART1_DCE_TX	0x49
++		>;
++	};
+ };
++
++&uart1 { /* console */
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
+diff --git a/board/compulab/plat/imx8mm/spl/common.c b/board/compulab/plat/imx8mm/spl/common.c
+index 5f1d1e5b97..526357aa2e 100644
+--- a/board/compulab/plat/imx8mm/spl/common.c
++++ b/board/compulab/plat/imx8mm/spl/common.c
+@@ -8,6 +8,8 @@
+ #define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+ 
+ static iomux_v3_cfg_t const uart_pads[] = {
++	IMX8MM_PAD_UART1_RXD_UART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
++	IMX8MM_PAD_UART1_TXD_UART1_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+ 	IMX8MM_PAD_UART3_RXD_UART3_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+ 	IMX8MM_PAD_UART3_TXD_UART3_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+ };
+@@ -26,6 +28,7 @@ int board_early_init_f(void)
+ 
+ 	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
+ 
++	init_uart_clk(0);
+ 	init_uart_clk(2);
+ 
+ 	return 0;
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index b3d6082a66..2613b08b62 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -9,6 +9,60 @@
+ 
+ #include "cpl-imx8m-mini.h"
+ 
++#undef CONFIG_EXTRA_ENV_SETTINGS
++#define CONFIG_EXTRA_ENV_SETTINGS		\
++	CONFIG_MFG_ENV_SETTINGS \
++	"autoload=off\0" \
++	"script=boot.scr\0" \
++	"image=Image\0" \
++	"console=ttymxc0,115200 earlycon=ec_imx6q,0x30860000,115200\0" \
++	"fdt_addr=0x43000000\0"			\
++	"fdt_high=0xffffffffffffffff\0"		\
++	"boot_fdt=yes\0" \
++	"fdt_file="CONFIG_DEFAULT_DTB"\0" \
++	"initrd_addr=0x43800000\0"		\
++	"initrd_high=0xffffffffffffffff\0" \
++	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
++	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
++	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
++	"mmcautodetect=yes\0" \
++	"root_opt=rootwait rw\0" \
++	"emmc_ul=setenv iface mmc; setenv dev 2; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk2p2 ${root_opt};\0" \
++	"sd_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk1p2 ${root_opt};\0" \
++	"usb_ul=usb start; setenv iface usb; setenv dev 0; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/sda2 ${root_opt};\0" \
++	"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
++	"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
++	"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
++		"load ${iface} ${dev}:${part} ${fdt_addr} ${fdt_file}; fi;\0" \
++	"bootscript=echo Running bootscript from mmc ...; " \
++		"source\0" \
++	"netargs=setenv bootargs console=${console} " \
++		"root=/dev/nfs " \
++		"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
++	"netboot=echo Booting from net ...; " \
++		"run netargs;  " \
++		"if test ${ip_dyn} = yes; then " \
++			"setenv get_cmd dhcp; " \
++		"else " \
++			"setenv get_cmd tftp; " \
++		"fi; " \
++		"${get_cmd} ${loadaddr} ${image}; " \
++		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
++			"if ${get_cmd} ${fdt_addr} ${fdt_file}; then " \
++				"booti ${loadaddr} - ${fdt_addr}; " \
++			"else " \
++				"echo WARN: Cannot load the DT; " \
++			"fi; " \
++		"else " \
++			"booti; " \
++		"fi;\0"
++
++#undef CONFIG_MXC_UART_BASE
++#define CONFIG_MXC_UART_BASE		UART1_BASE_ADDR
++
+ #if defined(CONFIG_ANDROID_SUPPORT)
+ #include "ucm-imx8m-mini_android.h"
+ #endif
+-- 
+2.11.0
+
