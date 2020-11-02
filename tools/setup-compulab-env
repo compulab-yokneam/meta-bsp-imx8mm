@@ -21,7 +21,7 @@ get_meta ${url} ${branch} ${dir}
 
 get_meta_compulab_bsp() {
 dir="../sources/meta-compulab-bsp"
-branch="ced492114feceb1a04d1489269e3405630c8377d"
+branch="970730452f9d6bc86b4d56ef049e775a2f33d4dc"
 url="https://github.com/compulab-yokneam/meta-compulab-bsp"
 get_meta ${url} ${branch} ${dir}
 }
@@ -38,6 +38,7 @@ BBLAYERS += " \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-multimedia \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-graphics \\
 	\${BSPDIR}/sources/meta-compulab-bsp/meta-bsp \\
+	\${BSPDIR}/sources/meta-compulab-bsp/meta-utils \\
 	\${BSPDIR}/sources/meta-bsp-imx8mm \\
 "
 eof
@@ -50,6 +51,7 @@ CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy"
 CORE_IMAGE_EXTRA_INSTALL+=" cl-migrate-env cl-stest u-boot-fw-utils"
 CORE_IMAGE_EXTRA_INSTALL+=" modemmanager networkmanager wireless-tools bluez5"
 CORE_IMAGE_EXTRA_INSTALL+=" can-utils gpsd gps-utils minicom wvdial tzdata"
+CORE_IMAGE_EXTRA_INSTALL+=" eeprom-util"
 else
 CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy cl-migrate-env cl-launcher cl-stest cl-camera u-boot-fw-utils imx-gpu-viv-demos"
 fi
