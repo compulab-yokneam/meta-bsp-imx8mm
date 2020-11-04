@@ -90,4 +90,5 @@ SRC_URI_append = " \
 	file://0088-fw_utils-Enable-actual-env-address-readout.patch \
 	file://0089-SPL-Disable-fake-memsize-report.patch \
 	file://0090-uboot-uboot-Route-console-to-UART1.patch \
+	file://0091-Map-UART1-to-alternavtive-ALT4-pads.patch \
 "

@@ -1,0 +1,61 @@
+From b4e6be2ce6837bc4630c82d61767b703d8951e7a Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 4 Nov 2020 20:08:59 +0200
+Subject: [PATCH 91/91] Map UART1 to alternavtive (ALT4) pads
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/cpl-imx8m-mini.dtsi        | 1 -
+ arch/arm/dts/ucm-imx8m-mini.dts         | 4 ++--
+ board/compulab/plat/imx8mm/spl/common.c | 8 ++++----
+ 3 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm/dts/cpl-imx8m-mini.dtsi b/arch/arm/dts/cpl-imx8m-mini.dtsi
+index b8956f93d6..d9cab2d435 100644
+--- a/arch/arm/dts/cpl-imx8m-mini.dtsi
++++ b/arch/arm/dts/cpl-imx8m-mini.dtsi
+@@ -74,7 +74,6 @@
+ 				MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC	0x91
+ 				MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
+ 				MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
+-				MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22	0x19
+ 			>;
+ 		};
+ 
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index c6045a0631..13a1f76179 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -30,8 +30,8 @@
+ &iomuxc {
+ 	pinctrl_uart1: uart1grp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX	0x49
+-			MX8MM_IOMUXC_UART1_TXD_UART1_DCE_TX	0x49
++			MX8MM_IOMUXC_SAI2_RXC_UART1_DCE_RX	0x49
++			MX8MM_IOMUXC_SAI2_RXFS_UART1_DCE_TX	0x49
+ 		>;
+ 	};
+ };
+diff --git a/board/compulab/plat/imx8mm/spl/common.c b/board/compulab/plat/imx8mm/spl/common.c
+index 526357aa2e..5d4b6faea2 100644
+--- a/board/compulab/plat/imx8mm/spl/common.c
++++ b/board/compulab/plat/imx8mm/spl/common.c
+@@ -8,10 +8,10 @@
+ #define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+ 
+ static iomux_v3_cfg_t const uart_pads[] = {
+-	IMX8MM_PAD_UART1_RXD_UART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+-	IMX8MM_PAD_UART1_TXD_UART1_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+-	IMX8MM_PAD_UART3_RXD_UART3_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+-	IMX8MM_PAD_UART3_TXD_UART3_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
++	IMX8MM_PAD_SAI2_RXFS_UART1_TX	| MUX_PAD_CTRL(UART_PAD_CTRL),
++	IMX8MM_PAD_SAI2_RXC_UART1_RX	| MUX_PAD_CTRL(UART_PAD_CTRL),
++	IMX8MM_PAD_UART3_RXD_UART3_RX	| MUX_PAD_CTRL(UART_PAD_CTRL),
++	IMX8MM_PAD_UART3_TXD_UART3_TX	| MUX_PAD_CTRL(UART_PAD_CTRL),
+ };
+ 
+ static iomux_v3_cfg_t const wdog_pads[] = {
+-- 
+2.11.0
+

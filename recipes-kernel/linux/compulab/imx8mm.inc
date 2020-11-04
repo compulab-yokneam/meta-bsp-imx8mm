@@ -44,6 +44,7 @@ SRC_URI_append = " \
 	file://0043-ucm-imx8m-mini-dts-Enable-brcm-bcm4330-bt.patch \
 	file://0044-ucm-imx8m-mini-config-Set-CONFIG_IMX_SDMA-m-for-brcm.patch \
 	file://0045-ucm-imx8m-mini-config-Add-brcm-firmware-to-kernel-bu.patch \
+	file://0046-ucm-imx8m-mini-dts-Update-PCIe-node.patch \
 	file://0047-rtc-abx80x-Enable-SQW-output.patch \
 	file://0048-rtc-abx80x-Enable-XT-digital-calibration.patch \
 	file://0049-rtc-abx80x-Calibrate-RTC.patch \
@@ -57,5 +58,6 @@ SRC_URI_append = " \
 	file://0057-ucm-mcm-defconfig-Enable-rfkill.patch \
 	file://0058-arm64-dts-imx8mm-specify-dma-ranges.patch \
 	file://0059-defconfig-Disable-fw-user-loader-helper.patch \
+	file://0060-Map-UART1-to-alternavtive-ALT4-pads.patch \
 	file://defconfig \
 "
