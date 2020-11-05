@@ -1,7 +1,7 @@
-From 3da279488005fe893e72f708f8a3593981cedae7 Mon Sep 17 00:00:00 2001
+From dfebeaaf2db47bff57da5832813b0d6cb03f36d9 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-Date: Wed, 26 Aug 2020 15:34:56 +0300
-Subject: [PATCH 48/49] rtc:abx80x: Enable XT digital calibration
+Date: Thu, 5 Nov 2020 18:41:55 +0200
+Subject: [PATCH 48/48] rtc:abx80x: Enable XT digital calibration
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 188 insertions(+), 44 deletions(-)
 
 diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index d6af690fb594..5ddc6d177d54 100644
+index 7f66bdd2868e..7433ff083cec 100644
 --- a/drivers/rtc/rtc-abx80x.c
 +++ b/drivers/rtc/rtc-abx80x.c
 @@ -16,57 +16,64 @@
@@ -116,7 +116,7 @@ index d6af690fb594..5ddc6d177d54 100644
 +#define ABX8XX_OSS_OMODE		BIT(4)
 +#define ABX8XX_REG_OSS_XTCAL_SHIFT	6
 +#define ABX8XX_REG_OSS_XTCAL_MASK	((1 << (ABX8XX_REG_OSS_XTCAL_SHIFT)) - 1)
-+ 
++
  
  #define ABX8XX_REG_WDT		0x1b
  #define ABX8XX_WDT_WDS		BIT(7)
@@ -152,7 +152,7 @@ index d6af690fb594..5ddc6d177d54 100644
 +	long Adj;
 +	u8 XTCAL, CMDX, OFFSETX;
 +
-+ 	Adj = (xt_freq_std - (int)xt_freq) * 16 / 1000;
++	Adj = (xt_freq_std - (int)xt_freq) * 16 / 1000;
 +	if (Adj < -320 ) {
 +		dev_err(&client->dev, "The XT oscillator is too fast to be adjusted\n");
 +		return -ERANGE;
@@ -298,7 +298,7 @@ index d6af690fb594..5ddc6d177d54 100644
 +		}
 +	}
 +
- 	if (!of_property_read_string(np, "sqw", &sqw_mode_name)) 
+ 	if (!of_property_read_string(np, "sqw", &sqw_mode_name))
  		sqw_set(client, sqw_mode_name);
  
 -- 

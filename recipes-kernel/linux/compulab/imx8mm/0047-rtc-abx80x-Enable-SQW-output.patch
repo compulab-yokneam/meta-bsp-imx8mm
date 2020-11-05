@@ -130,7 +130,7 @@ index 73830670a41f..d6af690fb594 100644
  		abx80x_enable_trickle_charger(client, trickle_cfg);
  	}
  
-+	if (!of_property_read_string(np, "sqw", &sqw_mode_name)) 
++	if (!of_property_read_string(np, "sqw", &sqw_mode_name))
 +		sqw_set(client, sqw_mode_name);
 +
  	err = i2c_smbus_write_byte_data(client, ABX8XX_REG_CD_TIMER_CTL,
