@@ -1,0 +1,40 @@
+From 4e7bfc4c14a22b4986e940038c20a3ff8da2a2b1 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sat, 7 Nov 2020 22:25:40 +0200
+Subject: [PATCH 91/91] board: minor cleaninig
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/board/board.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/board/compulab/plat/imx8mm/board/board.c b/board/compulab/plat/imx8mm/board/board.c
+index 0801844bfe..8d7963f2a5 100644
+--- a/board/compulab/plat/imx8mm/board/board.c
++++ b/board/compulab/plat/imx8mm/board/board.c
+@@ -113,7 +113,7 @@ static void fdt_set_sn(void *blob)
+ 	return;
+ }
+ 
+-static int fdt_set_env_addr(void *blob, bd_t *bd)
++static int fdt_set_env_addr(void *blob)
+ {
+ 	char tmp[32];
+ 	int nodeoff = fdt_add_subnode(blob, 0, "fw_env");
+@@ -132,11 +132,12 @@ static int fdt_set_env_addr(void *blob, bd_t *bd)
+ 			break;
+ 		}
+ 	}
++	return 0;
+ }
+ 
+ int ft_board_setup(void *blob, bd_t *bd)
+ {
+-	fdt_set_env_addr(blob, bd);
++	fdt_set_env_addr(blob);
+ 	fdt_set_sn(blob);
+ 	return 0;
+ }
+-- 
+2.11.0
+

@@ -89,4 +89,6 @@ SRC_URI_append = " \
 	file://0087-Enable-env-address-export-via-FDT.patch \
 	file://0088-fw_utils-Enable-actual-env-address-readout.patch \
 	file://0089-SPL-Disable-fake-memsize-report.patch \
+	file://0090-fdt-Add-export-SoM-data-via-FDT.patch \
+	file://0091-board-minor-cleaninig.patch \
 "
