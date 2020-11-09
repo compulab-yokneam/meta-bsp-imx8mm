@@ -1,0 +1,30 @@
+From f22f74b26f0c65ef5b23f5ec398dd7a5b08046c5 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 9 Nov 2020 11:58:42 +0200
+Subject: [PATCH] mcm-imx8m-mini: usdhc3: Change the interface description
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+index 916044e490ba..794dd8fb21c4 100644
+--- a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini.dts
+@@ -685,11 +685,11 @@
+ };
+ 
+ &usdhc3 {
+-	compatible = "fsl,imx8mq-usdhc\0fsl,imx7d-usdhc";
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	no-1-8-v;
+ 	bus-width = <8>;
+ 	non-removable;
+ 	status = "okay";
+-- 
+2.11.0
+
