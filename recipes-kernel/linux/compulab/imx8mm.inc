@@ -59,5 +59,9 @@ SRC_URI_append = " \
 	file://0058-arm64-dts-imx8mm-specify-dma-ranges.patch \
 	file://0059-defconfig-Disable-fw-user-loader-helper.patch \
 	file://0060-mcm-imx8m-mini-usdhc3-Change-the-interface-descripti.patch \
+	file://0061-bridge-sn65dsi83-Add-the-bridge-driver.patch \
+	file://0062-ucm-imx8m-mini-dts-Fix-usdhc1-node-descriptor.patch \
+	file://0063-ucm-imx8m-mini-dts-Fix-simple-audio-card-name.patch \
+	file://0064-ucm-imx8m-mini-dts-Add-ucm-imx8m-mini-eb-dsi2lvds.dt.patch \
 	file://defconfig \
 "

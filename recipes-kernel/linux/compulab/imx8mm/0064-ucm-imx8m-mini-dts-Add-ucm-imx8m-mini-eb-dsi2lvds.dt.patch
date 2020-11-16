@@ -1,0 +1,119 @@
+From 7c7547cd2f6297fc2347d9a979d444fb022e78cf Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 16 Nov 2020 16:45:35 +0200
+Subject: [PATCH] ucm-imx8m-mini: dts: Add ucm-imx8m-mini-eb-dsi2lvds.dts
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/Makefile              |  1 +
+ .../dts/compulab/ucm-imx8m-mini-eb-dsi2lvds.dts    | 88 ++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-eb-dsi2lvds.dts
+
+diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
+index 9fac7769acca..7d2e1374effa 100644
+--- a/arch/arm64/boot/dts/compulab/Makefile
++++ b/arch/arm64/boot/dts/compulab/Makefile
+@@ -1,4 +1,5 @@
+ dtb-$(CONFIG_ARCH_MXC) += ucm-imx8m-mini.dtb
++dtb-$(CONFIG_ARCH_MXC) += ucm-imx8m-mini-eb-dsi2lvds.dtb
+ dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini.dtb
+ dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini-m4.dtb
+ dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini-thermal.dtb
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-eb-dsi2lvds.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-eb-dsi2lvds.dts
+new file mode 100644
+index 000000000000..f73ca3c14ab1
+--- /dev/null
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-eb-dsi2lvds.dts
+@@ -0,0 +1,88 @@
++/*
++ * Copyright 2018 CompuLab
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include "ucm-imx8m-mini.dts"
++
++/ {
++    model = "CompuLab UCM i.MX8MM board (lvds)";
++    compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm";
++};
++
++&iomuxc {
++    compulab-imx8m--mini-lvds {
++        pinctrl_dsi_lvds: dsilvds_group {
++            fsl,pins = <
++                MX8MM_IOMUXC_GPIO1_IO06_GPIO1_IO6 0x16
++            >;
++        };
++    };
++};
++
++&lcdif {
++    status = "okay";
++};
++
++&panel {
++    status = "disabled";
++};
++
++&mipi_dsi {
++    status = "okay";
++    port@1 {
++        mipi_dsi_bridge_out: endpoint {
++            remote-endpoint = <&sn65dsi83_in>;
++			attach-bridge;
++        };
++    };
++};
++
++&i2c4 {
++    ti_bridge: sn65dsi83@2c {
++        compatible = "ti,sn65dsi83";
++        reg = <0x2c>;
++        ti,dsi-lanes = <4>;
++        ti,lvds-format = <2>;
++        ti,lvds-bpp = <24>;
++        ti,width-mm = <149>;
++        ti,height-mm = <93>;
++        enable-gpios = <&pca9555 6 GPIO_ACTIVE_HIGH>;
++        pinctrl-names = "default";
++        pinctrl-0 = <&pinctrl_dsi_lvds>;
++        status = "okay";
++
++        display-timings {
++            lvds {
++                clock-frequency = <44000000>;
++                hactive = <1024>;
++                vactive = <600>;
++                hback-porch = <60>;
++                hfront-porch = <60>;
++                vback-porch = <10>;
++                vfront-porch = <5>;
++                hsync-len = <10>;
++                vsync-len = <2>;
++                hsync-active = <1>;
++                vsync-active = <1>;
++                de-active = <1>;
++                pixelclk-active = <0>;
++            };
++        };
++
++        port {
++            sn65dsi83_in: endpoint {
++                remote-endpoint = <&mipi_dsi_bridge_out>;
++            };
++        };
++    };
++};
+-- 
+2.11.0
+
