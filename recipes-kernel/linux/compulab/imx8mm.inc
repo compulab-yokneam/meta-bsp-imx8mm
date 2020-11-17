@@ -63,5 +63,6 @@ SRC_URI_append = " \
 	file://0062-ucm-imx8m-mini-dts-Fix-usdhc1-node-descriptor.patch \
 	file://0063-ucm-imx8m-mini-dts-Fix-simple-audio-card-name.patch \
 	file://0064-ucm-imx8m-mini-dts-Add-ucm-imx8m-mini-eb-dsi2lvds.dt.patch \
+	file://0065-rtc-abx80x-Disable-bus-when-powered-from-battery.patch \
 	file://defconfig \
 "
