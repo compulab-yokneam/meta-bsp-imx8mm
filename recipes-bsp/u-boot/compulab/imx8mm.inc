@@ -91,4 +91,5 @@ SRC_URI_append = " \
 	file://0089-SPL-Disable-fake-memsize-report.patch \
 	file://0090-fdt-Add-export-SoM-data-via-FDT.patch \
 	file://0091-board-minor-cleaninig.patch \
+	file://0092-rtc-Disable-bus-when-powered-from-battery.patch \
 "
