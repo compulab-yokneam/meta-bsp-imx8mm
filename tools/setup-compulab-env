@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -A SUPPORTED_MACHINE=([mcm-imx8m-mini]=1 [ucm-imx8m-mini]=1)
+declare -A EXTRA_MACHINE_INSTALL=([ucm-imx8m-mini]='cl-migrate-env')
 
 get_meta() {
 if [[ -d ${dir} ]];then
@@ -47,7 +48,7 @@ mod_local() {
 # Modify local.conf
 CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy cl-launcher cl-stest cl-camera u-boot-fw-utils imx-gpu-viv-demos"
 CORE_IMAGE_EXTRA_INSTALL+=" htop iotop tmux iperf3 wvdial"
-CORE_IMAGE_EXTRA_INSTALL_ucm-imx8m-mini += " cl-migrate-env"
+CORE_IMAGE_EXTRA_INSTALL+=" ${EXTRA_MACHINE_INSTALL[${MACHINE}]}"
 IMAGE_FEATURES+=" package-management ssh-server-openssh "
 cat << eof | tee -a ${LOCAL_CONF} > /dev/null
 IMAGE_INSTALL_append += "kernel-devicetree" 
