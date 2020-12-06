@@ -92,4 +92,5 @@ SRC_URI_append = " \
 	file://0090-fdt-Add-export-SoM-data-via-FDT.patch \
 	file://0091-board-minor-cleaninig.patch \
 	file://0092-rtc-Disable-bus-when-powered-from-battery.patch \
+	file://0093-fdt-Add-export-of-base-board-data-via-FDT.patch \
 "
