@@ -1,7 +1,7 @@
 From 2c75b160f35acc82f961680c564cddc4771098ba Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 6 Jul 2020 16:30:58 +0300
-Subject: [PATCH 21/38] mcm-imx8m-mini: dts: Enable UART2
+Subject: [PATCH 21/46] mcm-imx8m-mini: dts: Enable UART2
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

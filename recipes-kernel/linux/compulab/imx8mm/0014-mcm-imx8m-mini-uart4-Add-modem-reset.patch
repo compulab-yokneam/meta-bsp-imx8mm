@@ -1,7 +1,7 @@
 From 637cee531862de22327f3ea290b5b4c6fb7a0392 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Fri, 3 Jul 2020 16:02:26 +0300
-Subject: [PATCH 14/38] mcm-imx8m-mini: uart4: Add modem-reset
+Subject: [PATCH 14/46] mcm-imx8m-mini: uart4: Add modem-reset
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

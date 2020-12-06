@@ -1,7 +1,7 @@
 From 987fdebfa6128a9975af4692f11ad3c36396d629 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Fri, 3 Jul 2020 15:10:16 +0300
-Subject: [PATCH 11/38] mcm-imx8m-mini: Add a supported panel
+Subject: [PATCH 11/46] mcm-imx8m-mini: Add a supported panel
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

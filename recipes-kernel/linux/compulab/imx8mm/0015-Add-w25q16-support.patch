@@ -1,7 +1,7 @@
 From 32c4326e47b03c55a9b84850f063052df30ee21e Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 1 Jun 2020 21:08:04 +0300
-Subject: [PATCH 15/38] Add w25q16 support
+Subject: [PATCH 15/46] Add w25q16 support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

@@ -1,7 +1,7 @@
 From 25018c01c7eb32882ce3c920b211267bc13002ce Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 5 Feb 2019 17:39:39 +0200
-Subject: [PATCH 03/38] ucm-imx8m-mini: dts: remove phy-supply
+Subject: [PATCH 03/46] ucm-imx8m-mini: dts: remove phy-supply
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

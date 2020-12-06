@@ -38,5 +38,13 @@ SRC_URI_append = " \
 	file://0036-rtc-abx80x-Enable-XT-digital-calibration.patch \
 	file://0037-arm64-dts-imx8mm-specify-dma-ranges.patch \
 	file://0038-Sot-gate-imx8-release-2.2.patch \
+	file://0039-iot-gate-imx8-defconfig-enable-FTDI-USB-to-serial.patch \
+	file://0040-iot-gate-imx8-dts-update-add-on-GPIOs-pull.patch \
+	file://0041-iot-gate-imx8-config-Update-device-config.patch \
+	file://0042-can-mcp25xxfd-update-drive.patch \
+	file://0043-iot-gate-imx8-can-dts-increase-frequency-of-SPI-inte.patch \
+	file://0044-encx24j600-add-device-tree-support.patch \
+	file://0045-iot-gate-imx8-add-support-for-the-IE-POE-board.patch \
+	file://0046-Sot-gate-imx8-release-2.3.patch \
 	file://defconfig \
 "

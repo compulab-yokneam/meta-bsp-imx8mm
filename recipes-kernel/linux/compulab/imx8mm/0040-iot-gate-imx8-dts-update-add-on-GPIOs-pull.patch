@@ -1,0 +1,38 @@
+From 8ad772c63ef69445b6f8dba6a56d721f6b509b27 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Wed, 4 Nov 2020 10:53:58 +0200
+Subject: [PATCH 40/46] iot-gate-imx8: dts: update add-on GPIOs pull
+
+Change the digital I/O add-on GPIOs pull from up to down.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
+index 68f102b74250..c7cef97fdc34 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
+@@ -112,12 +112,12 @@
+ 		pinctrl_hog_sb_iotgimx8_ied: hoggrp-sb-iotgimx8-ied {
+ 			fsl,pins = <
+ 				/* IED-DI4O4 */
+-				MX8MM_IOMUXC_NAND_ALE_GPIO3_IO0		0x140 /* IN 0 */
+-				MX8MM_IOMUXC_NAND_CE0_B_GPIO3_IO1	0x140 /* IN 1 */
+-				MX8MM_IOMUXC_NAND_DATA00_GPIO3_IO6	0x140 /* IN 2 */
+-				MX8MM_IOMUXC_NAND_DATA01_GPIO3_IO7	0x140 /* IN 3 */
+-				MX8MM_IOMUXC_NAND_DATA02_GPIO3_IO8	0x140 /* OUT 0 */
+-				MX8MM_IOMUXC_NAND_DATA03_GPIO3_IO9	0x140 /* OUT 1 */
++				MX8MM_IOMUXC_NAND_ALE_GPIO3_IO0		0x100 /* IN 0 */
++				MX8MM_IOMUXC_NAND_CE0_B_GPIO3_IO1	0x100 /* IN 1 */
++				MX8MM_IOMUXC_NAND_DATA00_GPIO3_IO6	0x100 /* IN 2 */
++				MX8MM_IOMUXC_NAND_DATA01_GPIO3_IO7	0x100 /* IN 3 */
++				MX8MM_IOMUXC_NAND_DATA02_GPIO3_IO8	0x100 /* OUT 0 */
++				MX8MM_IOMUXC_NAND_DATA03_GPIO3_IO9	0x100 /* OUT 1 */
+ 			>;
+ 		};
+ 
+-- 
+2.11.0
+
