@@ -1,7 +1,7 @@
 From ecfa008bc7ab0c1c55f886b251b85a2d3952ac5a Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 26 Mar 2019 10:36:45 +0200
-Subject: [PATCH 12/99] ucm-imx8m-mini: ddr: Validate new setting
+Subject: [PATCH 012/105] ucm-imx8m-mini: ddr: Validate new setting
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

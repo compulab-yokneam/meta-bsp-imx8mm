@@ -1,0 +1,196 @@
+From c1cecb3bd70f8b23ba315773fa3ed59c5a0c28dd Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 8 Dec 2020 13:54:27 +0200
+Subject: [PATCH 102/105] fdt: Add export of base board data via FDT
+
+Export via FDT the following data:
+	base board options
+	base board revision (major)
+	base board name
+	base board serial number
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>\
+---
+ board/compulab/common/eeprom.c           | 49 ++++++++++++++++++++++++++++++--
+ board/compulab/common/eeprom.h           | 18 +++++-------
+ board/compulab/plat/imx8mm/board/board.c | 23 +++++++++++----
+ 3 files changed, 71 insertions(+), 19 deletions(-)
+
+diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
+index f3401fe30e..a30a6fc209 100644
+--- a/board/compulab/common/eeprom.c
++++ b/board/compulab/common/eeprom.c
+@@ -124,14 +124,14 @@ static int cl_eeprom_setup(const struct eeprom_path *eeprom)
+ 	return 0;
+ }
+ 
+-void cpl_get_board_serial(struct tag_serialnr *serialnr)
++static void cpl_get_board_serial(struct tag_serialnr *serialnr, const struct eeprom_path *eeprom)
+ {
+ 	u32 serial[2];
+ 	uint offset;
+ 
+ 	memset(serialnr, 0, sizeof(*serialnr));
+ 
+-	if (cl_eeprom_setup(&eeprom_som))
++	if (cl_eeprom_setup(eeprom))
+ 		return;
+ 
+ 	offset = (cl_eeprom_layout != LAYOUT_LEGACY) ?
+@@ -146,6 +146,15 @@ void cpl_get_board_serial(struct tag_serialnr *serialnr)
+ 	}
+ }
+ 
++inline void cpl_get_som_serial(struct tag_serialnr *serialnr)
++{
++	return cpl_get_board_serial(serialnr, &eeprom_som);
++}
++inline void cpl_get_sb_serial(struct tag_serialnr *serialnr)
++{
++	return cpl_get_board_serial(serialnr, &eeprom_sb);
++}
++ 
+ /*
+  * Routine: cl_eeprom_read_mac_addr
+  * Description: read mac address and store it in buf.
+@@ -198,7 +207,30 @@ u32 cl_eeprom_get_board_rev(uint eeprom_bus __attribute__((unused)))
+ 	}
+ 
+ 	return board_rev;
+-};
++}
++
++static u32 cl_eeprom_get_revision(const struct eeprom_path *eeprom)
++{
++	u32 revision;
++
++	if (cl_eeprom_setup(eeprom))
++		return 0;
++
++	if (cl_eeprom_read(BOARD_REV_OFFSET, (uchar *)&revision, BOARD_REV_SIZE))
++		return 0;
++
++	return revision;
++}
++
++u32 cl_eeprom_get_som_revision(void)
++{
++	return cl_eeprom_get_revision(&eeprom_som);
++}
++
++u32 cl_eeprom_get_sb_revision(void)
++{
++	return cl_eeprom_get_revision(&eeprom_sb);
++}
+ 
+ /*
+  * Routine: cl_eeprom_get_board_rev
+@@ -252,6 +284,11 @@ int cl_eeprom_read_som_options(char *buf)
+ 	return cl_eeprom_read_options(buf, &eeprom_som);
+ }
+ 
++int cl_eeprom_read_sb_options(char *buf)
++{
++	return cl_eeprom_read_options(buf, &eeprom_sb);
++}
++
+ static int cl_eeprom_read_product_name(char *buf, const struct eeprom_path *eeprom)
+ {
+ 	int len;
+@@ -272,6 +309,12 @@ static int cl_eeprom_read_product_name(char *buf, const struct eeprom_path *eepr
+ 	return len;
+ }
+ 
++int cl_eeprom_read_sb_name(char *buf)
++{
++
++	return cl_eeprom_read_product_name(buf, &eeprom_sb);
++}
++
+ int cl_eeprom_read_som_name(char *buf)
+ {
+ 	return cl_eeprom_read_product_name(buf, &eeprom_som);
+diff --git a/board/compulab/common/eeprom.h b/board/compulab/common/eeprom.h
+index 5fdd75b2db..a1823629ca 100644
+--- a/board/compulab/common/eeprom.h
++++ b/board/compulab/common/eeprom.h
+@@ -27,31 +27,27 @@
+ 
+ #if (defined(CONFIG_SYS_I2C) || defined(CONFIG_DM_I2C))
+ int cl_eeprom_read_mac_addr(uchar *buf, uint eeprom_bus);
+-u32 cl_eeprom_get_board_rev(uint eeprom_bus);
++u32 cl_eeprom_get_som_revision(void);
++u32 cl_eeprom_get_sb_revision(void);
+ int cl_eeprom_get_product_name(uchar *buf, uint eeprom_bus);
++int cl_eeprom_read_sb_name(char *buf);
+ int cl_eeprom_read_som_name(char *buf);
+ int cl_eeprom_read_som_options(char *buf);
++int cl_eeprom_read_sb_options(char *buf);
+ void cl_eeprom_get_suite(char* buf);
+-void cpl_get_board_serial(struct tag_serialnr *serialnr);
++void cpl_get_som_serial(struct tag_serialnr *serialnr);
++void cpl_get_sb_serial(struct tag_serialnr *serialnr);
+ #else
+ static inline int cl_eeprom_read_mac_addr(uchar *buf, uint eeprom_bus)
+ {
+ 	return 1;
+ }
+-static inline u32 cl_eeprom_get_board_rev(uint eeprom_bus)
+-{
+-	return 0;
+-}
++
+ static inline int cl_eeprom_get_product_name(uchar *buf, uint eeprom_bus)
+ {
+ 	return -ENOSYS;
+ }
+ 
+-static inline void cpl_get_board_serial(struct tag_serialnr *serialnr)
+-{
+-	return 0;
+-}
+-
+ #endif
+ 
+ #endif
+diff --git a/board/compulab/plat/imx8mm/board/board.c b/board/compulab/plat/imx8mm/board/board.c
+index e452ad348f..e9ea89886f 100644
+--- a/board/compulab/plat/imx8mm/board/board.c
++++ b/board/compulab/plat/imx8mm/board/board.c
+@@ -96,15 +96,28 @@ static void fdt_set_sn(void *blob)
+ 	len = cl_eeprom_read_som_name(buf);
+ 	fdt_setprop(blob, 0, "product-name", buf, len);
+ 
+-	cpl_get_board_serial(&serialnr.s);
+-	fdt_setprop(blob, 0, "serial-number", buf, sprintf(buf, "%llx", serialnr.u) + 1);
++	len = cl_eeprom_read_sb_name(buf);
++	fdt_setprop(blob, 0, "baseboard-name", buf, len);
+ 
+-	rev = cl_eeprom_get_board_rev(0);
+-	fdt_setprop(blob, 0, "board-revision", buf,
++	cpl_get_som_serial(&serialnr.s);
++	fdt_setprop(blob, 0, "product-sn", buf, sprintf(buf, "%llx", serialnr.u) + 1);
++
++	cpl_get_sb_serial(&serialnr.s);
++	fdt_setprop(blob, 0, "baseboard-sn", buf, sprintf(buf, "%llx", serialnr.u) + 1);
++
++	rev = cl_eeprom_get_som_revision();
++	fdt_setprop(blob, 0, "product-revision", buf,
++		sprintf(buf, "%u.%02u", rev/100 , rev%100 ) + 1);
++
++	rev = cl_eeprom_get_sb_revision();
++	fdt_setprop(blob, 0, "baseboard-revision", buf,
+ 		sprintf(buf, "%u.%02u", rev/100 , rev%100 ) + 1);
+ 
+ 	len = cl_eeprom_read_som_options(buf);
+-	fdt_setprop(blob, 0, "board-options", buf, len);
++	fdt_setprop(blob, 0, "product-options", buf, len);
++
++	len = cl_eeprom_read_sb_options(buf);
++	fdt_setprop(blob, 0, "baseboard-options", buf, len);
+ 
+ 	return;
+ }
+-- 
+2.11.0
+

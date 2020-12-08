@@ -1,7 +1,7 @@
 From d87137aa78f1c3ae5aa98924210601e6be662c23 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 15 Jul 2020 09:33:21 +0300
-Subject: [PATCH 63/99] cpl-imx8m-mini: Refactor .h configs
+Subject: [PATCH 063/105] cpl-imx8m-mini: Refactor .h configs
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

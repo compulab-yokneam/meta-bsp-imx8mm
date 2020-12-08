@@ -1,7 +1,7 @@
 From f7442b01d42cdb4b093b8f253347583ecf394704 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 22 Jul 2020 22:26:54 +0300
-Subject: [PATCH 75/99] ucm-imx8m-mini: Fix reset
+Subject: [PATCH 075/105] ucm-imx8m-mini: Fix reset
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

@@ -99,4 +99,10 @@ SRC_URI_append = " \
 	file://0097-release-2020.04-iot-gate-imx8-2.0.patch \
 	file://0098-iot-gate-imx8-fix-UART1-mode-GPIO.patch \
 	file://0099-release-2020.04-iot-gate-imx8-2.1.patch \
+	file://0100-fdt-Add-export-SoM-data-via-FDT.patch \
+	file://0101-rtc-Disable-bus-when-powered-from-battery.patch \
+	file://0102-fdt-Add-export-of-base-board-data-via-FDT.patch \
+	file://0103-iot-gate-imx8-add-support-for-the-IE-TPM-module.patch \
+	file://0104-iot-gate-imx8-add-support-for-the-IE-POE-extension-b.patch \
+	file://0105-release-2020.04-iot-gate-imx8-2.2.patch \
 "

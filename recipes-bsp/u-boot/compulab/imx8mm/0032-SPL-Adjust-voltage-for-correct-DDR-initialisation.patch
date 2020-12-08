@@ -1,7 +1,7 @@
 From 0cb0cff208b01328fbfcbf3f890529dc70521e37 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 5 Apr 2020 17:36:34 +0300
-Subject: [PATCH 32/99] SPL: Adjust voltage for correct DDR initialisation
+Subject: [PATCH 032/105] SPL: Adjust voltage for correct DDR initialisation
 
 The voltage values, that PMIC BD71847 produces, differ from required and need to
 be adjusted before a memory training procedure.

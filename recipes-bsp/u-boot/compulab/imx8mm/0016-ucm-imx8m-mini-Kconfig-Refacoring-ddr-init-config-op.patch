@@ -1,7 +1,7 @@
 From 0950877a416b25cc5ca7c6427574040f551122f3 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sun, 21 Apr 2019 22:19:27 +0300
-Subject: [PATCH 16/99] ucm-imx8m-mini: Kconfig: Refacoring ddr init config
+Subject: [PATCH 016/105] ucm-imx8m-mini: Kconfig: Refacoring ddr init config
  option
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
