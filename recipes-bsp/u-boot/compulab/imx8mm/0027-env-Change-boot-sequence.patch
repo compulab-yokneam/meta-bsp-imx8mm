@@ -1,7 +1,7 @@
 From 98d8b9c2569dc4c77d99430bb8b234e6d8b6c288 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 31 Aug 2019 20:20:34 +0300
-Subject: [PATCH 27/99] env: Change boot sequence
+Subject: [PATCH 027/105] env: Change boot sequence
 
 Boot commands have been refactored to make them uniform and simplify a boot
 sequence edition.

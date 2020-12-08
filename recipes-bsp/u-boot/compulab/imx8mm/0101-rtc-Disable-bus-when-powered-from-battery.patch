@@ -1,0 +1,89 @@
+From 982ab34cbb6ad872922417f7ef2873ee0952fc2a Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 6 Dec 2020 17:53:52 +0200
+Subject: [PATCH 101/105] rtc: Disable bus when powered from battery
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/common/rtc.h              | 19 +++++++++++++++++++
+ board/compulab/plat/imx8mm/board/board.c | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
+ create mode 100644 board/compulab/common/rtc.h
+
+diff --git a/board/compulab/common/rtc.h b/board/compulab/common/rtc.h
+new file mode 100644
+index 0000000000..37f5dc0892
+--- /dev/null
++++ b/board/compulab/common/rtc.h
+@@ -0,0 +1,19 @@
++#ifndef _RTC_H_
++#define _RTC_H_
++
++
++#ifndef CONFIG_SYS_I2C_RTC_BUS
++#define CONFIG_SYS_I2C_RTC_BUS	1
++#endif
++
++#ifndef CONFIG_SYS_I2C_RTC_ADDR
++#define CONFIG_SYS_I2C_RTC_ADDR	0x69
++#endif
++
++#define ABX8XX_REG_CFG_KEY	0x1f
++#define ABX8XX_CFG_KEY_MISC	0x9d
++
++#define ABX8XX_REG_BATMODE	0x27
++#define ABX8XX_BATMODE_IOBM_NOT	0
++
++#endif //_RTC_H_
+diff --git a/board/compulab/plat/imx8mm/board/board.c b/board/compulab/plat/imx8mm/board/board.c
+index 610551d373..e452ad348f 100644
+--- a/board/compulab/plat/imx8mm/board/board.c
++++ b/board/compulab/plat/imx8mm/board/board.c
+@@ -30,6 +30,7 @@
+ #include <asm/mach-imx/video.h>
+ #include "ddr/ddr.h"
+ #include "common/eeprom.h"
++#include "common/rtc.h"
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+@@ -236,9 +237,36 @@ static void show_suite_info(void)
+ 	return;
+ }
+ 
++static void disable_rtc_bus_on_battery(void)
++{
++	struct udevice *bus, *dev;
++	int ret;
++
++	ret = uclass_get_device_by_seq(UCLASS_I2C, CONFIG_SYS_I2C_RTC_BUS, &bus);
++	if (ret) {
++		printf("%s: No bus %d\n", __func__, CONFIG_SYS_I2C_RTC_BUS);
++		return;
++	}
++
++	ret = dm_i2c_probe(bus, CONFIG_SYS_I2C_RTC_ADDR, 0, &dev);
++	if (ret) {
++		printf("%s: Can't find device id=0x%x, on bus %d\n",
++			__func__, CONFIG_SYS_I2C_RTC_BUS, CONFIG_SYS_I2C_RTC_ADDR);
++		return;
++	}
++
++	if((ret = dm_i2c_reg_write(dev, ABX8XX_REG_CFG_KEY, ABX8XX_CFG_KEY_MISC)) ||
++	    (ret = dm_i2c_reg_write(dev, ABX8XX_REG_BATMODE, ABX8XX_BATMODE_IOBM_NOT)))
++		printf("%s: i2c write error %d\n", __func__, ret);
++
++	return;
++}
++
+ int board_init(void)
+ {
+ 
++	disable_rtc_bus_on_battery();
++
+ #ifdef CONFIG_FEC_MXC
+ 	setup_fec();
+ #endif
+-- 
+2.11.0
+

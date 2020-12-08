@@ -1,7 +1,7 @@
-From f340205fba1ae92cda3546daa1a09f24bc8178eb Mon Sep 17 00:00:00 2001
+From d6e0ef446c7403fb6acd28406c8b6307bd5da1ef Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
-Date: Mon, 17 Aug 2020 12:39:40 +0300
-Subject: [PATCH 097/105] release 2020.04-iot-gate-imx8-2.0
+Date: Sun, 6 Dec 2020 17:56:27 +0200
+Subject: [PATCH 105/105] release 2020.04-iot-gate-imx8-2.2
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
@@ -9,15 +9,15 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/configs/iot-gate-imx8_defconfig b/configs/iot-gate-imx8_defconfig
-index 3be89f30ae..f4294df6d5 100644
+index f709dacb92..c46740780e 100644
 --- a/configs/iot-gate-imx8_defconfig
 +++ b/configs/iot-gate-imx8_defconfig
 @@ -13,7 +13,7 @@ CONFIG_SPL_SERIAL_SUPPORT=y
  CONFIG_SPL=y
  CONFIG_CSF_SIZE=0x2000
  CONFIG_SPL_TEXT_BASE=0x7E1000
--CONFIG_LOCALVERSION="-iot-gate-imx8-1.0"
-+CONFIG_LOCALVERSION="-iot-gate-imx8-2.0"
+-CONFIG_LOCALVERSION="-iot-gate-imx8-2.1"
++CONFIG_LOCALVERSION="-iot-gate-imx8-2.2"
  CONFIG_FIT=y
  CONFIG_FIT_EXTERNAL_OFFSET=0x3000
  CONFIG_SPL_LOAD_FIT=y

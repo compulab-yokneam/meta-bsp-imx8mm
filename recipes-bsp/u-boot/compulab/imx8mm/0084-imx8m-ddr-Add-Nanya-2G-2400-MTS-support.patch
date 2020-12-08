@@ -1,7 +1,7 @@
 From d9a2efa57fcbcc730a9b20a3f4f70089566c6662 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sun, 30 Aug 2020 10:44:03 +0300
-Subject: [PATCH 84/99] imx8m: ddr: Add Nanya 2G 2400 MTS support
+Subject: [PATCH 084/105] imx8m: ddr: Add Nanya 2G 2400 MTS support
 
 Add Nanya 2G 2400 MTS support.
 Addresses the dram issue discovered on this dram configuration.

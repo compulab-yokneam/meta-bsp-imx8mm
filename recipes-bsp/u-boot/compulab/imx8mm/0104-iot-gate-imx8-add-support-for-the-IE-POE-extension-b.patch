@@ -1,0 +1,79 @@
+From b0c5fb2fd05a63a8e4cb78bd3597a1878d696b42 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Wed, 9 Dec 2020 11:41:49 +0200
+Subject: [PATCH 104/105] iot-gate-imx8: add support for the IE-POE extension
+ board
+
+The IE-POE extension board is detected by EEPROM address of 0x52.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ board/compulab/iot-gate-imx8/iot-gate-imx8.c | 30 ++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
+
+diff --git a/board/compulab/iot-gate-imx8/iot-gate-imx8.c b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+index 7757c8bb1a..2269a00d0b 100644
+--- a/board/compulab/iot-gate-imx8/iot-gate-imx8.c
++++ b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+@@ -34,18 +34,22 @@ typedef enum {
+ 	IOT_GATE_EXT_EMPTY, /* No extension */
+ 	IOT_GATE_EXT_CAN,   /* CAN bus */
+ 	IOT_GATE_EXT_IED,   /* Bridge */
++	IOT_GATE_EXT_POE,   /* POE */
+ } iot_gate_imx8_ext;
+ 
+ /* Sevice tree blob per extention board */
+-#define IOT_GATE_IMX8_DTB_NAME_SIZE 20
++#define IOT_GATE_IMX8_DTB_NAME_SIZE 21
+ static char iot_gate_imx8_dtb[][IOT_GATE_IMX8_DTB_NAME_SIZE] = {
+ 	"sb-iotgimx8.dtb",
+ 	"sb-iotgimx8-can.dtb",
+ 	"sb-iotgimx8-ied.dtb",
++	"sb-iotgimx8-poed.dtb",
+ };
+ 
+ #define IOT_GATE_IMX8_EXT_I2C 3 /* I2C ID of the extension board */
+ #define IOT_GATE_IMX8_EXT_I2C_ADDR_EEPROM 0x54 /* I2C address of the EEPROM */
++/* I2C address of the EEPROM in the POE extension */
++#define IOT_GATE_IMX8_EXT_I2C_ADDR_EEPROM_POE 0x52
+ #define IOT_GATE_IMX8_EXT_I2C_ADDR_GPIO 0x22 /* I2C address of the GPIO
+ 						extender */
+ static int iot_gate_imx8_ext_id = IOT_GATE_EXT_EMPTY; /* Extension board ID */
+@@ -65,19 +69,25 @@ static void iot_gate_imx8_detect_ext(void)
+ 		return;
+ 	}
+ 
++	ret = dm_i2c_probe(i2c_bus, IOT_GATE_IMX8_EXT_I2C_ADDR_EEPROM_POE, 0,
++			   &i2c_dev);
++	if (!ret) {
++		iot_gate_imx8_ext_id = IOT_GATE_EXT_POE;
++		return;
++	}
+ 	ret = dm_i2c_probe(i2c_bus, IOT_GATE_IMX8_EXT_I2C_ADDR_EEPROM, 0,
+ 			   &i2c_dev);
+-	if (ret)
++	if (ret){
+ 		iot_gate_imx8_ext_id = IOT_GATE_EXT_EMPTY;
+-	else {/* Only the bridge extension includes the GPIO extender */
+-		ret = dm_i2c_probe(i2c_bus, IOT_GATE_IMX8_EXT_I2C_ADDR_GPIO, 0,
+-				   &i2c_dev);
+-		if (ret) /* GPIO extender not detected */
+-			iot_gate_imx8_ext_id = IOT_GATE_EXT_CAN;
+-		else
+-			iot_gate_imx8_ext_id = IOT_GATE_EXT_IED;
+-
++		return;
+ 	}
++	/* Only the bridge extension includes the GPIO extender */
++	ret = dm_i2c_probe(i2c_bus, IOT_GATE_IMX8_EXT_I2C_ADDR_GPIO, 0,
++			   &i2c_dev);
++	if (ret) /* GPIO extender not detected */
++		iot_gate_imx8_ext_id = IOT_GATE_EXT_CAN;
++	else /* GPIO extender detected */
++		iot_gate_imx8_ext_id = IOT_GATE_EXT_IED;
+ }
+ 
+ #define IOT_GATE_IMX8_ENV_FDT_FILE "fdt_file"
+-- 
+2.11.0
+

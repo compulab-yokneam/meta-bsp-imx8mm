@@ -1,7 +1,7 @@
 From eeecf1833dc1f69c7b9033ffb42d9448a3a35d5f Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 25 May 2020 16:03:48 +0300
-Subject: [PATCH 44/99] plat: imx8mm: Move common code to platform
+Subject: [PATCH 044/105] plat: imx8mm: Move common code to platform
 
 1) ddr detection logics and timings
 2) eeprom spl/u-boot

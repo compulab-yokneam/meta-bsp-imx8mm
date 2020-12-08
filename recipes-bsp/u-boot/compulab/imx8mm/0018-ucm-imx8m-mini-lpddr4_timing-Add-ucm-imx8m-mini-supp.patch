@@ -1,7 +1,7 @@
 From d6c00960779f08fcb32fcd015b0c04fee7ba8a27 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 24 Apr 2019 13:55:44 +0300
-Subject: [PATCH 18/99] ucm-imx8m-mini: lpddr4_timing: Add ucm-imx8m-mini
+Subject: [PATCH 018/105] ucm-imx8m-mini: lpddr4_timing: Add ucm-imx8m-mini
  support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
