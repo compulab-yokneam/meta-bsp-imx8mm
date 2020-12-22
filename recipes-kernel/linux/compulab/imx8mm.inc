@@ -65,5 +65,6 @@ SRC_URI_append = " \
 	file://0064-ucm-imx8m-mini-dts-Add-ucm-imx8m-mini-eb-dsi2lvds.dt.patch \
 	file://0065-rtc-abx80x-Disable-bus-when-powered-from-battery.patch \
 	file://0066-ucm-imx8m-mini-dts-Enable-remote-proc-driver.patch \
+	file://0067-dts-Fix-sai2-record.patch \
 	file://defconfig \
 "
