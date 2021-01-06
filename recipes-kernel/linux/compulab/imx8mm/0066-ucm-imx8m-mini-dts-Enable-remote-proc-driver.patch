@@ -16,7 +16,7 @@ index 6d3ffe9e1d96..eff38adaa8b3 100644
 +++ b/arch/arm64/boot/dts/compulab/Makefile
 @@ -2,4 +2,5 @@
  dtb-$(CONFIG_ARCH_MXC) += ucm-imx8m-mini-eb-dsi2lvds.dtb
-+dtb-$(CONFIG_ARCH_MXC) += ucm-imx8m-mini-m4.dts
++dtb-$(CONFIG_ARCH_MXC) += ucm-imx8m-mini-m4.dtb
  dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini.dtb
  dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini-m4.dtb
  dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini-thermal.dtb
