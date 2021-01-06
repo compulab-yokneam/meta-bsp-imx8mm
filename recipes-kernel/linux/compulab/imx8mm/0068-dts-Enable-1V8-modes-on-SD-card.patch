@@ -1,0 +1,76 @@
+From 21bbb2f7a1f2af8bb4ff029820626af27f8cfef1 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 6 Jan 2021 17:04:35 +0200
+Subject: [PATCH 68/68] dts: Enable 1V8 modes on SD-card
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index 191d701aee41..79cfcccfb79c 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -73,6 +73,15 @@
+ 		off-on-delay-us = <12000>;
+ 	};
+ 
++	reg_usdhc2_vsel: regulator-usdhc2-vsel {
++		compatible = "regulator-gpio";
++		regulator-name = "sd-vsel";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++		states = <1800000 0x1 3300000 0x0>;
++	};
++
+ 	regulator-usdhc3rst {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "usdhc3_rst";
+@@ -273,6 +282,7 @@
+ 				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
+ 				MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12	0x41
+ 				MX8MM_IOMUXC_SD2_WP_GPIO2_IO20		0x00
++				MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x06
+ 			>;
+ 		};
+ 
+@@ -284,7 +294,6 @@
+ 				MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d0
+ 				MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d0
+ 				MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d0
+-				MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
+ 			>;
+ 		};
+ 
+@@ -296,7 +305,6 @@
+ 				MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d4
+ 				MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d4
+ 				MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d4
+-				MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
+ 			>;
+ 		};
+ 
+@@ -308,7 +316,6 @@
+ 				MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d6
+ 				MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d6
+ 				MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d6
+-				MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
+ 			>;
+ 		};
+ 
+@@ -670,9 +677,9 @@
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+ 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+ 	wp-gpios = <&gpio2 20 GPIO_ACTIVE_HIGH>;
+-	no-1-8-v;
+ 	bus-width = <4>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
++	vqmmc-supply = <&reg_usdhc2_vsel>;
+ 	status = "okay";
+ };
+ 
+-- 
+2.11.0
+
