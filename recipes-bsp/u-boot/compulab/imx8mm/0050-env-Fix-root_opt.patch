@@ -1,0 +1,35 @@
+From 06eee43bd025df091d2179f5d40e645c15729dee Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 17 Nov 2020 21:22:20 +0200
+Subject: [PATCH 51/51] env: Fix root_opt
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ include/configs/ucm-imx8m-mini.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index cd1ed129f9..7635f7544e 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -133,13 +133,14 @@
+ 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
+ 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
+ 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
++	"root_opt=rootwait rw\0" \
+ 	"mmcautodetect=yes\0" \
+ 	"emmc_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/mmcblk2p2;\0" \
++	"setenv bootargs console=${console} root=/dev/mmcblk2p2 ${root_opt};\0" \
+ 	"sd_ul=setenv iface mmc; setenv dev 0; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/mmcblk1p2;\0" \
++	"setenv bootargs console=${console} root=/dev/mmcblk1p2 ${root_opt};\0" \
+ 	"usb_ul=usb start; setenv iface usb; setenv dev 0; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/sda2;\0" \
++	"setenv bootargs console=${console} root=/dev/sda2 ${root_opt};\0" \
+ 	"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
+ 	"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
+ 	"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
+-- 
+2.11.0
+
