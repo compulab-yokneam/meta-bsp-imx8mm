@@ -1,7 +1,7 @@
 From 2a112d85ec3d7f3645a2d6afdffc105fd1a8fe29 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 9 Feb 2019 20:15:02 +0200
-Subject: [PATCH 05/46] ucm-imx8m-mini: dts: Fix CSI reset GPIO
+Subject: [PATCH 05/51] ucm-imx8m-mini: dts: Fix CSI reset GPIO
 
 Fix the camera rst-gpio in accordance with SB-UCM-iMX8 Rev2.0 topology.
 

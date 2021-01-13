@@ -1,0 +1,82 @@
+From 73c73ed739169cfb146295d5d7fe12dfe305befd Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Sun, 24 Jan 2021 15:58:13 +0200
+Subject: [PATCH 50/51] iot-gate-imx8: add support for the IE-CL420 module
+
+The IE-CL420 implements one channel ADC.
+
+The CAN, TPM and the CL420 modules are 3 alternatives in the baseboard
+IED-BASE, slots A and B for the SPI bus.
+
+Add 2 disabled ADC nodes for the IE-CL420 modules.
+The appropriate nodes will be enabled by the U-Boot, according to the
+detected modules.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts | 22 ++++++++++++++++++++++
+ arch/arm64/configs/iot-gate-imx8_defconfig       |  1 +
+ 2 files changed, 23 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
+index caff7316dcd1..5a55cafd87f5 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
+@@ -49,6 +49,14 @@
+ 		regulator-always-on;
+ 		enable-active-high;
+ 	};
++
++	vref_adc: regulator-vref-adc {
++		compatible = "regulator-fixed";
++		regulator-name = "vref_adc";
++		regulator-min-microvolt = <2400000>;
++		regulator-max-microvolt = <2400000>;
++		regulator-always-on;
++	};
+ };
+ 
+ &i2c4 {
+@@ -111,6 +119,13 @@
+ 		spi-max-frequency = <5000000>;
+ 		status = "disabled";
+ 	};
++	adc0: adc@0 {
++		compatible = "maxim,max11108";
++		reg = <0>;
++		vref-supply = <&vref_adc>;
++		spi-max-frequency = <20000000>;
++		status = "disabled";
++	};
+ };
+ 
+ &ecspi3 {
+@@ -140,6 +155,13 @@
+ 		spi-max-frequency = <5000000>;
+ 		status = "disabled";
+ 	};
++	adc1: adc@0 {
++		compatible = "maxim,max11108";
++		reg = <0>;
++		vref-supply = <&vref_adc>;
++		spi-max-frequency = <20000000>;
++		status = "disabled";
++	};
+ };
+ 
+ &iomuxc {
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index c6dc010da1e0..5ac66c18070c 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -588,6 +588,7 @@ CONFIG_EXTCON_USBC_CROS_EC=y
+ CONFIG_MEMORY=y
+ CONFIG_IIO=y
+ CONFIG_IMX8QXP_ADC=y
++CONFIG_MAX11108=m
+ CONFIG_IIO_CROS_EC_SENSORS_CORE=m
+ CONFIG_IIO_CROS_EC_SENSORS=m
+ CONFIG_IIO_CROS_EC_LIGHT_PROX=m
+-- 
+2.11.0
+

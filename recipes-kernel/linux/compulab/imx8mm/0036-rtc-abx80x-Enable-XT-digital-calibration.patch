@@ -1,7 +1,7 @@
 From 3114f2d79a7310a671e7ea0a77dcb3d260ea97c8 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 26 Aug 2020 15:34:56 +0300
-Subject: [PATCH 36/46] rtc:abx80x: Enable XT digital calibration
+Subject: [PATCH 36/51] rtc:abx80x: Enable XT digital calibration
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

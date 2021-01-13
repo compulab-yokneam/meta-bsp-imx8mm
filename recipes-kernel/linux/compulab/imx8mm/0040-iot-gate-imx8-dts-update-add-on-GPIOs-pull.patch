@@ -1,7 +1,7 @@
 From 8ad772c63ef69445b6f8dba6a56d721f6b509b27 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 4 Nov 2020 10:53:58 +0200
-Subject: [PATCH 40/46] iot-gate-imx8: dts: update add-on GPIOs pull
+Subject: [PATCH 40/51] iot-gate-imx8: dts: update add-on GPIOs pull
 
 Change the digital I/O add-on GPIOs pull from up to down.
 

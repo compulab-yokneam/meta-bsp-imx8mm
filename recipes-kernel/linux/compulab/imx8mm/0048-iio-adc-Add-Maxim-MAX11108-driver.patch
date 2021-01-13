@@ -1,0 +1,246 @@
+From 8e0eae52ef123373db9eda1329072ddab66d8cdb Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 21 Jan 2021 17:17:34 +0200
+Subject: [PATCH 48/51] iio: adc: Add Maxim MAX11108 driver
+
+Add iio driver for Maxim MAX11108 single-channel ADC.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ drivers/iio/adc/Kconfig    |   9 +++
+ drivers/iio/adc/Makefile   |   1 +
+ drivers/iio/adc/max11108.c | 190 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 200 insertions(+)
+ create mode 100644 drivers/iio/adc/max11108.c
+
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 693a05ce015d..44c97add6a73 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -533,6 +533,15 @@ config MAX11100
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called max11100.
+ 
++config MAX11108
++	tristate "Maxim max11108 ADC driver"
++	depends on SPI_MASTER
++	help
++	  Say yes here to build support for Maxim max11108 SPI ADC
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called max11108.
++
+ config MAX1118
+ 	tristate "Maxim max1117/max1118/max1119 ADCs driver"
+ 	depends on SPI
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 77a3ad8b5b21..76445a3532d6 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -51,6 +51,7 @@ obj-$(CONFIG_LTC2485) += ltc2485.o
+ obj-$(CONFIG_LTC2497) += ltc2497.o
+ obj-$(CONFIG_MAX1027) += max1027.o
+ obj-$(CONFIG_MAX11100) += max11100.o
++obj-$(CONFIG_MAX11108) += max11108.o
+ obj-$(CONFIG_MAX1118) += max1118.o
+ obj-$(CONFIG_MAX1363) += max1363.o
+ obj-$(CONFIG_MAX9611) += max9611.o
+diff --git a/drivers/iio/adc/max11108.c b/drivers/iio/adc/max11108.c
+new file mode 100644
+index 000000000000..94fa43d52184
+--- /dev/null
++++ b/drivers/iio/adc/max11108.c
+@@ -0,0 +1,190 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Maxim max11108 ADC Driver with IIO interface
++ *
++ * Copyright (C) 2021 CompuLab Ltd.
++ */
++#include <linux/delay.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++
++#include <linux/iio/iio.h>
++#include <linux/iio/driver.h>
++
++/*
++ * LSB is the ADC single digital step
++ * 1 LSB = (vref_mv / 2 ^ 12)
++ *
++ * LSB is used to calculate analog voltage value
++ * from the number of ADC steps count
++ *
++ * Ain = (count * LSB)
++ */
++#define MAX11108_LSB_DIV		(1 << 12)
++
++struct max11108_state {
++	struct regulator *vref_reg;
++	struct spi_device *spi;
++
++	/*
++	 * DMA (thus cache coherency maintenance) requires the
++	 * transfer buffers to live in their own cache lines.
++	 */
++	u8 buffer[3] ____cacheline_aligned;
++};
++
++static struct iio_chan_spec max11108_channels[] = {
++	{ /* [0] */
++		.type = IIO_VOLTAGE,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++				      BIT(IIO_CHAN_INFO_SCALE),
++	},
++};
++
++static int max11108_read_single(struct iio_dev *indio_dev, int *val)
++{
++	int ret;
++	u32 uval;
++	struct max11108_state *state = iio_priv(indio_dev);
++
++	ret = spi_read(state->spi, state->buffer, sizeof(state->buffer));
++	if (ret) {
++		dev_err(&indio_dev->dev, "SPI transfer failed\n");
++		return ret;
++	}
++
++	/* The last 8 bits sent out from ADC must be 0s */
++	if (state->buffer[2]) {
++		dev_err(&indio_dev->dev, "Invalid value: buffer[0] != 0\n");
++		return -EINVAL;
++	}
++
++	/* Raw date composition */
++	uval = (state->buffer[0] << 8) | state->buffer[1];
++	uval >>= 1;
++	uval &= 0xfff;
++	*val = (int) uval;
++
++	return 0;
++}
++
++static int max11108_read_raw(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     int *val, int *val2, long info)
++{
++	int ret, vref_uv;
++	struct max11108_state *state = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		ret = max11108_read_single(indio_dev, val);
++		if (ret)
++			return ret;
++
++		return IIO_VAL_INT;
++
++	case IIO_CHAN_INFO_SCALE:
++		vref_uv = regulator_get_voltage(state->vref_reg);
++		if (vref_uv < 0) {
++			dev_err(&indio_dev->dev,
++				"dummy regulator \"get_voltage\" returns %d\n",
++				vref_uv);
++			return -EINVAL;
++		}
++
++		*val =  vref_uv / 1000;
++		*val2 = MAX11108_LSB_DIV;
++		return IIO_VAL_FRACTIONAL;
++	}
++
++	return -EINVAL;
++}
++
++static const struct iio_info max11108_info = {
++	.read_raw = max11108_read_raw,
++};
++
++static int max11108_probe(struct spi_device *spi)
++{
++	int ret;
++	struct iio_dev *indio_dev;
++	struct max11108_state *state;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
++	if (!indio_dev) {
++		dev_err(&indio_dev->dev, "iio_dev allocation failure\n");
++		return -ENOMEM;
++	}
++
++	spi_set_drvdata(spi, indio_dev);
++
++	state = iio_priv(indio_dev);
++	state->spi = spi;
++
++	indio_dev->dev.parent = &spi->dev;
++	indio_dev->dev.of_node = spi->dev.of_node;
++	indio_dev->name = "max11108";
++	indio_dev->info = &max11108_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = max11108_channels;
++	indio_dev->num_channels = ARRAY_SIZE(max11108_channels);
++
++	state->vref_reg = devm_regulator_get(&spi->dev, "vref");
++	if (IS_ERR(state->vref_reg)) {
++		dev_err(&indio_dev->dev, "Failed to locate vref regulator\n");
++		return PTR_ERR(state->vref_reg);
++	}
++
++	ret = regulator_enable(state->vref_reg);
++	if (ret) {
++		dev_err(&indio_dev->dev, "Regulator enable failure\n");
++		return ret;
++	}
++
++	ret = iio_device_register(indio_dev);
++	if (ret) {
++		dev_err(&indio_dev->dev, "iio_dev registration failure\n");
++		goto disable_regulator;
++	}
++
++	return 0;
++
++disable_regulator:
++	regulator_disable(state->vref_reg);
++
++	return ret;
++}
++
++static int max11108_remove(struct spi_device *spi)
++{
++	struct iio_dev *indio_dev = spi_get_drvdata(spi);
++	struct max11108_state *state = iio_priv(indio_dev);
++
++	iio_device_unregister(indio_dev);
++	regulator_disable(state->vref_reg);
++
++	return 0;
++}
++
++static const struct of_device_id max11108_ids[] = {
++	{.compatible = "maxim,max11108"},
++	{ },
++};
++MODULE_DEVICE_TABLE(of, max11108_ids);
++
++static struct spi_driver max11108_driver = {
++	.driver = {
++		.name	= "max11108",
++		.of_match_table = of_match_ptr(max11108_ids),
++	},
++	.probe		= max11108_probe,
++	.remove		= max11108_remove,
++};
++
++module_spi_driver(max11108_driver);
++
++MODULE_AUTHOR("Uri Mashiach <uri.mashiach@compulab.co.il>");
++MODULE_DESCRIPTION("Maxim max11108 ADC Driver");
++MODULE_LICENSE("GPL v2");
+-- 
+2.11.0
+

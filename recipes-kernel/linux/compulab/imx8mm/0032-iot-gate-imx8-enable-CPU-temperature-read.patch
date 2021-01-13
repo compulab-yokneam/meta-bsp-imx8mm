@@ -1,7 +1,7 @@
 From 956498da6c6c524e11cc5d93198e88aa8746eb6d Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 6 Sep 2020 17:22:21 +0300
-Subject: [PATCH 32/46] iot-gate-imx8: enable CPU temperature read
+Subject: [PATCH 32/51] iot-gate-imx8: enable CPU temperature read
 
 Enable the user space temperature read from the CPU.
 

@@ -1,7 +1,7 @@
 From 207a2e9caf7ebe6646c635baa98be4c06f345b58 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 23 Aug 2020 14:39:51 +0300
-Subject: [PATCH 30/46] iot-gate-imx8: defconfig: Update defconfig
+Subject: [PATCH 30/51] iot-gate-imx8: defconfig: Update defconfig
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

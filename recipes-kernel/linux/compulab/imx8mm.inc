@@ -46,5 +46,10 @@ SRC_URI_append = " \
 	file://0044-encx24j600-add-device-tree-support.patch \
 	file://0045-iot-gate-imx8-add-support-for-the-IE-POE-board.patch \
 	file://0046-Sot-gate-imx8-release-2.3.patch \
+	file://0047-can-mcp25xxfd-fix-CONFIG_DEBUG_FS-commpilation.patch \
+	file://0048-iio-adc-Add-Maxim-MAX11108-driver.patch \
+	file://0049-iot-gate-imx8-add-support-for-the-IE-TPM-module.patch \
+	file://0050-iot-gate-imx8-add-support-for-the-IE-CL420-module.patch \
+	file://0051-iot-gate-imx8-release-2.4.patch \
 	file://defconfig \
 "

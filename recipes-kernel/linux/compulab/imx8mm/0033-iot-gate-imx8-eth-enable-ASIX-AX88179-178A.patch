@@ -1,7 +1,7 @@
 From 6bf2af3ea1544ca5a70e712b8a0b10beae1d2b82 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 6 Sep 2020 17:30:51 +0300
-Subject: [PATCH 33/46] iot-gate-imx8: eth: enable ASIX AX88179/178A
+Subject: [PATCH 33/51] iot-gate-imx8: eth: enable ASIX AX88179/178A
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
