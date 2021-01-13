@@ -1,7 +1,7 @@
 From 9a9e817698c8383f9fd7aa5f39221e8aa2456df4 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sat, 4 Jul 2020 22:01:57 +0300
-Subject: [PATCH 20/46] mcm-imx8m-mini: dts: Update pmic definition
+Subject: [PATCH 20/55] mcm-imx8m-mini: dts: Update pmic definition
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

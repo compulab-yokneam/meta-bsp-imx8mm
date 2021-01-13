@@ -1,0 +1,27 @@
+From 06ac5bf6c42a7a3d66bb37f8e9ff40e9b4a8980d Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 2 Mar 2021 10:49:03 +0200
+Subject: [PATCH 53/55] iot-gate-imx8: set system time from RTC on startup
+
+Enable setting the system time from the RTC dring the proot process.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index cb1697ca8b6e..198b712a3017 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -519,7 +519,6 @@ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+ CONFIG_LEDS_TRIGGER_PANIC=y
+ CONFIG_EDAC=y
+ CONFIG_RTC_CLASS=y
+-# CONFIG_RTC_HCTOSYS is not set
+ # CONFIG_RTC_SYSTOHC is not set
+ CONFIG_RTC_DRV_ABX80X=y
+ CONFIG_RTC_DRV_MAX77686=y
+-- 
+2.11.0
+

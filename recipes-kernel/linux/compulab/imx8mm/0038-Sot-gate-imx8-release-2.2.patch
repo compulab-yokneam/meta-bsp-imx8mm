@@ -1,7 +1,7 @@
 From a11b0f7af3757a8e3932980e1a405e797b27ca67 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Thu, 1 Oct 2020 13:35:33 +0300
-Subject: [PATCH 38/46] Sot-gate-imx8: release 2.2
+Subject: [PATCH 38/55] Sot-gate-imx8: release 2.2
 
 igned-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

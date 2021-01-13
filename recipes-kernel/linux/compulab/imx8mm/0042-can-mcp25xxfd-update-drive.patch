@@ -1,7 +1,7 @@
 From 0d96b6a59d255e16c992ed73ce2feee2b939c744 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 2 Dec 2020 17:59:16 +0200
-Subject: [PATCH 42/46] can: mcp25xxfd: update drive
+Subject: [PATCH 42/55] can: mcp25xxfd: update drive
 
 The driver was taken from msperl GitHub:
 https://github.com/msperl/linux-rpi/tree/mcp25xxfd-V8.2/drivers/net/can/spi/mcp25xxfd

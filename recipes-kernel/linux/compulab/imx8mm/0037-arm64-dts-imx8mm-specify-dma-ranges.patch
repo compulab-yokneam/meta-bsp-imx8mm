@@ -1,7 +1,7 @@
 From f987c4d18e3e392619d619e44da3c47d3f568e72 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sun, 27 Sep 2020 14:03:24 +0300
-Subject: [PATCH 37/46] arm64: dts: imx8mm: specify dma-ranges
+Subject: [PATCH 37/55] arm64: dts: imx8mm: specify dma-ranges
 
 Apply the same dma range limitations as on the i.MX8MQ.
 

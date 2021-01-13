@@ -1,7 +1,7 @@
 From 6dd11102e42373f7b0e64fcee674ae77e65cd093 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 25 Mar 2020 19:41:29 +0200
-Subject: [PATCH 24/46] can: mcp25xxfd: Microchip MCP25xxFD Family CAN
+Subject: [PATCH 24/55] can: mcp25xxfd: Microchip MCP25xxFD Family CAN
  controller driver
 
 The driver was taken from the linux-can-next project.

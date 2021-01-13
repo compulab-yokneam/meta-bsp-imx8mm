@@ -1,0 +1,28 @@
+From 5457f06ae38d993d619688e57da2e4c805034adb Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 2 Feb 2021 12:36:36 +0200
+Subject: [PATCH 48/55] iot-gate-imx8: can: update driver
+
+Enable the updated CAN driver.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 81e775daa209..76df0d9109b1 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -127,7 +127,7 @@ CONFIG_BPF_JIT=y
+ CONFIG_CAN=y
+ # CONFIG_CAN_BCM is not set
+ # CONFIG_CAN_GW is not set
+-CONFIG_CAN_MCP25XXFD=m
++CONFIG_CAN_MCP251XFD=m
+ CONFIG_BT=y
+ CONFIG_BT_RFCOMM=y
+ CONFIG_BT_RFCOMM_TTY=y
+-- 
+2.11.0
+
