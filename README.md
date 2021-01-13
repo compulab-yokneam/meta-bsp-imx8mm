@@ -11,7 +11,7 @@ repo sync
 ```
 ## 1.2 Download CompuLab meta layer
 ```
-git clone -b iot-gate-imx8_r2.2 https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
+git clone -b iot-gate-imx8_r2.3 https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
 ```
 
 # 2 Build
