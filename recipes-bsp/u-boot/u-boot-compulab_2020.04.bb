@@ -1,6 +1,5 @@
 DESCRIPTION = "CompuLab i.MX8 U-Boot"
 require recipes-bsp/u-boot/u-boot.inc
-inherit pythonnative
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
