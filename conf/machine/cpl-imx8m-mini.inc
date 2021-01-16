@@ -1,5 +1,7 @@
 MACHINEOVERRIDES =. "mx8:mx8m:mx8mm:"
 
+SOC_DEFAULT_WKS_FILE = "imx-imx-boot-bootpart.wks.in"
+
 require conf/machine/include/imx-base.inc
 require conf/machine/include/tune-cortexa53.inc
 
@@ -32,6 +34,11 @@ MACHINE_FIRMWARE += "firmware-imx-iwlwifi"
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
 
 DEFAULTTUNE_mx8mm = "aarch64"
+
+PLATFORM_FLAVOR = "mx8mmevk"
+ATF_MACHINE_NAME = "bl31-imx8mm.bin"
+PLATFORM = "imx8mm"
+SOC_TARGET = "iMX8MM"
 
 IMAGE_INSTALL_append = " \
 	kernel-image \
