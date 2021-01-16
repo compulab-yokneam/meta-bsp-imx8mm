@@ -32,3 +32,9 @@ MACHINE_FIRMWARE += "firmware-imx-iwlwifi"
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
 
 DEFAULTTUNE_mx8mm = "aarch64"
+
+IMAGE_INSTALL_append = " \
+	kernel-image \
+	kernel-modules \
+	kernel-devicetree \
+"
