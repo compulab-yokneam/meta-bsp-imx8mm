@@ -29,8 +29,9 @@ IMX_BOOT_SEEK = "33"
 
 OPTEE_BIN_EXT = "8mm"
 
-MACHINE_FIRMWARE += "firmware-imx-brcm"
-MACHINE_FIRMWARE += "firmware-imx-iwlwifi"
+MACHINE_FIRMWARE_append = "${@bb.utils.contains('DISTRO_CODENAME', 'dunfell', 'firmware-cypress', 'firmware-imx-brcm \
+firmware-imx-iwlfifi', d)}"
+
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
 
 DEFAULTTUNE_mx8mm = "aarch64"
