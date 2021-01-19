@@ -29,14 +29,15 @@ IMX_BOOT_SEEK = "33"
 
 OPTEE_BIN_EXT = "8mm"
 
-MACHINE_FIRMWARE_append = "${@bb.utils.contains('DISTRO_CODENAME', 'dunfell', 'firmware-cypress', 'firmware-imx-brcm \
-firmware-imx-iwlfifi', d)}"
 
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
 
 DEFAULTTUNE_mx8mm = "aarch64"
 
 PLATFORM_FLAVOR = "mx8mmevk"
+PLATFORM_FLAVOR_ucm-imx8m-mini = "mx8mmevk"
+PLATFORM_FLAVOR_mcm-imx8m-mini = "mx8mmevk"
+PLATFORM_FLAVOR_iot-gate-imx8 = "mx8mmevk"
 ATF_MACHINE_NAME = "bl31-imx8mm.bin"
 PLATFORM = "imx8mm"
 SOC_TARGET = "iMX8MM"
