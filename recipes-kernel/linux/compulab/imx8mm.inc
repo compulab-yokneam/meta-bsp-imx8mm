@@ -67,5 +67,7 @@ SRC_URI_append = " \
 	file://0066-ucm-imx8m-mini-dts-Enable-remote-proc-driver.patch \
 	file://0067-dts-Fix-sai2-record.patch \
 	file://0068-dts-Enable-1V8-modes-on-SD-card.patch \
+	file://0069-dts-Fix-sai2-record.patch \
+	file://0070-mcm-imx8m-mini-defconfig-Enable-CONFIG_FRAMEBUFFER_C.patch \
 	file://defconfig \
 "
