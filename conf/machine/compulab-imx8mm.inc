@@ -29,6 +29,7 @@ IMX_BOOT_SEEK = "33"
 
 OPTEE_BIN_EXT = "8mm"
 
+MACHINE_FIRMWARE_append = " firmware-cypress"
 
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
 
