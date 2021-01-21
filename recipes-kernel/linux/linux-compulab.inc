@@ -8,6 +8,12 @@ do_configure_append () {
     oe_runmake ${MACHINE}_defconfig
 }
 
+do_compile_prepend() {
+    if [ ${BUILD_REPRODUCIBLE_BINARIES} -eq 1 ];then
+        export SOURCE_DATE_EPOCH=$(date +%s)
+    fi
+}
+
 KERNEL_MODULE_AUTOLOAD += "goodix"
 
 COMPATIBLE_MACHINE = "(ucm-imx8m-mini|mcm-imx8m-mini|iot-gate-imx8)"
