@@ -51,5 +51,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0049-ucm-imx8m-mini-Enable-USB1-port.patch \
 	file://0050-defconfig-Enable-SPD-support.patch \
 	file://0051-env-Fix-root_opt.patch \
+	file://0052-spl-ddr-Enable-DDR-ID-0x1060008.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
