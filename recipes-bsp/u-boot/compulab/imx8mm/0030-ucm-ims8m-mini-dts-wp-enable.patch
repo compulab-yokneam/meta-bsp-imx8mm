@@ -1,7 +1,7 @@
 From c897882a9111dd748cf44734af5f92dd21843c82 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 1 Apr 2020 14:52:21 +0300
-Subject: [PATCH 030/105] ucm-ims8m-mini: dts: wp enable
+Subject: [PATCH 030/108] ucm-ims8m-mini: dts: wp enable
 
 Write protection enables for uSD card (the device usdhc2).
 

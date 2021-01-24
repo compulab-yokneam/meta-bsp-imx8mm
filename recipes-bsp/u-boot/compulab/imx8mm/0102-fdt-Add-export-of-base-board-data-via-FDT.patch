@@ -1,7 +1,7 @@
 From c1cecb3bd70f8b23ba315773fa3ed59c5a0c28dd Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 8 Dec 2020 13:54:27 +0200
-Subject: [PATCH 102/105] fdt: Add export of base board data via FDT
+Subject: [PATCH 102/108] fdt: Add export of base board data via FDT
 
 Export via FDT the following data:
 	base board options

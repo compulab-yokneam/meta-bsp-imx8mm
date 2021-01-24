@@ -1,7 +1,7 @@
 From 7aeb8015c50c80aec4c62689aeab735e3aa4976b Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 30 May 2020 18:21:59 +0300
-Subject: [PATCH 023/105] ucm-imx8m-mini: Update memory init code
+Subject: [PATCH 023/108] ucm-imx8m-mini: Update memory init code
 
 Add 1/2G configurations.
 TBD: memory configuration gpio to read from the board.

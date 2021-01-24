@@ -1,7 +1,7 @@
 From 77f5878a96f41f586d94515c6531eacde9998b80 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 21 Jun 2020 22:08:06 +0300
-Subject: [PATCH 042/105] env: Add to kernel command line rw rootwait
+Subject: [PATCH 042/108] env: Add to kernel command line rw rootwait
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

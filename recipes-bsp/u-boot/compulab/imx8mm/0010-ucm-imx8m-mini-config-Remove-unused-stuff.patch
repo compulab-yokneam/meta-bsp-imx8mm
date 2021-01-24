@@ -1,7 +1,7 @@
 From 3c39c1563ad4c1c84335b67d149c672930c3cb9c Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 20 Feb 2019 08:21:05 +0200
-Subject: [PATCH 010/105] ucm-imx8m-mini: config: Remove unused stuff
+Subject: [PATCH 010/108] ucm-imx8m-mini: config: Remove unused stuff
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

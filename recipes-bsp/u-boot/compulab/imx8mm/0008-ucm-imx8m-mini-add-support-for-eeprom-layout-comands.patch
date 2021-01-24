@@ -1,7 +1,7 @@
 From d146c3bcfb9de6937b409b5d643da8003c2f6b18 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 18:48:29 +0200
-Subject: [PATCH 008/105] ucm-imx8m-mini: add support for eeprom layout comands
+Subject: [PATCH 008/108] ucm-imx8m-mini: add support for eeprom layout comands
 
 Add support for EEPROM and EEPROM layout commands for the
 UCM-iMX8M-Mini.

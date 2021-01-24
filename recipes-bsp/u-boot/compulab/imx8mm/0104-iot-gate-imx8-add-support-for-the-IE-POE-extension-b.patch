@@ -1,7 +1,7 @@
 From b0c5fb2fd05a63a8e4cb78bd3597a1878d696b42 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 9 Dec 2020 11:41:49 +0200
-Subject: [PATCH 104/105] iot-gate-imx8: add support for the IE-POE extension
+Subject: [PATCH 104/108] iot-gate-imx8: add support for the IE-POE extension
  board
 
 The IE-POE extension board is detected by EEPROM address of 0x52.
