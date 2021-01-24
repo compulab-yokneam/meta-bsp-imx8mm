@@ -1,7 +1,7 @@
 From c44b662b17384ad0b2b16b209b67076a79e4d9ee Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 16 Jun 2020 17:31:20 +0300
-Subject: [PATCH 040/105] Remove excessive defconfigs
+Subject: [PATCH 040/108] Remove excessive defconfigs
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

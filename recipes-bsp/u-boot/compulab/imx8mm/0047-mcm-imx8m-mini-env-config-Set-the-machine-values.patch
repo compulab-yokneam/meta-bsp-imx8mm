@@ -1,7 +1,7 @@
 From 52ccd615216eff8e7d221907f2c262f5300fcd7a Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 08:07:55 +0300
-Subject: [PATCH 047/105] mcm-imx8m-mini: env: config: Set the machine values
+Subject: [PATCH 047/108] mcm-imx8m-mini: env: config: Set the machine values
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
