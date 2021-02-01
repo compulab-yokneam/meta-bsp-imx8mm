@@ -15,7 +15,7 @@ Define the following environment variables:
 |---|---|
 |NXP release name|export NXP_RELEASE=rel_imx_5.4.24_2.1.0|
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.8.bin|
-|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8_r2.2|
+|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8_r2.3|
 
 
 ## Prerequisites
@@ -55,7 +55,7 @@ git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
 </pre>
 * Make bl31.bin
 <pre>
-make -C imx-atf PLAT=imx8mm SPD=opteed bl31
+make -C imx-atf PLAT=imx8mm bl31
 cp -v imx-atf/build/imx8mm/release/bl31.bin ${SRC_ROOT}/imx-mkimage/iMX8M/
 </pre>
 
