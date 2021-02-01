@@ -15,7 +15,7 @@ Define the following environment variables:
 |---|---|
 |NXP release name|export NXP_RELEASE=rel_imx_5.4.24_2.1.0|
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.8.bin|
-|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8_r2.0|
+|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8_r2.2|
 
 
 ## Prerequisites
