@@ -70,5 +70,6 @@ SRC_URI_append = " \
 	file://0069-dts-Fix-sai2-record.patch \
 	file://0070-mcm-imx8m-mini-defconfig-Enable-CONFIG_FRAMEBUFFER_C.patch \
 	file://0071-brcmfmac-Add-DFS-channel-enable-disable-option.patch \
+	file://0072-ucm-imx8m-mini-dts-Fix-sdio-wifi-node.patch \
 	file://defconfig \
 "
