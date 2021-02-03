@@ -40,5 +40,6 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0038-ucm-imx8m-mini-defconfig-Disable-DEBUG_PREEMPT.patch \
 	file://0039-dts-Fix-ldo1-ldo2-voltage.patch \
 	file://0040-scripts-dtc-Remove-redundant-YYLOC-global-declaratio.patch \
+	file://0041-ucm-imx8m-mini-dts-Fix-sdio-wifi-node.patch \
 	file://defconfig \
 "

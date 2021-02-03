@@ -1,0 +1,63 @@
+From 7bf6d47446248362eca5d736c0da762cfd885c48 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 3 Feb 2021 23:36:34 +0200
+Subject: [PATCH 41/41] ucm-imx8m-mini:dts:Fix sdio wifi node
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+index 77ebda255fc8..3f520c606714 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+@@ -37,18 +37,6 @@
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 	};
+-	//Fake regulator provides WL_REG_ON signal for wireless interface
+-	wlreg_on: wlregon-regulator {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		regulator-name = "wlreg_on";
+-		gpio = <&gpio2 10 GPIO_ACTIVE_HIGH>;
+-		startup-delay-us = <100>;
+-		enable-active-high;
+-		regulator-always-on;
+-		status = "okay";
+-	};
+ 
+ 	reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		compatible = "regulator-fixed";
+@@ -149,6 +137,11 @@
+ 
+ 	};
+ 
++	usdhc1_pwrseq: usdhc1_pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
++	};
++
+ 	backlight {
+ 		compatible = "pwm-backlight";
+ 		pwms = <&pwm2 0 3000000 0>;
+@@ -765,9 +758,14 @@
+ 	non-removable;
+ 	wifi-host;
+ 	pm-ignore-notify;
++	cap-power-off-card;
+ 	status = "okay";
++	mmc-pwrseq = <&usdhc1_pwrseq>;
+ 	brcmf: wifi@0 {
+ 		compatible = "brcm,bcm4329-fmac";
++		interrupt-parent = <&gpio2>;
++		interrupts = <9 IRQ_TYPE_LEVEL_HIGH>;
++		interrupt-names = "host-wake";
+ 	};
+ };
+ 
+-- 
+2.11.0
+
