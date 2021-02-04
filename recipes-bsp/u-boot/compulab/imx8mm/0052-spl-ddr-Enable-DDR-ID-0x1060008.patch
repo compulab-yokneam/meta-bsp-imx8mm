@@ -1,0 +1,27 @@
+From 835149b1718a9497fa96a2b841b5ab899f28d911 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 21 Jan 2021 22:15:43 +0200
+Subject: [PATCH 52/52] spl:ddr: Enable DDR ID 0x1060008
+
+Enable Samsung 1G chip.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/ucm-imx8m-mini/ddr/ddr.c | 1 +
+ 1 files changed, 1 insertions(+)
+
+diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.c b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
+index 56e3db4be8..1bf09f21d4 100644
+--- a/board/compulab/ucm-imx8m-mini/ddr/ddr.c
++++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
+@@ -84,6 +84,7 @@ static const struct lpddr4_desc lpddr4_array[] = {
+ #endif
+ 	{ .name = "Samsung",	.id = 0x01061010, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+ 	{ .name = "Samsung",	.id = 0x01050008, .subind = 0xff, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},
++	{ .name = "Samsung",	.id = 0x01060008, .subind = 0xff, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},
+ 	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x04, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
+ 	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x02, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+ 	{ .name = "Micron",	.id = 0xff020008, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
+-- 
+2.11.0
+
