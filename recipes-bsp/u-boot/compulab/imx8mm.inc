@@ -93,4 +93,5 @@ SRC_URI_append = " \
 	file://0091-board-minor-cleaninig.patch \
 	file://0092-rtc-Disable-bus-when-powered-from-battery.patch \
 	file://0093-fdt-Add-export-of-base-board-data-via-FDT.patch \
+	file://0094-spl-ddr-Enable-DDR-ID-0x1060008.patch \
 "
