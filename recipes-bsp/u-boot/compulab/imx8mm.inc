@@ -94,4 +94,7 @@ SRC_URI_append = " \
 	file://0092-rtc-Disable-bus-when-powered-from-battery.patch \
 	file://0093-fdt-Add-export-of-base-board-data-via-FDT.patch \
 	file://0094-spl-ddr-Enable-DDR-ID-0x1060008.patch \
+	file://0095-drivers-video-Add-startek-ili9881c-panel-driver.patch \
+	file://0096-cpl-imx8m-mini-Enable-startek-ili9881c-panel-support.patch \
+	file://0097-u-m-cm-imx8m-mini-config-Enable-startek-ili9881c.patch \
 "
