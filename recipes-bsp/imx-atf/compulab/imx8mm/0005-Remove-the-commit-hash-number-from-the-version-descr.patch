@@ -1,0 +1,30 @@
+From a694b5395b949d8f5f230f9f8a6f6c3ce06497e5 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Mon, 1 Mar 2021 19:22:59 +0200
+Subject: [PATCH 5/5] Remove the commit hash number from the version
+ description
+
+The version description is generated with the git describe command.
+Remove the parameter "long" from the git describe command.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 2ae12fda7..721246d51 100644
+--- a/Makefile
++++ b/Makefile
+@@ -106,7 +106,7 @@ endif
+ 
+ # Default build string (git branch and commit)
+ ifeq (${BUILD_STRING},)
+-        BUILD_STRING	:=	$(shell git describe --long --always --dirty --tags 2> /dev/null)
++        BUILD_STRING	:=	$(shell git describe --always --dirty --tags 2> /dev/null)
+ endif
+ VERSION_STRING		:=	v${VERSION_MAJOR}.${VERSION_MINOR}(${BUILD_TYPE}):${BUILD_STRING}
+ 
+-- 
+2.11.0
+

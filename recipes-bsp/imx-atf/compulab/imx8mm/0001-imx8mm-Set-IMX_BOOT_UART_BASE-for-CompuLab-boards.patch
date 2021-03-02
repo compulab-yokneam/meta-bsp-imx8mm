@@ -1,7 +1,7 @@
-From 97d20f9e4449b5a66283733efde6a17534653fb2 Mon Sep 17 00:00:00 2001
+From 508a0b78f3fa058a1889f641d581d45bf8bdd8b4 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 10:44:13 +0300
-Subject: [PATCH 1/1] imx8mm: Set IMX_BOOT_UART_BASE for CompuLab boards
+Subject: [PATCH 1/5] imx8mm: Set IMX_BOOT_UART_BASE for CompuLab boards
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

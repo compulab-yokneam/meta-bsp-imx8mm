@@ -1,7 +1,7 @@
-From fd3bd41d1edf6300e4c0b2e19e4319821cc15115 Mon Sep 17 00:00:00 2001
+From 9846296eb70ac0f495ce5f81695cdbc9dbb9235c Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 11:34:20 +0300
-Subject: [PATCH 2/2] imx8mm: Assign RDC_PDAP_UART4 to D0
+Subject: [PATCH 2/5] imx8mm: Assign RDC_PDAP_UART4 to D0
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
