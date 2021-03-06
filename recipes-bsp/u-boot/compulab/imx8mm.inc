@@ -108,4 +108,5 @@ SRC_URI_append = " \
 	file://0106-iot-gate-imx8-update-support-for-the-IE-TPM-module.patch \
 	file://0107-iot-gate-imx8-add-support-for-the-IE-CL420-module.patch \
 	file://0108-Release-2020.04-iot-gate-imx8-2.3.patch \
+	file://0109-iot-gate-imx8-defconfig-Enable-SMSC95XX.patch \
 "
