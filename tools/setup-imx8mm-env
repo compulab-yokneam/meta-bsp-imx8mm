@@ -1,5 +1,5 @@
 #!/bin/bash -e
-MACHINE=${MACHINE:-mcm-imx8m-mini}
+MACHINE=${MACHINE:-iot-gate-imx8}
 DISTRO=${DISTRO:-fsl-imx-xwayland}
 EULA=1
 
