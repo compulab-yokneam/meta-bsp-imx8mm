@@ -1,7 +1,7 @@
-From a8b0e0bd4207a62052d74973cdb05f162e2e278c Mon Sep 17 00:00:00 2001
+From a1ea87e410561242f80e81a1b8c66d46938ab9e3 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 25 Jun 2020 22:28:04 +0300
-Subject: [PATCH 08/23] defconfig: Enable regualtor
+Subject: [PATCH 08/29] defconfig: Enable regualtor
 
 Enable CONFIG_REGULATOR in order to CONFIG_REGULATOR_FIXED_VOLTAGE has its
 effect.

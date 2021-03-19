@@ -1,0 +1,351 @@
+From d7fbb9b9ad36e718a360b76b4f8208ad0e9b4d6b Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Fri, 19 Mar 2021 23:56:18 +0200
+Subject: [PATCH 29/29] Remove unnecessary stuff
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi | 119 ------------------
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi   | 140 ---------------------
+ arch/arm64/configs/ucm-imx8m-mini_defconfig        |   6 +-
+ 3 files changed, 2 insertions(+), 263 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+index 55ba522877c7..1bf30f845cbc 100644
+--- a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
++++ b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+@@ -13,35 +13,6 @@
+  */
+ 
+ / {
+-	simple_sound: sound {
+-		compatible = "simple-audio-card";
+-		simple-audio-card,name = "mcm-imx8m-mini";
+-		simple-audio-card,widgets =
+-			"Headphone", "Headphone Jack",
+-			"Line", "Line Out",
+-			"Microphone", "Mic Jack",
+-			"Line", "Line In";
+-		simple-audio-card,routing =
+-			"Headphone Jack", "RHPOUT",
+-			"Headphone Jack", "LHPOUT",
+-			"MICIN", "Mic Bias",
+-			"Mic Bias", "Mic Jack";
+-		simple-audio-card,format = "i2s";
+-		simple-audio-card,bitclock-master = <&sound_master>;
+-		simple-audio-card,frame-master = <&sound_master>;
+-
+-		sound_master: simple-audio-card,cpu {
+-			sound-dai = <&sai2>;
+-			system-clock-frequency = <0>;
+-			system-clock-direction = "out";
+-		};
+-
+-		sound_codec: simple-audio-card,codec {
+-			sound-dai = <&wm8731>;
+-			system-clock-direction = "in";
+-			system-clock-type = "mclk";
+-		};
+-	};
+ 
+ 	clocks {
+ 		clk40m: clk@1 {
+@@ -98,95 +69,5 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_i2c4>;
+ 	status = "okay";
+-
+-	wm8731: wm8731@1a {
+-		#sound-dai-cells = <0>;
+-		compatible = "wlf,wm8731";
+-		reg = <0x1a>;
+-		status = "okay";
+-	};
+-
+-	ov5640_mipi: ov5640_mipi@3c {
+-		compatible = "ovti,ov5640_mipi";
+-		reg = <0x3c>;
+-		status = "okay";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_csi1>;
+-		clocks = <&clk IMX8MM_CLK_CLKO1>;
+-		clock-names = "csi_mclk";
+-		assigned-clocks = <&clk IMX8MM_CLK_CLKO1>;
+-		assigned-clock-parents = <&clk IMX8MM_CLK_24M>;
+-		assigned-clock-rates = <0>, <24000000>;
+-		csi_id = <0>;
+-		/*
+-		To be looked into & fixed
+-		As of now the device is alwas out of reset & under the power
+-		*/
+-		pwn-gpios = <&pca9555 8 GPIO_ACTIVE_LOW>;
+-		rst-gpios = <&pca9555 3 GPIO_ACTIVE_HIGH>;
+-
+-		mclk = <24000000>;
+-		mclk_source = <0>;
+-		port {
+-			ov5640_mipi1_ep: endpoint {
+-				remote-endpoint = <&mipi1_sensor_ep>;
+-			};
+-		};
+-	};
+-	goodix_ts@5d {
+-		compatible = "goodix,gt911";
+-		reg = <0x5d>;
+-
+-		interrupt-parent = <&gpio1>;
+-		interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
+-
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&touchscreen_pins>;
+-
+-		irq-gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
+-		reset-gpios = <&pca9555 4 GPIO_ACTIVE_HIGH>;
+-		status = "okay";
+-	};
+-
+-};
+-
+-&mipi_csi_1 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	status = "okay";
+-	port {
+-		mipi1_sensor_ep: endpoint@1 {
+-			remote-endpoint = <&ov5640_mipi1_ep>;
+-			data-lanes = <2>;
+-			csis-hs-settle = <13>;
+-			csis-clk-settle = <2>;
+-			csis-wclk;
+-		};
+-
+-		csi1_mipi_ep: endpoint@2 {
+-			remote-endpoint = <&csi1_ep>;
+-		};
+-	};
+-};
+-
+-&csi1_bridge {
+-    fsl,mipi-mode;
+-    status = "okay";
+-
+-    port {
+-        csi1_ep: endpoint {
+-            remote-endpoint = <&csi1_mipi_ep>;
+-        };
+-    };
+ };
+ 
+-&mipi_dsi {
+-	status = "okay";
+-	panel: panel@0 {
+-		compatible = "startek,kd050hdfia020";
+-		reg = <0>;
+-		reset-gpio = <&pca9555 6 GPIO_ACTIVE_LOW>;
+-		dsi-lanes = <4>;
+-		status = "okay";
+-	};
+-};
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index c1332aa6e737..550590eefe0b 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -49,19 +49,6 @@
+ 		};
+ 	};
+ 
+-	//Fake regulator provides WL_REG_ON signal for wireless interface
+-	wlreg_on: wlregon-regulator {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		regulator-name = "wlreg_on";
+-		gpio = <&gpio2 10 GPIO_ACTIVE_HIGH>;
+-		startup-delay-us = <100>;
+-		enable-active-high;
+-		regulator-always-on;
+-		status = "okay";
+-	};
+-
+ 	reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "VSD_3V3";
+@@ -103,65 +90,10 @@
+ 		startup-delay-us = <500>;
+ 	};
+ 
+-	regulator_bt_dev_wake: bt_dev_wake {
+-		compatible = "regulator-fixed";
+-		regulator-name = "bt_dev_wake";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio2 7 GPIO_ACTIVE_HIGH>;
+-		regulator-always-on;
+-		enable-active-high;
+-		startup-delay-us = <500>;
+-	};
+-
+-	regulator_bt_host_wake: bt_host_wake {
+-		compatible = "regulator-fixed";
+-		regulator-name = "bt_host_wake";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio2 8 GPIO_ACTIVE_HIGH>;
+-		regulator-always-on;
+-		regulator-boot-on;
+-		enable-active-high;
+-		vin-supply = <&regulator_bt_dev_wake>;
+-	};
+-
+ 	usdhc1_pwrseq: usdhc1_pwrseq {
+ 		compatible = "mmc-pwrseq-simple";
+ 		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
+ 	};
+-
+-	modem_reset: modem-reset {
+-		compatible = "gpio-reset";
+-		reset-gpios = <&gpio2 6 GPIO_ACTIVE_LOW>;
+-		reset-delay-us = <2000>;
+-		reset-post-delay-ms = <40>;
+-		#reset-cells = <0>;
+-	};
+-
+-	backlight {
+-		compatible = "pwm-backlight";
+-		pwms = <&pwm2 0 3000000 0>;
+-
+-		brightness-levels = <0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+-					17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+-					33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
+-					49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+-					65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+-					81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96
+-					97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112
+-					113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128
+-					129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+-					145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160
+-					161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176
+-					177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192
+-					193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208
+-					209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224
+-					225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240
+-					241 242 243 244 245 246 247 248 249 250 251 252 253 254 255>;
+-		default-brightness-level = <222>;
+-		status = "okay";
+-	};
+ };
+ 
+ &iomuxc {
+@@ -658,36 +590,6 @@
+ 	status = "okay";
+ };
+ 
+-&uart4 { /* bluetooth */
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart4>;
+-	assigned-clocks = <&clk IMX8MM_CLK_UART4>;
+-	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
+-	fsl,uart-has-rtscts;
+-	resets = <&modem_reset>;
+-	status = "okay";
+-};
+-
+-&usdhc1 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+-	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
+-	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
+-	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
+-	bus-width = <4>;
+-	no-1-8-v;
+-	non-removable;
+-	wifi-host;
+-	pm-ignore-notify;
+-	vmmc-supply = <&wlreg_on>;
+-	status = "okay";
+-	brcmf: wifi@1 {
+-		compatible = "brcm,bcm4329-fmac";
+-		reg = <1>;
+-	};
+-};
+-
+ &usdhc2 {
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+@@ -723,22 +625,6 @@
+ 	arm-supply = <&buck2_reg>;
+ };
+ 
+-&gpu {
+-	status = "okay";
+-};
+-
+-&vpu_g1 {
+-	status = "okay";
+-};
+-
+-&vpu_g2 {
+-	status = "okay";
+-};
+-
+-&vpu_h1 {
+-	status = "okay";
+-};
+-
+ &usbotg1 {
+ 	dr_mode = "otg";
+ 	hnp-disable;
+@@ -755,32 +641,6 @@
+ 	status = "okay";
+ };
+ 
+-&sai2 {
+-	#sound-dai-cells = <0>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_sai2>;
+-	assigned-clocks = <&clk IMX8MM_CLK_SAI2>;
+-	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+-	assigned-clock-rates = <49152000>;
+-	clocks = <&clk IMX8MM_CLK_SAI2_IPG>, <&clk IMX8MM_CLK_DUMMY>,
+-		<&clk IMX8MM_CLK_SAI2_ROOT>, <&clk IMX8MM_CLK_DUMMY>,
+-		<&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_AUDIO_PLL1_OUT>,
+-		<&clk IMX8MM_AUDIO_PLL2_OUT>;
+-	clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3", "pll8k", "pll11k";
+-	fsl,sai-asynchronous;
+-	status = "okay";
+-};
+-
+-&lcdif {
+-	status = "okay";
+-};
+-
+-&pwm2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_pwm_backlight>;
+-	status = "okay";
+-};
+-
+ &cpu_alert0 {
+ 	temperature = <105000>;
+ };
+diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+index 9780edd70663..1f630afb592a 100644
+--- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
++++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+@@ -812,10 +812,8 @@ CONFIG_CRYPTO_SM4=m
+ CONFIG_CRYPTO_TEA=m
+ CONFIG_CRYPTO_TWOFISH=m
+ CONFIG_CRYPTO_ANSI_CPRNG=y
+-CONFIG_CRYPTO_DEV_FSL_CAAM_SECVIO=y
+-CONFIG_CRYPTO_DEV_FSL_CAAM=y
+-CONFIG_CRYPTO_DEV_FSL_CAAM_SM=y
+-CONFIG_CRYPTO_DEV_FSL_CAAM_SM_TEST=m
++# CONFIG_CRYPTO_HW is not set
++# CONFIG_CRYPTO_DEV_FSL_CAAM is not set
+ CONFIG_INDIRECT_PIO=y
+ CONFIG_DMA_CMA=y
+ CONFIG_CMA_SIZE_MBYTES=320
+-- 
+2.11.0
+

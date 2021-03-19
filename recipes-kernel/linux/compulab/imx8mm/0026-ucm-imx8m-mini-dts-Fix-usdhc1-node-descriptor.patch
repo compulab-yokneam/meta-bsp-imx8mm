@@ -1,0 +1,32 @@
+From 40e41f4855484a110daa2cfee440d189597ff06d Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 16 Nov 2020 16:43:07 +0200
+Subject: [PATCH 26/29] ucm-imx8m-mini: dts: Fix usdhc1 node descriptor
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index d27d0833120a..0b8be84d8293 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -662,11 +662,14 @@
+ };
+ 
+ &usdhc1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
+ 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
+ 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
+ 	bus-width = <4>;
++	no-1-8-v;
+ 	non-removable;
+ 	wifi-host;
+ 	pm-ignore-notify;
+-- 
+2.11.0
+

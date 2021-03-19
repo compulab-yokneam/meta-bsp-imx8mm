@@ -1,0 +1,60 @@
+From 57879dcd78d65f0b8a4b105d2317feab0d6c2826 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 18 Aug 2020 18:14:40 +0300
+Subject: [PATCH 13/29] ucm-imx8m-mini:dts: Update PCIe node
+
+Update the PCIe description in accordance with the updated PCIe driver
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi |  4 +++-
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi   | 12 ++++++++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+index 2f515e3af428..55ba522877c7 100644
+--- a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
++++ b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+@@ -61,13 +61,15 @@
+ };
+ 
+ &pcie0 {
++	compatible = "fsl,imx8mm-pcie";
+ 	reset-gpio = <&pca9555 0 GPIO_ACTIVE_LOW>;
+ 	clocks = <&clk IMX8MM_CLK_PCIE1_ROOT>,
+ 		 <&clk IMX8MM_CLK_PCIE1_AUX>,
+ 		 <&clk IMX8MM_CLK_PCIE1_PHY>,
+ 		 <&pcie0_refclk>;
+ 	clock-names = "pcie", "pcie_aux", "pcie_phy", "pcie_bus";
+-	ext_osc = <1>;
++	ext_osc = <0>;
++	reserved-region = <&rpmsg_reserved>;
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index 138b677180e7..20de6bd871f9 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -28,6 +28,18 @@
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 	};
++
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		rpmsg_reserved: rpmsg@0xb8000000 {
++			no-map;
++			reg = <0 0xb8000000 0 0x400000>;
++		};
++	};
++
+ 	//Fake regulator provides WL_REG_ON signal for wireless interface
+ 	wlreg_on: wlregon-regulator {
+ 		compatible = "regulator-fixed";
+-- 
+2.11.0
+

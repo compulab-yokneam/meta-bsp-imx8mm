@@ -1,0 +1,26 @@
+From 2e8b7d1e46d9f65e7b8ca6da4642e4ff11871da0 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 26 Aug 2020 16:10:12 +0300
+Subject: [PATCH 16/29] rtc:abx80x: Calibrate RTC
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index 20de6bd871f9..72b792219968 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -438,6 +438,8 @@
+ 		compatible = "ab1805";
+ 		reg = <0x69>;
+ 		pagesize = <16>;
++		sqw = "32768_Hz";
++		xt-frequency = <32773500>;
+ 		status = "okay";
+ 	};
+ 
+-- 
+2.11.0
+

@@ -1,0 +1,74 @@
+From 8d4cda8645a7f9ad1f2e4f4562c801bdbda39b19 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 17 Nov 2020 20:05:43 +0200
+Subject: [PATCH 27/29] rtc:abx80x: Disable bus when powered from battery
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ drivers/rtc/rtc-abx80x.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
+index 55df2264700a..a8e1e4f890d2 100644
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -87,6 +87,9 @@
+ #define ABX8XX_CFG_KEY_OSC	0xa1
+ #define ABX8XX_CFG_KEY_MISC	0x9d
+ 
++#define ABX8XX_REG_BATMODE	0x27
++#define ABX8XX_BATMODE_IOBM	BIT(7)
++
+ #define ABX8XX_REG_ID0		0x28
+ 
+ #define ABX8XX_REG_OUT_CTRL	0x30
+@@ -909,6 +912,35 @@ static int abx80x_setup_watchdog(struct abx80x_priv *priv)
+ }
+ #endif
+ 
++/* Disable bus (i2c or SPI) when the RTC is powered from battery */
++static int abx80x_setup_brownout_bus_cutoff(struct i2c_client *client)
++{
++	int reg, val;
++
++	reg = ABX8XX_REG_BATMODE;
++	val = i2c_smbus_read_byte_data(client, reg);
++	if(0 > val)
++		goto err;
++
++	if(!(val & ABX8XX_BATMODE_IOBM))
++		return 0; //Already set
++
++	reg = ABX8XX_REG_CFG_KEY;
++	val = i2c_smbus_write_byte_data(client, reg, ABX8XX_CFG_KEY_MISC);
++	if (val < 0)
++		goto err;
++
++	reg = ABX8XX_REG_BATMODE;
++	val = i2c_smbus_write_byte_data(client, reg, 0);
++	if (val < 0)
++		goto err;
++
++	return 0;
++err:
++	dev_err(&client->dev, "Failed to access register %x err %i\n", reg, val);
++	return val;
++}
++
+ static int abx80x_probe(struct i2c_client *client,
+ 			const struct i2c_device_id *id)
+ {
+@@ -1056,6 +1088,10 @@ static int abx80x_probe(struct i2c_client *client,
+ 	else
+ 		sqw_set(client, "none");
+ 
++	err = abx80x_setup_brownout_bus_cutoff(client);
++	if (err)
++		return err;
++
+ 	err = i2c_smbus_write_byte_data(client, ABX8XX_REG_CD_TIMER_CTL,
+ 					BIT(2));
+ 	if (err)
+-- 
+2.11.0
+

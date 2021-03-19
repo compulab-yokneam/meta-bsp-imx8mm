@@ -1,0 +1,42 @@
+From 35469c6688ea3b300443bb4ea0d213888e1b01cd Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 22 Sep 2020 20:44:04 +0300
+Subject: [PATCH 18/29] dts: Fix ldo1 ldo2 voltage
+
+Rationale:
+NXP CIN
+https://media.digikey.com/pdf/PCNs/NXP/202005006IU01.pdf
+MLK-23275
+https://source.codeaurora.org/external/imx/linux-imx/log/?h=imx_5.4.3_2.0.0&qt=grep&q=MLK-23275
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index 349893c4e757..8f2e0599abf0 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -523,15 +523,15 @@
+ 
+ 			ldo1_reg: LDO1 {
+ 				regulator-name = "LDO1";
+-				regulator-min-microvolt = <3000000>;
+-				regulator-max-microvolt = <3300000>;
++				regulator-min-microvolt = <1600000>;
++				regulator-max-microvolt = <1900000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+ 			};
+ 
+ 			ldo2_reg: LDO2 {
+ 				regulator-name = "LDO2";
+-				regulator-min-microvolt = <900000>;
++				regulator-min-microvolt = <800000>;
+ 				regulator-max-microvolt = <900000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+-- 
+2.11.0
+

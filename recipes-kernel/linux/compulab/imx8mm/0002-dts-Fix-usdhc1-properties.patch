@@ -1,0 +1,64 @@
+From 947bec54427a87ef3a17ee5406785275fca88390 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 21 Jun 2020 20:50:45 +0300
+Subject: [PATCH 02/29] dts: Fix usdhc1 properties
+
+Define WP GPIO, add no-1-8-v.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+index 9db7b4b4ab17..8df796e4a246 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+@@ -146,6 +146,7 @@
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
+ 				MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12	0x41
++				MX8MM_IOMUXC_SD2_WP_GPIO2_IO20		0x00
+ 			>;
+ 		};
+ 
+@@ -450,7 +451,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_i2c4>;
+ 	status = "okay";
+-
++#if 0
+ 	ov5640_mipi: ov5640_mipi@3c {
+ 		compatible = "ovti,ov5640_mipi";
+ 		reg = <0x3c>;
+@@ -478,8 +479,9 @@
+ 			};
+ 		};
+ 	};
++#endif
+ };
+-
++#if 0
+ &mipi_csi_1 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+@@ -509,6 +511,7 @@
+         };
+     };
+ };
++#endif
+ 
+ &snvs {
+ 	status = "okay";
+@@ -550,6 +553,8 @@
+ 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+ 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
++	wp-gpios = <&gpio2 20 GPIO_ACTIVE_HIGH>;
++	no-1-8-v;
+ 	bus-width = <4>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+ 	status = "okay";
+-- 
+2.11.0
+

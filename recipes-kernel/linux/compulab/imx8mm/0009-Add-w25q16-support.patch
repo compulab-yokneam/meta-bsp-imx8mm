@@ -1,0 +1,25 @@
+From 3b4e9bc6792a21e1b747fb429b187111c6a9ed90 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 1 Jun 2020 21:08:04 +0300
+Subject: [PATCH 09/29] Add w25q16 support
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ drivers/mtd/spi-nor/spi-nor.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 12094f249979..56e61b844a59 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -2449,6 +2449,7 @@ static const struct flash_info spi_nor_ids[] = {
+ 	{ "w25q20cl", INFO(0xef4012, 0, 64 * 1024,  4, SECT_4K) },
+ 	{ "w25q20bw", INFO(0xef5012, 0, 64 * 1024,  4, SECT_4K) },
+ 	{ "w25q20ew", INFO(0xef6012, 0, 64 * 1024,  4, SECT_4K) },
++	{ "w25q16", INFO(0xef4015, 0, 64 * 1024,  32, SECT_4K) },
+ 	{ "w25q32", INFO(0xef4016, 0, 64 * 1024,  64, SECT_4K) },
+ 	{
+ 		"w25q32dw", INFO(0xef6016, 0, 64 * 1024,  64,
+-- 
+2.11.0
+
