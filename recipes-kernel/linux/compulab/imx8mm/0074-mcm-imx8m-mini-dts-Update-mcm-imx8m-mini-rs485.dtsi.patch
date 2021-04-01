@@ -1,0 +1,36 @@
+From ee53077dbafd33f06d37f92fe03dd0fa7e11a9d2 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Thu, 1 Apr 2021 11:14:54 +0300
+Subject: [PATCH] mcm-imx8m-mini: dts: Update mcm-imx8m-mini-rs485.dtsi
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/mcm-imx8m-mini-rs485.dtsi | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini-rs485.dtsi b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini-rs485.dtsi
+index 0af7c750cbbe..a15cad144ea2 100644
+--- a/arch/arm64/boot/dts/compulab/mcm-imx8m-mini-rs485.dtsi
++++ b/arch/arm64/boot/dts/compulab/mcm-imx8m-mini-rs485.dtsi
+@@ -1,8 +1,6 @@
+-/delete-node/ &pinctrl_uart4;
+-
+ &iomuxc {
+ 	mcm-imx8m-mini-rs485 {
+-		pinctrl_uart4: uart4grp {
++		pinctrl_uart4_rs485: uart4grp_rs485 {
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_ECSPI2_MISO_GPIO5_IO12      0x140
+ 				MX8MM_IOMUXC_ECSPI2_MOSI_UART4_DCE_TX    0x140
+@@ -14,7 +12,7 @@
+ 
+ &uart4 { /* rs485 */
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart4>;
++	pinctrl-0 = <&pinctrl_uart4_rs485>;
+ 	assigned-clocks = <&clk IMX8MM_CLK_UART4>;
+ 	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
+         linux,rs485-enabled-at-boot-time;
+-- 
+2.11.0
+

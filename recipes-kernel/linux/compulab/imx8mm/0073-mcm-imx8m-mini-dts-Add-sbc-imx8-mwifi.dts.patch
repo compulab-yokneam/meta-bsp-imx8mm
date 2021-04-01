@@ -1,0 +1,54 @@
+From 0511ca4fb82968492e8f8f7072bf34b8a0c6246b Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Thu, 1 Apr 2021 11:14:13 +0300
+Subject: [PATCH] mcm-imx8m-mini: dts: Add sbc-imx8-mwifi.dts
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sbc-imx8-mwifi.dts | 34 +++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/compulab/sbc-imx8-mwifi.dts
+
+diff --git a/arch/arm64/boot/dts/compulab/sbc-imx8-mwifi.dts b/arch/arm64/boot/dts/compulab/sbc-imx8-mwifi.dts
+new file mode 100644
+index 000000000000..445639566b38
+--- /dev/null
++++ b/arch/arm64/boot/dts/compulab/sbc-imx8-mwifi.dts
+@@ -0,0 +1,34 @@
++/*
++ * Copyright (C) 2018 CopuLab Ltd.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include "cl-som-imx8.dts"
++#include "sb-imx8.dtsi"
++
++/ {
++    model = "CompuLab CL-SOM-iMX8 rev1.1 on SBC-iMX8";
++    compatible = "compulab,sbc-imx8", "compulab,cl-som-imx8,rev1.1", "compulab,cl-som-imx8", "fsl,imx8mq";
++};
++
++&usdhc2 {
++	/delete-property/ wp-gpios;
++	cap-power-off-card;
++	keep-power-in-suspend;
++
++	#address-cells = <1>;
++	#size-cells = <0>;
++	mwifiex: wifi@1 {
++		compatible = "marvell,sd8897";
++		reg = <1>;
++	};
++};
+-- 
+2.11.0
+
