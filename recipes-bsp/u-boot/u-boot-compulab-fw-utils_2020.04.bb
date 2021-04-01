@@ -13,7 +13,6 @@ SRCREV = "4979a99482f7e04a3c1f4fb55e3182395ee8f710"
 S = "${WORKDIR}/git"
 
 require u-boot-compulab.inc
-require u-boot-fw-utils.inc
 
 INSANE_SKIP_${PN} = "already-stripped"
 EXTRA_OEMAKE_class-target = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${CC} ${CFLAGS} ${LDFLAGS}" HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}" V=1'
@@ -50,3 +49,5 @@ RDEPENDS_${PN} += "bash"
 FILES_${PN} = "/sbin/* /etc/*"
 
 RPROVIDES_${PN} += "u-boot-fw-utils"
+
+require u-boot-fw-utils.inc
