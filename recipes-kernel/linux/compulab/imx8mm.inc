@@ -75,5 +75,7 @@ SRC_URI_append = " \
 	file://0074-mcm-imx8m-mini-dts-Update-mcm-imx8m-mini-rs485.dtsi.patch \
 	file://0075-mcm-imx8m-mini-dts-Add-spidev-example.patch \
 	file://0076-ucm-imx8m-mini-dts-Add-nousb-device-tree.patch \
+	file://0077-ucm-imx8m-mini-config-Disable-FB_EFI-support.patch \
+	file://0078-mcm-imx8m-mini-config-Disable-FB_EFI-support.patch \
 	file://defconfig \
 "

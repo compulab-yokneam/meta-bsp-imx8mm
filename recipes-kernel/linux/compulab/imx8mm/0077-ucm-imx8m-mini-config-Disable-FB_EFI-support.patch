@@ -1,0 +1,44 @@
+From 3718de1c4f4664d655d4e73c339d26b44161c29b Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 7 Apr 2021 16:38:16 +0300
+Subject: [PATCH] ucm-imx8m-mini config: Disable FB_EFI support
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/configs/ucm-imx8m-mini_defconfig | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+index af972a122953..715724f477d4 100644
+--- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
++++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
+@@ -173,9 +173,9 @@ CONFIG_BT_HCIUART_QCA=y
+ CONFIG_BT_HCIVHCI=y
+ CONFIG_CFG80211=m
+ CONFIG_NL80211_TESTMODE=y
+-CONFIG_RFKILL=y
+ CONFIG_CFG80211_WEXT=y
+ CONFIG_MAC80211=m
++CONFIG_RFKILL=y
+ CONFIG_NET_9P=y
+ CONFIG_NET_9P_VIRTIO=y
+ CONFIG_PCI=y
+@@ -198,7 +198,6 @@ CONFIG_DEVTMPFS_MOUNT=y
+ CONFIG_EXTRA_FIRMWARE="brcm/BCM4335C0.hcd"
+ CONFIG_EXTRA_FIRMWARE_DIR="firmware"
+ CONFIG_FW_LOADER_USER_HELPER=y
+-CONFIG_FW_LOADER_USER_HELPER_FALLBACK=n
+ CONFIG_BRCMSTB_GISB_ARB=y
+ CONFIG_SIMPLE_PM_BUS=y
+ CONFIG_VEXPRESS_CONFIG=y
+@@ -511,7 +510,6 @@ CONFIG_DRM_IMX_CDNS_MHDP=y
+ CONFIG_DRM_IMX_DCSS=y
+ CONFIG_DRM_LEGACY=y
+ CONFIG_FB_ARMCLCD=y
+-CONFIG_FB_EFI=y
+ CONFIG_BACKLIGHT_GENERIC=m
+ CONFIG_BACKLIGHT_PWM=y
+ CONFIG_BACKLIGHT_LP855X=m
+-- 
+2.11.0
+
