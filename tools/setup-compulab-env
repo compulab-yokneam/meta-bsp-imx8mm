@@ -3,25 +3,29 @@
 declare -A SUPPORTED_MACHINE=([ucm-imx8m-mini]=1)
 
 get_meta() {
+local url=${1:?"Error: url unknown"}
+local branch=${2:?"Error: tag unknown"}
+local dir=${3:?"Error: dir unknown"}
 if [[ -d ${dir} ]];then
 git -C ${dir} remote update
 git -C ${dir} pull
 else
-git clone ${url} ${branch} ${dir}
+git clone ${url} ${dir}
 fi
+git -C ${dir} checkout ${branch}
 }
 
 get_meta_compulab() {
-dir="../sources/meta-compulab"
-branch="-b devel"
-url="https://github.com/compulab-yokneam/meta-compulab"
-get_meta ${url} ${branch} ${dir}
+local dir="../sources/meta-compulab"
+local commit="61f900f5e2b31380dc246c2caa5fe0d4adc81ebb"
+local url="https://github.com/compulab-yokneam/meta-compulab"
+get_meta ${url} ${commit} ${dir}
 }
 
 get_meta_compulab_bsp() {
-dir="../sources/meta-compulab-bsp"
-branch="-b devel-imx8mm-4.14.98"
-url="https://github.com/compulab-yokneam/meta-compulab-bsp"
+local dir="../sources/meta-compulab-bsp"
+local branch="devel-imx8mm-4.14.98"
+local url="https://github.com/compulab-yokneam/meta-compulab-bsp"
 get_meta ${url} ${branch} ${dir}
 }
 
