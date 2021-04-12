@@ -13,10 +13,7 @@ SRCREV = "4979a99482f7e04a3c1f4fb55e3182395ee8f710"
 S = "${WORKDIR}/git"
 
 require u-boot-compulab.inc
-
-SRC_URI_append += "\
-	file://cl_setenv \
-"
+require u-boot-fw-utils.inc
 
 INSANE_SKIP_${PN} = "already-stripped"
 EXTRA_OEMAKE_class-target = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${CC} ${CFLAGS} ${LDFLAGS}" HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}" V=1'
@@ -47,11 +44,6 @@ SYSROOT_DIRS_append_class-cross = " ${bindir_cross}"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 BBCLASSEXTEND = "cross"
-
-do_install_append () {
-	install -d ${D}/sbin
-	install -m 0755 ${WORKDIR}/cl_setenv ${D}/sbin/
-}
 
 RDEPENDS_${PN} += "bash"
 
