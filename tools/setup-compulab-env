@@ -14,14 +14,14 @@ fi
 
 get_meta_compulab() {
 dir="../sources/meta-compulab"
-branch="f5f8a2198e2bf037e1999653b9149c0622c9a0ec"
+branch="15de2495df5c88b23a603550fae06698f9c0a637"
 url="https://github.com/compulab-yokneam/meta-compulab"
 get_meta ${url} ${branch} ${dir}
 }
 
 get_meta_compulab_bsp() {
 dir="../sources/meta-compulab-bsp"
-branch="01015e56471b1eac23f9024d8a1225e0be54972d"
+branch="b30230b0e63cb88847b6a8e8fd23d51bb994425a"
 url="https://github.com/compulab-yokneam/meta-compulab-bsp"
 get_meta ${url} ${branch} ${dir}
 }
