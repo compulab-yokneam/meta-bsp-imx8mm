@@ -1,0 +1,92 @@
+From 821957abef8da92e9dc88c0b939fcf6476e99be4 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 22 Apr 2021 00:08:07 +0300
+Subject: [PATCH 30/30] ucm-imx8m-mini: dts: Enable brcm,bcm4330-bt
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 40 +++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index 550590eefe0b..014c88935cb0 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -94,6 +94,15 @@
+ 		compatible = "mmc-pwrseq-simple";
+ 		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
+ 	};
++
++	modem_reset: modem-reset {
++		compatible = "gpio-reset";
++		reset-gpios = <&gpio2 6 GPIO_ACTIVE_LOW>;
++		reset-delay-us = <2000>;
++		reset-post-delay-ms = <40>;
++		#reset-cells = <0>;
++	};
++
+ };
+ 
+ &iomuxc {
+@@ -105,9 +114,6 @@
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10	0x19
+ 				MX8MM_IOMUXC_NAND_READY_B_GPIO3_IO16	0x190
+-				/* BT */
+-				MX8MM_IOMUXC_SD1_DATA5_GPIO2_IO7	0x19
+-				MX8MM_IOMUXC_SD1_DATA6_GPIO2_IO8	0x19
+ 			>;
+ 		};
+ 
+@@ -197,7 +203,6 @@
+ 				MX8MM_IOMUXC_ECSPI2_MOSI_UART4_DCE_TX    0x140
+ 				MX8MM_IOMUXC_ECSPI2_SS0_UART4_DCE_RTS_B  0x140
+ 				MX8MM_IOMUXC_ECSPI2_SCLK_UART4_DCE_RX    0x140
+-				MX8MM_IOMUXC_SD1_DATA4_GPIO2_IO6	0x19
+ 			>;
+ 		};
+ 
+@@ -373,6 +378,14 @@
+ 				MX8MM_IOMUXC_GPIO1_IO13_PWM2_OUT	0x03
+ 			>;
+ 		};
++
++		pinctrl_bt: bt0grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_SD1_DATA4_GPIO2_IO6	0x19 /* BT_REG_ON */
++				MX8MM_IOMUXC_SD1_DATA5_GPIO2_IO7	0x19 /* BT_DEV_WU */
++				MX8MM_IOMUXC_SD1_DATA6_GPIO2_IO8	0x19 /* BT_HST_WU */
++			>;
++		};
+ 	};
+ };
+ 
+@@ -590,6 +603,25 @@
+ 	status = "okay";
+ };
+ 
++&uart4 { /* bluetooth */
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart4>;
++	assigned-clocks = <&clk IMX8MM_CLK_UART4>;
++	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
++	uart-has-rtscts;
++	status = "okay";
++
++	bluetooth {
++		compatible = "brcm,bcm4330-bt";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_bt>;
++		max-speed = <3000000>;
++		device-wakeup-gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
++		host-wakeup-gpios = <&gpio2 8 GPIO_ACTIVE_HIGH>;
++		shutdown-gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;
++	};
++};
++
+ &usdhc2 {
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+-- 
+2.11.0
+

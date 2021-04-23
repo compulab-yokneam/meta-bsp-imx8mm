@@ -1,0 +1,49 @@
+From e905cec4c5f26bc5c42cb611fcd8bac40f7e93e1 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 22 Apr 2021 19:59:12 +0300
+Subject: [PATCH 33/33] ucm:dts: Enable bcm4329-fmac WiFi
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 25 ++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index 78603fff3cd5..23e962f75571 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -645,6 +645,31 @@
+ 	};
+ };
+ 
++&usdhc1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
++	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
++	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
++	bus-width = <4>;
++	no-1-8-v;
++	non-removable;
++	wifi-host;
++	pm-ignore-notify;
++	cap-power-off-card;
++	status = "okay";
++	mmc-pwrseq = <&usdhc1_pwrseq>;
++
++	brcmf: wifi@1 {
++		compatible = "brcm,bcm4329-fmac";
++		reg = <1>;
++		interrupt-parent = <&gpio2>;
++		interrupts = <9 IRQ_TYPE_LEVEL_HIGH>;
++		interrupt-names = "host-wake";
++	};
++};
++
+ &usdhc2 {
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+-- 
+2.11.0
+
