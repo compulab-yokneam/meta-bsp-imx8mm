@@ -1,7 +1,7 @@
-From ba541f166e2531ffdb5433ebdaea31132f7f99bc Mon Sep 17 00:00:00 2001
+From 9b2c747c1af2ef03aff5d5619109129bb28f4565 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 19 Mar 2021 22:36:14 +0200
-Subject: [PATCH 10/29] ucm-imx8m-mini:defconf+dt:Migrate to kernel 5.4.24
+Subject: [PATCH 10/35] ucm-imx8m-mini:defconf+dt:Migrate to kernel 5.4.24
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

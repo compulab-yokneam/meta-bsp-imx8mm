@@ -1,0 +1,25 @@
+From a8d1fe049cd29ae8c8efbba839ad19020c1e3563 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sat, 24 Apr 2021 20:36:16 +0300
+Subject: [PATCH 33/35] ucm:dts: Fix voltage on USDHC1
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index c4cd87804700..aff5d206dc70 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -623,7 +623,6 @@
+ 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
+ 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
+ 	bus-width = <4>;
+-	no-1-8-v;
+ 	non-removable;
+ 	wifi-host;
+ 	pm-ignore-notify;
+-- 
+2.11.0
+

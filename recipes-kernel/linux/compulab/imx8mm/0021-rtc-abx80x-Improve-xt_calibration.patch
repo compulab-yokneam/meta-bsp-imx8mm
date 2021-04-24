@@ -1,7 +1,7 @@
-From 389502afa9eb59863147c5c7e51763c694dd62f4 Mon Sep 17 00:00:00 2001
+From 91dd792b9022e06a4351765f7e20c099d1f767e0 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 5 Nov 2020 18:56:16 +0200
-Subject: [PATCH 21/29] rtc:abx80x: Improve xt_calibration
+Subject: [PATCH 21/35] rtc:abx80x: Improve xt_calibration
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

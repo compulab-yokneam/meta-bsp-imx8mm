@@ -1,7 +1,7 @@
-From 2e8b7d1e46d9f65e7b8ca6da4642e4ff11871da0 Mon Sep 17 00:00:00 2001
+From 5dc234f7e4c96b5d62a8813e7ffbac22f5f313ad Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 26 Aug 2020 16:10:12 +0300
-Subject: [PATCH 16/29] rtc:abx80x: Calibrate RTC
+Subject: [PATCH 16/35] rtc:abx80x: Calibrate RTC
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

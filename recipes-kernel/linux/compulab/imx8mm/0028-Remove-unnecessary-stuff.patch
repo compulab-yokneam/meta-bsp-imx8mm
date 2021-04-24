@@ -1,7 +1,7 @@
-From d7fbb9b9ad36e718a360b76b4f8208ad0e9b4d6b Mon Sep 17 00:00:00 2001
+From b6f069b6f73bdf1478e7d314c2a496deb597a984 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 19 Mar 2021 23:56:18 +0200
-Subject: [PATCH 29/29] Remove unnecessary stuff
+Subject: [PATCH 28/35] Remove unnecessary stuff
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -147,7 +147,7 @@ index 55ba522877c7..1bf30f845cbc 100644
 -	};
 -};
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
-index c1332aa6e737..550590eefe0b 100644
+index 0b8be84d8293..2f87103dd9c7 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
 @@ -49,19 +49,6 @@
@@ -170,7 +170,7 @@ index c1332aa6e737..550590eefe0b 100644
  	reg_usdhc2_vmmc: regulator-usdhc2 {
  		compatible = "regulator-fixed";
  		regulator-name = "VSD_3V3";
-@@ -103,65 +90,10 @@
+@@ -94,65 +81,10 @@
  		startup-delay-us = <500>;
  	};
  
@@ -236,7 +236,7 @@ index c1332aa6e737..550590eefe0b 100644
  };
  
  &iomuxc {
-@@ -658,36 +590,6 @@
+@@ -651,36 +583,6 @@
  	status = "okay";
  };
  
@@ -273,7 +273,7 @@ index c1332aa6e737..550590eefe0b 100644
  &usdhc2 {
  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
  	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-@@ -723,22 +625,6 @@
+@@ -716,22 +618,6 @@
  	arm-supply = <&buck2_reg>;
  };
  
@@ -296,7 +296,7 @@ index c1332aa6e737..550590eefe0b 100644
  &usbotg1 {
  	dr_mode = "otg";
  	hnp-disable;
-@@ -755,32 +641,6 @@
+@@ -748,32 +634,6 @@
  	status = "okay";
  };
  

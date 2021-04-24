@@ -1,7 +1,7 @@
-From 921d78450e83e05ce78125168cc1062d627d0697 Mon Sep 17 00:00:00 2001
+From dab441de8312de3260286fde844d928bc5cd9fc5 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 17 Aug 2020 22:08:07 +0300
-Subject: [PATCH 31/33] ucm-imx8m-mini: config: Set CONFIG_IMX_SDMA=m for
+Subject: [PATCH 30/35] ucm-imx8m-mini: config: Set CONFIG_IMX_SDMA=m for
  brcm,bcm4330-bt
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>

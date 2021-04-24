@@ -1,7 +1,7 @@
-From 5f7216a8ca2eb98a40be44fc8e7ed7194bf273e7 Mon Sep 17 00:00:00 2001
+From 0f3729428a5a947d519706101a4930dee2297a3f Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 19 Mar 2021 22:45:21 +0200
-Subject: [PATCH 25/29] defconfig: Disable fw user loader helper
+Subject: [PATCH 25/35] defconfig: Disable fw user loader helper
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

@@ -1,7 +1,7 @@
-From 821957abef8da92e9dc88c0b939fcf6476e99be4 Mon Sep 17 00:00:00 2001
+From 9764e29af99c6a29fa1c2223a7acc00af5539b32 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 22 Apr 2021 00:08:07 +0300
-Subject: [PATCH 30/30] ucm-imx8m-mini: dts: Enable brcm,bcm4330-bt
+Subject: [PATCH 29/35] ucm-imx8m-mini: dts: Enable brcm,bcm4330-bt
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 36 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
-index 550590eefe0b..014c88935cb0 100644
+index 2f87103dd9c7..70d6a90d981f 100644
 --- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
 +++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
-@@ -94,6 +94,15 @@
+@@ -85,6 +85,15 @@
  		compatible = "mmc-pwrseq-simple";
  		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
  	};
@@ -28,7 +28,7 @@ index 550590eefe0b..014c88935cb0 100644
  };
  
  &iomuxc {
-@@ -105,9 +114,6 @@
+@@ -96,9 +105,6 @@
  			fsl,pins = <
  				MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10	0x19
  				MX8MM_IOMUXC_NAND_READY_B_GPIO3_IO16	0x190
@@ -38,7 +38,7 @@ index 550590eefe0b..014c88935cb0 100644
  			>;
  		};
  
-@@ -197,7 +203,6 @@
+@@ -188,7 +194,6 @@
  				MX8MM_IOMUXC_ECSPI2_MOSI_UART4_DCE_TX    0x140
  				MX8MM_IOMUXC_ECSPI2_SS0_UART4_DCE_RTS_B  0x140
  				MX8MM_IOMUXC_ECSPI2_SCLK_UART4_DCE_RX    0x140
@@ -46,7 +46,7 @@ index 550590eefe0b..014c88935cb0 100644
  			>;
  		};
  
-@@ -373,6 +378,14 @@
+@@ -366,6 +371,14 @@
  				MX8MM_IOMUXC_GPIO1_IO13_PWM2_OUT	0x03
  			>;
  		};
@@ -61,7 +61,7 @@ index 550590eefe0b..014c88935cb0 100644
  	};
  };
  
-@@ -590,6 +603,25 @@
+@@ -583,6 +596,25 @@
  	status = "okay";
  };
  

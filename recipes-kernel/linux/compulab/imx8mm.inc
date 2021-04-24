@@ -26,11 +26,13 @@ SRC_URI_append = " \
 	file://0025-defconfig-Disable-fw-user-loader-helper.patch \
 	file://0026-ucm-imx8m-mini-dts-Fix-usdhc1-node-descriptor.patch \
 	file://0027-rtc-abx80x-Disable-bus-when-powered-from-battery.patch \
-	file://0028-dts-Enable-1V8-modes-on-SD-card.patch \
-	file://0029-Remove-unnecessary-stuff.patch \
-	file://0030-ucm-imx8m-mini-dts-Enable-brcm-bcm4330-bt.patch \
-	file://0031-ucm-imx8m-mini-config-Set-CONFIG_IMX_SDMA-m-for-brcm.patch \
-	file://0032-ucm-imx8m-mini-config-Add-brcm-firmware-to-kernel-bu.patch \
-	file://0033-ucm-dts-Enable-bcm4329-fmac-WiFi.patch \
+	file://0028-Remove-unnecessary-stuff.patch \
+	file://0029-ucm-imx8m-mini-dts-Enable-brcm-bcm4330-bt.patch \
+	file://0030-ucm-imx8m-mini-config-Set-CONFIG_IMX_SDMA-m-for-brcm.patch \
+	file://0031-ucm-imx8m-mini-config-Add-brcm-firmware-to-kernel-bu.patch \
+	file://0032-ucm-dts-Enable-bcm4329-fmac-WiFi.patch \
+	file://0033-ucm-dts-Fix-voltage-on-USDHC1.patch \
+	file://0034-ucm-defconfig-Clean-regulators.patch \
+	file://0035-ucm-defconfig-Enable-rfkill.patch \
 	file://defconfig \
 "
