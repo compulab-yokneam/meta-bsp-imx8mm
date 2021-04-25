@@ -34,5 +34,6 @@ SRC_URI_append = " \
 	file://0033-ucm-dts-Fix-voltage-on-USDHC1.patch \
 	file://0034-ucm-defconfig-Clean-regulators.patch \
 	file://0035-ucm-defconfig-Enable-rfkill.patch \
+	file://0036-ucm-Enable-display-kd050hdfia020-with-touchscreen.patch \
 	file://defconfig \
 "
