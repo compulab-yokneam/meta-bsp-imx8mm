@@ -1,0 +1,113 @@
+From 4fed89aa2a815c2f1db821dc349ba84f592133ad Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 27 Apr 2021 00:25:17 +0300
+Subject: [PATCH 38/38] dts: Enable ov5640 camera and VPU
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi | 58 ++++++++++++++++++++++
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi   | 12 +++++
+ 2 files changed, 70 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+index 045aa9df5f32..b232079cd82b 100644
+--- a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
++++ b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+@@ -70,6 +70,34 @@
+ 	pinctrl-0 = <&pinctrl_i2c4>;
+ 	status = "okay";
+ 
++	ov5640_mipi: ov5640_mipi@3c {
++		compatible = "ovti,ov5640_mipi";
++		reg = <0x3c>;
++		status = "okay";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_csi1>;
++		clocks = <&clk IMX8MM_CLK_CLKO1>;
++		clock-names = "csi_mclk";
++		assigned-clocks = <&clk IMX8MM_CLK_CLKO1>;
++		assigned-clock-parents = <&clk IMX8MM_CLK_24M>;
++		assigned-clock-rates = <0>, <24000000>;
++		csi_id = <0>;
++		/*
++		To be looked into & fixed
++		As of now the device is alwas out of reset & under the power
++		*/
++		pwn-gpios = <&pca9555 8 GPIO_ACTIVE_LOW>;
++		rst-gpios = <&pca9555 3 GPIO_ACTIVE_HIGH>;
++
++		mclk = <24000000>;
++		mclk_source = <0>;
++		port {
++			ov5640_mipi1_ep: endpoint {
++				remote-endpoint = <&mipi1_sensor_ep>;
++			};
++		};
++	};
++
+ 	goodix_ts@5d {
+ 		compatible = "goodix,gt911";
+ 		reg = <0x5d>;
+@@ -86,6 +114,36 @@
+ 	};
+ };
+ 
++&mipi_csi_1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++	port {
++		mipi1_sensor_ep: endpoint@1 {
++			remote-endpoint = <&ov5640_mipi1_ep>;
++			data-lanes = <2>;
++			csis-hs-settle = <13>;
++			csis-clk-settle = <2>;
++			csis-wclk;
++		};
++
++		csi1_mipi_ep: endpoint@2 {
++			remote-endpoint = <&csi1_ep>;
++		};
++	};
++};
++
++&csi1_bridge {
++	fsl,mipi-mode;
++	status = "okay";
++
++	port {
++		csi1_ep: endpoint {
++			remote-endpoint = <&csi1_mipi_ep>;
++		};
++	};
++};
++
+ &mipi_dsi {
+ 	status = "okay";
+ 	panel: panel@0 {
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index a596f87bbefb..91af4e6c5295 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -701,6 +701,18 @@
+ 	status = "okay";
+ };
+ 
++&vpu_g1 {
++	status = "okay";
++};
++
++&vpu_g2 {
++	status = "okay";
++};
++
++&vpu_h1 {
++	status = "okay";
++};
++
+ &usbotg1 {
+ 	dr_mode = "otg";
+ 	hnp-disable;
+-- 
+2.11.0
+

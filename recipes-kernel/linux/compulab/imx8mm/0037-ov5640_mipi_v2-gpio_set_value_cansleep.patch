@@ -1,0 +1,42 @@
+From eaffc3ff6251515780f8b855ad7bb33ffaaddb53 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 27 Apr 2021 00:24:42 +0300
+Subject: [PATCH 37/38] ov5640_mipi_v2: gpio_set_value_cansleep
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ drivers/media/platform/mxc/capture/ov5640_mipi_v2.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c b/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
+index a22a242760a0..79fba29395b4 100644
+--- a/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
++++ b/drivers/media/platform/mxc/capture/ov5640_mipi_v2.c
+@@ -548,19 +548,19 @@ static void ov5640_reset(struct ov5640 *sensor)
+ 		return;
+ 
+ 	/* camera reset */
+-	gpio_set_value(sensor->rst_gpio, 1);
++	gpio_set_value_cansleep(sensor->rst_gpio, 1);
+ 
+ 	/* camera power dowmn */
+-	gpio_set_value(sensor->pwn_gpio, 1);
++	gpio_set_value_cansleep(sensor->pwn_gpio, 1);
+ 	msleep(5);
+ 
+-	gpio_set_value(sensor->rst_gpio, 0);
++	gpio_set_value_cansleep(sensor->rst_gpio, 0);
+ 	msleep(1);
+ 
+-	gpio_set_value(sensor->pwn_gpio, 0);
++	gpio_set_value_cansleep(sensor->pwn_gpio, 0);
+ 	msleep(5);
+ 
+-	gpio_set_value(sensor->rst_gpio, 1);
++	gpio_set_value_cansleep(sensor->rst_gpio, 1);
+ 	msleep(5);
+ }
+ 
+-- 
+2.11.0
+
