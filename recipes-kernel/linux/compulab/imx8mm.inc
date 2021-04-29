@@ -37,5 +37,6 @@ SRC_URI_append = " \
 	file://0036-ucm-Enable-display-kd050hdfia020-with-touchscreen.patch \
 	file://0037-ov5640_mipi_v2-gpio_set_value_cansleep.patch \
 	file://0038-dts-Enable-ov5640-camera-and-VPU.patch \
+	file://0039-ucm-Enable-wm8731-audiocodec.patch \
 	file://defconfig \
 "
