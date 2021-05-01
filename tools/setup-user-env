@@ -16,6 +16,15 @@ EOP
 fi
 }
 
+optee=( yes no )
+cfg_optee() {
+if [[ $1 == "yes" ]];then
+cat << EOP >> ${user_local_conf}
+MACHINE_FEATURES_append += " optee "
+EOP
+fi
+}
+
 rootfs=( ro rw )
 cfg_rootfs() {
 if [[ $1 == "ro" ]];then
@@ -25,7 +34,7 @@ EOP
 fi
 }
 
-declare -A ARRAYNAME=( [chrome]="yes" [rootfs]="rw" )
+declare -A ARRAYNAME=( [chrome]="yes" [rootfs]="rw" [optee]="no" )
 
 cat << EOG
 --- Users' Configurations started ---

@@ -5,7 +5,7 @@ SOC_DEFAULT_WKS_FILE = "imx-imx-boot-bootpart.wks.in"
 require conf/machine/include/imx-base.inc
 require conf/machine/include/tune-cortexa53.inc
 
-MACHINE_FEATURES += " pci wifi bluetooth optee "
+MACHINE_FEATURES += " pci wifi bluetooth "
 
 SPL_BINARY = "spl/u-boot-spl.bin"
 
