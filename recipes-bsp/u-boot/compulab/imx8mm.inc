@@ -97,4 +97,7 @@ SRC_URI_append = " \
 	file://0095-drivers-video-Add-startek-ili9881c-panel-driver.patch \
 	file://0096-cpl-imx8m-mini-Enable-startek-ili9881c-panel-support.patch \
 	file://0097-u-m-cm-imx8m-mini-config-Enable-startek-ili9881c.patch \
+	file://0098-mcm-imx8m-mini-Enable-EFI.patch \
+	file://0099-imx8m-mini-Add-USB_BOOT-support.patch \
+	file://0100-mcm-imx8m-mini-config-Update-for-SDP.patch \
 "
