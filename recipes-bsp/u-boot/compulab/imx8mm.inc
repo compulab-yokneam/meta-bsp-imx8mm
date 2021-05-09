@@ -100,4 +100,5 @@ SRC_URI_append = " \
 	file://0098-mcm-imx8m-mini-Enable-EFI.patch \
 	file://0099-imx8m-mini-Add-USB_BOOT-support.patch \
 	file://0100-mcm-imx8m-mini-config-Update-for-SDP.patch \
+	file://0101-mcm-imx8m-mini-config-Disable-CONFIG_DM_USB_GADGET.patch \
 "
