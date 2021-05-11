@@ -30,5 +30,5 @@ MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source sources/meta-bsp-imx8
 ```
 ## 2.3 Build image
 ```
-bitbake -k fsl-image-qt5-validation-imx
+bitbake -k compulab-ucm-imx8m-mini
 ```
