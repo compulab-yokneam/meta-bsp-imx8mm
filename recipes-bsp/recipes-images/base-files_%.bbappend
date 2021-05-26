@@ -1,7 +1,7 @@
 DESCRIPTION = "CompuLab release info."
 LICENSE = "MIT"
 
-export CL_RELEASE='2.0'
+include releasenum.inc
 
 do_install_append() {
     for i in issue issue.net; do
