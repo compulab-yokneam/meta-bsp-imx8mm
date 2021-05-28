@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CONF=/etc/fw_env.config
-PREFIX=/sbin
+PREFIX=/usr/local/bin
 
 force_rw() {
 for _d in $(awk '(/^\/dev\//)&&($0=$1)' ${CONF});do
