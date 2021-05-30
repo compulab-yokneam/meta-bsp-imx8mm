@@ -1,7 +1,7 @@
 From b7f1b5c6bda7ef9eb3d728766730a63fa9c05cc2 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 08:12:43 +0300
-Subject: [PATCH 049/108] mcm-imx8m-mini: Set EXTRAVERSION
+Subject: [PATCH 049/111] mcm-imx8m-mini: Set EXTRAVERSION
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

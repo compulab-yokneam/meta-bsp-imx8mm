@@ -1,7 +1,7 @@
 From dbbdcde360a3429d3e9dcbea3e475a125e2454f2 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sat, 18 Jul 2020 13:23:00 +0300
-Subject: [PATCH 070/108] imx8mm: plat: Add the common board file for imx8mm
+Subject: [PATCH 070/111] imx8mm: plat: Add the common board file for imx8mm
  SoC
 
 Add the common board file for imx8mm SoC.

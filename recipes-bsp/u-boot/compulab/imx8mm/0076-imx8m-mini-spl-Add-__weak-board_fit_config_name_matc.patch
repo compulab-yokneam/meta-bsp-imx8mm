@@ -1,7 +1,7 @@
 From 7bdaf9b38500bc61710441be9d8c18ff5d220591 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 5 Aug 2020 00:20:44 +0300
-Subject: [PATCH 076/108] imx8m-mini: spl: Add __weak
+Subject: [PATCH 076/111] imx8m-mini: spl: Add __weak
  board_fit_config_name_match()
 
 Add __weak board_fit_config_name_match().

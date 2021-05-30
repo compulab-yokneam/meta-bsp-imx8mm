@@ -1,7 +1,7 @@
 From 056a24dd1086f6b77b08933aef039d6b0908d229 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Thu, 9 Jul 2020 22:58:39 +0300
-Subject: [PATCH 054/108] mcm-imx8m-mini: Add board_usb_init() and
+Subject: [PATCH 054/111] mcm-imx8m-mini: Add board_usb_init() and
  board_usb_cleanup()
 
 Enable power on/off usb power in U-Boot.

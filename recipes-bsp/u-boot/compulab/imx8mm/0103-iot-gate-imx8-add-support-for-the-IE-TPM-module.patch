@@ -1,7 +1,7 @@
 From c1d88828b91fa982f0581287cc447ea4bee88085 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 8 Dec 2020 14:01:07 +0200
-Subject: [PATCH 103/108] iot-gate-imx8: add support for the IE-TPM module
+Subject: [PATCH 103/111] iot-gate-imx8: add support for the IE-TPM module
 
 Module description:
 TPM 2.0, implemented with Infineon SLB9670.

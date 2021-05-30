@@ -1,7 +1,7 @@
 From 5c5c1223fdc5f82b1c240a35a87b8c06ff50663a Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 17 Jun 2020 17:58:35 +0300
-Subject: [PATCH 041/108] Fix memory size initialisation
+Subject: [PATCH 041/111] Fix memory size initialisation
 
 The u-boot sets correct memory bank sizes.
 Note: OP-TEE support is disabled.

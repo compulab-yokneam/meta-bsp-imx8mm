@@ -1,7 +1,7 @@
 From 42456d268500f11f9ad4585f592f7b990e9e159a Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 17:13:29 +0300
-Subject: [PATCH 051/108] mcm-imx8m-mini: config: Update .h config
+Subject: [PATCH 051/111] mcm-imx8m-mini: config: Update .h config
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

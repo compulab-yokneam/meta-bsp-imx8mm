@@ -1,7 +1,7 @@
 From 982ab34cbb6ad872922417f7ef2873ee0952fc2a Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 6 Dec 2020 17:53:52 +0200
-Subject: [PATCH 101/108] rtc: Disable bus when powered from battery
+Subject: [PATCH 101/111] rtc: Disable bus when powered from battery
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

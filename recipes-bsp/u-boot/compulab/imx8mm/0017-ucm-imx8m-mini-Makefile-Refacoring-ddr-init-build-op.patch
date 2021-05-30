@@ -1,7 +1,7 @@
 From e93cf34a2adc5b0de9d1d14feb018783677ae2da Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 26 May 2020 21:33:48 +0300
-Subject: [PATCH 017/108] ucm-imx8m-mini: Makefile: Refacoring ddr init build
+Subject: [PATCH 017/111] ucm-imx8m-mini: Makefile: Refacoring ddr init build
  option
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>

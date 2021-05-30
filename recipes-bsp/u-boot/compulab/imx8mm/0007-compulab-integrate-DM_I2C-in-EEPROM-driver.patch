@@ -1,7 +1,7 @@
 From 399e6838a5ee23b022c62fe3433d44a2623d2786 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 26 May 2020 21:17:29 +0300
-Subject: [PATCH 007/108] compulab: integrate DM_I2C in EEPROM driver
+Subject: [PATCH 007/111] compulab: integrate DM_I2C in EEPROM driver
 
 CompuLab's EEPROM driver is enabled only for CONFIG_SYS_I2C.
 Update the  enabling condition of the driver to CONFIG_SYS_I2C or

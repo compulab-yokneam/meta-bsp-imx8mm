@@ -1,7 +1,7 @@
 From 020ac05923a9fbeb54ac2fc0f5a07104ec2087a5 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 16 Aug 2020 19:03:16 +0300
-Subject: [PATCH 095/108] imx8mm: enable prompt update in sub-projects
+Subject: [PATCH 095/111] imx8mm: enable prompt update in sub-projects
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

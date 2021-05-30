@@ -1,7 +1,7 @@
 From ab1d4582dc4468c8225dc7190c24dc452882b8e3 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 27 Mar 2019 13:28:51 +0200
-Subject: [PATCH 013/108] ucm-imx8m-mini: defconfig: Disable CONFIG_NXP_TMU
+Subject: [PATCH 013/111] ucm-imx8m-mini: defconfig: Disable CONFIG_NXP_TMU
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

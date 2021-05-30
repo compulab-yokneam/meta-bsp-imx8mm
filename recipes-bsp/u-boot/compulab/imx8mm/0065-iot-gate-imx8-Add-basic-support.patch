@@ -1,7 +1,7 @@
 From 24677d64653cb224056d19e16f3bed0f57a41bce Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 15 Jul 2020 14:38:59 +0300
-Subject: [PATCH 065/108] iot-gate-imx8: Add basic support
+Subject: [PATCH 065/111] iot-gate-imx8: Add basic support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

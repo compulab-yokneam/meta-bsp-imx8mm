@@ -1,7 +1,7 @@
 From 69f536f7229a9f751b3502eff0199726100ed770 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 17:28:54 +0300
-Subject: [PATCH 052/108] mcm-imx8m-mini: spl: Update the board spl
+Subject: [PATCH 052/111] mcm-imx8m-mini: spl: Update the board spl
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

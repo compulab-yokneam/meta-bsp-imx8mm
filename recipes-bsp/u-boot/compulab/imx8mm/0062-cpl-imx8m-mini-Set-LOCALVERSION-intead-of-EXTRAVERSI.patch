@@ -1,7 +1,7 @@
 From 77a9916906d9f571c26e8b1b29eccff7dea4af22 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 15 Jul 2020 08:58:22 +0300
-Subject: [PATCH 062/108] cpl-imx8m-mini: Set LOCALVERSION intead of
+Subject: [PATCH 062/111] cpl-imx8m-mini: Set LOCALVERSION intead of
  EXTRAVERSION
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>

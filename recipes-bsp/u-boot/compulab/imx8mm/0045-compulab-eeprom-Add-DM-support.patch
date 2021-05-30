@@ -1,7 +1,7 @@
 From 83372f28d96a6bc15410093278ffa2951cab1f0c Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 08:03:28 +0300
-Subject: [PATCH 045/108] compulab: eeprom: Add DM support
+Subject: [PATCH 045/111] compulab: eeprom: Add DM support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

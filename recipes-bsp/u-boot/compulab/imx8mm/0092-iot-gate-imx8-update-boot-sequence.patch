@@ -1,7 +1,7 @@
 From 8a98fbf249e54a2ba3281704306589d6712983ef Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 16 Aug 2020 18:35:03 +0300
-Subject: [PATCH 092/108] iot-gate-imx8: update boot sequence
+Subject: [PATCH 092/111] iot-gate-imx8: update boot sequence
 
 Remove the SD card from the boot sequence.
 Remove the network boot option.

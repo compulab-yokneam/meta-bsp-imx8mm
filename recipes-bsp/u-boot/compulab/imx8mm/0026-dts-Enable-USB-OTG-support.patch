@@ -1,7 +1,7 @@
 From 692344130d6ea033f30de85d877c6e9ca8feedb2 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 31 Aug 2019 20:18:05 +0300
-Subject: [PATCH 026/108] dts: Enable USB OTG support
+Subject: [PATCH 026/111] dts: Enable USB OTG support
 
 Enable USB OTG support, necessary for USB load and UMS.
 

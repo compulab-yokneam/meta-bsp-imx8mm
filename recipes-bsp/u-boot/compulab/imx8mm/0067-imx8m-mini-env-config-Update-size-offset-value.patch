@@ -1,7 +1,7 @@
 From 15c528ece79baa86ff9ada1e3206caadf83bcf31 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 15 Jul 2020 15:27:37 +0300
-Subject: [PATCH 067/108] imx8m-mini: env: config: Update size/offset value
+Subject: [PATCH 067/111] imx8m-mini: env: config: Update size/offset value
 
 Update size/offset value for CompuLab imx8m-mini boards
 
