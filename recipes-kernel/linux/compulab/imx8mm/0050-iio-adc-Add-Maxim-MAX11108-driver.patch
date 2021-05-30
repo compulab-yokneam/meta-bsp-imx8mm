@@ -1,7 +1,7 @@
 From 8214556eb2b36d7c80da23e8f5586df335a6a06c Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Thu, 21 Jan 2021 17:17:34 +0200
-Subject: [PATCH 50/55] iio: adc: Add Maxim MAX11108 driver
+Subject: [PATCH 50/64] iio: adc: Add Maxim MAX11108 driver
 
 Add iio driver for Maxim MAX11108 single-channel ADC.
 

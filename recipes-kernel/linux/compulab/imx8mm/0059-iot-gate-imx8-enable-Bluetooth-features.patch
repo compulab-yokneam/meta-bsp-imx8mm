@@ -1,0 +1,31 @@
+From 4b20654ed137a842bb9c11a9b4a1f28e08bb2679 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Sun, 23 May 2021 17:38:32 +0300
+Subject: [PATCH 59/64] iot-gate-imx8: enable Bluetooth features
+
+Enable the following features:
+* BLE physical layer, available with Bluetooth version 4.0 or later.
+* Export Bluetooth internals in debugfs.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 430e29b689cb..9c065c5bba0d 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -224,9 +224,7 @@ CONFIG_BT_BNEP_MC_FILTER=y
+ CONFIG_BT_BNEP_PROTO_FILTER=y
+ CONFIG_BT_HIDP=y
+ # CONFIG_BT_HS is not set
+-# CONFIG_BT_LE is not set
+ CONFIG_BT_LEDS=y
+-# CONFIG_BT_DEBUGFS is not set
+ CONFIG_BT_HCIBTUSB=m
+ # CONFIG_BT_HCIBTUSB_BCM is not set
+ # CONFIG_BT_HCIBTUSB_RTL is not set
+-- 
+2.11.0
+

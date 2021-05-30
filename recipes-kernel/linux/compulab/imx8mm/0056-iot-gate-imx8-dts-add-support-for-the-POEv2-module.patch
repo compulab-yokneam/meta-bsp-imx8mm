@@ -1,0 +1,101 @@
+From 42c39bdd52b1add765de000a41e9404f4c89d56e Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 11 May 2021 10:05:49 +0300
+Subject: [PATCH 56/64] iot-gate-imx8: dts: add support for the POEv2 module
+
+The POE module implements a USB to Ethernet.
+A USB MUX on the baseboard is set to route one of the USB interfaces to
+the module, disabling one of the external USB interfaces.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/Makefile              |  1 +
+ .../arm64/boot/dts/compulab/sb-iotgimx8-poedv2.dts | 64 ++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/compulab/sb-iotgimx8-poedv2.dts
+
+diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
+index 4a2ce1347f8c..20e1be58c6a3 100644
+--- a/arch/arm64/boot/dts/compulab/Makefile
++++ b/arch/arm64/boot/dts/compulab/Makefile
+@@ -8,6 +8,7 @@ dtb-$(CONFIG_ARCH_MXC) += sb-iotgimx8-can.dtb
+ dtb-$(CONFIG_ARCH_MXC) += sb-iotgimx8-ied.dtb
+ dtb-$(CONFIG_ARCH_MXC) += sb-iotgimx8-ied-m4.dtb
+ dtb-$(CONFIG_ARCH_MXC) += sb-iotgimx8-poed.dtb
++dtb-$(CONFIG_ARCH_MXC) += sb-iotgimx8-poedv2.dtb
+ 
+ always         := $(dtb-y)
+ subdir-y       := $(dts-dirs)
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8-poedv2.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8-poedv2.dts
+new file mode 100644
+index 000000000000..db46ab7d1985
+--- /dev/null
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8-poedv2.dts
+@@ -0,0 +1,64 @@
++/*
++ * Copyright (C) 2021 CompuLab Ltd.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ */
++
++#include "sb-iotgimx8.dts"
++
++/ {
++	model = "CompuLab SB-IOTGIMX8 board + IE-POED-v2 extension";
++	compatible = "sb-iotgimx8-poedv2", "sb-iotgimx8", "cpl,ucm-imx8m-mini", "fsl,imx8mm";
++
++	regulator-usbmux-mod {
++		compatible = "regulator-fixed";
++		regulator-name = "usbmux_mod";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio5 1 GPIO_ACTIVE_HIGH>;
++		regulator-always-on;
++		enable-active-high;
++	};
++};
++
++&i2c4 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c4>;
++	status = "okay";
++
++	eeprom@51 {
++		compatible = "atmel,24c02";
++		reg = <0x51>;
++		pagesize = <16>;
++	};
++};
++
++&iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog_sb_iotgimx8_poedv2>;
++
++	sb-iotgimx8-poedv2 {
++		pinctrl_hog_sb_iotgimx8_poedv2: hoggrp_sb-iotgimx8-poedv2 {
++			fsl,pins = <
++				/* USB_MUX */
++				MX8MM_IOMUXC_SAI3_TXD_GPIO5_IO1		0x00000140
++			>;
++		};
++
++		pinctrl_i2c4: i2c4grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_I2C4_SCL_I2C4_SCL		0x400001c3
++				MX8MM_IOMUXC_I2C4_SDA_I2C4_SDA		0x400001c3
++			>;
++		};
++	};
++};
+-- 
+2.11.0
+

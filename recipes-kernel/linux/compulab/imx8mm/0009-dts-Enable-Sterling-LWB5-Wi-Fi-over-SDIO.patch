@@ -1,7 +1,7 @@
 From 4d04d2f2b5a7436120deaa496c157344c2ea4958 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 13 Feb 2019 22:08:03 +0200
-Subject: [PATCH 09/55] dts: Enable Sterling-LWB5 Wi-Fi over SDIO
+Subject: [PATCH 09/64] dts: Enable Sterling-LWB5 Wi-Fi over SDIO
 
 	Enable Wi-Fi over SDIO using Sterling-LWB5 Dual-Band 802.11ac Wi-Fi +
 	Bluetooth v4.2 Combo Module.

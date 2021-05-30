@@ -1,7 +1,7 @@
 From d61b5fc13a3989d4f75bbe886b07ee5b5ee4561e Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 4 Nov 2020 10:46:31 +0200
-Subject: [PATCH 39/55] iot-gate-imx8: defconfig: enable FTDI USB to serial
+Subject: [PATCH 39/64] iot-gate-imx8: defconfig: enable FTDI USB to serial
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

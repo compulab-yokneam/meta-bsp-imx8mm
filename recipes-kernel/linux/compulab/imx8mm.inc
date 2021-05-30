@@ -55,5 +55,14 @@ SRC_URI_append = " \
 	file://0053-iot-gate-imx8-set-system-time-from-RTC-on-startup.patch \
 	file://0054-iot-gate-imx8-dts-add-M4-support.patch \
 	file://0055-iot-gate-imx8-release-2.4.patch \
+	file://0056-iot-gate-imx8-dts-add-support-for-the-POEv2-module.patch \
+	file://0057-iot-gate-imx8-integrate-the-USB-to-Ethernet-drivers-.patch \
+	file://0058-iot-gate-imx8-enable-the-nftables-feature.patch \
+	file://0059-iot-gate-imx8-enable-Bluetooth-features.patch \
+	file://0060-iot-gate-imx8-dts-add-wakeup-sources.patch \
+	file://0061-iot-gate-imx8-enable-setting-the-RTC-time-based-on-N.patch \
+	file://0062-can-dev-Move-device-back-to-init-netns-on-owning-net.patch \
+	file://0063-iot-gate-imx8-can-enable-Broadcast-Manager-CAN-Proto.patch \
+	file://0064-iot-gate-imx8-release-2.5.patch \
 	file://defconfig \
 "

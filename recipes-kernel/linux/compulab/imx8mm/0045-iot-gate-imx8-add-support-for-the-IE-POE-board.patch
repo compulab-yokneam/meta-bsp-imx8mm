@@ -1,7 +1,7 @@
 From 6ad9aa139bbbd5ca7cb0be0656a24a7f051f5eec Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Thu, 3 Dec 2020 17:44:00 +0200
-Subject: [PATCH 45/55] iot-gate-imx8: add support for the IE-POE board
+Subject: [PATCH 45/64] iot-gate-imx8: add support for the IE-POE board
 
 Power Over Ethernet board features:
 * 10/100Base-T port.

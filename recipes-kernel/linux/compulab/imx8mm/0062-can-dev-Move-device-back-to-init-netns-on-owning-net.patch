@@ -1,0 +1,48 @@
+From 0265930309f11c780cf036e0ecc31c92afc87b5d Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Sun, 6 Jun 2021 18:17:37 +0300
+Subject: [PATCH 62/64] can: dev: Move device back to init netns on owning
+ netns delete
+
+When a non-initial netns is destroyed, the usual policy is to delete
+all virtual network interfaces contained, but move physical interfaces
+back to the initial netns. This keeps the physical interface visible on
+the system.
+
+CAN devices are somewhat special, as they define rtnl_link_ops even
+if they are physical devices. If a CAN interface is moved into a
+non-initial netns, destroying that netns lets the interface vanish
+instead of moving it back to the initial netns.
+default_device_exit()
+skips CAN interfaces due to having rtnl_link_ops set. Reproducer:
+
+  ip netns add foo
+  ip link set can0 netns foo
+  ip netns delete foo
+
+Prevent skipping the CAN interfaces when destoing netns.
+
+Commit sources:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v5.13-rc4&id=3a5ca857079ea022e0b1b17fc154f7ad7dbc150f
+https://www.spinics.net/lists/linux-can/msg03852.html
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ net/core/dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index db8c229e0f4a..285ede1b3387 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -10051,7 +10051,7 @@ static void __net_exit default_device_exit(struct net *net)
+ 			continue;
+ 
+ 		/* Leave virtual devices for the generic cleanup */
+-		if (dev->rtnl_link_ops)
++		if ((dev->rtnl_link_ops) && (dev->type != ARPHRD_CAN))
+ 			continue;
+ 
+ 		/* Push remaining network devices to init_net */
+-- 
+2.11.0
+

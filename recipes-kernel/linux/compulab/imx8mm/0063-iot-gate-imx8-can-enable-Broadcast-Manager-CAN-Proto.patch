@@ -1,9 +1,8 @@
-From 5457f06ae38d993d619688e57da2e4c805034adb Mon Sep 17 00:00:00 2001
+From 941777f257edfdc0f91aec3822cba9cb1453ecdb Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
-Date: Tue, 2 Feb 2021 12:36:36 +0200
-Subject: [PATCH 48/64] iot-gate-imx8: can: update driver
-
-Enable the updated CAN driver.
+Date: Tue, 8 Jun 2021 10:48:13 +0300
+Subject: [PATCH 63/64] iot-gate-imx8: can: enable Broadcast Manager CAN
+ Protocol
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
@@ -11,18 +10,18 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
-index 81e775daa209..76df0d9109b1 100644
+index 050e528b65bc..3668cb933717 100644
 --- a/arch/arm64/configs/iot-gate-imx8_defconfig
 +++ b/arch/arm64/configs/iot-gate-imx8_defconfig
-@@ -127,7 +127,7 @@ CONFIG_BPF_JIT=y
+@@ -213,7 +213,7 @@ CONFIG_TSN=y
+ CONFIG_NET_SWITCHDEV=y
+ CONFIG_BPF_JIT=y
  CONFIG_CAN=y
- # CONFIG_CAN_BCM is not set
+-# CONFIG_CAN_BCM is not set
++CONFIG_CAN_BCM=m
  # CONFIG_CAN_GW is not set
--CONFIG_CAN_MCP25XXFD=m
-+CONFIG_CAN_MCP251XFD=m
+ CONFIG_CAN_MCP251XFD=m
  CONFIG_BT=y
- CONFIG_BT_RFCOMM=y
- CONFIG_BT_RFCOMM_TTY=y
 -- 
 2.11.0
 
