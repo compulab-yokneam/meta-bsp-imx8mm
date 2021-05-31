@@ -1,8 +1,6 @@
 DESCRIPTION = "CompuLab release info."
 LICENSE = "MIT"
 
-include releasenum.inc
-
 do_install_append() {
     for i in issue issue.net; do
 	sed -e "/^Compulab Release/d" -i ${D}/etc/$i
