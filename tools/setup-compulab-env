@@ -47,7 +47,7 @@ eof
 mod_local() {
 # Modify local.conf
 CORE_IMAGE_EXTRA_INSTALL+=" dhcp-client memtester cl-uboot cl-deploy cl-launcher cl-stest cl-camera u-boot-fw-utils imx-gpu-viv-demos"
-CORE_IMAGE_EXTRA_INSTALL+=" htop iotop tmux iperf3 wvdial"
+CORE_IMAGE_EXTRA_INSTALL+=" htop iotop tmux iperf3 wvdial libgpiod"
 CORE_IMAGE_EXTRA_INSTALL+=" ${EXTRA_MACHINE_INSTALL[${MACHINE}]}"
 IMAGE_FEATURES+=" package-management ssh-server-openssh "
 cat << eof | tee -a ${LOCAL_CONF} > /dev/null
