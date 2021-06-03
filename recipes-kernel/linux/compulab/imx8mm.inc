@@ -77,5 +77,6 @@ SRC_URI_append = " \
 	file://0076-ucm-imx8m-mini-dts-Add-nousb-device-tree.patch \
 	file://0077-ucm-imx8m-mini-config-Disable-FB_EFI-support.patch \
 	file://0078-mcm-imx8m-mini-config-Disable-FB_EFI-support.patch \
+	file://0079-mcm-imx8m-mini-Add-input-sample-dts.patch \
 	file://defconfig \
 "
