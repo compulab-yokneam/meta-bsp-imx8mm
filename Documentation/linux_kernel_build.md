@@ -21,12 +21,7 @@ Define the following environment variables:
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [Linaro tool chain](https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/)
-* Set environment variables:
-<pre>
-export ARCH=arm64
-export CROSS_COMPILE=/usr/bin/aarch64-linux-gnu-
-</pre>
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/rel_imx_5.4.70_2.3.0-stable/Documentation/toolchain.md)
 * Create a folder to organize the files:
 <pre>
 mkdir imx8mm
