@@ -30,14 +30,3 @@ bitbake -k fsl-image-qt5-validation-imx
 * This example shows how to build the CompuLab board bootloader only:
 [source,console]
 bitbake -k imx-boot
-
-# UUU
-Refer to the https://github.com/NXPmicro/mfgtools[`mfgtools`] for details about the tool
-
-## Download bootloader
-[source,console]
-sudo uuu -d -v ${BUILDDIR}/tmp/deploy/images/${COMPULAB_MACHINE}/imx-boot-iot-gate-imx8-sd.bin-flash_evk
-
-## Burn bootloader into emmc
-[source,console]
-sudo uuu -v -b emmc ${BUILDDIR}/tmp/deploy/images/${COMPULAB_MACHINE}/imx-boot-iot-gate-imx8-sd.bin-flash_evk
