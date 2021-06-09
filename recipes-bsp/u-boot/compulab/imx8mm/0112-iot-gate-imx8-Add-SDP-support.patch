@@ -1,0 +1,127 @@
+From 6228d41104fec01f622f0a88e37fa88049689f82 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 7 Jun 2021 07:58:31 +0300
+Subject: [PATCH] iot-gate-imx8: Add SDP support
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/dts/iot-gate-imx8.dts       |  3 +--
+ board/compulab/plat/imx8mm/spl/spl.c | 14 ++++++++++++++
+ configs/iot-gate-imx8_defconfig      | 13 +++++++++----
+ 3 files changed, 24 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/dts/iot-gate-imx8.dts b/arch/arm/dts/iot-gate-imx8.dts
+index f9d0793a47..57d1a5cc7d 100644
+--- a/arch/arm/dts/iot-gate-imx8.dts
++++ b/arch/arm/dts/iot-gate-imx8.dts
+@@ -63,8 +63,7 @@
+ };
+ 
+ &usbotg1 {
+-	vbus-supply = <&reg_vusb_5v>;
+-	dr_mode = "host";
++	dr_mode = "peripheral";
+ 	status = "okay";
+ };
+ 
+diff --git a/board/compulab/plat/imx8mm/spl/spl.c b/board/compulab/plat/imx8mm/spl/spl.c
+index 325d6b6a5f..af47a96634 100644
+--- a/board/compulab/plat/imx8mm/spl/spl.c
++++ b/board/compulab/plat/imx8mm/spl/spl.c
+@@ -20,10 +20,21 @@
+ #include <asm/mach-imx/mxc_i2c.h>
+ #include <fsl_esdhc_imx.h>
+ #include <mmc.h>
++#include <usb.h>
+ #include "ddr/ddr.h"
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
++static int _board_phy_mode=USB_INIT_HOST;
++int board_usb_phy_mode(int port)
++{
++	return _board_phy_mode;
++}
++static void board_soft_otg(void)
++{
++	_board_phy_mode=USB_INIT_DEVICE;
++}
++
+ int spl_board_boot_device(enum boot_device boot_dev_spl)
+ {
+ 	switch (boot_dev_spl) {
+@@ -33,6 +44,9 @@ int spl_board_boot_device(enum boot_device boot_dev_spl)
+ 	case SD3_BOOT:
+ 	case MMC3_BOOT:
+ 		return BOOT_DEVICE_MMC2;
++	case USB_BOOT:
++		board_soft_otg();
++		return BOOT_DEVICE_BOARD;
+ 	default:
+ 		return BOOT_DEVICE_NONE;
+ 	}
+diff --git a/configs/iot-gate-imx8_defconfig b/configs/iot-gate-imx8_defconfig
+index c14c5c5581..1fc6ef3527 100644
+--- a/configs/iot-gate-imx8_defconfig
++++ b/configs/iot-gate-imx8_defconfig
+@@ -20,7 +20,6 @@ CONFIG_SPL_LOAD_FIT=y
+ CONFIG_SPL_FIT_GENERATOR="arch/arm/mach-imx/mkimage_fit_atf.sh"
+ CONFIG_OF_SYSTEM_SETUP=y
+ CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/mach-imx/imx8m/imximage-8mm-lpddr4.cfg"
+-CONFIG_CONSOLE_MUX=y
+ CONFIG_DEFAULT_FDT_FILE="sb-iotgimx8-can.dtb"
+ CONFIG_BOARD_LATE_INIT=y
+ CONFIG_ARCH_MISC_INIT=y
+@@ -28,6 +27,9 @@ CONFIG_BOARD_EARLY_INIT_F=y
+ CONFIG_SPL_BOARD_INIT=y
+ CONFIG_SPL_SEPARATE_BSS=y
+ CONFIG_SPL_POWER_SUPPORT=y
++CONFIG_SPL_USB_HOST_SUPPORT=y
++CONFIG_SPL_USB_GADGET=y
++CONFIG_SPL_USB_SDP_SUPPORT=y
+ CONFIG_HUSH_PARSER=y
+ CONFIG_SYS_PROMPT="IOT-GATE-iMX8 => "
+ # CONFIG_BOOTM_NETBSD is not set
+@@ -49,7 +51,6 @@ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_EXT4=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_FS_GENERIC=y
+-CONFIG_EFI_PARTITION=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_DEFAULT_DEVICE_TREE="iot-gate-imx8"
+ CONFIG_ENV_IS_IN_MMC=y
+@@ -59,6 +60,10 @@ CONFIG_REGMAP=y
+ CONFIG_SYSCON=y
+ CONFIG_CLK_COMPOSITE_CCF=y
+ CONFIG_CLK_IMX8MM=y
++CONFIG_USB_FUNCTION_FASTBOOT=y
++CONFIG_FASTBOOT_BUF_ADDR=0x42800000
++CONFIG_FASTBOOT_BUF_SIZE=0x40000000
++CONFIG_FASTBOOT_FLASH=y
+ CONFIG_MXC_GPIO=y
+ CONFIG_CMD_PCA953X=y
+ CONFIG_DM_PCA953X=y
+@@ -84,6 +89,7 @@ CONFIG_DM_THERMAL=y
+ CONFIG_NXP_TMU=y
+ CONFIG_USB=y
+ CONFIG_DM_USB=y
++# CONFIG_DM_USB_GADGET is not set
+ CONFIG_USB_EHCI_HCD=y
+ CONFIG_USB_GADGET=y
+ CONFIG_USB_GADGET_MANUFACTURER="FSL"
+@@ -91,11 +97,10 @@ CONFIG_USB_GADGET_VENDOR_NUM=0x0525
+ CONFIG_USB_GADGET_PRODUCT_NUM=0xa4a5
+ CONFIG_CI_UDC=y
+ CONFIG_SDP_LOADADDR=0x40400000
+-CONFIG_USB_GADGET_DOWNLOAD=y
++CONFIG_USB_FUNCTION_SDP=y
+ CONFIG_USB_HOST_ETHER=y
+ CONFIG_USB_ETHER_ASIX88179=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+ CONFIG_EXT4_WRITE=y
+-CONFIG_FAT_WRITE=y
+ CONFIG_OF_LIBFDT_OVERLAY=y
+ # CONFIG_EFI_LOADER is not set
+-- 
+2.11.0
+
