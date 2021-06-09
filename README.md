@@ -30,3 +30,31 @@ MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source sources/meta-bsp-imx8
 ```
 bitbake -k core-image-full-cmdline
 ```
+
+## 2.4 Build bootloader only
+```
+bitbake -k imx-boot
+```
+
+# UUU
+Refer to the [`mfgtools`](https://github.com/NXPmicro/mfgtools) for details about the tool
+
+Goto ${DEPLOYDIR} first:
+```
+cd ${BUILDDIR}/tmp/deploy/images/${COMPULAB_MACHINE}
+```
+
+## Download bootloader
+```
+sudo uuu -d -v imx-boot-iot-gate-imx8-sd.bin-flash_evk
+```
+
+## Burn bootloader into emmc
+```
+sudo uuu -v -b emmc imx-boot-iot-gate-imx8-sd.bin-flash_evk
+```
+
+## Burn rootfs image into emmc
+```
+sudo uuu -b emmc_all imx-boot-iot-gate-imx8-sd.bin-flash_evk core-image-full-cmdline-iot-gate-imx8.sdcard.bz2
+```
