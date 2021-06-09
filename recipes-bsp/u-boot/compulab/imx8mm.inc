@@ -53,5 +53,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0051-LOCALVERSION-1.3.4.1.patch \
 	file://0052-spl-ddr-Enable-DDR-ID-0x1060008.patch \
 	file://0053-LOCALVERSION-1.3.5.patch \
+	file://0054-Enable-DDR-Samsung-4G.patch
+	file://0055-LOCALVERSION-1.3.6.patch
 	file://ucm-imx8m-mini_defconfig \
 "
