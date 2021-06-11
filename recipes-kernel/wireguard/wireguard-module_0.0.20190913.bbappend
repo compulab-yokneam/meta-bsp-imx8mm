@@ -1,0 +1,4 @@
+PV = "0.0.20191219"
+
+SRC_URI[md5sum] = "5175ca88850993dc88a4c9d924ee79d4"
+SRC_URI[sha256sum] = "5aba6f0c38e97faa0b155623ba594bb0e4bd5e29deacd8d5ed8bda8d8283b0e7"
