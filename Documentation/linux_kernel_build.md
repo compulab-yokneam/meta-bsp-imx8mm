@@ -16,17 +16,12 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP release name|export NXP_RELEASE=rel_imx_5.4.24_2.1.0|
-|CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.24_2.1.0-dev|
+|NXP release name|export NXP_RELEASE=rel_imx_5.4.70_2.3.0|
+|CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.70_2.3.0-dev|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [Linaro tool chain](https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/)
-* Set environment variables:
-<pre>
-export ARCH=arm64
-export CROSS_COMPILE=/usr/bin/aarch64-linux-gnu-
-</pre>
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/rel_imx_5.4.70_2.3.0-dev/Documentation/toolchain.md)
 * Create a folder to organize the files:
 <pre>
 mkdir imx8mm
