@@ -6,4 +6,8 @@ do_compile_preppend () {
     fi
 }
 
+do_compile_append () {
+	dd if=${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/timing.bins of=${S}/${BOOT_CONFIG_MACHINE}-${target} bs=512 seek=$(cat ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/CONFIG_LPDDR4_TIMINGS_BIN_SECTOR)
+}
+
 addtask compile_preppend before do_compile after do_configure
