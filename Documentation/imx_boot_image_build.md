@@ -122,6 +122,16 @@ cd ${SRC_ROOT}/imx-mkimage/iMX8M
 sed "s/\(^dtbs = \).*/\1${MACHINE}.dtb/;s/\(mkimage\)_uboot/\1/;s/\(^TEE_LOAD_ADDR \).*/\1= 0x7e000000/g" soc.mak > Makefile
 make clean
 make flash_evk SOC=iMX8MM
+cd -
+</pre>
+
+## Paste LPDDR timings to the aft of **flash.bin** imx-boot image:
+<pre>
+cat uboot-imx//board/compulab/plat/imx8mm/ddr/*.bin >>timing.bins
+dd if=/dev/zero bs=512 count=1 >>timing.bins
+export $(grep CONFIG_LPDDR4_TIMINGS_BIN_SECTOR uboot-imx/.config)
+dd if=timing.bins of=flash.bin bs=512 seek=$CONFIG_LPDDR4_TIMINGS_BIN_SECTOR
+rm timing.bins
 </pre>
 
 ## Flashing

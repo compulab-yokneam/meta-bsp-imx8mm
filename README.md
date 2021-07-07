@@ -1,5 +1,12 @@
 # Quick Start Guide
 
+# EXPERIMENTAL!
+##ToDo
+* SPD support
+* CRC protection of the timing block
+* Automated generation of .c files and arrays size checking
+
+
 Supported CompuLab machines:
 * ~~`mcm-imx8m-mini`~~
 * `ucm-imx8m-mini`
