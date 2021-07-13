@@ -1,0 +1,59 @@
+#!/bin/bash -e
+
+MACHINE=${MACHINE:-ucm-imx8m-mini}
+DISTRO=${DISTRO:-fsl-imx-xwayland}
+EULA=1
+T="../sources/meta-bsp-imx8mm/templates"
+
+BD=$(cat <<< $@ | awk '$0=$NF')
+
+# To append a file interactively include in the file the following line:
+#;prompt Description of the feature introduced [enabled by default yes/no]
+# To disable a file usage add the following line:
+#;DISABLE
+# Files w/o these lines are to be appended unconditionally
+
+function interactive_config()
+{
+	grep "^#;DISABLE" $1 && return 1
+	$(sed -ne 's/^#;prompt[[:blank:]]*\(.*\)[[:blank:]]*\[.*$/\1/p' $1)
+	local prompt=$(sed -ne 's/^#;prompt[[:blank:]]*\(.*\)[[:blank:]]*\[.*$/\1/p' $1)
+	[[ -z "${prompt}" ]] && return 0 # unconditionally add this file to config
+	
+	local opt_def=$(sed -ne 's/^#;prompt.*\[\(.*\)\]/\1/p' $1)
+	opt_def=${opt_def:-no}
+
+	PS3="$prompt [${opt_def}]?"
+
+	local answer
+	select answer in yes no default; do
+		answer=${answer:-$opt_def}
+		[[ "{answer}" == "default" ]] && answer=${opt_def}
+		[[ $answer == yes ]] && return 0 || return 1
+	done
+}
+
+function add_config_from_file()
+{
+	if interactive_config $1; then
+		sed -e '/#;/d' $1
+	fi
+}
+
+if [[ -d ${BD} ]];then
+
+echo "Back to the build environment ${BD}"
+. setup-environment ${BD}
+
+else
+
+. imx-setup-release.sh $@
+
+for _d in ${T}/*; do
+	_file=$(basename ${_d})
+	for _f in ${_d}/*;do
+		add_config_from_file ${_f} >> conf/${_file}
+	done;
+done
+fi
+
