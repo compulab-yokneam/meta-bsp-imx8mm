@@ -1,0 +1,28 @@
+From 9c604bbf23b9951a1e312f7ebaf8891d740047c6 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Fri, 3 May 2019 23:00:08 +0300
+Subject: [PATCH 23/91] set extended temperature range
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/ucm-imx8m-mini.dts | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index 003cc857df..2e68d13e87 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -478,3 +478,10 @@
+ &usbotg2 {
+ 	status = "disabled";
+ };
++
++&cpu_alert0 {
++	temperature = <105000>;
++};
++&cpu_crit0 {
++	temperature = <115000>;
++};
+-- 
+2.17.1
+

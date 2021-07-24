@@ -1,0 +1,28 @@
+From f7df4f4268aa42a0c3bdce39a9e57db5c912696c Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 22 Jul 2020 22:26:54 +0300
+Subject: [PATCH 69/91] ucm-imx8m-mini: Fix reset
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ configs/ucm-imx8m-mini_defconfig | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
+index f86cc9e942..2a9b39fc29 100644
+--- a/configs/ucm-imx8m-mini_defconfig
++++ b/configs/ucm-imx8m-mini_defconfig
+@@ -78,10 +78,7 @@ CONFIG_PINCTRL_IMX8M=y
+ CONFIG_DM_REGULATOR=y
+ CONFIG_DM_REGULATOR_FIXED=y
+ CONFIG_DM_REGULATOR_GPIO=y
+-CONFIG_DM_RESET=y
+ CONFIG_MXC_UART=y
+-CONFIG_SYSRESET=y
+-CONFIG_SYSRESET_PSCI=y
+ CONFIG_DM_THERMAL=y
+ CONFIG_NXP_TMU=y
+ CONFIG_USB=y
+-- 
+2.17.1
+

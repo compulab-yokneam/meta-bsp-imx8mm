@@ -1,0 +1,29 @@
+From 80f1aafd56528a0405f8409d5c3337fbc1212e43 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Thu, 9 Jul 2020 23:00:55 +0300
+Subject: [PATCH 49/91] mcm-imx8m-mini: dts: Enable usbotg2 in host mode
+
+Make the ubsotg2 work in U-Boot in host mode.
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/dts/mcm-imx8m-mini.dts | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/dts/mcm-imx8m-mini.dts b/arch/arm/dts/mcm-imx8m-mini.dts
+index 2c3723a42c..85f4c46dd7 100644
+--- a/arch/arm/dts/mcm-imx8m-mini.dts
++++ b/arch/arm/dts/mcm-imx8m-mini.dts
+@@ -465,7 +465,8 @@
+ };
+ 
+ &usbotg2 {
+-	status = "disabled";
++	dr_mode = "host";
++	status = "okay";
+ };
+ 
+ &cpu_alert0 {
+-- 
+2.17.1
+

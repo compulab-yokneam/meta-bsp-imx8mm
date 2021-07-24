@@ -1,0 +1,1539 @@
+From 35fad7ed9ddc6485f999fde180a39d81135c18e4 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 19 Jul 2021 01:13:04 +0300
+Subject: [PATCH 55/91] ucm-imx8m-mini: Refactor the code for 2020.04
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/ucm-imx8m-mini.dts               |  30 +-
+ board/compulab/ucm-imx8m-mini/Kconfig         |  25 +-
+ board/compulab/ucm-imx8m-mini/Makefile        |   5 +-
+ board/compulab/ucm-imx8m-mini/spl.c           | 246 +------
+ .../compulab/ucm-imx8m-mini/ucm-imx8m-mini.c  | 692 +-----------------
+ .../compulab/ucm-imx8m-mini/ucm-imx8m-mini.h  |  18 -
+ configs/ucm-imx8m-mini_defconfig              |  88 ++-
+ include/configs/ucm-imx8m-mini.h              |  76 +-
+ 8 files changed, 126 insertions(+), 1054 deletions(-)
+ delete mode 100644 board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
+
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index b191e87755..f2794e74e9 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -14,8 +14,8 @@
+ 
+ /dts-v1/;
+ 
+-#include "fsl-imx8mm.dtsi"
+-
++#include <dt-bindings/usb/pd.h>
++#include "imx8mm.dtsi"
+ 
+ / {
+ 	model = "CompuLab UCM-iMX8M-Mini board";
+@@ -26,12 +26,6 @@
+ 		stdout-patch = &uart3;
+ 	};
+ 
+-	aliases {
+-		mmc0 = &usdhc2;
+-		mmc1 = &usdhc3;
+-		/delete-property/ mmc2;
+-	};
+-
+ 	reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "VSD_3V3";
+@@ -43,17 +37,6 @@
+ 		off-on-delay-us = <12000>;
+ 	};
+ 
+-	uart4: serial@30a60000 {
+-		compatible = "fsl,imx8mq-uart",
+-			     "fsl,imx6q-uart", "fsl,imx21-uart";
+-		reg = <0x0 0x30a60000 0x0 0x10000>;
+-		interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
+-		interrupt-parent = <&gpc>;
+-		clocks = <&clk IMX8MM_CLK_UART4_ROOT>,
+-			<&clk IMX8MM_CLK_UART4_ROOT>;
+-		clock-names = "ipg", "per";
+-		status = "disabled";
+-	};
+ };
+ 
+ &iomuxc {
+@@ -443,12 +426,6 @@
+ 	status = "okay";
+ };
+ 
+-&uart4 { /* console */
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart4>;
+-	status = "okay";
+-};
+-
+ &usdhc2 {
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+@@ -488,7 +465,8 @@
+ };
+ 
+ &usbotg2 {
+-	status = "disabled";
++	dr_mode = "host";
++	status = "okay";
+ };
+ 
+ &cpu_alert0 {
+diff --git a/board/compulab/ucm-imx8m-mini/Kconfig b/board/compulab/ucm-imx8m-mini/Kconfig
+index d687db7686..ed4f21608a 100644
+--- a/board/compulab/ucm-imx8m-mini/Kconfig
++++ b/board/compulab/ucm-imx8m-mini/Kconfig
+@@ -9,26 +9,9 @@ config SYS_VENDOR
+ config SYS_CONFIG_NAME
+ 	default "ucm-imx8m-mini"
+ 
+-choice
+-	prompt "RAM Volume select"
+-	default RAM_2G
+-	help
+-	 This option configures 2G RAM only
++config DEFAULT_DTB
++	string "U-Boot Default Device Tree File"
++	depends on TARGET_UCM_IMX8M_MINI
++	default "sbc-ucm-imx8m-mini.dtb"
+ 
+-config RAM_1G
+-	bool "RAM_1G"
+-	help
+-	 This option configures 1G RAM only
+-
+-config RAM_2G
+-	bool "RAM_2G"
+-	help
+-	 This option configures 2G RAM only
+-
+-config RAM_4G
+-	bool "RAM_4G"
+-	help
+-	 This option configures 4G RAM only
+-
+-endchoice
+ endif
+diff --git a/board/compulab/ucm-imx8m-mini/Makefile b/board/compulab/ucm-imx8m-mini/Makefile
+index f30d5e645a..dbde2116cd 100644
+--- a/board/compulab/ucm-imx8m-mini/Makefile
++++ b/board/compulab/ucm-imx8m-mini/Makefile
+@@ -4,11 +4,12 @@
+ # SPDX-License-Identifier:      GPL-2.0+
+ #
+ 
+-obj-y += ucm-imx8m-mini.o
++ccflags-y += -I$(srctree)/board/compulab/plat/imx8mm/
+ 
+ ifdef CONFIG_SPL_BUILD
+-ccflags-y += -I$(srctree)/board/compulab/plat/imx8mm/
+ obj-y += spl.o
++else 
++obj-y += ucm-imx8m-mini.o
+ endif
+ 
+ obj-y += ../plat/imx8mm/
+diff --git a/board/compulab/ucm-imx8m-mini/spl.c b/board/compulab/ucm-imx8m-mini/spl.c
+index 316e8100fc..d6ece8ef3e 100644
+--- a/board/compulab/ucm-imx8m-mini/spl.c
++++ b/board/compulab/ucm-imx8m-mini/spl.c
+@@ -1,251 +1,9 @@
+-/*
+- * Copyright 2018 NXP
+- *
+- * SPDX-License-Identifier:	GPL-2.0+
+- */
+-
+-#include <common.h>
+-#include <spl.h>
+-#include <asm/io.h>
+-#include <errno.h>
+ #include <asm/io.h>
+ #include <asm/mach-imx/iomux-v3.h>
+ #include <asm/arch/imx8mm_pins.h>
+-#include <asm/arch/sys_proto.h>
+-#include <power/pmic.h>
+-#include <power/bd71837.h>
+ #include <asm/arch/clock.h>
+-#include <asm/mach-imx/gpio.h>
+-#include <asm/mach-imx/mxc_i2c.h>
+-#include <fsl_esdhc.h>
+-#include <mmc.h>
+-#include <asm/arch/ddr.h>
+-#include "ddr/ddr.h"
+-#include "ucm-imx8m-mini.h"
+-
+-DECLARE_GLOBAL_DATA_PTR;
+-
+-#define I2C_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS | PAD_CTL_PUE)
+-#define PC MUX_PAD_CTRL(I2C_PAD_CTRL)
+-struct i2c_pads_info i2c_pad_info1 = {
+-	.scl = {
+-		.i2c_mode = IMX8MM_PAD_I2C2_SCL_I2C2_SCL | PC,
+-		.gpio_mode = IMX8MM_PAD_I2C2_SCL_GPIO5_IO16 | PC,
+-		.gp = IMX_GPIO_NR(5, 16),
+-	},
+-	.sda = {
+-		.i2c_mode = IMX8MM_PAD_I2C2_SDA_I2C2_SDA | PC,
+-		.gpio_mode = IMX8MM_PAD_I2C2_SDA_GPIO5_IO17 | PC,
+-		.gp = IMX_GPIO_NR(5, 17),
+-	},
+-};
+-
+-#define USDHC2_CD_GPIO	IMX_GPIO_NR(2, 18)
+-#define USDHC2_PWR_GPIO IMX_GPIO_NR(2, 19)
+-
+-#define USDHC_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS | PAD_CTL_PUE |PAD_CTL_PE | \
+-			 PAD_CTL_FSEL2)
+-#define USDHC_GPIO_PAD_CTRL (PAD_CTL_HYS | PAD_CTL_DSE1)
+-
+-static iomux_v3_cfg_t const usdhc3_pads[] = {
+-	IMX8MM_PAD_NAND_WE_B_USDHC3_CLK | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_WP_B_USDHC3_CMD | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA04_USDHC3_DATA0 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA05_USDHC3_DATA1 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA06_USDHC3_DATA2 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA07_USDHC3_DATA3 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_RE_B_USDHC3_DATA4 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_CE2_B_USDHC3_DATA5 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_CE3_B_USDHC3_DATA6 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_NAND_CLE_USDHC3_DATA7 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-};
+-
+-static iomux_v3_cfg_t const usdhc2_pads[] = {
+-	IMX8MM_PAD_SD2_CLK_USDHC2_CLK | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_SD2_CMD_USDHC2_CMD | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_SD2_DATA0_USDHC2_DATA0 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_SD2_DATA1_USDHC2_DATA1 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_SD2_DATA2_USDHC2_DATA2 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_SD2_DATA3_USDHC2_DATA3 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+-	IMX8MM_PAD_SD2_RESET_B_GPIO2_IO19 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL),
+-};
+-
+-/*
+- * The evk board uses DAT3 to detect CD card plugin,
+- * in u-boot we mux the pin to GPIO when doing board_mmc_getcd.
+- */
+-static iomux_v3_cfg_t const usdhc2_cd_pad =
+-	IMX8MM_PAD_SD2_DATA3_GPIO2_IO18 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL);
+-
+-static iomux_v3_cfg_t const usdhc2_dat3_pad =
+-	IMX8MM_PAD_SD2_DATA3_USDHC2_DATA3 |
+-	MUX_PAD_CTRL(USDHC_PAD_CTRL);
+-
+-
+-static struct fsl_esdhc_cfg usdhc_cfg[2] = {
+-	{USDHC2_BASE_ADDR, 0, 4},
+-	{USDHC3_BASE_ADDR, 0, 8},
+-};
+-
+-int board_mmc_init(bd_t *bis)
+-{
+-	int i, ret;
+-	/*
+-	 * According to the board_mmc_init() the following map is done:
+-	 * (U-Boot device node)    (Physical Port)
+-	 * mmc0                    USDHC1
+-	 * mmc1                    USDHC2
+-	 */
+-	for (i = 0; i < CONFIG_SYS_FSL_USDHC_NUM; i++) {
+-		switch (i) {
+-		case 0:
+-			init_clk_usdhc(1);
+-			usdhc_cfg[0].sdhc_clk = mxc_get_clock(MXC_ESDHC2_CLK);
+-			imx_iomux_v3_setup_multiple_pads(
+-				usdhc2_pads, ARRAY_SIZE(usdhc2_pads));
+-			gpio_request(USDHC2_PWR_GPIO, "usdhc2_reset");
+-			gpio_direction_output(USDHC2_PWR_GPIO, 0);
+-			udelay(500);
+-			gpio_direction_output(USDHC2_PWR_GPIO, 1);
+-			break;
+-		case 1:
+-			init_clk_usdhc(2);
+-			usdhc_cfg[1].sdhc_clk = mxc_get_clock(MXC_ESDHC3_CLK);
+-			imx_iomux_v3_setup_multiple_pads(
+-				usdhc3_pads, ARRAY_SIZE(usdhc3_pads));
+-			break;
+-		default:
+-			printf("Warning: you configured more USDHC controllers"
+-				"(%d) than supported by the board\n", i + 1);
+-			return -EINVAL;
+-		}
+-
+-		ret = fsl_esdhc_initialize(bis, &usdhc_cfg[i]);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-int board_mmc_getcd(struct mmc *mmc)
+-{
+-	struct fsl_esdhc_cfg *cfg = (struct fsl_esdhc_cfg *)mmc->priv;
+-	int ret = 0;
+-
+-	switch (cfg->esdhc_base) {
+-	case USDHC3_BASE_ADDR:
+-		ret = 1;
+-		break;
+-	case USDHC2_BASE_ADDR:
+-		imx_iomux_v3_setup_pad(usdhc2_cd_pad);
+-		gpio_request(USDHC2_CD_GPIO, "usdhc2 cd");
+-		gpio_direction_input(USDHC2_CD_GPIO);
+-
+-		/*
+-		 * Since it is the DAT3 pin, this pin is pulled to
+-		 * low voltage if no card
+-		 */
+-		ret = gpio_get_value(USDHC2_CD_GPIO);
+-
+-		imx_iomux_v3_setup_pad(usdhc2_dat3_pad);
+-		return ret;
+-	}
+-
+-	return 1;
+-}
+-
+-#ifdef CONFIG_POWER
+-#define I2C_PMIC	1
+-int power_init_board(void)
+-{
+-	struct pmic *p;
+-	int ret;
+-
+-	ret = power_bd71837_init(I2C_PMIC);
+-	if (ret)
+-		printf("power init failed");
+-
+-	p = pmic_get("BD71837");
+-	pmic_probe(p);
+-
+-
+-	/* decrease RESET key long push time from the default 10s to 10ms */
+-	pmic_reg_write(p, BD71837_PWRONCONFIG1, 0x0);
+-
+-	/* unlock the PMIC regs */
+-	pmic_reg_write(p, BD71837_REGLOCK, 0x1);
+-
+-	/* decrease VDD_ARM to 0.85V for 1.2GHz operation */
+-	/*pmic_reg_write(p, BD71837_BUCK2_VOLT_RUN, 0x0f);*/
+-
+-	/* increase VDD_SOC to 0.85V for 3Ghz DDR */
+-	pmic_reg_write(p, BD71837_BUCK1_VOLT_RUN, 0x0f);
+-
+-	/* increase VDD_DRAM to 0.975V (9v5 required but not supported)*/
+-	pmic_reg_write(p, BD71837_BUCK5_VOLT, 0x83);
+-
+-	/* lock the PMIC regs */
+-	pmic_reg_write(p, BD71837_REGLOCK, 0x11);
+-
+-	return 0;
+-}
+-#else
+-int power_init_board(void) { return 0; }
+-#endif
+-
+-void spl_board_init(void)
+-{
+-#ifndef CONFIG_SPL_USB_SDP_SUPPORT
+-	/* Serial download mode */
+-	if (is_usb_boot()) {
+-		puts("Back to ROM, SDP\n");
+-		restore_boot_params();
+-	}
+-#endif
+-	puts("Normal Boot\n");
+-}
+-
+-#ifdef CONFIG_SPL_LOAD_FIT
+-int board_fit_config_name_match(const char *name)
+-{
+-	/* Just empty function now - can't decide what to choose */
+-	debug("%s: %s\n", __func__, name);
++#include <asm/arch/sys_proto.h>
+ 
++int spl_board_private_init(void) {
+ 	return 0;
+ }
+-#endif
+-
+-void board_init_f(ulong dummy)
+-{
+-	int ret;
+-	/* Clear the BSS. */
+-	memset(__bss_start, 0, __bss_end - __bss_start);
+-
+-	/* Clear global data
+-	memset((void *)gd, 0, sizeof(gd_t));
+-	*/
+-	arch_cpu_init();
+-
+-	board_early_init_f();
+-
+-	timer_init();
+-
+-	preloader_console_init();
+-
+-	ret = spl_init();
+-	if (ret) {
+-		debug("spl_init() failed: %d\n", ret);
+-		hang();
+-	}
+-
+-	enable_tzc380();
+-
+-	setup_i2c(1, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
+-
+-	power_init_board();
+-	/* DDR initialization */
+-	spl_dram_init();
+-
+-	board_init_r(NULL, 0);
+-}
+diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+index 0ffbbf3615..dea292e75c 100644
+--- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
++++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright 2018 NXP
++ * Copyright 2020 CompuLab
+  *
+  * SPDX-License-Identifier:	GPL-2.0+
+  */
+@@ -23,127 +23,14 @@
+ #include <asm/mach-imx/dma.h>
+ #include <power/pmic.h>
+ #include <power/bd71837.h>
+-#include "../common/tcpc.h"
+ #include "../common/eeprom.h"
+ #include <usb.h>
+-#include <sec_mipi_dsim.h>
+-#include <imx_mipi_dsi_bridge.h>
+-#include <mipi_dsi_panel.h>
++#include <asm/mach-imx/boot_mode.h>
+ #include <asm/mach-imx/video.h>
+-#include "ucm-imx8m-mini.h"
++#include "ddr/ddr.h"
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+-#define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
+-#define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+-
+-static iomux_v3_cfg_t const uart_pads[] = {
+-	IMX8MM_PAD_UART3_RXD_UART3_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+-	IMX8MM_PAD_UART3_TXD_UART3_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+-};
+-
+-static iomux_v3_cfg_t const wdog_pads[] = {
+-	IMX8MM_PAD_GPIO1_IO02_WDOG1_WDOG_B  | MUX_PAD_CTRL(WDOG_PAD_CTRL),
+-};
+-
+-#ifdef CONFIG_FSL_FSPI
+-#define QSPI_PAD_CTRL	(PAD_CTL_DSE2 | PAD_CTL_HYS)
+-static iomux_v3_cfg_t const qspi_pads[] = {
+-	IMX8MM_PAD_NAND_ALE_QSPI_A_SCLK | MUX_PAD_CTRL(QSPI_PAD_CTRL | PAD_CTL_PE | PAD_CTL_PUE),
+-	IMX8MM_PAD_NAND_CE0_B_QSPI_A_SS0_B | MUX_PAD_CTRL(QSPI_PAD_CTRL),
+-
+-	IMX8MM_PAD_NAND_DATA00_QSPI_A_DATA0 | MUX_PAD_CTRL(QSPI_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA01_QSPI_A_DATA1 | MUX_PAD_CTRL(QSPI_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA02_QSPI_A_DATA2 | MUX_PAD_CTRL(QSPI_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA03_QSPI_A_DATA3 | MUX_PAD_CTRL(QSPI_PAD_CTRL),
+-};
+-
+-int board_qspi_init(void)
+-{
+-	imx_iomux_v3_setup_multiple_pads(qspi_pads, ARRAY_SIZE(qspi_pads));
+-
+-	set_clk_qspi();
+-
+-	return 0;
+-}
+-#endif
+-
+-#ifdef CONFIG_MXC_SPI
+-#define SPI_PAD_CTRL	(PAD_CTL_DSE2 | PAD_CTL_HYS)
+-static iomux_v3_cfg_t const ecspi1_pads[] = {
+-	IMX8MM_PAD_ECSPI1_SCLK_ECSPI1_SCLK | MUX_PAD_CTRL(SPI_PAD_CTRL),
+-	IMX8MM_PAD_ECSPI1_MOSI_ECSPI1_MOSI | MUX_PAD_CTRL(SPI_PAD_CTRL),
+-	IMX8MM_PAD_ECSPI1_MISO_ECSPI1_MISO | MUX_PAD_CTRL(SPI_PAD_CTRL),
+-	IMX8MM_PAD_ECSPI1_SS0_GPIO5_IO9 | MUX_PAD_CTRL(NO_PAD_CTRL),
+-};
+-
+-static iomux_v3_cfg_t const ecspi2_pads[] = {
+-	IMX8MM_PAD_ECSPI2_SCLK_ECSPI2_SCLK | MUX_PAD_CTRL(SPI_PAD_CTRL),
+-	IMX8MM_PAD_ECSPI2_MOSI_ECSPI2_MOSI | MUX_PAD_CTRL(SPI_PAD_CTRL),
+-	IMX8MM_PAD_ECSPI2_MISO_ECSPI2_MISO | MUX_PAD_CTRL(SPI_PAD_CTRL),
+-	IMX8MM_PAD_ECSPI2_SS0_GPIO5_IO13 | MUX_PAD_CTRL(NO_PAD_CTRL),
+-};
+-
+-static void setup_spi(void)
+-{
+-	imx_iomux_v3_setup_multiple_pads(ecspi1_pads, ARRAY_SIZE(ecspi1_pads));
+-	imx_iomux_v3_setup_multiple_pads(ecspi2_pads, ARRAY_SIZE(ecspi2_pads));
+-	gpio_request(IMX_GPIO_NR(5, 9), "ECSPI1 CS");
+-	gpio_request(IMX_GPIO_NR(5, 13), "ECSPI2 CS");
+-}
+-
+-int board_spi_cs_gpio(unsigned bus, unsigned cs)
+-{
+-	if (bus == 0)
+-		return IMX_GPIO_NR(5, 9);
+-	else
+-		return IMX_GPIO_NR(5, 13);
+-}
+-#endif
+-
+-#ifdef CONFIG_NAND_MXS
+-#define NAND_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL2 | PAD_CTL_HYS)
+-#define NAND_PAD_READY0_CTRL (PAD_CTL_DSE6 | PAD_CTL_FSEL2 | PAD_CTL_PUE)
+-static iomux_v3_cfg_t const gpmi_pads[] = {
+-	IMX8MM_PAD_NAND_ALE_RAWNAND_ALE | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_CE0_B_RAWNAND_CE0_B | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_CLE_RAWNAND_CLE | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA00_RAWNAND_DATA00 | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA01_RAWNAND_DATA01 | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA02_RAWNAND_DATA02 | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA03_RAWNAND_DATA03 | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA04_RAWNAND_DATA04 | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA05_RAWNAND_DATA05	| MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA06_RAWNAND_DATA06	| MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_DATA07_RAWNAND_DATA07	| MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_RE_B_RAWNAND_RE_B | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_READY_B_RAWNAND_READY_B | MUX_PAD_CTRL(NAND_PAD_READY0_CTRL),
+-	IMX8MM_PAD_NAND_WE_B_RAWNAND_WE_B | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-	IMX8MM_PAD_NAND_WP_B_RAWNAND_WP_B | MUX_PAD_CTRL(NAND_PAD_CTRL),
+-};
+-
+-static void setup_gpmi_nand(void)
+-{
+-	imx_iomux_v3_setup_multiple_pads(gpmi_pads, ARRAY_SIZE(gpmi_pads));
+-	mxs_dma_init();
+-}
+-#endif
+-
+-int board_early_init_f(void)
+-{
+-	struct wdog_regs *wdog = (struct wdog_regs *)WDOG1_BASE_ADDR;
+-
+-	imx_iomux_v3_setup_multiple_pads(wdog_pads, ARRAY_SIZE(wdog_pads));
+-
+-	set_wdog_reset(wdog);
+-
+-	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
+-
+-	init_uart_clk(2);
+-
+-	return 0;
+-}
+-
+ #ifdef CONFIG_BOARD_POSTCLK_INIT
+ int board_postclk_init(void)
+ {
+@@ -194,81 +81,6 @@ int dram_init(void)
+ 	return 0;
+ }
+ 
+-int dram_init_banksize(void)
+-{
+-	int bank = 0;
+-	int ret;
+-	phys_size_t total_size, bank_1_size, bank_2_size;
+-
+-	ret = board_phys_sdram_size(&total_size);
+-	if (ret)
+-		return ret;
+-
+-	switch (total_size) {
+-		case 4 * (1L << 30):
+-			bank_1_size = 3 * (1L << 30);
+-			bank_2_size = 1 * (1L << 30);
+-			break;
+-		default:
+-			bank_1_size = total_size;
+-			bank_2_size = 0;
+-			break;
+-	}
+-
+-	gd->bd->bi_dram[bank].start = PHYS_SDRAM;
+-	gd->bd->bi_dram[bank].size = bank_1_size;
+-
+-	if (rom_pointer[1]) {
+-		phys_addr_t optee_start = (phys_addr_t)rom_pointer[0];
+-		phys_size_t optee_size = (size_t)rom_pointer[1];
+-
+-		if ((optee_start + optee_size) < (PHYS_SDRAM + bank_1_size)) {
+-
+-			gd->bd->bi_dram[bank].size = optee_start -
+-				gd->bd->bi_dram[bank].start;
+-
+-			if ( ++bank >= CONFIG_NR_DRAM_BANKS) {
+-				puts("CONFIG_NR_DRAM_BANKS is not enough\n");
+-				return -1;
+-			}
+-
+-			gd->bd->bi_dram[bank].start = optee_start;
+-			gd->bd->bi_dram[bank].size = PHYS_SDRAM +
+-				bank_1_size - gd->bd->bi_dram[bank].start;
+-		}
+-		else {
+-			printf("%s: There is no room to allocate TEE 0x%16.16llx @ 0x%16.16llx\n",
+-					__func__, optee_size, optee_start);
+-		}
+-	} else {
+-		gd->bd->bi_dram[bank].size = bank_1_size;
+-	}
+-
+-	if(bank_2_size) {
+-		if ( ++bank >= CONFIG_NR_DRAM_BANKS) {
+-			puts("CONFIG_NR_DRAM_BANKS is not enough for SDRAM_2\n");
+-			return -1;
+-		}
+-		gd->bd->bi_dram[bank].start = PHYS_SDRAM_2;
+-		gd->bd->bi_dram[bank].size = bank_2_size;
+-	}
+-	return 0;
+-}
+-
+-phys_size_t get_effective_memsize(void)
+-{
+-	/* return the first bank as effective memory */
+-	if (rom_pointer[1])
+-		return ((phys_addr_t)rom_pointer[0] - PHYS_SDRAM);
+-
+-	switch(gd->ram_size) {
+-		case 4 * (1L<<30):
+-			return 3 * (1L<<30);
+-		default:
+-			return gd->ram_size;
+-	}
+-}
+-
+ #ifdef CONFIG_OF_BOARD_SETUP
+ int ft_board_setup(void *blob, bd_t *bd)
+ {
+@@ -316,7 +128,7 @@ static int setup_mac_address(void)
+                 return -1;
+ 
+ 	ret = eth_env_set_enetaddr("ethaddr", enetaddr);
+-	if (!ret)
++	if (ret)
+ 		return -1;
+ 
+         return 0;
+@@ -352,522 +164,88 @@ int board_phy_config(struct phy_device *phydev)
+ }
+ #endif
+ 
+-#ifdef CONFIG_USB_TCPC
+-struct tcpc_port port1;
+-struct tcpc_port port2;
+-
+-static int setup_pd_switch(uint8_t i2c_bus, uint8_t addr)
+-{
+-	struct udevice *bus;
+-	struct udevice *i2c_dev = NULL;
+-	int ret;
+-	uint8_t valb;
+-
+-	ret = uclass_get_device_by_seq(UCLASS_I2C, i2c_bus, &bus);
+-	if (ret) {
+-		printf("%s: Can't find bus\n", __func__);
+-		return -EINVAL;
+-	}
+-
+-	ret = dm_i2c_probe(bus, addr, 0, &i2c_dev);
+-	if (ret) {
+-		printf("%s: Can't find device id=0x%x\n",
+-			__func__, addr);
+-		return -ENODEV;
+-	}
+-
+-	ret = dm_i2c_read(i2c_dev, 0xB, &valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_read failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-	valb |= 0x4; /* Set DB_EXIT to exit dead battery mode */
+-	ret = dm_i2c_write(i2c_dev, 0xB, (const uint8_t *)&valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-
+-	/* Set OVP threshold to 23V */
+-	valb = 0x6;
+-	ret = dm_i2c_write(i2c_dev, 0x8, (const uint8_t *)&valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-
+-	return 0;
+-}
+-
+-int pd_switch_snk_enable(struct tcpc_port *port)
+-{
+-	if (port == &port1) {
+-		debug("Setup pd switch on port 1\n");
+-		return setup_pd_switch(1, 0x72);
+-	} else if (port == &port2) {
+-		debug("Setup pd switch on port 2\n");
+-		return setup_pd_switch(1, 0x73);
+-	} else
+-		return -EINVAL;
+-}
+-
+-struct tcpc_port_config port1_config = {
+-	.i2c_bus = 1, /*i2c2*/
+-	.addr = 0x50,
+-	.port_type = TYPEC_PORT_UFP,
+-	.max_snk_mv = 5000,
+-	.max_snk_ma = 3000,
+-	.max_snk_mw = 40000,
+-	.op_snk_mv = 9000,
+-	.switch_setup_func = &pd_switch_snk_enable,
+-};
+-
+-struct tcpc_port_config port2_config = {
+-	.i2c_bus = 1, /*i2c2*/
+-	.addr = 0x52,
+-	.port_type = TYPEC_PORT_UFP,
+-	.max_snk_mv = 5000,
+-	.max_snk_ma = 3000,
+-	.max_snk_mw = 40000,
+-	.op_snk_mv = 9000,
+-	.switch_setup_func = &pd_switch_snk_enable,
+-};
+-
+-static int setup_typec(void)
+-{
+-	int ret;
+-
+-	debug("tcpc_init port 2\n");
+-	ret = tcpc_init(&port2, port2_config, NULL);
+-	if (ret) {
+-		printf("%s: tcpc port2 init failed, err=%d\n",
+-		       __func__, ret);
+-	} else if (tcpc_pd_sink_check_charging(&port2)) {
+-		/* Disable PD for USB1, since USB2 has priority */
+-		port1_config.disable_pd = true;
+-		printf("Power supply on USB2\n");
+-	}
+-
+-	debug("tcpc_init port 1\n");
+-	ret = tcpc_init(&port1, port1_config, NULL);
+-	if (ret) {
+-		printf("%s: tcpc port1 init failed, err=%d\n",
+-		       __func__, ret);
+-	} else {
+-		if (!port1_config.disable_pd)
+-			printf("Power supply on USB1\n");
+-		return ret;
+-	}
+-
+-	return ret;
+-}
+-
+ int board_usb_init(int index, enum usb_init_type init)
+ {
+-	int ret = 0;
+-	struct tcpc_port *port_ptr;
+-
+ 	debug("board_usb_init %d, type %d\n", index, init);
+ 
+-	if (index == 0)
+-		port_ptr = &port1;
+-	else
+-		port_ptr = &port2;
+-
+ 	imx8m_usb_power(index, true);
+ 
+-	if (init == USB_INIT_HOST)
+-		tcpc_setup_dfp_mode(port_ptr);
+-	else
+-		tcpc_setup_ufp_mode(port_ptr);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ int board_usb_cleanup(int index, enum usb_init_type init)
+ {
+-	int ret = 0;
+-
+ 	debug("board_usb_cleanup %d, type %d\n", index, init);
+ 
+-	if (init == USB_INIT_HOST) {
+-		if (index == 0)
+-			ret = tcpc_disable_src_vbus(&port1);
+-		else
+-			ret = tcpc_disable_src_vbus(&port2);
+-	}
+-
+ 	imx8m_usb_power(index, false);
+-	return ret;
+-}
+ 
+-int board_ehci_usb_phy_mode(struct udevice *dev)
+-{
+-	int ret = 0;
+-	enum typec_cc_polarity pol;
+-	enum typec_cc_state state;
+-	struct tcpc_port *port_ptr;
+-
+-	if (dev->seq == 0)
+-		port_ptr = &port1;
+-	else
+-		port_ptr = &port2;
+-
+-	tcpc_setup_ufp_mode(port_ptr);
+-
+-	ret = tcpc_get_cc_status(port_ptr, &pol, &state);
+-	if (!ret) {
+-		if (state == TYPEC_STATE_SRC_RD_RA || state == TYPEC_STATE_SRC_RD)
+-			return USB_INIT_HOST;
+-	}
+-
+-	return USB_INIT_DEVICE;
++	return 0;
+ }
+-
+-#endif
+-
+ int board_init(void)
+ {
+ 
+-#ifdef CONFIG_USB_TCPC
+-	setup_typec();
+-#endif
+-
+-#ifdef CONFIG_MXC_SPI
+-	setup_spi();
+-#endif
+-
+ #ifdef CONFIG_FEC_MXC
+ 	setup_fec();
+ #endif
+-
+-#ifdef CONFIG_FSL_FSPI
+-	board_qspi_init();
+-#endif
+-
+-#ifdef CONFIG_NAND_MXS
+-	setup_gpmi_nand(); /* SPL will call the board_early_init_f */
+-#endif
+ 	return 0;
+ }
+ 
+ int board_mmc_get_env_dev(int devno)
+ {
+-	const ulong user_env_devno = env_get_hex("env_mmcdev", ULONG_MAX);
++	const ulong user_env_devno = env_get_hex("env_dev", ULONG_MAX);
+ 	if (user_env_devno != ULONG_MAX) {
+-		printf("User Environment DevNo is set: Save environmet on MMC(%lu)\n", user_env_devno);
++		printf("User Environment dev# is (%lu)\n", user_env_devno);
+ 		return (int)user_env_devno;
+ 	}
+-	else {
+-		return devno - 1;
+-	}
++	return devno;
+ }
+ 
+-int mmc_map_to_kernel_blk(int devno)
++static int _mmc_get_env_part(void)
+ {
+-	return devno + 1;
+-}
+-
+-#ifdef CONFIG_VIDEO_MXS
+-
+-#define ADV7535_MAIN 0x3d
+-#define ADV7535_DSI_CEC 0x3c
+-
+-static const struct sec_mipi_dsim_plat_data imx8mm_mipi_dsim_plat_data = {
+-	.version	= 0x1060200,
+-	.max_data_lanes = 4,
+-	.max_data_rate  = 1500000000ULL,
+-	.reg_base = MIPI_DSI_BASE_ADDR,
+-	.gpr_base = CSI_BASE_ADDR + 0x8000,
+-};
+-
+-static int adv7535_i2c_reg_write(struct udevice *dev, uint addr, uint mask, uint data)
+-{
+-	uint8_t valb;
+-	int err;
+-
+-	if (mask != 0xff) {
+-		err = dm_i2c_read(dev, addr, &valb, 1);
+-		if (err)
+-			return err;
+-
+-		valb &= ~mask;
+-		valb |= data;
+-	} else {
+-		valb = data;
++	const ulong user_env_part = env_get_hex("env_part", ULONG_MAX);
++	if (user_env_part != ULONG_MAX) {
++		printf("User Environment part# is (%lu)\n", user_env_part);
++		return (int)user_env_part;
+ 	}
+-
+-	err = dm_i2c_write(dev, addr, &valb, 1);
+-	return err;
++	return CONFIG_SYS_MMC_ENV_PART;
+ }
+ 
+-static int adv7535_i2c_reg_read(struct udevice *dev, uint8_t addr, uint8_t *data)
++uint mmc_get_env_part(struct mmc *mmc)
+ {
+-	uint8_t valb;
+-	int err;
++	if (mmc->part_support)
++	    return _mmc_get_env_part();
+ 
+-	err = dm_i2c_read(dev, addr, &valb, 1);
+-	if (err)
+-		return err;
+-
+-	*data = (int)valb;
+ 	return 0;
+ }
+ 
+-static void adv7535_init(void)
+-{
+-	struct udevice *bus, *main_dev, *cec_dev;
+-	int i2c_bus = 1;
+-	int ret;
+-	uint8_t val;
+-
+-	ret = uclass_get_device_by_seq(UCLASS_I2C, i2c_bus, &bus);
+-	if (ret) {
+-		printf("%s: No bus %d\n", __func__, i2c_bus);
+-		return;
+-	}
+-
+-	ret = dm_i2c_probe(bus, ADV7535_MAIN, 0, &main_dev);
+-	if (ret) {
+-		printf("%s: Can't find device id=0x%x, on bus %d\n",
+-			__func__, ADV7535_MAIN, i2c_bus);
+-		return;
+-	}
+-
+-	ret = dm_i2c_probe(bus, ADV7535_DSI_CEC, 0, &cec_dev);
+-	if (ret) {
+-		printf("%s: Can't find device id=0x%x, on bus %d\n",
+-			__func__, ADV7535_MAIN, i2c_bus);
+-		return;
+-	}
+-
+-	adv7535_i2c_reg_read(main_dev, 0x00, &val);
+-	debug("Chip revision: 0x%x (expected: 0x14)\n", val);
+-	adv7535_i2c_reg_read(cec_dev, 0x00, &val);
+-	debug("Chip ID MSB: 0x%x (expected: 0x75)\n", val);
+-	adv7535_i2c_reg_read(cec_dev, 0x01, &val);
+-	debug("Chip ID LSB: 0x%x (expected: 0x33)\n", val);
+-
+-	/* Power */
+-	adv7535_i2c_reg_write(main_dev, 0x41, 0xff, 0x10);
+-	/* Initialisation (Fixed) Registers */
+-	adv7535_i2c_reg_write(main_dev, 0x16, 0xff, 0x20);
+-	adv7535_i2c_reg_write(main_dev, 0x9A, 0xff, 0xE0);
+-	adv7535_i2c_reg_write(main_dev, 0xBA, 0xff, 0x70);
+-	adv7535_i2c_reg_write(main_dev, 0xDE, 0xff, 0x82);
+-	adv7535_i2c_reg_write(main_dev, 0xE4, 0xff, 0x40);
+-	adv7535_i2c_reg_write(main_dev, 0xE5, 0xff, 0x80);
+-	adv7535_i2c_reg_write(cec_dev, 0x15, 0xff, 0xD0);
+-	adv7535_i2c_reg_write(cec_dev, 0x17, 0xff, 0xD0);
+-	adv7535_i2c_reg_write(cec_dev, 0x24, 0xff, 0x20);
+-	adv7535_i2c_reg_write(cec_dev, 0x57, 0xff, 0x11);
+-	/* 4 x DSI Lanes */
+-	adv7535_i2c_reg_write(cec_dev, 0x1C, 0xff, 0x40);
+-
+-	/* DSI Pixel Clock Divider */
+-	adv7535_i2c_reg_write(cec_dev, 0x16, 0xff, 0x18);
+-
+-	/* Enable Internal Timing Generator */
+-	adv7535_i2c_reg_write(cec_dev, 0x27, 0xff, 0xCB);
+-	/* 1920 x 1080p 60Hz */
+-	adv7535_i2c_reg_write(cec_dev, 0x28, 0xff, 0x89); /* total width */
+-	adv7535_i2c_reg_write(cec_dev, 0x29, 0xff, 0x80); /* total width */
+-	adv7535_i2c_reg_write(cec_dev, 0x2A, 0xff, 0x02); /* hsync */
+-	adv7535_i2c_reg_write(cec_dev, 0x2B, 0xff, 0xC0); /* hsync */
+-	adv7535_i2c_reg_write(cec_dev, 0x2C, 0xff, 0x05); /* hfp */
+-	adv7535_i2c_reg_write(cec_dev, 0x2D, 0xff, 0x80); /* hfp */
+-	adv7535_i2c_reg_write(cec_dev, 0x2E, 0xff, 0x09); /* hbp */
+-	adv7535_i2c_reg_write(cec_dev, 0x2F, 0xff, 0x40); /* hbp */
+-
+-	adv7535_i2c_reg_write(cec_dev, 0x30, 0xff, 0x46); /* total height */
+-	adv7535_i2c_reg_write(cec_dev, 0x31, 0xff, 0x50); /* total height */
+-	adv7535_i2c_reg_write(cec_dev, 0x32, 0xff, 0x00); /* vsync */
+-	adv7535_i2c_reg_write(cec_dev, 0x33, 0xff, 0x50); /* vsync */
+-	adv7535_i2c_reg_write(cec_dev, 0x34, 0xff, 0x00); /* vfp */
+-	adv7535_i2c_reg_write(cec_dev, 0x35, 0xff, 0x40); /* vfp */
+-	adv7535_i2c_reg_write(cec_dev, 0x36, 0xff, 0x02); /* vbp */
+-	adv7535_i2c_reg_write(cec_dev, 0x37, 0xff, 0x40); /* vbp */
+-
+-	/* Reset Internal Timing Generator */
+-	adv7535_i2c_reg_write(cec_dev, 0x27, 0xff, 0xCB);
+-	adv7535_i2c_reg_write(cec_dev, 0x27, 0xff, 0x8B);
+-	adv7535_i2c_reg_write(cec_dev, 0x27, 0xff, 0xCB);
+-
+-	/* HDMI Output */
+-	adv7535_i2c_reg_write(main_dev, 0xAF, 0xff, 0x16);
+-	/* AVI Infoframe - RGB - 16-9 Aspect Ratio */
+-	adv7535_i2c_reg_write(main_dev, 0x55, 0xff, 0x02);
+-	adv7535_i2c_reg_write(main_dev, 0x56, 0xff, 0x0);
+-
+-	/*  GC Packet Enable */
+-	adv7535_i2c_reg_write(main_dev, 0x40, 0xff, 0x0);
+-	/*  GC Colour Depth - 24 Bit */
+-	adv7535_i2c_reg_write(main_dev, 0x4C, 0xff, 0x0);
+-	/*  Down Dither Output Colour Depth - 8 Bit (default) */
+-	adv7535_i2c_reg_write(main_dev, 0x49, 0xff, 0x00);
+-
+-	/* set low refresh 1080p30 */
+-	adv7535_i2c_reg_write(main_dev, 0x4A, 0xff, 0x80); /*should be 0x80 for 1080p60 and 0x8c for 1080p30*/
+-
+-	/* HDMI Output Enable */
+-	adv7535_i2c_reg_write(cec_dev, 0xbe, 0xff, 0x3c);
+-	adv7535_i2c_reg_write(cec_dev, 0x03, 0xff, 0x89);
++int mmc_map_to_kernel_blk(int devno){
++	return devno;
+ }
+ 
+-#define DISPLAY_MIX_SFT_RSTN_CSR		0x00
+-#define DISPLAY_MIX_CLK_EN_CSR		0x04
+-
+-   /* 'DISP_MIX_SFT_RSTN_CSR' bit fields */
+-#define BUS_RSTN_BLK_SYNC_SFT_EN	BIT(6)
+-
+-   /* 'DISP_MIX_CLK_EN_CSR' bit fields */
+-#define LCDIF_PIXEL_CLK_SFT_EN		BIT(7)
+-#define LCDIF_APB_CLK_SFT_EN		BIT(6)
+-
+-void disp_mix_bus_rstn_reset(ulong gpr_base, bool reset)
+-{
+-	if (!reset)
+-		/* release reset */
+-		setbits_le32(gpr_base + DISPLAY_MIX_SFT_RSTN_CSR, BUS_RSTN_BLK_SYNC_SFT_EN);
+-	else
+-		/* hold reset */
+-		clrbits_le32(gpr_base + DISPLAY_MIX_SFT_RSTN_CSR, BUS_RSTN_BLK_SYNC_SFT_EN);
+-}
+-
+-void disp_mix_lcdif_clks_enable(ulong gpr_base, bool enable)
++static void board_bootdev_init(void)
+ {
+-	if (enable)
+-		/* enable lcdif clks */
+-		setbits_le32(gpr_base + DISPLAY_MIX_CLK_EN_CSR, LCDIF_PIXEL_CLK_SFT_EN | LCDIF_APB_CLK_SFT_EN);
+-	else
+-		/* disable lcdif clks */
+-		clrbits_le32(gpr_base + DISPLAY_MIX_CLK_EN_CSR, LCDIF_PIXEL_CLK_SFT_EN | LCDIF_APB_CLK_SFT_EN);
+-}
+-
+-struct mipi_dsi_client_dev adv7535_dev = {
+-	.channel	= 0,
+-	.lanes = 4,
+-	.format  = MIPI_DSI_FMT_RGB888,
+-	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+-			  MIPI_DSI_MODE_EOT_PACKET | MIPI_DSI_MODE_VIDEO_HSE,
+-	.name = "ADV7535",
+-};
+-
+-struct mipi_dsi_client_dev rm67191_dev = {
+-	.channel	= 0,
+-	.lanes = 4,
+-	.format  = MIPI_DSI_FMT_RGB888,
+-	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+-			  MIPI_DSI_MODE_EOT_PACKET | MIPI_DSI_MODE_VIDEO_HSE,
+-};
+-
+-#define FSL_SIP_GPC			0xC2000000
+-#define FSL_SIP_CONFIG_GPC_PM_DOMAIN	0x3
+-#define DISPMIX				9
+-#define MIPI				10
+-
+-void do_enable_mipi2hdmi(struct display_info_t const *dev)
+-{
+-	gpio_request(IMX_GPIO_NR(1, 8), "DSI EN");
+-	gpio_direction_output(IMX_GPIO_NR(1, 8), 1);
+-
+-	/* ADV7353 initialization */
+-	adv7535_init();
+-
+-	/* enable the dispmix & mipi phy power domain */
+-	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, DISPMIX, true, 0);
+-	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, MIPI, true, 0);
+-
+-	/* Put lcdif out of reset */
+-	disp_mix_bus_rstn_reset(imx8mm_mipi_dsim_plat_data.gpr_base, false);
+-	disp_mix_lcdif_clks_enable(imx8mm_mipi_dsim_plat_data.gpr_base, true);
+-
+-	/* Setup mipi dsim */
+-	sec_mipi_dsim_setup(&imx8mm_mipi_dsim_plat_data);
+-	imx_mipi_dsi_bridge_attach(&adv7535_dev); /* attach adv7535 device */
+-}
+-
+-void do_enable_mipi_led(struct display_info_t const *dev)
+-{
+-	gpio_request(IMX_GPIO_NR(1, 8), "DSI EN");
+-	gpio_direction_output(IMX_GPIO_NR(1, 8), 0);
+-	mdelay(100);
+-	gpio_direction_output(IMX_GPIO_NR(1, 8), 1);
+-
+-	/* enable the dispmix & mipi phy power domain */
+-	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, DISPMIX, true, 0);
+-	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, MIPI, true, 0);
+-
+-	/* Put lcdif out of reset */
+-	disp_mix_bus_rstn_reset(imx8mm_mipi_dsim_plat_data.gpr_base, false);
+-	disp_mix_lcdif_clks_enable(imx8mm_mipi_dsim_plat_data.gpr_base, true);
+-
+-	/* Setup mipi dsim */
+-	sec_mipi_dsim_setup(&imx8mm_mipi_dsim_plat_data);
+-
+-	rm67191_init();
+-	rm67191_dev.name = displays[1].mode.name;
+-	imx_mipi_dsi_bridge_attach(&rm67191_dev); /* attach rm67191 device */
+-}
+-
+-void board_quiesce_devices(void)
+-{
+-	gpio_request(IMX_GPIO_NR(1, 8), "DSI EN");
+-	gpio_direction_output(IMX_GPIO_NR(1, 8), 0);
++	u32 bootdev = get_boot_device();
++	switch (bootdev) {
++	case MMC3_BOOT:
++		bootdev = 2;
++		break;
++	case SD2_BOOT:
++		bootdev = 1;
++		break;
++	default:
++		env_set("bootdev", NULL);
++		return;
++	}
++	env_set_ulong("bootdev", bootdev);
+ }
+ 
+-struct display_info_t const displays[] = {{
+-	.bus = LCDIF_BASE_ADDR,
+-	.addr = 0,
+-	.pixfmt = 24,
+-	.detect = NULL,
+-	.enable	= do_enable_mipi2hdmi,
+-	.mode	= {
+-		.name			= "MIPI2HDMI",
+-		.refresh		= 60,
+-		.xres			= 1920,
+-		.yres			= 1080,
+-		.pixclock		= 6734, /* 148500000 */
+-		.left_margin	= 148,
+-		.right_margin	= 88,
+-		.upper_margin	= 36,
+-		.lower_margin	= 4,
+-		.hsync_len		= 44,
+-		.vsync_len		= 5,
+-		.sync			= FB_SYNC_EXT,
+-		.vmode			= FB_VMODE_NONINTERLACED
+-
+-} }, {
+-	.bus = LCDIF_BASE_ADDR,
+-	.addr = 0,
+-	.pixfmt = 24,
+-	.detect = NULL,
+-	.enable	= do_enable_mipi_led,
+-	.mode	= {
+-		.name			= "RM67191_OLED",
+-		.refresh		= 60,
+-		.xres			= 1080,
+-		.yres			= 1920,
+-		.pixclock		= 7575, /* 132000000 */
+-		.left_margin	= 34,
+-		.right_margin	= 20,
+-		.upper_margin	= 4,
+-		.lower_margin	= 10,
+-		.hsync_len		= 2,
+-		.vsync_len		= 2,
+-		.sync			= FB_SYNC_EXT,
+-		.vmode			= FB_VMODE_NONINTERLACED
+-
+-} } };
+-size_t display_count = ARRAY_SIZE(displays);
+-#endif
+-
+ int board_late_init(void)
+ {
+ 	int ret;
+ 
+ #ifdef CONFIG_ENV_IS_IN_MMC
+ 	board_late_mmc_env_init();
++	board_bootdev_init();
+ #endif
+ 
+ 	ret = setup_mac_address();
+diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
+deleted file mode 100644
+index c3380cb5ef..0000000000
+--- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.h
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/*
+- * Copyright 2017 NXP
+- *
+- * SPDX-License-Identifier:	GPL-2.0+
+- */
+-
+-#ifndef __UCM_IMX8M_MINI__
+-#define __UCM_IMX8M_MINI__
+-
+-#define TCM_DATA_CFG 0x7e0000
+-struct lpddr4_tcm_desc {
+-	unsigned int size;
+-	unsigned int sign;
+-	unsigned int index;
+-	unsigned int count;
+-};
+-
+-#endif
+diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
+index f42597b5c7..1bdf48190e 100644
+--- a/configs/ucm-imx8m-mini_defconfig
++++ b/configs/ucm-imx8m-mini_defconfig
+@@ -1,75 +1,101 @@
+-CONFIG_LOCALVERSION="-rel.1.3.2-rc0"
+ CONFIG_ARM=y
++CONFIG_SPL_SYS_ICACHE_OFF=y
++CONFIG_SPL_SYS_DCACHE_OFF=y
+ CONFIG_ARCH_IMX8M=y
+ CONFIG_SYS_TEXT_BASE=0x40200000
+-CONFIG_SYS_MALLOC_F_LEN=0x2000
++CONFIG_SPL_GPIO_SUPPORT=y
++CONFIG_ENV_SIZE=0x1000
++CONFIG_ENV_OFFSET=0x4400
++CONFIG_DM_GPIO=y
+ CONFIG_TARGET_UCM_IMX8M_MINI=y
++CONFIG_DEFAULT_DTB="ucm-imx8m-mini.dtb"
+ CONFIG_SPL_MMC_SUPPORT=y
+-# CONFIG_IMX_OPTEE is not set
+-CONFIG_DEFAULT_DEVICE_TREE="ucm-imx8m-mini"
++CONFIG_SPL_SERIAL_SUPPORT=y
++CONFIG_SPL=y
++CONFIG_CSF_SIZE=0x2000
++CONFIG_SPL_TEXT_BASE=0x7E1000
+ CONFIG_FIT=y
++CONFIG_FIT_EXTERNAL_OFFSET=0x3000
+ CONFIG_SPL_LOAD_FIT=y
+ CONFIG_SPL_FIT_GENERATOR="arch/arm/mach-imx/mkimage_fit_atf.sh"
+-CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/mach-imx/imx8m/imximage.cfg,SPL_TEXT_BASE=0x7E1000"
++CONFIG_OF_SYSTEM_SETUP=y
++CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/mach-imx/imx8m/imximage-8mm-lpddr4.cfg"
++CONFIG_CONSOLE_MUX=y
+ CONFIG_DEFAULT_FDT_FILE="ucm-imx8m-mini.dtb"
++CONFIG_BOARD_LATE_INIT=y
+ CONFIG_ARCH_MISC_INIT=y
+-CONFIG_SPL=y
+-CONFIG_SPL_SERIAL_SUPPORT=y
++CONFIG_BOARD_EARLY_INIT_F=y
+ CONFIG_SPL_BOARD_INIT=y
++CONFIG_SPL_SEPARATE_BSS=y
++CONFIG_SPL_POWER_SUPPORT=y
+ CONFIG_HUSH_PARSER=y
+-CONFIG_FASTBOOT=y
+-CONFIG_FSL_FASTBOOT=y
+-CONFIG_FASTBOOT_BUF_ADDR=0x42800000
+-CONFIG_FASTBOOT_BUF_SIZE=0x40000000
+-CONFIG_FASTBOOT_FLASH=y
+-CONFIG_FASTBOOT_FLASH_MMC_DEV=0
++CONFIG_SYS_PROMPT="u-boot=> "
++# CONFIG_BOOTM_NETBSD is not set
+ CONFIG_CMD_EEPROM=y
+ CONFIG_CMD_EEPROM_LAYOUT=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_FUSE=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MII=y
++CONFIG_CMD_PING=y
+ CONFIG_CMD_CACHE=y
+-# CONFIG_CMD_LED is not set
+ CONFIG_CMD_REGULATOR=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_EXT4=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_FS_GENERIC=y
+ CONFIG_EFI_PARTITION=y
+-CONFIG_PARTITION_TYPE_GUID=y
+ CONFIG_OF_CONTROL=y
++CONFIG_DEFAULT_DEVICE_TREE="ucm-imx8m-mini"
+ CONFIG_ENV_IS_IN_MMC=y
+-CONFIG_IMX8M_LPDDR4=y
+-CONFIG_DM_GPIO=y
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG=y
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_CLK_COMPOSITE_CCF=y
++CONFIG_CLK_IMX8MM=y
++CONFIG_MXC_GPIO=y
++CONFIG_DM_I2C=y
+ CONFIG_SYS_I2C_MXC=y
+-CONFIG_LED=y
+-CONFIG_LED_STATUS=y
+-CONFIG_LED_STATUS_GPIO=y
+-CONFIG_LED_STATUS0=y
+-CONFIG_LED_STATUS_BIT=12
+ CONFIG_DM_MMC=y
+-CONFIG_DM_SPI_FLASH=y
+-CONFIG_SPI_FLASH=y
+-CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_MMC_IO_VOLTAGE=y
++CONFIG_MMC_UHS_SUPPORT=y
++CONFIG_MMC_HS400_ES_SUPPORT=y
++CONFIG_MMC_HS400_SUPPORT=y
++CONFIG_FSL_ESDHC_IMX=y
+ CONFIG_DM_ETH=y
+-CONFIG_USB_HOST_ETHER=y
+-CONFIG_USB_ETHER_ASIX88179=y
++CONFIG_FEC_MXC=y
++CONFIG_MII=y
+ CONFIG_PINCTRL=y
+ CONFIG_PINCTRL_IMX8M=y
+ CONFIG_DM_REGULATOR=y
+ CONFIG_DM_REGULATOR_FIXED=y
+ CONFIG_DM_REGULATOR_GPIO=y
+-CONFIG_DM_SPI=y
++CONFIG_DM_RESET=y
++CONFIG_MXC_UART=y
++CONFIG_SYSRESET=y
++CONFIG_SYSRESET_PSCI=y
+ CONFIG_DM_THERMAL=y
++CONFIG_NXP_TMU=y
+ CONFIG_USB=y
+ CONFIG_DM_USB=y
+ CONFIG_USB_EHCI_HCD=y
+ CONFIG_USB_GADGET=y
+-CONFIG_USB_GADGET_DOWNLOAD=y
+ CONFIG_USB_GADGET_MANUFACTURER="FSL"
+ CONFIG_USB_GADGET_VENDOR_NUM=0x0525
+ CONFIG_USB_GADGET_PRODUCT_NUM=0xa4a5
++CONFIG_CI_UDC=y
+ CONFIG_SDP_LOADADDR=0x40400000
+-CONFIG_NR_DRAM_BANKS=4
+-CONFIG_SPL_GPIO_SUPPORT=y
++CONFIG_USB_GADGET_DOWNLOAD=y
++CONFIG_USB_HOST_ETHER=y
++CONFIG_USB_ETHER_ASIX88179=y
++CONFIG_EXT4_WRITE=y
++CONFIG_FAT_WRITE=y
++CONFIG_OF_LIBFDT_OVERLAY=y
++# CONFIG_EFI_LOADER is not set
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index ad4e7997b1..75c6102f10 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright 2018 CompuLab
++ * Copyright 2020 CompuLab
+  *
+  * SPDX-License-Identifier:	GPL-2.0+
+  */
+@@ -9,13 +9,8 @@
+ 
+ #include <linux/sizes.h>
+ #include <asm/arch/imx-regs.h>
+-
+ #include "imx_env.h"
+ 
+-#ifdef CONFIG_SECURE_BOOT
+-#define CONFIG_CSF_SIZE			0x2000 /* 8K region */
+-#endif
+-
+ #define CONFIG_SPL_MAX_SIZE		(148 * 1024)
+ #define CONFIG_SYS_MONITOR_LEN		(512 * 1024)
+ #define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_USE_SECTOR
+@@ -26,20 +21,19 @@
+ #ifdef CONFIG_SPL_BUILD
+ /*#define CONFIG_ENABLE_DDR_TRAINING_DEBUG*/
+ #define CONFIG_SPL_WATCHDOG_SUPPORT
+-#define CONFIG_SPL_POWER_SUPPORT
+ #define CONFIG_SPL_DRIVERS_MISC_SUPPORT
+ #define CONFIG_SPL_I2C_SUPPORT
+-#define CONFIG_SPL_LDSCRIPT		"arch/arm/cpu/armv8/u-boot-spl.lds"
+-#define CONFIG_SPL_STACK		0x91fff0
+ #define CONFIG_SPL_LIBCOMMON_SUPPORT
+ #define CONFIG_SPL_LIBGENERIC_SUPPORT
+-#define CONFIG_SPL_BSS_START_ADDR      0x00910000
+-#define CONFIG_SPL_BSS_MAX_SIZE        0x2000	/* 8 KB */
+-#define CONFIG_SYS_SPL_MALLOC_START    0x42200000
+-#define CONFIG_SYS_SPL_MALLOC_SIZE     0x80000	/* 512 KB */
+-#define CONFIG_SYS_ICACHE_OFF
+-#define CONFIG_SYS_DCACHE_OFF
+-#define CONFIG_MALLOC_F_ADDR		0x912000 /* malloc f used before GD_FLG_FULL_MALLOC_INIT set */
++
++#define CONFIG_SPL_STACK            0x920000
++#define CONFIG_SPL_BSS_START_ADDR   0x910000
++#define CONFIG_SPL_BSS_MAX_SIZE     SZ_8K
++#define CONFIG_SYS_SPL_MALLOC_START 0x42200000
++#define CONFIG_SYS_SPL_MALLOC_SIZE  SZ_512K
++
++/* malloc f used before GD_FLG_FULL_MALLOC_INIT set */
++#define CONFIG_MALLOC_F_ADDR        0x912000
+ 
+ #define CONFIG_SPL_ABORT_ON_RAW_IMAGE /* For RAW image gives a error info not panic */
+ 
+@@ -56,10 +50,6 @@
+ #define CONFIG_POWER_I2C
+ #define CONFIG_POWER_BD71837
+ 
+-#define CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
+-#else /*ifdef CONFIG_SPL_BUILD*/
+-#define CONFIG_DM_I2C_COMPAT
+-#define CONFIG_DM_I2C
+ #endif /*ifdef CONFIG_SPL_BUILD*/
+ 
+ #define CONFIG_CMD_READ
+@@ -68,9 +58,7 @@
+ 
+ #define CONFIG_REMAKE_ELF
+ 
+-#define CONFIG_BOARD_EARLY_INIT_F
+ #define CONFIG_BOARD_POSTCLK_INIT
+-#define CONFIG_BOARD_LATE_INIT
+ 
+ /* Flat Device Tree Definitions */
+ #define CONFIG_OF_BOARD_SETUP
+@@ -83,13 +71,8 @@
+ /* ENET Config */
+ /* ENET1 */
+ #if defined(CONFIG_CMD_NET)
+-#define CONFIG_CMD_PING
+-#define CONFIG_CMD_DHCP
+-#define CONFIG_CMD_MII
+-#define CONFIG_MII
+ #define CONFIG_ETHPRIME                 "FEC"
+ 
+-#define CONFIG_FEC_MXC
+ #define CONFIG_FEC_XCV_TYPE             RGMII
+ #define CONFIG_FEC_MXC_PHYADDR          0
+ #define FEC_QUIRK_ENET_MAC
+@@ -126,19 +109,20 @@
+ 	"fdt_addr=0x43000000\0"			\
+ 	"fdt_high=0xffffffffffffffff\0"		\
+ 	"boot_fdt=yes\0" \
+-	"fdt_file="CONFIG_DEFAULT_DEVICE_TREE".dtb\0" \
++	"fdt_file="CONFIG_DEFAULT_DTB"\0" \
+ 	"initrd_addr=0x43800000\0"		\
+ 	"initrd_high=0xffffffffffffffff\0" \
+ 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
+ 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
+ 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
+ 	"mmcautodetect=yes\0" \
+-	"emmc_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/mmcblk2p2 rw rootwait;\0" \
+-	"sd_ul=setenv iface mmc; setenv dev 0; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/mmcblk1p2 rw rootwait;\0" \
++	"root_opt=rootwait rw\0" \
++	"emmc_ul=setenv iface mmc; setenv dev 2; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk2p2 ${root_opt};\0" \
++	"sd_ul=setenv iface mmc; setenv dev 1; setenv part 1;" \
++	"setenv bootargs console=${console} root=/dev/mmcblk1p2 ${root_opt};\0" \
+ 	"usb_ul=usb start; setenv iface usb; setenv dev 0; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/sda2 rw rootwait;\0" \
++	"setenv bootargs console=${console} root=/dev/sda2 ${root_opt};\0" \
+ 	"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
+ 	"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
+ 	"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
+@@ -197,9 +181,8 @@
+         (CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_SP_OFFSET)
+ 
+ #define CONFIG_ENV_OVERWRITE
+-#define CONFIG_ENV_OFFSET               (34 * 512) /* Max possible GPT size */
+-#define CONFIG_ENV_SIZE			0x1000
+-#define CONFIG_SYS_MMC_ENV_DEV		0   /* USDHC2 */
++#define CONFIG_SYS_MMC_ENV_DEV		1   /* USDHC2 */
++#define CONFIG_SYS_MMC_ENV_PART		1
+ #define CONFIG_MMCROOT			"/dev/mmcblk1p2"  /* USDHC2 */
+ 
+ /* Size of malloc() pool */
+@@ -220,7 +203,6 @@
+ 
+ #define CONFIG_BAUDRATE			115200
+ 
+-#define CONFIG_MXC_UART
+ #define CONFIG_MXC_UART_BASE		UART3_BASE_ADDR
+ 
+ /* Monitor Command Prompt */
+@@ -233,30 +215,16 @@
+ #define CONFIG_SYS_PBSIZE		(CONFIG_SYS_CBSIZE + \
+ 					sizeof(CONFIG_SYS_PROMPT) + 16)
+ 
+-#define CONFIG_SUPPORT_EMMC_BOOT	/* eMMC specific */
+ #define CONFIG_SYS_MMC_IMG_LOAD_PART	1
+ 
+-#define CONFIG_MXC_OCOTP
+-#define CONFIG_CMD_FUSE
+-
+ #define CONFIG_IMX_BOOTAUX
+ 
+ /* USDHC */
+-#define CONFIG_CMD_MMC
+-#define CONFIG_FSL_ESDHC
+ #define CONFIG_FSL_USDHC
+ 
+ #define CONFIG_SYS_FSL_USDHC_NUM	2
+ #define CONFIG_SYS_FSL_ESDHC_ADDR       0
+ 
+-#define CONFIG_SUPPORT_EMMC_BOOT	/* eMMC specific */
+-#define CONFIG_SYS_MMC_IMG_LOAD_PART	1
+-
+-#define CONFIG_MXC_GPIO
+-
+-#define CONFIG_MXC_OCOTP
+-#define CONFIG_CMD_FUSE
+-
+ #ifndef CONFIG_DM_I2C
+ #define CONFIG_SYS_I2C
+ #endif
+@@ -286,11 +254,8 @@
+ 
+ #endif
+ 
+-#define CONFIG_USB_GADGET_DUALSPEED
+ #define CONFIG_USB_GADGET_VBUS_DRAW 2
+ 
+-#define CONFIG_CI_UDC
+-
+ #define CONFIG_MXC_USB_PORTSC  (PORT_PTS_UTMI | PORT_PTS_PTW)
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT         2
+ 
+@@ -307,7 +272,8 @@
+ #define CONFIG_RM67191
+ #endif
+ 
+-#define CONFIG_OF_SYSTEM_SETUP
++#define CONFIG_BOARD_POSTCLK_INIT
++#define CONFIG_OF_BOARD_SETUP
+ 
+ #if defined(CONFIG_ANDROID_SUPPORT)
+ #include "ucm-imx8m-mini_android.h"
+-- 
+2.17.1
+
