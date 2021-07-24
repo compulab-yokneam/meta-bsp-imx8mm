@@ -1,26 +1,24 @@
-From 97d20f9e4449b5a66283733efde6a17534653fb2 Mon Sep 17 00:00:00 2001
-From: Valentin Raevsky <valentin@compulab.co.il>
-Date: Wed, 8 Jul 2020 10:44:13 +0300
-Subject: [PATCH 1/1] imx8mm: Set IMX_BOOT_UART_BASE for CompuLab boards
+From fe40eee60e75c4eba63c237102b4771cfdcc0173 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 21 Jul 2021 01:13:33 +0300
+Subject: [PATCH] imx8mm: Set IMX_BOOT_UART_BASE for CompuLab boards
 
-Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+
 ---
- plat/imx/imx8m/imx8mm/include/platform_def.h | 2 +-
+ plat/imx/imx8m/imx8mm/platform.mk | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/plat/imx/imx8m/imx8mm/include/platform_def.h b/plat/imx/imx8m/imx8mm/include/platform_def.h
-index 42b03613e..d3468d869 100644
---- a/plat/imx/imx8m/imx8mm/include/platform_def.h
-+++ b/plat/imx/imx8m/imx8mm/include/platform_def.h
-@@ -51,7 +51,7 @@
+diff --git a/plat/imx/imx8m/imx8mm/platform.mk b/plat/imx/imx8m/imx8mm/platform.mk
+index 22846f289..35f43b838 100644
+--- a/plat/imx/imx8m/imx8mm/platform.mk
++++ b/plat/imx/imx8m/imx8mm/platform.mk
+@@ -62,7 +62,7 @@ $(eval $(call add_define,BL32_BASE))
+ BL32_SIZE		?=	0x2000000
+ $(eval $(call add_define,BL32_SIZE))
  
- #define HAB_RVT_BASE			U(0x00000900) /* HAB_RVT for i.MX8MM */
+-IMX_BOOT_UART_BASE	?=	0x30890000
++IMX_BOOT_UART_BASE	?=	0x30880000
+ $(eval $(call add_define,IMX_BOOT_UART_BASE))
  
--#define IMX_BOOT_UART_BASE		U(0x30890000)
-+#define IMX_BOOT_UART_BASE		U(0x30880000)
- #define IMX_BOOT_UART_CLK_IN_HZ		24000000 /* Select 24MHz oscillator */
- 
- #define PLAT_CRASH_UART_BASE		IMX_BOOT_UART_BASE
--- 
-2.11.0
-
+ ifeq (${SPD},trusty)
