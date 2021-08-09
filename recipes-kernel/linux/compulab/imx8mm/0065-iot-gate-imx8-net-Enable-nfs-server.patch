@@ -1,0 +1,39 @@
+From 38f05c8ea3165aa2bf54ff3325a3e854f1a7ea94 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 9 Aug 2021 12:26:47 +0000
+Subject: [PATCH 65/65] iot-gate-imx8: net: Enable nfs server
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 857afd4628f1..f15de0649a6b 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -724,6 +724,13 @@ CONFIG_NFS_V4=y
+ CONFIG_NFS_V4_1=y
+ CONFIG_NFS_V4_2=y
+ CONFIG_ROOT_NFS=y
++CONFIG_NFSD=m
++CONFIG_NFSD_V3_ACL=y
++CONFIG_NFSD_V4=y
++CONFIG_NFSD_BLOCKLAYOUT=y
++CONFIG_NFSD_SCSILAYOUT=y
++CONFIG_NFSD_FLEXFILELAYOUT=y
++CONFIG_NFSD_V4_SECURITY_LABEL=y
+ CONFIG_9P_FS=y
+ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ISO8859_1=y
+@@ -739,7 +746,6 @@ CONFIG_CRYPTO_CTS=m
+ CONFIG_CRYPTO_LRW=m
+ CONFIG_CRYPTO_XTS=m
+ CONFIG_CRYPTO_MD4=m
+-CONFIG_CRYPTO_MD5=m
+ CONFIG_CRYPTO_RMD128=m
+ CONFIG_CRYPTO_RMD160=m
+ CONFIG_CRYPTO_RMD256=m
+-- 
+2.17.1
+
