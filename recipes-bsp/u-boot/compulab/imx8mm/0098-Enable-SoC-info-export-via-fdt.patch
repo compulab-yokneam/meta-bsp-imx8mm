@@ -1,0 +1,44 @@
+From dca442eeabd6a52ed504cc6094dd2779bcbc36af Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 11 Aug 2021 23:05:53 +0300
+Subject: [PATCH 98/99] Enable SoC info export via fdt
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/board/board.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/board/compulab/plat/imx8mm/board/board.c b/board/compulab/plat/imx8mm/board/board.c
+index a60351b77e..6f1b14e114 100644
+--- a/board/compulab/plat/imx8mm/board/board.c
++++ b/board/compulab/plat/imx8mm/board/board.c
+@@ -149,10 +149,26 @@ static int fdt_set_env_addr(void *blob)
+ 	return 0;
+ }
+ 
++static int fdt_set_soc_info(void *blob)
++{
++	char tmp[128];
++	u32 cpurev = get_cpu_rev();
++
++	int nodeoff = fdt_add_subnode(blob, 0, "soc.info");
++	if(0 > nodeoff)
++		return nodeoff;
++
++	fdt_setprop(blob, nodeoff, "imx.type", tmp, sprintf(tmp, "i.MX%s", get_imx_type((cpurev & 0x1FF000) >> 12)));
++	fdt_setprop(blob, nodeoff, "imx.rev", tmp, sprintf(tmp, "%d.%d", (cpurev & 0x000F0) >>4, cpurev & 0x0000F));
++
++	return 0;
++}
++
+ int ft_board_setup(void *blob, bd_t *bd)
+ {
+ 	fdt_set_env_addr(blob);
+ 	fdt_set_sn(blob);
++	fdt_set_soc_info(blob);
+ 	return 0;
+ }
+ #endif
+-- 
+2.11.0
+

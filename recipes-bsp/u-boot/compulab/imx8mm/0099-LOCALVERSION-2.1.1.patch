@@ -1,0 +1,26 @@
+From 08af15e3d807a372aaa33e0572f1eae4a818524a Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 11 Aug 2021 23:08:10 +0300
+Subject: [PATCH 99/99] LOCALVERSION-2.1.1
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ configs/ucm-imx8m-mini_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
+index 46449f7bc3..239426928d 100644
+--- a/configs/ucm-imx8m-mini_defconfig
++++ b/configs/ucm-imx8m-mini_defconfig
+@@ -14,7 +14,7 @@ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL=y
+ CONFIG_CSF_SIZE=0x2000
+ CONFIG_SPL_TEXT_BASE=0x7E1000
+-CONFIG_LOCALVERSION="-ucm-imx8m-mini-2.0"
++CONFIG_LOCALVERSION="-ucm-imx8m-mini-2.1.1"
+ CONFIG_FIT=y
+ CONFIG_FIT_EXTERNAL_OFFSET=0x3000
+ CONFIG_SPL_LOAD_FIT=y
+-- 
+2.11.0
+
