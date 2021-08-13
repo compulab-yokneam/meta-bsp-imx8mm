@@ -91,4 +91,6 @@ SRC_URI_append = " \
 	file://0090-cpl-imx8m-mini-Enable-startek-ili9881c-panel-support.patch \
 	file://0091-cm-imx8m-mini-config-Enable-startek-ili9881c.patch \
 	file://0092-Migration-to-5.10.35.patch \
+	file://0093-Fix-enable_cache.patch \
+	file://0094-mmc_autodetect-workaround.patch \
 "

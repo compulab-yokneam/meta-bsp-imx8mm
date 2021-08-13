@@ -1,0 +1,25 @@
+From 4a8c126b2b752dc7908a5dc241c61c654dfc123f Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Fri, 13 Aug 2021 22:44:49 +0300
+Subject: [PATCH 94/94] mmc_autodetect workaround
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/common/mmc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/board/compulab/common/mmc.c b/board/compulab/common/mmc.c
+index a5befbb618..db449cb4da 100644
+--- a/board/compulab/common/mmc.c
++++ b/board/compulab/common/mmc.c
+@@ -14,6 +14,7 @@
+ static int check_mmc_autodetect(void)
+ {
+ 	char *autodetect_str = env_get("mmcautodetect");
++	return 0;
+ 
+ 	if ((autodetect_str != NULL) &&
+ 		(strcmp(autodetect_str, "yes") == 0)) {
+-- 
+2.11.0
+
