@@ -7,7 +7,7 @@ SRC_URI_append = " \
 	file://0006-ucm-imx8m-mini-dts-Enable-onboard-EEPROM.patch \
 	file://0007-dts-Fix-pmic-interrupt-configuration.patch \
 	file://0008-defconfig-Enable-regualtor.patch \
-	file://0009-Add-w25q16-support.patch \
+	file://0009-eeprom-Add-w25q16-support.patch \
 	file://0010-ucm-imx8m-mini-defconf-dt-Migrate-to-kernel-5.4.24.patch \
 	file://0011-ucm-imx8m-mini-dts-Fix-PMIC-node.patch \
 	file://0012-ucm-imx8m-mini-dts-Cleaning.patch \
