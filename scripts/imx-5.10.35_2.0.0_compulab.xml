@@ -3,7 +3,7 @@
 
   <include name="imx-5.10.35-2.0.0.xml"/>
 
-  <remote fetch="https://github.com/compulab-yokneam" name="compulab"/>
+  <remote fetch="git://github.com/compulab-yokneam" name="compulab"/>
 
   <project name="meta-compulab" remote="compulab" revision="devel" path="sources/meta-compulab"/>
   <project name="meta-compulab-bsp" remote="compulab" revision="master" path="sources/meta-compulab-bsp"/>
