@@ -40,5 +40,8 @@ SRC_URI_append = " \
 	file://0039-ucm-Enable-wm8731-audiocodec.patch \
 	file://0040-ucm-imx8m-mini-Fix-iwlwifi.patch \
 	file://0041-drm-Panel-fix.patch \
+	file://0042-snd-Fix-resource-management.patch \
+	file://0043-config-Fix-build-time-warnings.patch \
 	file://defconfig \
 "
+
