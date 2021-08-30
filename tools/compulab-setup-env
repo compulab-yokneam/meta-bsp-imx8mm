@@ -16,7 +16,6 @@ BD=$(cat <<< $@ | awk '$0=$NF')
 function interactive_config()
 {
 	grep "^#;DISABLE" $1 && return 1
-	$(sed -ne 's/^#;prompt[[:blank:]]*\(.*\)[[:blank:]]*\[.*$/\1/p' $1)
 	local prompt=$(sed -ne 's/^#;prompt[[:blank:]]*\(.*\)[[:blank:]]*\[.*$/\1/p' $1)
 	[[ -z "${prompt}" ]] && return 0 # unconditionally add this file to config
 	
