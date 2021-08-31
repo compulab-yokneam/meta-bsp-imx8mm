@@ -18,14 +18,16 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP release name|export NXP_RELEASE=imx_v2020.04_5.4.70_2.3.0|
-|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.8.bin|
-|CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.70_2.3.0-stable|
+|NXP u-boot release|export NXP_UBOOT_RELEASE=lf_v2021.04|
+|NXP ATF release|export NXP_ATF_RELEASE=lf_v2.4|
+|NXP mkimage release|export NXP_MKIMAGE_RELEASE=lf-5.10.y_2.0.0|
+|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.12.bin|
+|CompuLab branch name|export CPL_BRANCH=rel_imx_5.10.35_2.0.0-experiment|
 
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download and install the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/rel_imx_5.4.70_2.3.0-stable/Documentation/toolchain.md)
+* Download and install the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/rel_imx_5.10.35_2.0.0-experiment/Documentation/toolchain.md)
 
 * Create a folder to organize the files:
 <pre>
@@ -44,14 +46,14 @@ export LAYER_DIR=$(pwd)/meta-bsp-imx8mm
 * Download the mkimage:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-mkimage.git
-git -C imx-mkimage checkout ${NXP_RELEASE} -b ${CPL_BRANCH}
+git -C imx-mkimage checkout ${NXP_MKIMAGE_RELEASE}
 </pre>
 
 ## Arm Trusted Firmware (ATF) setup
 * Download the ATF:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-atf.git
-git -C imx-atf checkout ${NXP_RELEASE} -b ${CPL_BRANCH}
+git -C imx-atf checkout ${NXP_ATF_RELEASE}
 git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
 </pre>
 * Make bl31.bin
@@ -72,7 +74,7 @@ cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${SRC_ROOT}/im
 * Download the U-Boot source and apply CompuLab BSP patches:
 <pre>
 git clone https://source.codeaurora.org/external/imx/uboot-imx.git
-git -C uboot-imx checkout ${NXP_RELEASE} -b ${CPL_BRANCH}
+git -C uboot-imx checkout ${NXP_UBOOT_RELEASE}
 git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
 </pre>
 
@@ -119,7 +121,7 @@ unset ARCH CROSS_COMPILE
 * Issue:
 <pre>
 cd ${SRC_ROOT}/imx-mkimage/iMX8M
-sed "s/\(^dtbs = \).*/\1${MACHINE}.dtb/;s/\(mkimage\)_uboot/\1/;s/\(^TEE_LOAD_ADDR \).*/\1= 0x7e000000/g" soc.mak > Makefile
+sed "s/\(^dtbs = \).*/\1${MACHINE}.dtb/;s/\(mkimage\)_uboot/\1/" soc.mak > Makefile
 make clean
 make flash_evk SOC=iMX8MM
 </pre>

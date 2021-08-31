@@ -16,8 +16,8 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP release name|export NXP_RELEASE=rel_imx_5.4.70_2.3.0|
-|CompuLab branch name|export CPL_BRANCH=rel_imx_5.4.70_2.3.0-stable|
+|NXP release name|export NXP_RELEASE=lf-5.10.y|
+|CompuLab branch name|export CPL_BRANCH=imx_5.10.35_2.0.0-experiment|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
