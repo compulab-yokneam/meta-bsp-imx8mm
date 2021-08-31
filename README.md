@@ -30,7 +30,7 @@ repo sync
 |NOTE|Refer to the [NXP Readme](https://source.codeaurora.org/external/imx/meta-imx/tree/README?h=hardknott-5.10.35-2.0.0) for details about how to select a correct backend & distro.|
 |---|---|
 ```
-MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source sources/meta-bsp-imx8mm/tools/setup-imx8mm-env -b build
+MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build
 ```
 ## 2.3 Build image
 ```
