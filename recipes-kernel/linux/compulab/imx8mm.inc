@@ -58,5 +58,6 @@ SRC_URI_append = " \
 	file://0057-ucm-mcm-defconfig-Enable-rfkill.patch \
 	file://0058-arm64-dts-imx8mm-specify-dma-ranges.patch \
 	file://0059-defconfig-Disable-fw-user-loader-helper.patch \
+	file://0060-mcm-dts-Fix-flexspi-compatible-line.patch \
 	file://defconfig \
 "
