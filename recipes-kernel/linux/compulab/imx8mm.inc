@@ -43,5 +43,6 @@ SRC_URI_append = " \
 	file://0042-snd-Fix-resource-management.patch \
 	file://0043-config-Fix-build-time-warnings.patch \
 	file://0044-defconfig-Break-down-to-common-and-specific-parts.patch \
+	file://0045-dtb-Add-mcm-device-trees.patch \
 "
 
