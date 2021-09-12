@@ -1,0 +1,36 @@
+From 4fed7067d800df889a102b1b25c858a354b802a1 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 13 Sep 2021 00:04:20 +0300
+Subject: [PATCH 44/44] defconfig: Break down to common and specific parts
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ .../{ucm-imx8m-mini_defconfig => cl-imx8m-mini_defconfig}        | 0
+ arch/arm64/configs/mcm-imx8m-mini.config                         | 1 +
+ arch/arm64/configs/ucm-imx8m-mini.config                         | 1 +
+ 3 files changed, 2 insertions(+)
+ rename arch/arm64/configs/{ucm-imx8m-mini_defconfig => cl-imx8m-mini_defconfig} (100%)
+ create mode 100644 arch/arm64/configs/mcm-imx8m-mini.config
+ create mode 100644 arch/arm64/configs/ucm-imx8m-mini.config
+
+diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/cl-imx8m-mini_defconfig
+similarity index 100%
+rename from arch/arm64/configs/ucm-imx8m-mini_defconfig
+rename to arch/arm64/configs/cl-imx8m-mini_defconfig
+diff --git a/arch/arm64/configs/mcm-imx8m-mini.config b/arch/arm64/configs/mcm-imx8m-mini.config
+new file mode 100644
+index 000000000000..108f1885c60c
+--- /dev/null
++++ b/arch/arm64/configs/mcm-imx8m-mini.config
+@@ -0,0 +1 @@
++CONFIG_LOCALVERSION="mcm-imx8m-mini-2.2"
+diff --git a/arch/arm64/configs/ucm-imx8m-mini.config b/arch/arm64/configs/ucm-imx8m-mini.config
+new file mode 100644
+index 000000000000..dfdcea6de941
+--- /dev/null
++++ b/arch/arm64/configs/ucm-imx8m-mini.config
+@@ -0,0 +1 @@
++CONFIG_LOCALVERSION="ucm-imx8m-mini-2.2"
+-- 
+2.17.1
+
