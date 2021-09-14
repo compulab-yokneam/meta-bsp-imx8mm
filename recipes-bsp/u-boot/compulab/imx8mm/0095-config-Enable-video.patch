@@ -1,0 +1,29 @@
+From 4188f41f6084169285683de11d4365bc6be1163d Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 14 Sep 2021 22:44:44 +0300
+Subject: [PATCH 95/96] config: Enable video
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ include/configs/cpl-imx8m-mini.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/configs/cpl-imx8m-mini.h b/include/configs/cpl-imx8m-mini.h
+index 23c2623130..a65d86e253 100644
+--- a/include/configs/cpl-imx8m-mini.h
++++ b/include/configs/cpl-imx8m-mini.h
+@@ -258,9 +258,9 @@
+ #ifdef CONFIG_DM_VIDEO
+ #define CONFIG_VIDEO_MXS
+ #define CONFIG_VIDEO_LOGO
+-#define CONFIG_SPLASH_SCREEN
++#define CONFIG_SPLASH_SCREEN 1
+ #define CONFIG_SPLASH_SCREEN_ALIGN
+-#define CONFIG_CMD_BMP
++#define CONFIG_CMD_BMP 1
+ #define CONFIG_BMP_16BPP
+ #define CONFIG_BMP_24BPP
+ #define CONFIG_BMP_32BPP
+-- 
+2.11.0
+

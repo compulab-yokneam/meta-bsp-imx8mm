@@ -93,4 +93,6 @@ SRC_URI_append = " \
 	file://0092-Migration-to-5.10.35.patch \
 	file://0093-Fix-enable_cache.patch \
 	file://0094-Fix-mmc_autodetect.patch \
+	file://0095-config-Enable-video.patch \
+	file://0096-readout-some-cleannig.patch \
 "
