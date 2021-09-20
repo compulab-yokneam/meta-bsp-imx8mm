@@ -99,4 +99,7 @@ SRC_URI_append = " \
 	file://0097-u-m-cm-imx8m-mini-config-Enable-startek-ili9881c.patch \
 	file://0098-Enable-SoC-info-export-via-fdt.patch \
 	file://0099-LOCALVERSION-2.1.1.patch \
+	file://0100-spl-lpddr-training-size-optimisation.patch \
+	file://0101-spl-Add-SDP-support.patch \
+	file://0102-LOCALVERSION-2.1.2.patch \
 "
