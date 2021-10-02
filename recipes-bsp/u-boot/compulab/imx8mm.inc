@@ -95,4 +95,5 @@ SRC_URI_append = " \
 	file://0094-Fix-mmc_autodetect.patch \
 	file://0095-config-Enable-video.patch \
 	file://0096-readout-some-cleannig.patch \
+	file://0097-mmc-Fix-mmc_switch-workflow-issue.patch \
 "
