@@ -96,4 +96,5 @@ SRC_URI_append = " \
 	file://0095-config-Enable-video.patch \
 	file://0096-readout-some-cleannig.patch \
 	file://0097-mmc-Fix-mmc_switch-workflow-issue.patch \
+	file://0098-defconfig-Break-down-to-common-and-specific-parts.patch \
 "
