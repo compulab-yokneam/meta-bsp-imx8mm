@@ -44,5 +44,6 @@ SRC_URI_append = " \
 	file://0043-config-Fix-build-time-warnings.patch \
 	file://0044-defconfig-Break-down-to-common-and-specific-parts.patch \
 	file://0045-dtb-Add-mcm-device-trees.patch \
+	file://0046-defconfig-Fix-PCIe-and-mPCIE_USB.patch \
 "
 
