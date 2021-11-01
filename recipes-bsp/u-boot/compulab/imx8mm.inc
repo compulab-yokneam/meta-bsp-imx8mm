@@ -99,4 +99,5 @@ SRC_URI_append = " \
 	file://0098-defconfig-Break-down-to-common-and-specific-parts.patch \
 	file://0099-spl-lpddr-training-size-optimisation.patch \
 	file://0100-spl-Add-SDP-support.patch \
+	file://0101-spl-Enable-Samsung-4G-DRAM-0x01061010.patch \
 "
