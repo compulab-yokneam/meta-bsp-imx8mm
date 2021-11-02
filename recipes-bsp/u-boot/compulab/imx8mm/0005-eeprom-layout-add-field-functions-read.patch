@@ -1,7 +1,7 @@
 From 54a89d4699abb64f923d7f138cd61c03af5bf318 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Sep 2017 10:07:26 +0300
-Subject: [PATCH 005/111] eeprom: layout: add field functions read
+Subject: [PATCH 005/113] eeprom: layout: add field functions read
 
 Read option is missing in the EEPROM layout feature
 

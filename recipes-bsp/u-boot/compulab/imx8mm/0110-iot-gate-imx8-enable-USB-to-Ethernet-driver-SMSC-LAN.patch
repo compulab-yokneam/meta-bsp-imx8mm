@@ -1,7 +1,7 @@
 From c64be9bdbd05085bd92824bf1320c1ce394e352d Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 12 May 2021 11:17:31 +0300
-Subject: [PATCH 110/111] iot-gate-imx8: enable USB to Ethernet driver SMSC
+Subject: [PATCH 110/113] iot-gate-imx8: enable USB to Ethernet driver SMSC
  LAN95xx
 
 The relevant  interfaces are used in the baseboard and in the POEv2

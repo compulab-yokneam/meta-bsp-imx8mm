@@ -1,7 +1,7 @@
 From e9da548126d5bb688833d13dd976a6439dd25bd8 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 22 Apr 2019 12:06:29 +0300
-Subject: [PATCH 014/111] ucm-imx8m-mini: config : Update h-file
+Subject: [PATCH 014/113] ucm-imx8m-mini: config : Update h-file
 
 1) Add a missing include
 2) Remove duplications

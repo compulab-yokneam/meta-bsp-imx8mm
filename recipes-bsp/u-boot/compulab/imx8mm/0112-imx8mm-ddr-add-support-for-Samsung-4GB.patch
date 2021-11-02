@@ -1,0 +1,30 @@
+From 8f0ba4067c3ab7a0ca57ecb25ad30c401e379708 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 2 Nov 2021 11:23:28 +0200
+Subject: [PATCH 112/113] imx8mm: ddr: add support for Samsung 4GB
+
+The support for the Samsung 1GB DDR was removed.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/ddr/ddr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/board/compulab/plat/imx8mm/ddr/ddr.c b/board/compulab/plat/imx8mm/ddr/ddr.c
+index b592a0b14b..8b57a04843 100644
+--- a/board/compulab/plat/imx8mm/ddr/ddr.c
++++ b/board/compulab/plat/imx8mm/ddr/ddr.c
+@@ -69,8 +69,8 @@ struct lpddr4_desc {
+ #define DEFAULT (('D' << 24) + ('E' << 16 ) + ( 'F' << 8 ) + 'A')
+ static const struct lpddr4_desc lpddr4_array[] = {
+ 	{ .name = "Nanya",	.id = 0x05000010, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+-	{ .name = "Samsung",	.id = 0x01061010, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+-	{ .name = "Samsung",	.id = 0x01050008, .subind = 0xff, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},
++	{ .name = "Samsung",	.id = 0x01061010, .subind = 0x04, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
++	{ .name = "Samsung",	.id = 0x01061010, .subind = 0x02, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+ 	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x04, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
+ 	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x02, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+ 	{ .name = "Micron",	.id = 0xff020008, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
+-- 
+2.11.0
+

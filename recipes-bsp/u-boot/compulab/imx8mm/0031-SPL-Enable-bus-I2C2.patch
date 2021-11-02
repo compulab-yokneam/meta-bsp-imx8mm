@@ -1,7 +1,7 @@
 From a21d243a2fc170ec0e6b1c0192ed470958d18359 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 5 Apr 2020 17:19:21 +0300
-Subject: [PATCH 031/111] SPL: Enable bus I2C2
+Subject: [PATCH 031/113] SPL: Enable bus I2C2
 
 Enable the bus i2c1 (I2C2 in a schematic drawing) on SPL stage.
 

@@ -15,7 +15,7 @@ Define the following environment variables:
 |---|---|
 |NXP release name|export NXP_RELEASE=rel_imx_5.4.24_2.1.0|
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.8.bin|
-|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8_r2.4|
+|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8_r2.5|
 
 
 ## Prerequisites
@@ -97,7 +97,6 @@ git -C imx-optee-os am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*
 * Set environment variables:
 <pre>
 export ARCH=arm
-export CROSS_COMPILE=/usr/bin/arm-linux-gnu-
 export CROSS_COMPILE64=/usr/bin/aarch64-linux-gnu-
 </pre>
 

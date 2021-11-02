@@ -1,7 +1,7 @@
 From 64af64764857c372ff77a434cec0cd722b5d524c Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 20 Jul 2020 06:08:58 +0300
-Subject: [PATCH 071/111] imx8m-mini: Refactor the usdhc2
+Subject: [PATCH 071/113] imx8m-mini: Refactor the usdhc2
 
 1) Make it removable.
 2) Disable 1V8.

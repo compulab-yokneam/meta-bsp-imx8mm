@@ -1,7 +1,7 @@
 From f58aad06b22f089f12cfee3fc9443426ddc2e79e Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 30 May 2021 17:05:10 +0300
-Subject: [PATCH 111/111] release 2020.04-iot-gate-imx8-2.4
+Subject: [PATCH 111/113] release 2020.04-iot-gate-imx8-2.4
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

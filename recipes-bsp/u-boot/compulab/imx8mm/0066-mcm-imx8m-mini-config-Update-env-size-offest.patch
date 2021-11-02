@@ -1,7 +1,7 @@
 From 063f688ddd5ba21113323fa3996ad090bcbc0211 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 15 Jul 2020 15:25:04 +0300
-Subject: [PATCH 066/111] mcm-imx8m-mini: config: Update env size/offest
+Subject: [PATCH 066/113] mcm-imx8m-mini: config: Update env size/offest
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

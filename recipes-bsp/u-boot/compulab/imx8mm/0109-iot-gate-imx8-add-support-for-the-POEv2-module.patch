@@ -1,7 +1,7 @@
 From c5ebff98c288e3499e283bca57e360f576dba065 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 12 May 2021 10:58:28 +0300
-Subject: [PATCH 109/111] iot-gate-imx8: add support for the POEv2 module
+Subject: [PATCH 109/113] iot-gate-imx8: add support for the POEv2 module
 
 The POE module implements a USB to Ethernet.
 A USB MUX on the baseboard is set to route one of the USB interfaces to

@@ -1,7 +1,7 @@
 From ba755f26a37c5e6f653c8c1926a890f82061aadf Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 24 Jan 2021 14:09:29 +0200
-Subject: [PATCH 106/111] iot-gate-imx8: update support for the IE-TPM module
+Subject: [PATCH 106/113] iot-gate-imx8: update support for the IE-TPM module
 
 The CAN and the TPM modules are  2 alternatives in slots A and B for the
 SPI.

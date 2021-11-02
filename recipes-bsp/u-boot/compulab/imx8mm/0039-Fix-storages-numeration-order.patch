@@ -1,7 +1,7 @@
 From 83d20cd09143d4684176a0de90f9acc988d394d6 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 16 Jun 2020 15:45:22 +0300
-Subject: [PATCH 039/111] Fix storages numeration order
+Subject: [PATCH 039/113] Fix storages numeration order
 
 Make u-boot enumerate storages in the same order as previous versions (2018.03)
 

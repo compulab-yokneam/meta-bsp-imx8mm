@@ -1,7 +1,7 @@
 From 6c4f38756c3a71d6e7170e4777055e58e38b0c90 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Mon, 17 Aug 2020 12:30:48 +0300
-Subject: [PATCH 096/111] iot-gate-imx8: hide temperature message
+Subject: [PATCH 096/113] iot-gate-imx8: hide temperature message
 
 The temperature message is generated during the U-Boot boot.
 

@@ -1,7 +1,7 @@
 From ea2b8183c4a76ffebbe8f987c2feb07cd5ad2a32 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Sep 2017 10:47:25 +0300
-Subject: [PATCH 006/111] compulab: eeprom: layout: add read serial function
+Subject: [PATCH 006/113] compulab: eeprom: layout: add read serial function
 
 The function conver the CompuLab serial number format to tag_serialnr
 structure.

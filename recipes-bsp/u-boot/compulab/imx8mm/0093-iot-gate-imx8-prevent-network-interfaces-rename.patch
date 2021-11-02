@@ -1,7 +1,7 @@
 From 9f9d3a12e98faa04ee25027a1226e23986d63ed0 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 30 Aug 2020 17:57:47 +0300
-Subject: [PATCH 093/111] iot-gate-imx8: prevent network interfaces rename
+Subject: [PATCH 093/113] iot-gate-imx8: prevent network interfaces rename
 
 Some of the Linux distributions are renaming the network interfaces
 according to parameters like MAC address.

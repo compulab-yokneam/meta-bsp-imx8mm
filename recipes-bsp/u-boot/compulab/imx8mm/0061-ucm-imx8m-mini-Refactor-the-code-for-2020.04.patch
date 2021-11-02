@@ -1,7 +1,7 @@
 From 4a0a3f723268e6d45bfb5446f32db08d73674b8a Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 15 Jul 2020 08:54:22 +0300
-Subject: [PATCH 061/111] ucm-imx8m-mini: Refactor the code for 2020.04
+Subject: [PATCH 061/113] ucm-imx8m-mini: Refactor the code for 2020.04
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

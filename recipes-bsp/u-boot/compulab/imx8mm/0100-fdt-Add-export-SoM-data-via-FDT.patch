@@ -1,7 +1,7 @@
 From e726e1b80f4277c2f803acf6a2dadb327bc8553b Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 6 Dec 2020 17:42:51 +0200
-Subject: [PATCH 100/111] fdt: Add export SoM data via FDT
+Subject: [PATCH 100/113] fdt: Add export SoM data via FDT
 
 Export via FDT the following data:
 	board options
