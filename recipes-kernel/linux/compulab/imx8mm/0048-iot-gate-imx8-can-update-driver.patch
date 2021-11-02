@@ -1,7 +1,7 @@
 From 5457f06ae38d993d619688e57da2e4c805034adb Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 2 Feb 2021 12:36:36 +0200
-Subject: [PATCH 48/64] iot-gate-imx8: can: update driver
+Subject: [PATCH 48/70] iot-gate-imx8: can: update driver
 
 Enable the updated CAN driver.
 

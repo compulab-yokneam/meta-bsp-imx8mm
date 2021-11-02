@@ -1,7 +1,7 @@
 From ca7940b286ddc22d65005b31d01df98d4f427616 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Thu, 27 May 2021 18:49:40 +0300
-Subject: [PATCH 60/64] iot-gate-imx8: dts: add wakeup sources
+Subject: [PATCH 60/70] iot-gate-imx8: dts: add wakeup sources
 
 Add device tree for wakeup sources.
 The current wakeup sources are the input GPIOs of the digital I/O add-on

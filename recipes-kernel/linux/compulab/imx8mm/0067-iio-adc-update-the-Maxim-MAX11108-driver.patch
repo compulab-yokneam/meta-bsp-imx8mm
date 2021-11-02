@@ -1,0 +1,224 @@
+From 4cf63a864cbf00756a24e069fb2968330a6e99fa Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 2 Nov 2021 18:26:25 +0200
+Subject: [PATCH 67/70] iio: adc: update the Maxim MAX11108 driver
+
+Driver update:
+* Trigger response support.
+* The channel was modified from voltage to current.
+* Update the buffer management.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ drivers/iio/adc/max11108.c | 122 +++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 95 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/iio/adc/max11108.c b/drivers/iio/adc/max11108.c
+index 94fa43d52184..60b740c76343 100644
+--- a/drivers/iio/adc/max11108.c
++++ b/drivers/iio/adc/max11108.c
+@@ -4,14 +4,13 @@
+  *
+  * Copyright (C) 2021 CompuLab Ltd.
+  */
+-#include <linux/delay.h>
+-#include <linux/kernel.h>
+-#include <linux/module.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/spi/spi.h>
+-
+ #include <linux/iio/iio.h>
+-#include <linux/iio/driver.h>
++#include <linux/iio/buffer.h>
++#include <linux/iio/trigger.h>
++#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/triggered_buffer.h>
+ 
+ /*
+  * LSB is the ADC single digital step
+@@ -27,19 +26,23 @@
+ struct max11108_state {
+ 	struct regulator *vref_reg;
+ 	struct spi_device *spi;
+-
+-	/*
+-	 * DMA (thus cache coherency maintenance) requires the
+-	 * transfer buffers to live in their own cache lines.
+-	 */
+-	u8 buffer[3] ____cacheline_aligned;
++	struct iio_trigger *trig;
++	struct mutex lock;
+ };
+ 
+ static struct iio_chan_spec max11108_channels[] = {
+ 	{ /* [0] */
+-		.type = IIO_VOLTAGE,
+-		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+-				      BIT(IIO_CHAN_INFO_SCALE),
++		.type = IIO_CURRENT,
++		.channel = 0,
++		.info_mask_separate =	BIT(IIO_CHAN_INFO_RAW) |
++					BIT(IIO_CHAN_INFO_SCALE),
++		.scan_index = 0,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 12,
++			.storagebits = 16,
++			.endianness = IIO_LE,
++		},
+ 	},
+ };
+ 
+@@ -47,25 +50,27 @@ static int max11108_read_single(struct iio_dev *indio_dev, int *val)
+ {
+ 	int ret;
+ 	u32 uval;
++	u8 buffer[3];
+ 	struct max11108_state *state = iio_priv(indio_dev);
+ 
+-	ret = spi_read(state->spi, state->buffer, sizeof(state->buffer));
++	ret = spi_read(state->spi, buffer, sizeof(buffer));
+ 	if (ret) {
+ 		dev_err(&indio_dev->dev, "SPI transfer failed\n");
+ 		return ret;
+ 	}
+ 
+ 	/* The last 8 bits sent out from ADC must be 0s */
+-	if (state->buffer[2]) {
++	if (buffer[2]) {
+ 		dev_err(&indio_dev->dev, "Invalid value: buffer[0] != 0\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	/* Raw date composition */
+-	uval = (state->buffer[0] << 8) | state->buffer[1];
++	uval = (buffer[0] << 8) | buffer[1];
+ 	uval >>= 1;
+ 	uval &= 0xfff;
+-	*val = (int) uval;
++	/* Store result */
++	*((u32*) val) = uval;
+ 
+ 	return 0;
+ }
+@@ -77,13 +82,14 @@ static int max11108_read_raw(struct iio_dev *indio_dev,
+ 	int ret, vref_uv;
+ 	struct max11108_state *state = iio_priv(indio_dev);
+ 
++	mutex_lock(&state->lock);
++
+ 	switch (info) {
+ 	case IIO_CHAN_INFO_RAW:
+ 		ret = max11108_read_single(indio_dev, val);
+-		if (ret)
+-			return ret;
+-
+-		return IIO_VAL_INT;
++		if (ret == 0)
++			ret = IIO_VAL_INT;
++		break;
+ 
+ 	case IIO_CHAN_INFO_SCALE:
+ 		vref_uv = regulator_get_voltage(state->vref_reg);
+@@ -91,17 +97,52 @@ static int max11108_read_raw(struct iio_dev *indio_dev,
+ 			dev_err(&indio_dev->dev,
+ 				"dummy regulator \"get_voltage\" returns %d\n",
+ 				vref_uv);
+-			return -EINVAL;
++			ret = -EINVAL;
+ 		}
++		else {
++			*val =  vref_uv / 1000;
++			*val2 = MAX11108_LSB_DIV;
++			ret = IIO_VAL_FRACTIONAL;
++		}
++		break;
++	default:
++		ret = -EINVAL;
++	}
++
++	mutex_unlock(&state->lock);
+ 
+-		*val =  vref_uv / 1000;
+-		*val2 = MAX11108_LSB_DIV;
+-		return IIO_VAL_FRACTIONAL;
++	return ret;
++}
++
++static irqreturn_t max11108_trigger_handler(int irq, void *private)
++{
++	struct iio_poll_func *pf = private;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	struct max11108_state *state = iio_priv(indio_dev);
++	u8 data[16] = { }; /* 12-bit ADC data + padding + 8 bytes timestamp */
++	int ret;
++
++	mutex_lock(&state->lock);
++
++	/* Fill buffer with all channel */
++	ret = max11108_read_single(indio_dev, (int*) data);
++	if (ret < 0){
++		dev_err(&indio_dev->dev, "channel read failure\n");
++		goto trigger_handler_out;
+ 	}
++	iio_push_to_buffers_with_timestamp(indio_dev, data,
++					   iio_get_time_ns(indio_dev));
+ 
+-	return -EINVAL;
++trigger_handler_out:
++	mutex_unlock(&state->lock);
++	iio_trigger_notify_done(indio_dev->trig);
++	return IRQ_HANDLED;
+ }
+ 
++static const struct iio_trigger_ops max11108_trigger_ops = {
++	.validate_device = &iio_trigger_validate_own_device,
++};
++
+ static const struct iio_info max11108_info = {
+ 	.read_raw = max11108_read_raw,
+ };
+@@ -123,6 +164,8 @@ static int max11108_probe(struct spi_device *spi)
+ 	state = iio_priv(indio_dev);
+ 	state->spi = spi;
+ 
++	mutex_init(&state->lock);
++
+ 	indio_dev->dev.parent = &spi->dev;
+ 	indio_dev->dev.of_node = spi->dev.of_node;
+ 	indio_dev->name = "max11108";
+@@ -131,6 +174,31 @@ static int max11108_probe(struct spi_device *spi)
+ 	indio_dev->channels = max11108_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(max11108_channels);
+ 
++	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
++					&iio_pollfunc_store_time,
++					&max11108_trigger_handler,
++					NULL);
++	if (ret < 0) {
++		dev_err(&indio_dev->dev, "Failed to setup buffer\n");
++		return ret;
++	}
++	/* Create default trigger */
++	state->trig = devm_iio_trigger_alloc(&spi->dev, "max11108-trigger");
++	if (state->trig == NULL) {
++		ret = -ENOMEM;
++		dev_err(&indio_dev->dev, "Failed to allocate iio trigger\n");
++		return ret;
++	}
++	state->trig->dev.parent = &spi->dev;
++	state->trig->ops = &max11108_trigger_ops;
++	iio_trigger_set_drvdata(state->trig, indio_dev);
++	ret = iio_trigger_register(state->trig);
++	if (ret < 0) {
++		dev_err(&indio_dev->dev, "Triger registration failure.\n");
++		return ret;
++	}
++	indio_dev->trig = iio_trigger_get(state->trig);
++
+ 	state->vref_reg = devm_regulator_get(&spi->dev, "vref");
+ 	if (IS_ERR(state->vref_reg)) {
+ 		dev_err(&indio_dev->dev, "Failed to locate vref regulator\n");
+-- 
+2.11.0
+

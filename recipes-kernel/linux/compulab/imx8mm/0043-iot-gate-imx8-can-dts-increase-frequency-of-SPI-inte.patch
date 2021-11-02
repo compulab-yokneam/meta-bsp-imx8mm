@@ -1,7 +1,7 @@
 From 416585092156c42d92336048b040f0b49a0854e5 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Thu, 3 Dec 2020 17:12:08 +0200
-Subject: [PATCH 43/64] iot-gate-imx8: can: dts: increase frequency of SPI
+Subject: [PATCH 43/70] iot-gate-imx8: can: dts: increase frequency of SPI
  interface
 
 The updated CAN bus driver mcp25xxfd, requires an SPI frequency of 2MHz.

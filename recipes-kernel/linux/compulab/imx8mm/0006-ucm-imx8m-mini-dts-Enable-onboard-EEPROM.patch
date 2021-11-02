@@ -1,7 +1,7 @@
 From 571974bb6413c590841dc1c0c25bf03e3fc233f4 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 14 Feb 2019 17:42:19 +0200
-Subject: [PATCH 06/64] ucm-imx8m-mini:dts: Enable onboard EEPROM
+Subject: [PATCH 06/70] ucm-imx8m-mini:dts: Enable onboard EEPROM
 
 Enable onboard EEPROM type of Atmel 24c08 at 0x50@i2c2.
 

@@ -1,7 +1,7 @@
-From d4fadcc69129a7ed1fe0230f7d8ddae0b2e994da Mon Sep 17 00:00:00 2001
+From 35e82acd67e9a8fbdc4ea16af8c73849dc90fd05 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
-Date: Sun, 6 Sep 2020 17:26:37 +0300
-Subject: [PATCH 34/70] iot-gate-imx8: release 2.1
+Date: Tue, 2 Nov 2021 16:13:15 +0200
+Subject: [PATCH 70/70] iot-gate-imx8: release 2.6
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
@@ -9,15 +9,15 @@ Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
-index 2f279c1053dd..cb6206e69654 100644
+index ff878df7db90..d907578a3719 100644
 --- a/arch/arm64/configs/iot-gate-imx8_defconfig
 +++ b/arch/arm64/configs/iot-gate-imx8_defconfig
 @@ -1,4 +1,4 @@
--CONFIG_LOCALVERSION="-iot-gate-imx8-2.0"
-+CONFIG_LOCALVERSION="-iot-gate-imx8-2.1"
+-CONFIG_LOCALVERSION="-iot-gate-imx8-2.5"
++CONFIG_LOCALVERSION="-iot-gate-imx8-2.6"
  CONFIG_SYSVIPC=y
  CONFIG_POSIX_MQUEUE=y
- CONFIG_AUDIT=y
+ CONFIG_NO_HZ_IDLE=y
 -- 
 2.11.0
 

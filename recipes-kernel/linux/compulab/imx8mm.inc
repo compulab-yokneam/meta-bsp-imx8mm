@@ -64,5 +64,11 @@ SRC_URI_append = " \
 	file://0062-can-dev-Move-device-back-to-init-netns-on-owning-net.patch \
 	file://0063-iot-gate-imx8-can-enable-Broadcast-Manager-CAN-Proto.patch \
 	file://0064-iot-gate-imx8-release-2.5.patch \
+	file://0065-iot-gate-imx8-dts-disable-USB-over-current-messages.patch \
+	file://0066-iot-gate-imx8-disable-regulator-debug.patch \
+	file://0067-iio-adc-update-the-Maxim-MAX11108-driver.patch \
+	file://0068-iot-gate-imx8-iio-enable-standalone-triggers.patch \
+	file://0069-iot-gate-imx8-add-Moby-compatibility.patch \
+	file://0070-iot-gate-imx8-release-2.6.patch \
 	file://defconfig \
 "

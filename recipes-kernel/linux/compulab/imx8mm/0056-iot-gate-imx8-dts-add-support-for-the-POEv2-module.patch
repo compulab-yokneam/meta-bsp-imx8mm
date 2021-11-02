@@ -1,7 +1,7 @@
 From 42c39bdd52b1add765de000a41e9404f4c89d56e Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 11 May 2021 10:05:49 +0300
-Subject: [PATCH 56/64] iot-gate-imx8: dts: add support for the POEv2 module
+Subject: [PATCH 56/70] iot-gate-imx8: dts: add support for the POEv2 module
 
 The POE module implements a USB to Ethernet.
 A USB MUX on the baseboard is set to route one of the USB interfaces to

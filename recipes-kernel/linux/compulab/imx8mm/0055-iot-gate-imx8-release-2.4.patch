@@ -1,7 +1,7 @@
 From 63b77eb68f91e075f6a4b6d4cbaa578eecc5b481 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 13 Jan 2021 11:27:49 +0200
-Subject: [PATCH 55/64] iot-gate-imx8: release 2.4
+Subject: [PATCH 55/70] iot-gate-imx8: release 2.4
 
 ---
  arch/arm64/configs/iot-gate-imx8_defconfig | 2 +-

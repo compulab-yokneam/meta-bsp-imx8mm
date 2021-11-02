@@ -1,7 +1,7 @@
 From c06934e87457e9b22907763ce5147a6b95fb84e0 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 2 Feb 2021 14:04:19 +0200
-Subject: [PATCH 47/64] can: mcp25xxfd: update drive
+Subject: [PATCH 47/70] can: mcp25xxfd: update drive
 
 The driver was taken from Raspberry Pi GitHub:
 https://github.com/raspberrypi/linux/tree/rpi-5.4.y/drivers/net/can/spi/mcp251xfd

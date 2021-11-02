@@ -1,7 +1,7 @@
 From 54cccd3394e4e8dd0c19d00d5d6caa178a18565e Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 6 Jul 2020 16:47:39 +0300
-Subject: [PATCH 23/64] mcm-imx8m-mini: config: Update defconfig
+Subject: [PATCH 23/70] mcm-imx8m-mini: config: Update defconfig
 
 Remove unused POWER_RESET and SYSCON options.
 

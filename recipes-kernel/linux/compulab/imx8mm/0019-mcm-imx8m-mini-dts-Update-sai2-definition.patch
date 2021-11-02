@@ -1,7 +1,7 @@
 From 112722a7676e13ba33965e397afb822262958b14 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Sat, 4 Jul 2020 20:32:09 +0300
-Subject: [PATCH 19/64] mcm-imx8m-mini: dts: Update sai2 definition
+Subject: [PATCH 19/70] mcm-imx8m-mini: dts: Update sai2 definition
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

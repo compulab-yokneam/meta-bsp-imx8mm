@@ -1,7 +1,7 @@
 From 0265930309f11c780cf036e0ecc31c92afc87b5d Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 6 Jun 2021 18:17:37 +0300
-Subject: [PATCH 62/64] can: dev: Move device back to init netns on owning
+Subject: [PATCH 62/70] can: dev: Move device back to init netns on owning
  netns delete
 
 When a non-initial netns is destroyed, the usual policy is to delete

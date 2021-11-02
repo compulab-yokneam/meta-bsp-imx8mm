@@ -1,7 +1,7 @@
 From f8b7629741520aeac3e655e6108d8435e2774618 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 30 May 2021 16:38:05 +0300
-Subject: [PATCH 64/64] iot-gate-imx8: release 2.5
+Subject: [PATCH 64/70] iot-gate-imx8: release 2.5
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

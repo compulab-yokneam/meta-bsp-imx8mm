@@ -1,7 +1,7 @@
 From a8277660e96a26c4c5a80147c5c939e8199eb65b Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 21 Jul 2020 18:11:44 +0300
-Subject: [PATCH 27/64] ARM64: dts: imx8mm: update PINMUX options
+Subject: [PATCH 27/70] ARM64: dts: imx8mm: update PINMUX options
 
 Some of the PINMUX options are missing.
 Add the missing PINMUX options.
