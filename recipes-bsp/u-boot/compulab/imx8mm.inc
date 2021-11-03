@@ -102,4 +102,7 @@ SRC_URI_append = " \
 	file://0100-spl-lpddr-training-size-optimisation.patch \
 	file://0101-spl-Add-SDP-support.patch \
 	file://0102-LOCALVERSION-2.1.2.patch \
+	file://0103-spl-Enable-Samsung-4G-DRAM-0x01061010.patch \
+	file://0104-Enable-DDR-Alliance-1G-0x01050008.patch \
+	file://0105-LOCALVERSION-2.1.3.patch \
 "
