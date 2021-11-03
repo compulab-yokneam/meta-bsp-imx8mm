@@ -57,5 +57,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0055-LOCALVERSION-1.3.6.patch \
 	file://0056-Enable-SoC-info-export-via-fdt.patch \
 	file://0057-LOCALVERSION-1.3.7.patch \
+	file://0058-Enable-DDR-Alliance-1G.patch \
+	file://0059-LOCALVERSION-1.3.8.patch \
 	file://ucm-imx8m-mini_defconfig \
 "

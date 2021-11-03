@@ -1,0 +1,25 @@
+From bcf3fa20ba465bc5ed25ea287703b040898f313c Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 3 Nov 2021 23:39:29 +0200
+Subject: [PATCH 58/59] Enable DDR Alliance 1G
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/ucm-imx8m-mini/ddr/ddr.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr.c b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
+index 9d5c5a4936..0fcd2ec191 100644
+--- a/board/compulab/ucm-imx8m-mini/ddr/ddr.c
++++ b/board/compulab/ucm-imx8m-mini/ddr/ddr.c
+@@ -86,6 +86,7 @@ static const struct lpddr4_desc lpddr4_array[] = {
+ 	{ .name = "Samsung",	.id = 0x01061010, .subind = 0x02, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+ 	{ .name = "Samsung",	.id = 0x01050008, .subind = 0xff, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},
+ 	{ .name = "Samsung",	.id = 0x01060008, .subind = 0xff, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},
++	{ .name = "Alliance",	.id = 0x52000008, .subind = 0xff, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},
+ 	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x04, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
+ 	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x02, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+ 	{ .name = "Micron",	.id = 0xff020008, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
+-- 
+2.11.0
+
