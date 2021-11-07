@@ -1,0 +1,61 @@
+From 85865cbe8c8e882fe4ac61fa75a27d1a506dc4cb Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 7 Nov 2021 23:44:43 +0200
+Subject: [PATCH 48/48] dts:ucm-imx8m-mini: Add _thermal_ dts
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/Makefile         |  1 +
+ .../dts/compulab/ucm-imx8m-mini-thermal.dts   | 30 +++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts
+
+diff --git a/arch/arm64/boot/dts/compulab/Makefile b/arch/arm64/boot/dts/compulab/Makefile
+index f1572a4b4ad2..0db254eb070b 100644
+--- a/arch/arm64/boot/dts/compulab/Makefile
++++ b/arch/arm64/boot/dts/compulab/Makefile
+@@ -1,4 +1,5 @@
+ dtb-$(CONFIG_ARCH_MXC) += ucm-imx8m-mini.dtb
++dtb-$(CONFIG_ARCH_MXC) += ucm-imx8m-mini-thermal.dtb
+ dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini.dtb
+ dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini-m4.dtb
+ dtb-$(CONFIG_ARCH_MXC) += mcm-imx8m-mini-thermal.dtb
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts
+new file mode 100644
+index 000000000000..ff4ad6617d6a
+--- /dev/null
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts
+@@ -0,0 +1,30 @@
++/*
++ * Copyright 2018 CompuLab
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++/dts-v1/;
++
++#include "ucm-imx8m-mini.dts"
++
++/ {
++	model = "CompuLab MCM i.MX8MM board (thermal)";
++	compatible = "cpl,mcm-imx8m-mini", "fsl,imx8mm";
++};
++
++&cpu_alert0 {
++	temperature = <125000>;
++};
++
++&cpu_crit0 {
++	temperature = <155000>;
++};
+-- 
+2.17.1
+
