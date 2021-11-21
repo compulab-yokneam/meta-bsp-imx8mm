@@ -5,8 +5,8 @@
 
   <remote fetch="git://github.com/compulab-yokneam" name="compulab"/>
 
-  <project name="meta-compulab" remote="compulab" revision="devel" path="sources/meta-compulab"/>
-  <project name="meta-compulab-bsp" remote="compulab" revision="master" path="sources/meta-compulab-bsp"/>
+  <project name="meta-compulab" remote="compulab" revision="d92fc516c66cdc8780b75851dcd78251c64251c3" path="sources/meta-compulab"/>
+  <project name="meta-compulab-bsp" remote="compulab" revision="760ca0441702e7495335a5c70f56fa72167fa0f6" path="sources/meta-compulab-bsp"/>
   <project name="meta-bsp-imx8mm" remote="compulab" revision="rel_imx_5.10.35_2.0.0-experiment" path="sources/meta-bsp-imx8mm" >
     <linkfile src="tools/compulab-setup-env" dest="compulab-setup-env" />
   </project>
