@@ -3,5 +3,9 @@ CORE_IMAGE_EXTRA_INSTALL += " cl-uboot cl-deploy cl-stest cl-camera cl-audio "
 CORE_IMAGE_EXTRA_INSTALL += " u-boot-fw-utils "
 CORE_IMAGE_EXTRA_INSTALL += " memtester htop iotop tmux iperf3 "
 CORE_IMAGE_EXTRA_INSTALL += " wvdial "
+
+CORE_IMAGE_EXTRA_INSTALL += " u-boot-update-script "
+IMAGE_BOOT_FILES_append = " boot.update.scr "
+
 HOSTTOOLS += " git-lfs"
 PREFERRED_RPROVIDER_u-boot-fw-utils = "u-boot-imx-fw-utils"
