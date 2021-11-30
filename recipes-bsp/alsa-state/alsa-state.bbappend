@@ -1,3 +1,0 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-
-PACKAGE_ARCH_mx8 = "${MACHINE_ARCH}"

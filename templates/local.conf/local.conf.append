@@ -8,4 +8,4 @@ CORE_IMAGE_EXTRA_INSTALL += " u-boot-update-script "
 IMAGE_BOOT_FILES_append = " boot.update.scr "
 
 HOSTTOOLS += " git-lfs"
-PREFERRED_RPROVIDER_u-boot-fw-utils = "u-boot-imx-fw-utils"
+PREFERRED_RPROVIDER_u-boot-fw-utils = "u-boot-fw-utils"
