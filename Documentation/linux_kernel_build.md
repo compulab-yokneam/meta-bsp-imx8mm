@@ -42,6 +42,6 @@ git -C linux-imx am ${PATCHES}/*.patch
 
 ## Compile the Kernel
 <pre>
-make -C linux-imx ${MACHINE}_defconfig
+make cl-imx8m-mini_defconfig ${MACHINE}.config
 make -C linux-imx
 </pre>
