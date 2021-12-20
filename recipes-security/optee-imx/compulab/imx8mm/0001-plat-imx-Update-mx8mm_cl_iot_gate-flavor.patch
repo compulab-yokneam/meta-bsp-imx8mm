@@ -1,0 +1,32 @@
+From 20c3cdabe86e4270eceb0832189db19fd37509e9 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 20 Dec 2021 12:58:50 +0200
+Subject: [PATCH 1/2] plat-imx: Update mx8mm_cl_iot_gate flavor
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ core/arch/arm/plat-imx/conf.mk | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index 7ae0d64c..6391d5bb 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -368,10 +368,11 @@ CFG_UART_BASE ?= UART2_BASE
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mm_cl_iot_gate))
+-CFG_DDR_SIZE ?= 0x40000000
++CFG_DDR_SIZE ?= UL(0x100000000)
+ CFG_UART_BASE ?= UART3_BASE
+-CFG_NSEC_DDR_1_BASE ?= 0x80000000UL
+-CFG_NSEC_DDR_1_SIZE ?= 0x40000000UL
++CFG_TZDRAM_START ?= ($(CFG_DRAM_BASE) + 0x16000000)
++$(call force,CFG_CORE_LARGE_PHYS_ADDR,y)
++$(call force,CFG_CORE_ARM64_PA_BITS,36)
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mnevk))
+-- 
+2.17.1
+
