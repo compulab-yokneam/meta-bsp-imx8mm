@@ -21,7 +21,7 @@ Define the following environment variables:
 |CompuLab branch name|export CPL_BRANCH=rel_imx_5.10.35_2.0.0-optee|
 |ATF revision|export ATF=lf-5.10.72-2.2.0|
 |OPTEE revision|export OPTEE=lf-5.10.72-2.2.0|
-|U-Boot revision|export UBOOT=lf-5.10.35-2.0.0|
+|U-Boot revision|export UBOOT=lf-5.10.72-2.2.0|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
