@@ -101,4 +101,5 @@ SRC_URI_append = " \
 	file://0100-spl-Add-SDP-support.patch \
 	file://0101-spl-Enable-Samsung-4G-DRAM-0x01061010.patch \
 	file://0102-Enable-DDR-Alliance-1G-0x01050008.patch\
+	file://0103-Revert-legacy-changes.patch \
 "
