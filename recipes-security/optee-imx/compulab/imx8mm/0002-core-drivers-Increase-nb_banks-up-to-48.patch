@@ -1,0 +1,26 @@
+From 556d259c9337e081193171a8822accd8d92f6dc9 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 20 Dec 2021 13:00:25 +0200
+Subject: [PATCH 2/2] core: drivers: Increase nb_banks up to 48
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ core/drivers/imx_ocotp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/drivers/imx_ocotp.c b/core/drivers/imx_ocotp.c
+index 9758a972..616e8729 100644
+--- a/core/drivers/imx_ocotp.c
++++ b/core/drivers/imx_ocotp.c
+@@ -216,7 +216,7 @@ static const struct ocotp_instance ocotp_imx7ulp = {
+ };
+ 
+ static const struct ocotp_instance ocotp_imx8m = {
+-	.nb_banks = 32,
++	.nb_banks = 48,
+ 	.nb_words = 8,
+ 	.get_die_id = ocotp_get_die_id_mx,
+ };
+-- 
+2.17.1
+
