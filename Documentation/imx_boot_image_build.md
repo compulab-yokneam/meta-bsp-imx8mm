@@ -41,7 +41,7 @@ cd ${SRC_ROOT}
 
 * Download CompuLab BSP
 <pre>
-git clone -b ${CPL_BRANCH} https://github.com/compulab-yokneam/meta-bsp-imx8mp.git
+git clone -b ${CPL_BRANCH} https://github.com/compulab-yokneam/meta-bsp-imx8mm.git
 export LAYER_DIR=$(pwd)/meta-bsp-imx8mm
 </pre>
 
