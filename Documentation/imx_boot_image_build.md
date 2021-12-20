@@ -119,7 +119,7 @@ export ARCH=arm64
 <pre>
 cat uboot-imx/configs/cl-imx8m-mini_defconfig uboot-imx/configs/${MACHINE}.config > uboot-imx/configs/${MACHINE}_defconfig
 make -j 16 -C uboot-imx O=${RESULTS} ${MACHINE}_defconfig
-make -j 16 -C uboot-imx O=${RESULTS} flash.bin
+make -j 16 -C uboot-imx O=${RESULTS}
 </pre>
 
 ## Flashing
