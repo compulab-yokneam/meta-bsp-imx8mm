@@ -1,13 +1,11 @@
-do_compile_preppend () {
-    make_file=${S}/iMX8M/soc.mak
-    if [ -e ${make_file} ]; then
-        sed -i "s/dtbs = .*dtb/dtbs = ${UBOOT_DTB_NAME}/g" ${make_file}
-	sed -i "s/\(^TEE_LOAD_ADDR \).*/\1= 0x7e000000/g" ${make_file}
-    fi
-}
+EXTRA_OEMAKE += "\
+    TEE_LOAD_ADDR=${TEE_LOAD_ADDR} \
+"
+
+# This is a way to pass the TEE_LOAD_ADDR to
+# the Makefile. The main recipe ignores EXTRA_OEMAKE.
+REV_OPTION = "TEE_LOAD_ADDR=${TEE_LOAD_ADDR}"
 
 do_install_append () {
-        ln -fs ${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/imx-boot
+    ln -fs ${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/imx-boot
 }
-
-addtask compile_preppend before do_compile after do_configure
