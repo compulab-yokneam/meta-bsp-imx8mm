@@ -1,0 +1,49 @@
+From cf6207cf4f096f852f74958ae31c5206f358ef58 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 20 Dec 2021 14:45:34 +0200
+Subject: [PATCH 104/104] compulab: imx8mm: Add CONFIG_ATF_LOAD_ADDR
+ CONFIG_TEE_LOAD_ADDR
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ Makefile                    |  3 +++
+ board/compulab/plat/Kconfig | 12 ++++++++++++
+ 2 files changed, 15 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 0451f445f6..3567882dd2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1410,6 +1410,9 @@ else
+ SPL_PAYLOAD := u-boot.bin
+ endif
+ 
++export ATF_LOAD_ADDR=$(CONFIG_ATF_LOAD_ADDR)
++export TEE_LOAD_ADDR=$(CONFIG_TEE_LOAD_ADDR)
++
+ SPL_IMAGE := $(CONFIG_SPL_IMAGE:"%"=%)
+ 
+ OBJCOPYFLAGS_u-boot-with-spl.bin = -I binary -O binary \
+diff --git a/board/compulab/plat/Kconfig b/board/compulab/plat/Kconfig
+index af14b8b642..9631ba5682 100644
+--- a/board/compulab/plat/Kconfig
++++ b/board/compulab/plat/Kconfig
+@@ -9,3 +9,15 @@ config SPL_REPORT_FAKE_MEMSIZE
+ 	  size. For debug purposes ONLY!!!
+ 
+ endmenu
++
++if TARGET_UCM_IMX8M_MINI || TARGET_MCM_IMX8M_MINI || TARGET_IOT_GATE_IMX8
++
++config ATF_LOAD_ADDR
++	hex
++	default 0x00920000
++
++config TEE_LOAD_ADDR
++	hex
++	default 0x56000000
++
++endif
+-- 
+2.17.1
+
