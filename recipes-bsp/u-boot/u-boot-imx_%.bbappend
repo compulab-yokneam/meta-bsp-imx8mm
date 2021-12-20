@@ -1,4 +1,4 @@
-SRCREV = "3463140881c523e248d2fcb6bfc9ed25c0db93bd"
+SRCREV = "263b27e076a0f6e5dcc80227a235f0af73718342"
 
 require u-boot-compulab.inc
 
