@@ -68,8 +68,9 @@ git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
 </pre>
 * Make bl31.bin
 
+|Mode |Command
+|---|---|
 |optee build|make -j 16 -C imx-atf PLAT=imx8mm BUILD_BASE=build PLAT=imx8mm IMX_BOOT_UART_BASE=0x30880000 BL32_BASE=0x56000000 BL32_SIZE=0x2000000 SPD=opteed bl31
-|:--- |:--- |
 |non-optee build|make -j 16 -C imx-atf PLAT=imx8mm BUILD_BASE=build PLAT=imx8mm IMX_BOOT_UART_BASE=0x30880000 BL32_BASE=0x56000000 BL32_SIZE=0x2000000 bl31
 
 * Ceate a symlink in the ${RESULTS} folder:
