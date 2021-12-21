@@ -90,7 +90,7 @@ git -C imx-optee-os checkout ${OPTEE} -b ${CPL_BRANCH}
 * Apply patches if applicable:
 <pre>
 [[ -d ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm ]] && { \
-git -C imx-atf am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
+git -C imx-optee-os am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
 }
 </pre>
 * Set environment variables:
