@@ -22,7 +22,7 @@ Define the following environment variables:
 |NXP ATF release|export NXP_ATF_RELEASE=lf_v2.4|
 |NXP mkimage release|export NXP_MKIMAGE_RELEASE=lf-5.10.y_2.0.0|
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.12.bin|
-|CompuLab branch name|export CPL_BRANCH=rel_imx_5.10.35_2.0.0-experiment|
+|CompuLab branch name|export CPL_BRANCH=rel_imx_5.10.35_2.0.0-stable|
 
 
 ## Prerequisites
@@ -80,7 +80,7 @@ git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
 
 * Compile U-Boot:
 <pre>
-make -C uboot-imx ${MACHINE}_defconfig
+make -C uboot-imx -f defconfig.mk
 make -C uboot-imx
 </pre>
 
