@@ -47,5 +47,6 @@ SRC_URI_append = " \
 	file://0046-defconfig-Fix-PCIe-and-mPCIE_USB.patch \
 	file://0047-defconfig-Fix-mipi-csi-camera.patch \
 	file://0048-dts-ucm-imx8m-mini-Add-_thermal_-dts.patch \
+	file://0049-mcm-dts-Calibrate-RTC.patch \
 "
 
