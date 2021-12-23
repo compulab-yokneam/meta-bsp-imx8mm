@@ -1038,7 +1038,7 @@ index 000000000000..5e148929642c
 +/ {
 +	simple_sound: sound {
 +		compatible = "simple-audio-card";
-+		simple-audio-card,name = "mcm-imx8m-mini";
++		simple-audio-card,name = "cl-imx8m-mini";
 +		simple-audio-card,widgets =
 +			"Headphone", "Headphone Jack",
 +			"Line", "Line Out",
