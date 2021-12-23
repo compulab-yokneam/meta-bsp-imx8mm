@@ -23,7 +23,7 @@ index 000000000000..108f1885c60c
 --- /dev/null
 +++ b/arch/arm64/configs/mcm-imx8m-mini.config
 @@ -0,0 +1 @@
-+CONFIG_LOCALVERSION="-mcm-imx8m-mini-2.2"
++CONFIG_LOCALVERSION="-mcm-imx8m-mini-1.1"
 diff --git a/arch/arm64/configs/ucm-imx8m-mini.config b/arch/arm64/configs/ucm-imx8m-mini.config
 new file mode 100644
 index 000000000000..dfdcea6de941

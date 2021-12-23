@@ -191,7 +191,7 @@ index 0000000000..0cf37e709b
 --- /dev/null
 +++ b/configs/mcm-imx8m-mini.config
 @@ -0,0 +1,5 @@
-+CONFIG_LOCALVERSION="-mcm-imx8m-mini-2.2"
++CONFIG_LOCALVERSION="-mcm-imx8m-mini-1.1"
 +CONFIG_TARGET_MCM_IMX8M_MINI=y
 +CONFIG_DEFAULT_DTB="mcm-imx8m-mini.dtb"
 +CONFIG_DEFAULT_FDT_FILE="mcm-imx8m-mini.dtb"
