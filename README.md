@@ -1,7 +1,7 @@
 # Quick Start Guide
 
 Supported CompuLab machines:
-* ~~`mcm-imx8m-mini`~~
+* `mcm-imx8m-mini`
 * `ucm-imx8m-mini`
 
 # 1 Setup environment
@@ -23,7 +23,7 @@ repo sync
 ## 2.1 Define COMPULAB_MACHINE environment variable
 |Machine|Command Line|
 |---|---|
-|~~mcm-imx8m-mini~~|~~```export COMPULAB_MACHINE=mcm-imx8m-mini```~~
+|mcm-imx8m-mini|```export COMPULAB_MACHINE=mcm-imx8m-mini```
 |ucm-imx8m-mini|```export COMPULAB_MACHINE=ucm-imx8m-mini```
 
 ## 2.2 Run CompuLab Linux Yocto Project setup
