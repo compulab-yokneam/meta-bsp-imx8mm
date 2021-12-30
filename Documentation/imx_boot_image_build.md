@@ -2,129 +2,125 @@
 
 Supported machines:
 
-* `mcm-imxi8-mini`
-* `ucm-imxi8-mini`
-* `iot-gate-imx8`
+* `IOT-GATE-iMX8`
 
 Define a `MACHINE` environment variable for the target product:
 
 |Machine|Command Line|
 |---|---|
-|mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
-|ucm-imx8m-mini|export MACHINE=ucm-imx8m-mini
-|iot-gate-imx8|export MACHINE=iot-gate-imx8
+|ucm-imx8m-mini|export MACHINE=iot-gate-imx8
 
 Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP u-boot release|export NXP_UBOOT_RELEASE=lf_v2021.04|
-|NXP ATF release|export NXP_ATF_RELEASE=lf_v2.4|
-|NXP mkimage release|export NXP_MKIMAGE_RELEASE=lf-5.10.y_2.0.0|
-|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.12.bin|
-|CompuLab branch name|export CPL_BRANCH=rel_imx_5.10.35_2.0.0-stable|
-
+|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.14.bin|
+|CompuLab release|export CPL_RELEASE=${MACHINE}_r3.0|
+|CompuLab branch name|export CPL_BRANCH=lf-5.10.72-2.2.0_${MACHINE}|
+|ATF revision|export ATF=lf-5.10.72-2.2.0|
+|OPTEE revision|export OPTEE=lf-5.10.72-2.2.0|
+|U-Boot revision|export UBOOT=lf-5.10.72-2.2.0|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download and install the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/rel_imx_5.10.35_2.0.0-experiment/Documentation/toolchain.md)
-
+* Download the [ARM tool chain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads/9-2-2019-12)
+* Set environment variables:
+<pre>
+export ARCH=arm64
+export CROSS_COMPILE=/opt/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-
+</pre>
 * Create a folder to organize the files:
 <pre>
-mkdir imx8mm
-cd imx8mm
-export SRC_ROOT=$(pwd)
+mkdir -p imx8mm/{sources,results}
+export SRC_ROOT=$(readlink -f imx8mm/sources)
+export RESULTS=$(readlink -f imx8mm/results)
+cd ${SRC_ROOT}
 </pre>
 
 * Download CompuLab BSP
 <pre>
-git clone -b ${CPL_BRANCH} https://github.com/compulab-yokneam/meta-bsp-imx8mm.git
+git clone -b ${CPL_RELEASE} https://github.com/compulab-yokneam/meta-bsp-imx8mm.git
 export LAYER_DIR=$(pwd)/meta-bsp-imx8mm
 </pre>
 
-## Mkimage setup
-* Download the mkimage:
-<pre>
-git clone https://source.codeaurora.org/external/imx/imx-mkimage.git
-git -C imx-mkimage checkout ${NXP_MKIMAGE_RELEASE}
-</pre>
-
-## Arm Trusted Firmware (ATF) setup
-* Download the ATF:
-<pre>
-git clone https://source.codeaurora.org/external/imx/imx-atf.git
-git -C imx-atf checkout ${NXP_ATF_RELEASE}
-git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
-</pre>
-* Make bl31.bin
-<pre>
-make -C imx-atf PLAT=imx8mm bl31
-cp -v imx-atf/build/imx8mm/release/bl31.bin ${SRC_ROOT}/imx-mkimage/iMX8M/
-</pre>
-
-## Firmware iMX setup
+## Build Procedure
+### Firmware iMX setup
 * Download the firmware-imx file:
 <pre>
 wget http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${NXP_FIRMWARE}
 bash -x ${NXP_FIRMWARE} --auto-accept
-cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${SRC_ROOT}/imx-mkimage/iMX8M/
+cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${RESULTS}
 </pre>
 
-## U-Boot
-* Download the U-Boot source and apply CompuLab BSP patches:
+### Arm Trusted Firmware (ATF) setup
+* Download the ATF:
 <pre>
-git clone https://source.codeaurora.org/external/imx/uboot-imx.git
-git -C uboot-imx checkout ${NXP_UBOOT_RELEASE}
-git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
+git clone https://source.codeaurora.org/external/imx/imx-atf.git
+git -C imx-atf checkout ${ATF} -b ${CPL_BRANCH}
 </pre>
-
-* Compile U-Boot:
+* Apply patches if applicable:
 <pre>
-make -C uboot-imx -f defconfig.mk
-make -C uboot-imx
+[[ -d ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm ]] && { \
+git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
+}
 </pre>
+* Make bl31.bin
 
-* Copy files to the mkimage directory:
+|Mode |Command
+|---|---|
+|optee build|make -j 16 -C imx-atf PLAT=imx8mm BUILD_BASE=build PLAT=imx8mm IMX_BOOT_UART_BASE=0x30880000 BL32_BASE=0x56000000 BL32_SIZE=0x2000000 SPD=opteed bl31
+|non-optee build|make -j 16 -C imx-atf PLAT=imx8mm BUILD_BASE=build PLAT=imx8mm IMX_BOOT_UART_BASE=0x30880000 BL32_BASE=0x56000000 BL32_SIZE=0x2000000 bl31
+
+* Ceate a symlink in the ${RESULTS} folder:
 <pre>
-cp -v $(find uboot-imx | awk -v v=${MACHINE} '(/u-boot-spl.bin$|u-boot.bin$|u-boot-nodtb.bin$|tools\/mkimage$/)||($0~v".dtb$")' ORS=" ") ${SRC_ROOT}/imx-mkimage/iMX8M/
+ln -s $(readlink -f imx-atf/build/imx8mm/release/bl31.bin) ${RESULTS}/
 </pre>
 
-<!---
-## OP-TEE Setup
-Download the OP-TEE from:
+### OP-TEE Setup
+
+| Skip this for a non-optee build |
+| --- |
+
+* Download the OP-TEE:
 <pre>
 git clone https://source.codeaurora.org/external/imx/imx-optee-os
-git -C imx-optee-os checkout ${NXP_RELEASE} -b ${CPL_BRANCH}
-git -C imx-atf am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
+git -C imx-optee-os checkout ${OPTEE} -b ${CPL_BRANCH}
 </pre>
-
+* Apply patches if applicable:
+<pre>
+[[ -d ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm ]] && { \
+git -C imx-optee-os am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
+}
+</pre>
 * Set environment variables:
 <pre>
 export ARCH=arm
-export CROSS_COMPILE=/usr/bin/arm-linux-gnu-
-export CROSS_COMPILE64=/usr/bin/arm-linux-gnu-
+export CROSS_COMPILE64=${CROSS_COMPILE}
 </pre>
-
 * Make tee.bin
 <pre>
-cd imx-optee-os
-./scripts/imx_build.sh mx8mmevk
-cp -v build.mx8mmevk/core/tee.bin ${SRC_ROOT}/imx-mkimage/iMX8M/
+make -j 16 -C imx-optee-os PLATFORM=imx PLATFORM_FLAVOR=mx8mm_cl_iot_gate
+ln -s $(readlink -f imx-optee-os/out/arm-plat-imx/core/tee-raw.bin) ${RESULTS}/tee.bin
 </pre>
--->
 
-## Compiling the **flash.bin** imx-boot image:
-* Unset these variables:
+### U-Boot
+* Download the U-Boot source and apply CompuLab BSP patches:
 <pre>
-unset ARCH CROSS_COMPILE
+git clone https://source.codeaurora.org/external/imx/uboot-imx.git
+git -C uboot-imx checkout ${UBOOT} -b ${CPL_BRANCH}
+git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
 </pre>
-* Issue:
+* Restore `ARCH` environment variables:
 <pre>
-cd ${SRC_ROOT}/imx-mkimage/iMX8M
-sed "s/\(^dtbs = \).*/\1${MACHINE}.dtb/;s/\(mkimage\)_uboot/\1/" soc.mak > Makefile
-make clean
-make flash_evk SOC=iMX8MM
+export ARCH=arm64
+</pre>
+* Compile U-Boot flash.bin:
+<pre>
+make -j 16 -C uboot-imx O=${RESULTS} -f defconfig.mk
+make -j 16 -C uboot-imx O=${RESULTS}
 </pre>
 
 ## Flashing
-`dd if=flash.bin of=/dev/<your device> bs=1K seek=33 status=progress`
+<pre>
+dd if=${RESULTS}/flash.bin of=/dev/<your device> bs=1K seek=33 status=progress
+</pre>

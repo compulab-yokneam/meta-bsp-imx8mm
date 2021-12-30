@@ -1,7 +1,7 @@
-From fd167e54036b16013eecd9504fa392734f725fb0 Mon Sep 17 00:00:00 2001
+From aa605296da62f4b44932c7d8eedbc95518352cec Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 26 May 2020 20:55:00 +0300
-Subject: [PATCH 02/91] ucm-imx8m-mini: update CPU/model printed parameters
+Subject: [PATCH 002/126] ucm-imx8m-mini: update CPU/model printed parameters
 
 Update the startup messages of the CPU and model parameters
 
@@ -24,5 +24,5 @@ index 112345b6a3..899899c1c6 100644
  
  	chosen {
 -- 
-2.17.1
+2.11.0
 

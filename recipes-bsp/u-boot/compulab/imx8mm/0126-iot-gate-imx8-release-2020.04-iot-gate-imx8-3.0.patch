@@ -1,0 +1,24 @@
+From add6279250b10336de0feb9a374ee466d9f32652 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 9 Dec 2021 12:40:04 +0200
+Subject: [PATCH 126/126] iot-gate-imx8: release 2020.04-iot-gate-imx8-3.0
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ configs/iot-gate-imx8.config | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configs/iot-gate-imx8.config b/configs/iot-gate-imx8.config
+index d92f2866f8..ebaa232b88 100644
+--- a/configs/iot-gate-imx8.config
++++ b/configs/iot-gate-imx8.config
+@@ -1,5 +1,5 @@
+ CONFIG_TARGET_IOT_GATE_IMX8=y
+-CONFIG_LOCALVERSION="-iot-gate-imx8-1.0"
++CONFIG_LOCALVERSION="-iot-gate-imx8-3.0"
+ CONFIG_DEFAULT_FDT_FILE="sb-iotgimx8-can.dtb"
+ CONFIG_DEFAULT_DEVICE_TREE="iot-gate-imx8"
+ CONFIG_DM_PCA953X=n
+-- 
+2.11.0
+

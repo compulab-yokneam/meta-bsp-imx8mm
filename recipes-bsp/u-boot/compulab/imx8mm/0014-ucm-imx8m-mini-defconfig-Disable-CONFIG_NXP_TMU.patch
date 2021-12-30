@@ -1,7 +1,7 @@
-From 25d672480dabfc27a2bc746dd75e6a30d8e117cc Mon Sep 17 00:00:00 2001
+From 76a3fdd109d7326b5ba48fb92752a6a188e2fda4 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 27 Mar 2019 13:28:51 +0200
-Subject: [PATCH 14/91] ucm-imx8m-mini: defconfig: Disable CONFIG_NXP_TMU
+Subject: [PATCH 014/126] ucm-imx8m-mini: defconfig: Disable CONFIG_NXP_TMU
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -21,5 +21,5 @@ index b4a9975b33..75531acb20 100644
  CONFIG_DM_USB=y
  CONFIG_USB_EHCI_HCD=y
 -- 
-2.17.1
+2.11.0
 

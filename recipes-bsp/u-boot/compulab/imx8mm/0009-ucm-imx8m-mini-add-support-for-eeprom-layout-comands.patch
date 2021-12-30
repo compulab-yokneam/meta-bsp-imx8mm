@@ -1,7 +1,7 @@
-From a97a2cf1a2667ab13ecce0bc7c362c7b49008bf7 Mon Sep 17 00:00:00 2001
+From 41e820e4b705ab5400c78eb0e3ec4f1fc1a9bbc2 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Feb 2019 18:48:29 +0200
-Subject: [PATCH 09/91] ucm-imx8m-mini: add support for eeprom layout comands
+Subject: [PATCH 009/126] ucm-imx8m-mini: add support for eeprom layout comands
 
 Add support for EEPROM and EEPROM layout commands for the
 UCM-iMX8M-Mini.
@@ -54,5 +54,5 @@ index 1605ab7281..f464ed822b 100644
  #ifndef CONFIG_SPL_BUILD
  #define CONFIG_CMD_USB
 -- 
-2.17.1
+2.11.0
 

@@ -1,0 +1,28 @@
+From 2a6551c7cb3d7259651b0b18efe49096ecd7ce41 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Sun, 26 Dec 2021 16:41:58 +0200
+Subject: [PATCH 103/126] core: Add EPFNOSUPPORT handeler
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ drivers/core/lists.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/core/lists.c b/drivers/core/lists.c
+index e214306b90..38a6ada5f8 100644
+--- a/drivers/core/lists.c
++++ b/drivers/core/lists.c
+@@ -248,6 +248,10 @@ int lists_bind_fdt(struct udevice *parent, ofnode node, struct udevice **devp,
+ 			log_debug("Driver '%s' refuses to bind\n", entry->name);
+ 			continue;
+ 		}
++		if (ret == -EPFNOSUPPORT) {
++			log_debug("Driver '%s' not supported\n", entry->name);
++			continue;
++		}
+ 		if (ret) {
+ 			dm_warn("Error binding driver '%s': %d\n", entry->name,
+ 				ret);
+-- 
+2.11.0
+

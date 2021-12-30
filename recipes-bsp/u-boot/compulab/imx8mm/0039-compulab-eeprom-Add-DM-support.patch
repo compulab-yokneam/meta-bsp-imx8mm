@@ -1,11 +1,11 @@
-From eeec1e62d5133600bb5006f6dcc4feba2475cfce Mon Sep 17 00:00:00 2001
+From 745b74f41e51ff2c7590c6df9a3f2a94f884c2b4 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 08:03:28 +0300
-Subject: [PATCH 39/91] compulab: eeprom: Add DM support
+Subject: [PATCH 039/126] compulab: eeprom: Add DM support
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
- board/compulab/common/eeprom.c | 42 +++++++++++++++++++++++++++++-----
+ board/compulab/common/eeprom.c | 42 ++++++++++++++++++++++++++++++++++++------
  1 file changed, 36 insertions(+), 6 deletions(-)
 
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
@@ -77,5 +77,5 @@ index cc91f8a195..defd9b6446 100644
  	return res;
  }
 -- 
-2.17.1
+2.11.0
 

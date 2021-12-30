@@ -1,0 +1,340 @@
+From 68d98ded0e9267daa77339f9aebd73f642b74b70 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Sun, 16 Aug 2020 16:56:47 +0300
+Subject: [PATCH 110/126] iot-gate-imx8: add extension board support
+
+Add the following features to support the extension board:
+* Enable I2C 4
+* Enable the I2C GPIO extender.
+* U-Boot pinmux configuration according to the detected extension board.
+* Automatic kernel device tree selection.
+* Kernel device tree update according to the detected extension board
+  configuration
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm/dts/iot-gate-imx8.dts               |  21 +++
+ board/compulab/iot-gate-imx8/iot-gate-imx8.c | 249 +++++++++++++++++++++++++++
+ configs/iot-gate-imx8.config                 |   2 +
+ 3 files changed, 272 insertions(+)
+
+diff --git a/arch/arm/dts/iot-gate-imx8.dts b/arch/arm/dts/iot-gate-imx8.dts
+index 46e304be78..cf1629d10c 100644
+--- a/arch/arm/dts/iot-gate-imx8.dts
++++ b/arch/arm/dts/iot-gate-imx8.dts
+@@ -39,6 +39,20 @@
+ 	};
+ };
+ 
++&i2c4 {/* Expansion connector I2C */
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c4>;
++	status = "okay";
++
++	gpio@22 {
++		compatible = "nxp,pca9555";
++		reg = <0x22>;
++		gpio-controller;
++		#gpio-cells = <2>;
++	};
++};
++
+ &usdhc2 {
+ 	pinctrl-names = "default";
+ 	mmc-ddr-1_8v;
+@@ -64,6 +78,13 @@
+ 			>;
+ 		};
+ 
++		pinctrl_i2c4: i2c4grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_I2C4_SCL_I2C4_SCL		0x400001c3
++				MX8MM_IOMUXC_I2C4_SDA_I2C4_SDA		0x400001c3
++			>;
++		};
++
+ 		pinctrl_usdhc2_gpio: usdhc2grpgpio {
+ 			fsl,pins = <
+ 				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
+diff --git a/board/compulab/iot-gate-imx8/iot-gate-imx8.c b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+index 78ed8bbf43..345a2e9063 100644
+--- a/board/compulab/iot-gate-imx8/iot-gate-imx8.c
++++ b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+@@ -30,7 +30,251 @@
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
++/* IOT_GATE-iMX8 extension boards ID */
++typedef enum {
++	IOT_GATE_EXT_EMPTY, /* No extension */
++	IOT_GATE_EXT_CAN,   /* CAN bus */
++	IOT_GATE_EXT_IED,   /* Bridge */
++} iot_gate_imx8_ext;
++
++/* Sevice tree blob per extention board */
++#define IOT_GATE_IMX8_DTB_NAME_SIZE 20
++static char iot_gate_imx8_dtb[][IOT_GATE_IMX8_DTB_NAME_SIZE] = {
++	"sb-iotgimx8.dtb",
++	"sb-iotgimx8-can.dtb",
++	"sb-iotgimx8-ied.dtb",
++};
++
++#define IOT_GATE_IMX8_EXT_I2C 3 /* I2C ID of the extension board */
++#define IOT_GATE_IMX8_EXT_I2C_ADDR_EEPROM 0x54 /* I2C address of the EEPROM */
++#define IOT_GATE_IMX8_EXT_I2C_ADDR_GPIO 0x22 /* I2C address of the GPIO
++						extender */
++static int iot_gate_imx8_ext_id = IOT_GATE_EXT_EMPTY; /* Extension board ID */
++/*
++ * iot_gate_imx8_detect_ext() - extended board detection
++ * The detection is done according to the detected I2C devices.
++ */
++static void iot_gate_imx8_detect_ext(void)
++{
++	int ret;
++	struct udevice *i2c_bus, *i2c_dev;
++
++	ret = uclass_get_device_by_seq(UCLASS_I2C, IOT_GATE_IMX8_EXT_I2C,
++				       &i2c_bus);
++	if (ret) {
++		printf("%s: Failed getting i2c device\n", __func__);
++		return;
++	}
++
++	ret = dm_i2c_probe(i2c_bus, IOT_GATE_IMX8_EXT_I2C_ADDR_EEPROM, 0,
++			   &i2c_dev);
++	if (ret)
++		iot_gate_imx8_ext_id = IOT_GATE_EXT_EMPTY;
++	else {/* Only the bridge extension includes the GPIO extender */
++		ret = dm_i2c_probe(i2c_bus, IOT_GATE_IMX8_EXT_I2C_ADDR_GPIO, 0,
++				   &i2c_dev);
++		if (ret) /* GPIO extender not detected */
++			iot_gate_imx8_ext_id = IOT_GATE_EXT_CAN;
++		else
++			iot_gate_imx8_ext_id = IOT_GATE_EXT_IED;
++
++	}
++}
++
++#define IOT_GATE_IMX8_ENV_FDT_FILE "fdt_file"
++/*
++ * iot_gate_imx8_select_dtb() - select the kernel device tree blob
++ * The device tree blob is selected according to the detected extended board.
++ */
++static void iot_gate_imx8_select_dtb(void)
++{
++	char *env_fdt_file = env_get(IOT_GATE_IMX8_ENV_FDT_FILE);
++
++	if (env_fdt_file == NULL)
++		env_set(IOT_GATE_IMX8_ENV_FDT_FILE,
++			iot_gate_imx8_dtb[iot_gate_imx8_ext_id]);
++}
++
++static iomux_v3_cfg_t const iot_gate_imx8_ext_ied_pads[] = {
++	IMX8MM_PAD_NAND_ALE_GPIO3_IO0	 | MUX_PAD_CTRL(PAD_CTL_PE),
++	IMX8MM_PAD_NAND_CE0_B_GPIO3_IO1	 | MUX_PAD_CTRL(PAD_CTL_PE),
++	IMX8MM_PAD_NAND_DATA00_GPIO3_IO6 | MUX_PAD_CTRL(PAD_CTL_PE),
++	IMX8MM_PAD_NAND_DATA01_GPIO3_IO7 | MUX_PAD_CTRL(PAD_CTL_PE),
++	IMX8MM_PAD_NAND_DATA02_GPIO3_IO8 | MUX_PAD_CTRL(PAD_CTL_PE),
++	IMX8MM_PAD_NAND_DATA03_GPIO3_IO9 | MUX_PAD_CTRL(PAD_CTL_PE),
++};
++/* Extension board bridge GPIOs */
++#define IOT_GATE_IMX8_GPIO_EXT_IED_I0 IMX_GPIO_NR(3, 0) /* IN 0 */
++#define IOT_GATE_IMX8_GPIO_EXT_IED_I1 IMX_GPIO_NR(3, 1) /* IN 1 */
++#define IOT_GATE_IMX8_GPIO_EXT_IED_I2 IMX_GPIO_NR(3, 6) /* IN 2 */
++#define IOT_GATE_IMX8_GPIO_EXT_IED_I3 IMX_GPIO_NR(3, 7) /* IN 3 */
++#define IOT_GATE_IMX8_GPIO_EXT_IED_O0 IMX_GPIO_NR(3, 8) /* OUT 0 */
++#define IOT_GATE_IMX8_GPIO_EXT_IED_O1 IMX_GPIO_NR(3, 9) /* OUT 1 */
++#define IOT_GATE_IMX8_GPIO_EXT_IED_O2 IMX_GPIO_NR(6, 9) /* OUT 2 */
++#define IOT_GATE_IMX8_GPIO_EXT_IED_O3 IMX_GPIO_NR(6, 10)/* OUT 3 */
++/*
++ * iot_gate_imx8_update_pinmux() - update the pinmux
++ * Update the pinmux according to the detected extended board.
++ */
++static void iot_gate_imx8_update_pinmux(void)
++{
++	if (iot_gate_imx8_ext_id != IOT_GATE_EXT_IED)
++		return;
++
++	imx_iomux_v3_setup_multiple_pads(iot_gate_imx8_ext_ied_pads,
++					 ARRAY_SIZE(iot_gate_imx8_ext_ied_pads));
++
++	gpio_request(IOT_GATE_IMX8_GPIO_EXT_IED_I0, "ied-di4o4_i0");
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_EXT_IED_I0);
++	gpio_request(IOT_GATE_IMX8_GPIO_EXT_IED_I1, "ied-di4o4_i1");
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_EXT_IED_I1);
++	gpio_request(IOT_GATE_IMX8_GPIO_EXT_IED_I2, "ied-di4o4_i2");
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_EXT_IED_I2);
++	gpio_request(IOT_GATE_IMX8_GPIO_EXT_IED_I3, "ied-di4o4_i3");
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_EXT_IED_I3);
++	gpio_request(IOT_GATE_IMX8_GPIO_EXT_IED_O0, "ied-di4o4_o0");
++	gpio_direction_output(IOT_GATE_IMX8_GPIO_EXT_IED_O0, 0);
++	gpio_request(IOT_GATE_IMX8_GPIO_EXT_IED_O1, "ied-di4o4_o1");
++	gpio_direction_output(IOT_GATE_IMX8_GPIO_EXT_IED_O1, 0);
++	gpio_request(IOT_GATE_IMX8_GPIO_EXT_IED_O2, "ied-di4o4_o2");
++	gpio_direction_output(IOT_GATE_IMX8_GPIO_EXT_IED_O2, 0);
++	gpio_request(IOT_GATE_IMX8_GPIO_EXT_IED_O3, "ied-di4o4_o3");
++	gpio_direction_output(IOT_GATE_IMX8_GPIO_EXT_IED_O3, 0);
++}
++
++/*
++ * sub_board_late_init() - IOT-GATE-iMX8 implementation of board_late_init
++ */
++int sub_board_late_init(void)
++{
++	iot_gate_imx8_detect_ext(); /* Extended board detection */
++	iot_gate_imx8_select_dtb(); /* Kernel device tree blob selection */
++	iot_gate_imx8_update_pinmux();
++	return 0;
++}
++
+ #ifdef CONFIG_OF_BOARD_SETUP
++#define IOT_GATE_IMX8_GPIO_S0B0 IMX_GPIO_NR(6, 0) /* Slot ID slot 0 bit 0 */
++#define IOT_GATE_IMX8_GPIO_S0B1 IMX_GPIO_NR(6, 1) /* Slot ID slot 0 bit 1 */
++#define IOT_GATE_IMX8_GPIO_S0B2 IMX_GPIO_NR(6, 2) /* Slot ID slot 0 bit 2 */
++#define IOT_GATE_IMX8_GPIO_S1B0 IMX_GPIO_NR(6, 3) /* Slot ID slot 1 bit 0 */
++#define IOT_GATE_IMX8_GPIO_S1B1 IMX_GPIO_NR(6, 4) /* Slot ID slot 1 bit 1 */
++#define IOT_GATE_IMX8_GPIO_S1B2 IMX_GPIO_NR(6, 5) /* Slot ID slot 1 bit 2 */
++#define IOT_GATE_IMX8_GPIO_S2B0 IMX_GPIO_NR(6, 6) /* Slot ID slot 2 bit 0 */
++#define IOT_GATE_IMX8_GPIO_S2B1 IMX_GPIO_NR(6, 7) /* Slot ID slot 2 bit 1 */
++#define IOT_GATE_IMX8_GPIO_S2B2 IMX_GPIO_NR(6, 8) /* Slot ID slot 2 bit 2 */
++#define IOT_GATE_IMX8_CARD_ID_EMPTY  0 /* card id - uninhabited */
++#define IOT_GATE_IMX8_CARD_ID_DI4O4  1 /* Card ID - IED-DI4O4   */
++#define IOT_GATE_IMX8_CARD_ID_RS_485 2 /* Card ID - IED-RS485   */
++#define IOT_GATE_IMX8_CARD_ID_CAN    4 /* Card ID - IED-CAN     */
++#define IOT_GATE_IMX8_CARD_ID_RS_232 6 /* Card ID - IED-RS232   */
++#define IOT_GATE_IMX8_DTB_PATH_UART2 "/soc@0/bus@30800000/serial@30890000"
++#define IOT_GATE_IMX8_DTB_PATH_UART4 "/soc@0/bus@30800000/serial@30a60000"
++#define IOT_GATE_IMX8_DTB_PATH_ECSPI2 "/soc@0/bus@30800000/spi@30830000"
++#define IOT_GATE_IMX8_DTB_PATH_ECSPI3 "/soc@0/bus@30800000/spi@30840000"
++/*
++ * iot_gate_imx8_update_ext_ied()
++ * Update device tree of the extended board IED-BASE.
++ * The device tree is updated according to the detected sub modules.
++ *
++ * @blob: ptr to device tree
++ *
++ * Return 0 for success, 1 for failure.
++ */
++static int iot_gate_imx8_update_ext_ied(void *blob)
++{
++	int revision;
++
++	if (iot_gate_imx8_ext_id != IOT_GATE_EXT_IED)
++		return 0;
++
++	/* ID GPIO initializations */
++	if (gpio_request(IOT_GATE_IMX8_GPIO_S0B0, "id_s0b0") ||
++	    gpio_request(IOT_GATE_IMX8_GPIO_S0B1, "id_s0b1") ||
++	    gpio_request(IOT_GATE_IMX8_GPIO_S0B2, "id_s0b2") ||
++	    gpio_request(IOT_GATE_IMX8_GPIO_S1B0, "id_s1b0") ||
++	    gpio_request(IOT_GATE_IMX8_GPIO_S1B1, "id_s1b1") ||
++	    gpio_request(IOT_GATE_IMX8_GPIO_S1B2, "id_s1b2") ||
++	    gpio_request(IOT_GATE_IMX8_GPIO_S2B0, "id_s2b0") ||
++	    gpio_request(IOT_GATE_IMX8_GPIO_S2B1, "id_s2b1") ||
++	    gpio_request(IOT_GATE_IMX8_GPIO_S2B2, "id_s2b2")) {
++		printf("%s: ID GPIO request failure\n", __func__);
++		return 1;
++	}
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S0B0);
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S0B1);
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S0B2);
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S1B0);
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S1B1);
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S1B2);
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S2B0);
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S2B1);
++	gpio_direction_input(IOT_GATE_IMX8_GPIO_S2B2);
++
++	/* Get slot 0 card ID */
++	revision =	gpio_get_value(IOT_GATE_IMX8_GPIO_S0B0)		|
++			gpio_get_value(IOT_GATE_IMX8_GPIO_S0B1) << 1	|
++			gpio_get_value(IOT_GATE_IMX8_GPIO_S0B2) << 2;
++	/* Slot 0 device tree blob manipulation */
++	switch (revision)
++	{
++	case IOT_GATE_IMX8_CARD_ID_EMPTY:
++		break;
++	case IOT_GATE_IMX8_CARD_ID_RS_485:
++	case IOT_GATE_IMX8_CARD_ID_RS_232:
++		do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_UART2, "status",
++				 "okay", sizeof("okay"), 1);
++		break;
++	case IOT_GATE_IMX8_CARD_ID_CAN:
++		do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_ECSPI2, "status",
++				 "okay", sizeof("okay"), 1);
++		break;
++	default:
++		printf("%s: invalid slot 0 card ID: %d\n", __func__, revision);
++		return 1;
++	}
++
++	/* Get slot 1 card ID */
++	revision =	gpio_get_value(IOT_GATE_IMX8_GPIO_S1B0)		|
++			gpio_get_value(IOT_GATE_IMX8_GPIO_S1B1) << 1	|
++			gpio_get_value(IOT_GATE_IMX8_GPIO_S1B2) << 2;
++	/* Slot 0 device tree blob manipulation */
++	switch (revision)
++	{
++	case IOT_GATE_IMX8_CARD_ID_EMPTY:
++		break;
++	case IOT_GATE_IMX8_CARD_ID_RS_485:
++	case IOT_GATE_IMX8_CARD_ID_RS_232:
++		do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_UART4, "status",
++				 "okay", sizeof("okay"), 1);
++		break;
++	case IOT_GATE_IMX8_CARD_ID_CAN:
++		do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_ECSPI3, "status",
++				 "okay", sizeof("okay"), 1);
++		break;
++	default:
++		printf("%s: invalid slot 1 card ID: %d\n", __func__, revision);
++		return 1;
++	}
++
++	/* Get slot 2 card ID */
++	revision =	gpio_get_value(IOT_GATE_IMX8_GPIO_S2B0)		|
++			gpio_get_value(IOT_GATE_IMX8_GPIO_S2B1) << 1	|
++			gpio_get_value(IOT_GATE_IMX8_GPIO_S2B2) << 2;
++	/* Slot 0 device tree blob manipulation */
++	switch (revision)
++	{
++	case IOT_GATE_IMX8_CARD_ID_EMPTY:
++	case IOT_GATE_IMX8_CARD_ID_DI4O4:
++		break;
++	default:
++		printf("%s: invalid slot 2 card ID: %d\n", __func__, revision);
++		return 1;
++	}
++
++	return 0;
++}
++
+ #define IOT_GATE_IMX8_DTB_UART1_MODE_GPIO_RS232 {0x29000000,		\
+ 0x1a000000, 0x01000000}
+ #define IOT_GATE_IMX8_DTB_PINCTRL_UART1 {				\
+@@ -115,6 +359,11 @@ int sub_ft_board_setup(void *blob, struct bd_info *bd)
+ 	int ret=0;
+ 
+ 	iot_gate_imx8_update_uart1_node(blob);/* Update	dtb node uart1 */
++	/* Update device tree of the extended board IED-BASE */
++	ret = iot_gate_imx8_update_ext_ied(blob);
++	if (ret)
++		printf("%s: Failt to Update device tree of the extended boarda "
++		       "IED-BASE\n", __func__);
+ 
+ 	return ret;
+ }
+diff --git a/configs/iot-gate-imx8.config b/configs/iot-gate-imx8.config
+index f0b1f1caff..cd722b89cf 100644
+--- a/configs/iot-gate-imx8.config
++++ b/configs/iot-gate-imx8.config
+@@ -12,3 +12,5 @@ CONFIG_VIDEO_LCD_STARTEK_ILI9881C=n
+ CONFIG_VIDEO_IMX_SEC_DSI=n
+ CONFIG_LED=n
+ CONFIG_LED_GPIO=n
++CONFIG_CMD_PCA953X=y
++CONFIG_DM_PCA953X=y
+-- 
+2.11.0
+

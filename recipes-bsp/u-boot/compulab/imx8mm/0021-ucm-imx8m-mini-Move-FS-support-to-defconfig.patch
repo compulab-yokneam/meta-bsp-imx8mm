@@ -1,7 +1,7 @@
-From 4a41b9cfee034c1cf37639a02226bc4168a20bc6 Mon Sep 17 00:00:00 2001
+From e58e45b88859f214573df2d15eb727e4369ea6bc Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 30 Apr 2019 11:32:58 +0300
-Subject: [PATCH 21/91] ucm-imx8m-mini: Move FS support to defconfig
+Subject: [PATCH 021/126] ucm-imx8m-mini: Move FS support to defconfig
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -49,5 +49,5 @@ index 046dc243bc..8b55fd61e9 100644
  #define CONFIG_SYS_MMC_IMG_LOAD_PART	1
  
 -- 
-2.17.1
+2.11.0
 

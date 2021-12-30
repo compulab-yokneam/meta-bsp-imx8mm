@@ -1,0 +1,50 @@
+From b749f8c3d8d0960c482b06f8ca90f59df00c5f55 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Sun, 30 Aug 2020 17:57:47 +0300
+Subject: [PATCH 112/126] iot-gate-imx8: prevent network interfaces rename
+
+Some of the Linux distributions are renaming the network interfaces
+according to parameters like MAC address.
+
+Add a flag, to bootargs, to prevent the network interface rename.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ include/configs/iot-gate-imx8.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/include/configs/iot-gate-imx8.h b/include/configs/iot-gate-imx8.h
+index 158f1c2aa0..9774949456 100644
+--- a/include/configs/iot-gate-imx8.h
++++ b/include/configs/iot-gate-imx8.h
+@@ -17,23 +17,24 @@
+ #undef CONFIG_EXTRA_ENV_SETTINGS
+ #undef CONFIG_BOOTCOMMAND
+ 
++#define ENV_CONSOLE console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200
+ #define CONFIG_EXTRA_ENV_SETTINGS		\
+ 	CONFIG_MFG_ENV_SETTINGS \
+ 	"autoload=off\0" \
+ 	"script=boot.scr\0" \
+ 	"image=Image\0" \
+-	"console=ttymxc2,115200	earlycon=ec_imx6q,0x30880000,115200\0" \
+ 	"fdt_addr=0x43000000\0"	\
+ 	"fdt_high=0xffffffffffffffff\0"	\
+ 	"initrd_high=0xffffffffffffffff\0" \
+ 	"root_opt=rootwait rw\0" \
++	"bootargs_common="__stringify(ENV_CONSOLE)" net.ifnames=0\0" \
+ 	"emmc_ul=setenv boot_dev_str eMMC; run boot_try_msg; " \
+ 	"setenv iface mmc; setenv dev 2; setenv part 1;" \
+-	"setenv bootargs console=${console} root=/dev/mmcblk2p2 " \
++	"setenv bootargs ${bootargs_common} root=/dev/mmcblk2p2 " \
+ 	"${root_opt};\0" \
+ 	"usb_ul=setenv boot_dev_str USB; run boot_try_msg; usb reset; " \
+ 	"setenv iface usb; setenv dev 0; setenv part 1; " \
+-	"setenv bootargs console=${console} root=/dev/sda2 ${root_opt};\0" \
++	"setenv bootargs ${bootargs_common} root=/dev/sda2 ${root_opt};\0" \
+ 	"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
+ 	"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
+ 	"ulfdt=load ${iface} ${dev}:${part} ${fdt_addr} ${fdt_file};\0" \
+-- 
+2.11.0
+

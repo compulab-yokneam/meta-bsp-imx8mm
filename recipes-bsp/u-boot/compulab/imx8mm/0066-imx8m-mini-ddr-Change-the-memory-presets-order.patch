@@ -1,0 +1,36 @@
+From 0a9c14878c90919628fa76ca098f18c86c06cf97 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 20 Jul 2020 13:01:28 +0300
+Subject: [PATCH 066/126] imx8m-mini: ddr: Change the memory presets order
+
+Make the simplest one 1-st.
+Nanya 1G has the best ddr-phy settings for reading the mr4-mr8 registers.
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/ddr/ddr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/board/compulab/plat/imx8mm/ddr/ddr.c b/board/compulab/plat/imx8mm/ddr/ddr.c
+index 1340475bef..4d774835ef 100644
+--- a/board/compulab/plat/imx8mm/ddr/ddr.c
++++ b/board/compulab/plat/imx8mm/ddr/ddr.c
+@@ -63,11 +63,11 @@ struct lpddr4_desc {
+ 
+ #define DEFAULT (('D' << 24) + ('E' << 16 ) + ( 'F' << 8 ) + 'A')
+ static const struct lpddr4_desc lpddr4_array[] = {
+-	{ .name = "Micron", .id = 0xff020008, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008}, //Only the first timing entry is in use
+-	{ .name = "Micron", .id = 0xff000110, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
+-	{ .name = "Samsung",.id = 0x01061010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
++	{ .name = "Nanya",  .id = 0x01050008, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008}, //Only the first timing entry is in use
+ 	{ .name = "Nanya",  .id = 0x05000010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+-	{ .name = "Nanya",  .id = 0x01050008, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},
++	{ .name = "Samsung",.id = 0x01061010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
++	{ .name = "Micron", .id = 0xff020008, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
++	{ .name = "Micron", .id = 0xff000110, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
+ };
+ 
+ static unsigned int lpddr4_get_mr(void)
+-- 
+2.11.0
+

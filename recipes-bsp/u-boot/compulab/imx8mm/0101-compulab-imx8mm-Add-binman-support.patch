@@ -1,0 +1,279 @@
+From 1402a42529e24b7f8a2524fe2b2db22ed2ba784f Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 20 Dec 2021 18:46:24 +0200
+Subject: [PATCH 101/126] compulab: imx8mm: Add binman support
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/dts/cpl-imx8m-mini-u-boot.dtsi            | 147 +++++++++++++++++++++
+ arch/arm/dts/cpl-imx8m-mini.dtsi                   |   1 +
+ arch/arm/mach-imx/Makefile                         |  13 +-
+ arch/arm/mach-imx/imx8m/Kconfig                    |   3 +
+ board/compulab/plat/imx8mm/imximage-8mm-lpddr4.cfg |   9 ++
+ configs/cl-imx8m-mini_defconfig                    |   4 +-
+ 6 files changed, 169 insertions(+), 8 deletions(-)
+ create mode 100644 arch/arm/dts/cpl-imx8m-mini-u-boot.dtsi
+ create mode 100644 board/compulab/plat/imx8mm/imximage-8mm-lpddr4.cfg
+
+diff --git a/arch/arm/dts/cpl-imx8m-mini-u-boot.dtsi b/arch/arm/dts/cpl-imx8m-mini-u-boot.dtsi
+new file mode 100644
+index 0000000000..63bb7a7d72
+--- /dev/null
++++ b/arch/arm/dts/cpl-imx8m-mini-u-boot.dtsi
+@@ -0,0 +1,147 @@
++/*
++ * Copyright 2021 CompuLab
++ */
++
++/ {
++	binman: binman {
++		multiple-images;
++	};
++
++	firmware {
++		optee {
++			compatible = "linaro,optee-tz";
++			method = "smc";
++		};
++	};
++};
++
++&binman {
++	u-boot-spl-ddr {
++		filename = "u-boot-spl-ddr.bin";
++		pad-byte = <0xff>;
++		align-size = <4>;
++		align = <4>;
++
++		u-boot-spl {
++			align-end = <4>;
++		};
++
++		blob_1: blob-ext@1 {
++			filename = "lpddr4_pmu_train_1d_imem.bin";
++			size = <0x8000>;
++		};
++
++		blob_2: blob-ext@2 {
++			filename = "lpddr4_pmu_train_1d_dmem.bin";
++			size = <0x4000>;
++		};
++
++		blob_3: blob-ext@3 {
++			filename = "lpddr4_pmu_train_2d_imem.bin";
++			size = <0x8000>;
++		};
++
++		blob_4: blob-ext@4 {
++			filename = "lpddr4_pmu_train_2d_dmem.bin";
++			size = <0x4000>;
++		};
++	};
++
++	flash {
++		filename = "spl.bin";
++
++		mkimage {
++			args = "-n spl/u-boot-spl.cfgout -T imx8mimage -e 0x7e1000";
++
++			blob {
++				filename = "u-boot-spl-ddr.bin";
++			};
++		};
++	};
++
++	itb {
++		filename = "u-boot.itb";
++
++		fit {
++			description = "Configuration to load ATF before U-Boot";
++			#address-cells = <1>;
++			fit,external-offset = <CONFIG_FIT_EXTERNAL_OFFSET>;
++
++			images {
++				uboot {
++					description = "U-Boot (64-bit)";
++					type = "standalone";
++					arch = "arm64";
++					compression = "none";
++					load = <CONFIG_SYS_TEXT_BASE>;
++
++					uboot_blob: blob-ext {
++						filename = "u-boot-nodtb.bin";
++					};
++				};
++
++				atf {
++					description = "ARM Trusted Firmware";
++					type = "firmware";
++					arch = "arm64";
++					compression = "none";
++					load = <0x920000>;
++					entry = <0x920000>;
++
++					atf_blob: blob-ext {
++						filename = "bl31.bin";
++					};
++				};
++
++				tee {
++					description = "TEE firmware";
++					type = "firmware";
++					arch = "arm64";
++					compression = "none";
++					load = <0x56000000>;
++					entry = <0x56000000>;
++
++					tee_blob: blob-ext {
++						filename = "tee.bin";
++					};
++				};
++
++				fdt {
++					description = "NAME";
++					type = "flat_dt";
++					compression = "none";
++
++					uboot_fdt_blob: blob-ext {
++						filename = "u-boot.dtb";
++					};
++				};
++			};
++
++			configurations {
++				default = "conf";
++
++				conf {
++					description = "NAME";
++					firmware = "uboot";
++					loadables = "atf", "tee";
++					fdt = "fdt";
++				};
++			};
++		};
++	};
++
++	imx-boot {
++		filename = "flash.bin";
++		pad-byte = <0x00>;
++
++		spl: blob-ext@1 {
++			filename = "spl.bin";
++			offset = <0x0>;
++		};
++
++		uboot: blob-ext@2 {
++			filename = "u-boot.itb";
++			offset = <0x57c00>;
++		};
++	};
++};
+diff --git a/arch/arm/dts/cpl-imx8m-mini.dtsi b/arch/arm/dts/cpl-imx8m-mini.dtsi
+index 98cdae0d22..921b657f95 100644
+--- a/arch/arm/dts/cpl-imx8m-mini.dtsi
++++ b/arch/arm/dts/cpl-imx8m-mini.dtsi
+@@ -14,6 +14,7 @@
+ 
+ #include <dt-bindings/usb/pd.h>
+ #include "imx8mm.dtsi"
++#include "cpl-imx8m-mini-u-boot.dtsi"
+ 
+ / {
+ 	chosen {
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 6ba353360b..a068b5aedf 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -131,8 +131,7 @@ endif
+ DEPFILE_EXISTS := $(shell $(CPP) $(cpp_flags) -x c -o u-boot-dtb.cfgout $(srctree)/$(IMX_CONFIG); if [ -f u-boot-dtb.cfgout ]; then $(CNTR_DEPFILES) u-boot-dtb.cfgout; echo $$?; fi)
+ else ifeq ($(CONFIG_ARCH_IMX8M), y)
+ IMAGE_TYPE := imx8mimage
+-IMX8M_DEPFILES := $(srctree)/tools/imx8m_image.sh
+-DEPFILE_EXISTS := $(shell $(CPP) $(cpp_flags) -x c -o spl/u-boot-spl.cfgout $(srctree)/$(IMX_CONFIG);if [ -f spl/u-boot-spl.cfgout ]; then $(IMX8M_DEPFILES) spl/u-boot-spl.cfgout 0; echo $$?; fi)
++DEPFILE_EXISTS := 0
+ else
+ IMAGE_TYPE := imximage
+ DEPFILE_EXISTS := 0
+@@ -207,16 +206,18 @@ endif
+ 
+ ifdef CONFIG_ARM64
+ ifeq ($(CONFIG_ARCH_IMX8M), y)
+-SPL:
++
++SPL: spl/u-boot-spl.bin spl/u-boot-spl.cfgout FORCE
+ 
+ MKIMAGEFLAGS_flash.bin = -n spl/u-boot-spl.cfgout \
+ 		   -T $(IMAGE_TYPE) -e $(CONFIG_SPL_TEXT_BASE)
+ flash.bin: MKIMAGEOUTPUT = flash.log
+ 
++spl/u-boot-spl.cfgout: $(IMX_CONFIG) FORCE
++	$(Q)mkdir -p $(dir $@)
++	$(call if_changed_dep,cpp_cfg)
++
+ spl/u-boot-spl-ddr.bin: spl/u-boot-spl.bin spl/u-boot-spl.cfgout FORCE
+-ifeq ($(DEPFILE_EXISTS),0)
+-	$(IMX8M_DEPFILES) spl/u-boot-spl.cfgout 1
+-endif
+ 
+ flash.bin: spl/u-boot-spl-ddr.bin u-boot.itb FORCE
+ 	$(call if_changed,mkimage)
+diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
+index eac80a9989..08f5c5f039 100644
+--- a/arch/arm/mach-imx/imx8m/Kconfig
++++ b/arch/arm/mach-imx/imx8m/Kconfig
+@@ -263,18 +263,21 @@ config TARGET_PHYCORE_IMX8MP
+ config TARGET_UCM_IMX8M_MINI
+ 	bool "CompuLab ucm-imx8m-mini"
+ 	select IMX8MM
++	select BINMAN
+ 	select SUPPORT_SPL
+ 	select IMX8M_LPDDR4
+ 
+ config TARGET_MCM_IMX8M_MINI
+ 	bool "CompuLab mcm-imx8m-mini"
+ 	select IMX8MM
++	select BINMAN
+ 	select SUPPORT_SPL
+ 	select IMX8M_LPDDR4
+ 
+ config TARGET_IOT_GATE_IMX8
+ 	bool "CompuLab iot-gate-imx8"
+ 	select IMX8MM
++	select BINMAN
+ 	select SUPPORT_SPL
+ 	select IMX8M_LPDDR4
+ 
+diff --git a/board/compulab/plat/imx8mm/imximage-8mm-lpddr4.cfg b/board/compulab/plat/imx8mm/imximage-8mm-lpddr4.cfg
+new file mode 100644
+index 0000000000..b89092a559
+--- /dev/null
++++ b/board/compulab/plat/imx8mm/imximage-8mm-lpddr4.cfg
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2021 NXP
++ */
++
++#define __ASSEMBLY__
++
++BOOT_FROM	sd
++LOADER		mkimage.flash.mkimage	0x7E1000
+diff --git a/configs/cl-imx8m-mini_defconfig b/configs/cl-imx8m-mini_defconfig
+index 88c1a8e1bc..465522740b 100644
+--- a/configs/cl-imx8m-mini_defconfig
++++ b/configs/cl-imx8m-mini_defconfig
+@@ -15,9 +15,9 @@ CONFIG_SPL_TEXT_BASE=0x7E1000
+ CONFIG_FIT=y
+ CONFIG_FIT_EXTERNAL_OFFSET=0x3000
+ CONFIG_SPL_LOAD_FIT=y
+-CONFIG_SPL_FIT_GENERATOR="arch/arm/mach-imx/mkimage_fit_atf.sh"
++# CONFIG_USE_SPL_FIT_GENERATOR is not set
+ CONFIG_OF_SYSTEM_SETUP=y
+-CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/mach-imx/imx8m/imximage-8mm-lpddr4.cfg"
++CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=board/compulab/plat/imx8mm/imximage-8mm-lpddr4.cfg"
+ CONFIG_CONSOLE_MUX=y
+ CONFIG_BOARD_LATE_INIT=y
+ CONFIG_ARCH_MISC_INIT=y
+-- 
+2.11.0
+

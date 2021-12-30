@@ -1,7 +1,7 @@
-From ebfbf0ddfda20d3191ee5b0a1d7341cd68465b72 Mon Sep 17 00:00:00 2001
+From cbdfb5f0fea713cc69de29e75a05b36ce50b6931 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Sep 2017 10:07:26 +0300
-Subject: [PATCH 06/91] eeprom: layout: add field functions read
+Subject: [PATCH 006/126] eeprom: layout: add field functions read
 
 Read option is missing in the EEPROM layout feature
 
@@ -11,9 +11,9 @@ provided buffer without manipulation.
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
- board/compulab/common/eeprom.c | 91 +++++++++++++++++-----------------
- common/eeprom/eeprom_field.c   | 22 ++++++++
- common/eeprom/eeprom_layout.c  | 37 ++++++++++++++
+ board/compulab/common/eeprom.c | 91 +++++++++++++++++++++---------------------
+ common/eeprom/eeprom_field.c   | 22 ++++++++++
+ common/eeprom/eeprom_layout.c  | 37 +++++++++++++++++
  include/eeprom_field.h         |  4 ++
  include/eeprom_layout.h        |  2 +
  5 files changed, 111 insertions(+), 45 deletions(-)
@@ -146,11 +146,10 @@ diff --git a/common/eeprom/eeprom_field.c b/common/eeprom/eeprom_field.c
 index 38827f1180..e588b0943f 100644
 --- a/common/eeprom/eeprom_field.c
 +++ b/common/eeprom/eeprom_field.c
-@@ -129,6 +129,28 @@ int eeprom_field_update_bin(struct eeprom_field *field, uchar *fbuf,
- 	return __eeprom_field_update_bin(field, fbuf, value, false);
+@@ -130,6 +130,28 @@ int eeprom_field_update_bin(struct eeprom_field *field, uchar *fbuf,
  }
  
-+/**
+ /**
 + * eeprom_field_read_bin() - Read field data in binary form
 + *
 + * @field:     an initialized field
@@ -172,18 +171,18 @@ index 38827f1180..e588b0943f 100644
 +	return 0;
 +}
 +
- /**
++/**
   * eeprom_field_update_reserved() - Update reserved field with new data in
   *				    binary form
+  *
 diff --git a/common/eeprom/eeprom_layout.c b/common/eeprom/eeprom_layout.c
 index 1fab8e4dca..cc6dd39e01 100644
 --- a/common/eeprom/eeprom_layout.c
 +++ b/common/eeprom/eeprom_layout.c
-@@ -95,6 +95,42 @@ static int eeprom_layout_update_field(struct eeprom_layout *layout,
- 	return -1;
+@@ -96,6 +96,42 @@ static int eeprom_layout_update_field(struct eeprom_layout *layout,
  }
  
-+/*
+ /*
 + * eeprom_layout_read_field() - read a single field from the layout data
 + * @layout:    A pointer to an existing struct layout.
 + * @field_name:        The name of the field to update.
@@ -219,9 +218,10 @@ index 1fab8e4dca..cc6dd39e01 100644
 +	return -1;
 +}
 +
- /*
++/*
   * eeprom_layout_setup() - setup layout struct with the layout data and
   *			   metadata as dictated by layout_version
+  * @layout:	A pointer to an existing struct layout.
 @@ -116,4 +152,5 @@ void eeprom_layout_setup(struct eeprom_layout *layout, unsigned char *buf,
  	layout->data_size = buf_size;
  	layout->print = eeprom_layout_print;
@@ -262,5 +262,5 @@ index 730d963ab9..50e8ec1085 100644
  
  void eeprom_layout_setup(struct eeprom_layout *layout, unsigned char *buf,
 -- 
-2.17.1
+2.11.0
 

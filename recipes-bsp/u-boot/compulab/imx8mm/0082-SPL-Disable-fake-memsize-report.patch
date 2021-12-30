@@ -1,0 +1,112 @@
+From 225fb914d4dabc16a5c6ffe8aa9e202692224504 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 22 Oct 2020 21:02:05 +0300
+Subject: [PATCH 082/126] SPL: Disable fake memsize report
+
+The SPL can reports to U-boot a fake memsize, read from EEPROM. This feature is purposed only for
+debug; it may be enabled using config.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/mach-imx/imx8m/Kconfig              |  1 +
+ board/compulab/plat/Kconfig                  | 11 +++++++++++
+ board/compulab/plat/imx8/eeprom/eeprom_spl.c |  4 ++++
+ board/compulab/plat/imx8mm/ddr/ddr.c         |  9 +++++++--
+ 4 files changed, 23 insertions(+), 2 deletions(-)
+ create mode 100644 board/compulab/plat/Kconfig
+
+diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
+index 3102155bc1..eac80a9989 100644
+--- a/arch/arm/mach-imx/imx8m/Kconfig
++++ b/arch/arm/mach-imx/imx8m/Kconfig
+@@ -298,5 +298,6 @@ source "board/phytec/phycore_imx8mp/Kconfig"
+ source "board/compulab/ucm-imx8m-mini/Kconfig"
+ source "board/compulab/mcm-imx8m-mini/Kconfig"
+ source "board/compulab/iot-gate-imx8/Kconfig"
++source "board/compulab/plat/Kconfig"
+ 
+ endif
+diff --git a/board/compulab/plat/Kconfig b/board/compulab/plat/Kconfig
+new file mode 100644
+index 0000000000..af14b8b642
+--- /dev/null
++++ b/board/compulab/plat/Kconfig
+@@ -0,0 +1,11 @@
++menu "Compulab platform features"
++	depends on TARGET_UCM_IMX8M_MINI || TARGET_MCM_IMX8M_MINI || TARGET_IOT_GATE_IMX8
++
++config SPL_REPORT_FAKE_MEMSIZE
++	bool "SPL passes a fake DRAM size to U-Boot"
++	default n
++	help
++	  SPL passes to the U-Boot a value from EEPROM instead of a real memory
++	  size. For debug purposes ONLY!!!
++
++endmenu
+diff --git a/board/compulab/plat/imx8/eeprom/eeprom_spl.c b/board/compulab/plat/imx8/eeprom/eeprom_spl.c
+index b3c894a9af..354e6fb4b6 100644
+--- a/board/compulab/plat/imx8/eeprom/eeprom_spl.c
++++ b/board/compulab/plat/imx8/eeprom/eeprom_spl.c
+@@ -87,9 +87,11 @@ static u8 board_ddrsubind = 0xff;
+ #define BOARD_DRATE_SIZE 4
+ static u32 board_drate = 0xdeadbeef;
+ 
++#ifdef CONFIG_SPL_REPORT_FAKE_MEMSIZE
+ #define BOARD_OSIZE_OFFSET 0x80
+ #define BOARD_OSIZE_SIZE 4
+ static u32 board_osize = 0xdeadbeef;
++#endif
+ 
+ #define BOARD_DDRINFO_VALID(A) (A != 0xdeadbeef)
+ 
+@@ -150,6 +152,7 @@ u8 cl_eeprom_set_subind(u8 ddrsubind)
+ 	return board_ddrsubind;
+ };
+ 
++#ifdef CONFIG_SPL_REPORT_FAKE_MEMSIZE
+ /* override-size ifaces */
+ u32 cl_eeprom_get_osize(void)
+ {
+@@ -168,5 +171,6 @@ u32 cl_eeprom_set_osize(u32 osize)
+ 
+ 	return board_osize;
+ };
++#endif //CONFIG_SPL_REPORT_FAKE_MEMSIZE
+ 
+ #endif
+diff --git a/board/compulab/plat/imx8mm/ddr/ddr.c b/board/compulab/plat/imx8mm/ddr/ddr.c
+index 8a7d221b97..95f75df596 100644
+--- a/board/compulab/plat/imx8mm/ddr/ddr.c
++++ b/board/compulab/plat/imx8mm/ddr/ddr.c
+@@ -22,8 +22,9 @@ u32 cl_eeprom_set_ddrinfo(u32 ddrinfo);
+ u32 cl_eeprom_get_subind(void);
+ u32 cl_eeprom_set_subind(u32 subind);
+ 
++#ifdef CONFIG_SPL_REPORT_FAKE_MEMSIZE
+ u32 cl_eeprom_get_osize(void);
+-
++#endif
+ static unsigned int lpddr4_mr_read(unsigned int mr_rank, unsigned int mr_addr)
+ {
+ 	unsigned int tmp;
+@@ -202,7 +203,7 @@ void spl_dram_init(void)
+ 			printf("DDRINFO(EEPROM): i2c dev 1; i2c md 0x51 0x40 0x50\n");
+ 		}
+ 	}
+-
++#ifdef CONFIG_SPL_REPORT_FAKE_MEMSIZE
+ 	/* Pass the dram size to th U-Boot through the tcm memory */
+ 	{ /* To figure out what to store into the TCM buffer */
+ 	  /* For debug purpouse only. To override the real memsize */
+@@ -212,4 +213,8 @@ void spl_dram_init(void)
+ 
+ 		lpddr4_tcm_desc->size = ddr_tcm_size;
+ 	}
++#else
++	lpddr4_tcm_desc->size = lpddr4_array[i].size;
++#endif
++
+ }
+-- 
+2.11.0
+

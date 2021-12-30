@@ -1,0 +1,33 @@
+From 38c7411ba00661435ca66096eca8b5506550453b Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 9 Dec 2021 11:00:16 +0200
+Subject: [PATCH 105/126] iot-gate-imx8: remove driver reset functions
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ configs/iot-gate-imx8.config | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/configs/iot-gate-imx8.config b/configs/iot-gate-imx8.config
+index af0eed3983..f0b1f1caff 100644
+--- a/configs/iot-gate-imx8.config
++++ b/configs/iot-gate-imx8.config
+@@ -1,12 +1,11 @@
+ CONFIG_TARGET_IOT_GATE_IMX8=y
+-CONFIG_DEFAULT_DTB="sb-iotgimx8-can.dtb"
+ CONFIG_LOCALVERSION="-iot-gate-imx8-1.0"
+ CONFIG_DEFAULT_FDT_FILE="sb-iotgimx8-can.dtb"
+ CONFIG_DEFAULT_DEVICE_TREE="iot-gate-imx8"
+ CONFIG_DM_PCA953X=n
+-CONFIG_DM_RESET=y
+-CONFIG_SYSRESET=y
+-CONFIG_SYSRESET_PSCI=y
++# CONFIG_DM_RESET is not set
++# CONFIG_SYSRESET is not set
++# CONFIG_SYSRESET_PSCI is not set
+ CONFIG_DM_VIDEO=n
+ CONFIG_SYS_WHITE_ON_BLACK=n
+ CONFIG_VIDEO_LCD_STARTEK_ILI9881C=n
+-- 
+2.11.0
+

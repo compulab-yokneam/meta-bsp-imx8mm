@@ -1,34 +1,34 @@
-From 22c3acad098a8c75bd8791eb1ae0e370c0b2984a Mon Sep 17 00:00:00 2001
+From a79e947a2a87a687a2cd9fb6e43e3c5d8d29b262 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 18 Jul 2021 23:23:16 +0300
-Subject: [PATCH 01/91] ucm-imx8m-mini: Add basic support
+Subject: [PATCH 001/126] ucm-imx8m-mini: Add basic support
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm/dts/Makefile                         |    2 +
- arch/arm/dts/ucm-imx8m-mini.dts               |  452 ++++
- arch/arm/mach-imx/imx8m/Kconfig               |    8 +
- board/compulab/common/Makefile                |    1 +
- board/compulab/common/eeprom.c                |    4 +-
- board/compulab/common/mmc.c                   |   50 +
- board/compulab/common/pfuze.c                 |  174 ++
- board/compulab/common/pfuze.h                 |   19 +
- board/compulab/common/pfuze_dm.c              |   89 +
- board/compulab/common/tcpc.h                  |  454 ++++
- board/compulab/ucm-imx8m-mini/Kconfig         |   30 +
- board/compulab/ucm-imx8m-mini/Makefile        |   16 +
- board/compulab/ucm-imx8m-mini/ddr/Makefile    |   11 +
- board/compulab/ucm-imx8m-mini/ddr/ddr.h       |   59 +
- board/compulab/ucm-imx8m-mini/ddr/ddr_init.c  |  255 +++
- .../ucm-imx8m-mini/ddr/ddrphy_train.c         | 1044 +++++++++
- board/compulab/ucm-imx8m-mini/ddr/helper.c    |  103 +
- .../ddr/wait_ddrphy_training_complete.c       |  103 +
- board/compulab/ucm-imx8m-mini/lpddr4_timing.c | 1980 +++++++++++++++++
- board/compulab/ucm-imx8m-mini/spl.c           |  258 +++
- .../compulab/ucm-imx8m-mini/ucm-imx8m-mini.c  |  734 ++++++
- configs/ucm-imx8m-mini_defconfig              |   56 +
- include/configs/ucm-imx8m-mini.h              |  361 +++
- 23 files changed, 6261 insertions(+), 2 deletions(-)
+ arch/arm/dts/Makefile                              |    2 +
+ arch/arm/dts/ucm-imx8m-mini.dts                    |  452 +++++
+ arch/arm/mach-imx/imx8m/Kconfig                    |    8 +
+ board/compulab/common/Makefile                     |    1 +
+ board/compulab/common/eeprom.c                     |    4 +-
+ board/compulab/common/mmc.c                        |   51 +
+ board/compulab/common/pfuze.c                      |  174 ++
+ board/compulab/common/pfuze.h                      |   19 +
+ board/compulab/common/pfuze_dm.c                   |   89 +
+ board/compulab/common/tcpc.h                       |  454 +++++
+ board/compulab/ucm-imx8m-mini/Kconfig              |   30 +
+ board/compulab/ucm-imx8m-mini/Makefile             |   16 +
+ board/compulab/ucm-imx8m-mini/ddr/Makefile         |   11 +
+ board/compulab/ucm-imx8m-mini/ddr/ddr.h            |   59 +
+ board/compulab/ucm-imx8m-mini/ddr/ddr_init.c       |  255 +++
+ board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c   | 1044 +++++++++++
+ board/compulab/ucm-imx8m-mini/ddr/helper.c         |  103 +
+ .../ddr/wait_ddrphy_training_complete.c            |  103 +
+ board/compulab/ucm-imx8m-mini/lpddr4_timing.c      | 1980 ++++++++++++++++++++
+ board/compulab/ucm-imx8m-mini/spl.c                |  258 +++
+ board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c     |  734 ++++++++
+ configs/ucm-imx8m-mini_defconfig                   |   56 +
+ include/configs/ucm-imx8m-mini.h                   |  361 ++++
+ 23 files changed, 6262 insertions(+), 2 deletions(-)
  create mode 100644 arch/arm/dts/ucm-imx8m-mini.dts
  create mode 100644 board/compulab/common/mmc.c
  create mode 100644 board/compulab/common/pfuze.c
@@ -50,10 +50,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  create mode 100644 include/configs/ucm-imx8m-mini.h
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index aa0c6a75c3..2b81a2bc62 100644
+index 24a387fb60..c31d483784 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -890,6 +890,8 @@ dtb-$(CONFIG_RCAR_GEN2) += \
+@@ -898,6 +898,8 @@ dtb-$(CONFIG_RCAR_GEN2) += \
  	r8a7794-alt-u-boot.dtb \
  	r8a7794-silk-u-boot.dtb
  
@@ -521,10 +521,10 @@ index 0000000000..112345b6a3
 +	status = "disabled";
 +};
 diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
-index 9e5b6d7ffa..d4c41ba1aa 100644
+index 245b085499..4930b9bee6 100644
 --- a/arch/arm/mach-imx/imx8m/Kconfig
 +++ b/arch/arm/mach-imx/imx8m/Kconfig
-@@ -201,6 +201,13 @@ config TARGET_PHYCORE_IMX8MP
+@@ -259,6 +259,13 @@ config TARGET_PHYCORE_IMX8MP
  	select IMX8MP
          select SUPPORT_SPL
  	select IMX8M_LPDDR4
@@ -538,7 +538,7 @@ index 9e5b6d7ffa..d4c41ba1aa 100644
  endchoice
  
  source "board/freescale/imx8mq_evk/Kconfig"
-@@ -217,5 +224,6 @@ source "board/beacon/imx8mm/Kconfig"
+@@ -276,5 +283,6 @@ source "board/beacon/imx8mm/Kconfig"
  source "board/beacon/imx8mn/Kconfig"
  source "board/phytec/phycore_imx8mm/Kconfig"
  source "board/phytec/phycore_imx8mp/Kconfig"
@@ -582,10 +582,10 @@ index 5206cf5c0a..e23dd68437 100644
  	uint offset;
 diff --git a/board/compulab/common/mmc.c b/board/compulab/common/mmc.c
 new file mode 100644
-index 0000000000..9fc3e68728
+index 0000000000..52b15ab5f3
 --- /dev/null
 +++ b/board/compulab/common/mmc.c
-@@ -0,0 +1,50 @@
+@@ -0,0 +1,51 @@
 +/*
 + * Copyright (C) 2016 Freescale Semiconductor, Inc.
 + * Copyright 2018 NXP
@@ -598,6 +598,7 @@ index 0000000000..9fc3e68728
 +#include <asm/io.h>
 +#include <stdbool.h>
 +#include <mmc.h>
++#include <command.h>
 +
 +static int check_mmc_autodetect(void)
 +{
@@ -6485,5 +6486,5 @@ index 0000000000..1605ab7281
 +#endif
 +#endif
 -- 
-2.17.1
+2.11.0
 

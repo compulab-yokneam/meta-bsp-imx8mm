@@ -1,0 +1,1 @@
+u-boot-compulab-fw-utils.main

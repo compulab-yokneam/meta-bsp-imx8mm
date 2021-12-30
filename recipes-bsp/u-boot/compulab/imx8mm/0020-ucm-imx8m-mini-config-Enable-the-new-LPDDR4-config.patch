@@ -1,7 +1,7 @@
-From 61856dfbba647d1dc7ace4d0e20b6c2dd70356c5 Mon Sep 17 00:00:00 2001
+From 58e467d2a44188a047116e1945a45c4fdecc0c5a Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 1 May 2019 13:48:53 +0300
-Subject: [PATCH 20/91] ucm-imx8m-mini: config: Enable the new LPDDR4 config
+Subject: [PATCH 020/126] ucm-imx8m-mini: config: Enable the new LPDDR4 config
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -21,5 +21,5 @@ index 75531acb20..d45e7894e8 100644
  CONFIG_DEFAULT_DEVICE_TREE="ucm-imx8m-mini"
  CONFIG_FIT=y
 -- 
-2.17.1
+2.11.0
 
