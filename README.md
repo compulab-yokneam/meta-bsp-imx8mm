@@ -1,38 +1,56 @@
 # Quick Start Guide
 
 Supported CompuLab machines:
-* `mcm-imx8m-mini`
-* `ucm-imx8m-mini`
+* `IOT-GATE-iMX8`
 
-# 1 Setup environment
-## 1.1 Prepare NXP BSP
+## Setup Yocto Environment
+
+* Install the `reop` utility:
 ```
-repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-linux-hardknott -m imx-5.10.35-2.0.0.xml
+mkdir ~/bin
+curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+chmod a+x ~/bin/repo
+PATH=${PATH}:~/bin
 ```
-## 1.2 Download CompuLab meta layer
+
+* Create a work directory
 ```
-wget --directory-prefix .repo/manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/rel_imx_5.10.35_2.0.0-experiment/scripts/imx-5.10.35_2.0.0_compulab.xml
+mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
 ```
-## 1.3 Get entire BSP tree
+* Set environmet varables:
+
 ```
-repo init -m imx-5.10.35_2.0.0_compulab.xml
+export MACHINE=iot-gate-imx8
+export LREPO=${MACHINE}.xml
+export CLB_RELEASE=iot-gate-imx8_r3.0
+```
+
+## Initialize repo manifests
+
+* FSL Community
+```
+repo init -u https://github.com/Freescale/fsl-community-bsp-platform -b dunfell
+```
+
+* CompuLab
+```
+mkdir -p .repo/local_manifests
+wget --directory-prefix .repo/local_manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/${CLB_RELEASE}/scripts/${LREPO}
+```
+
+* Sync Them all
+```
 repo sync
 ```
 
-# 2 Build
-## 2.1 Define COMPULAB_MACHINE environment variable
-|Machine|Command Line|
-|---|---|
-|mcm-imx8m-mini|```export COMPULAB_MACHINE=mcm-imx8m-mini```
-|ucm-imx8m-mini|```export COMPULAB_MACHINE=ucm-imx8m-mini```
+## Setup build environment
 
-## 2.2 Run CompuLab Linux Yocto Project setup
-|NOTE|Refer to the [NXP Readme](https://source.codeaurora.org/external/imx/meta-imx/tree/README?h=hardknott-5.10.35-2.0.0) for details about how to select a correct backend & distro.|
-|---|---|
+* Initialize the build environment:
 ```
-MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build
+source sources/compulab-fslc-bsp/tools/setup-env build-fslc-${MACHINE}
 ```
-## 2.3 Build image
+
+## Build image
 ```
-bitbake -k compulab-ucm-imx8m-mini
+bitbake -k core-image-full-cmdline
 ```
