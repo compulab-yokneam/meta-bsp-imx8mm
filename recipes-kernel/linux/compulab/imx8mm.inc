@@ -17,7 +17,7 @@ SRC_URI_append = " \
 	file://0016-rtc-abx80x-Calibrate-RTC.patch \
 	file://0017-ucm-dts-Fix-no-1-8-v-for-mmc2.patch \
 	file://0018-dts-Fix-ldo1-ldo2-voltage.patch \
-	file://0019-dts-Fix-rtc-enumeration-order.patch \
+	file://0019-ucm-imx8m-mini-dts-Fix-rtc-enumeration-order.patch \
 	file://0020-rtc-abx80x-Improve-sqw-generation.patch \
 	file://0021-rtc-abx80x-Improve-xt_calibration.patch \
 	file://0022-rtc-abx80x-Add-sqw-binding-doc.patch \
@@ -49,5 +49,6 @@ SRC_URI_append = " \
 	file://0048-dts-ucm-imx8m-mini-Add-_thermal_-dts.patch \
 	file://0049-mcm-dts-Calibrate-RTC.patch \
 	file://0050-mcm-dts-Reorder-DTS.patch \
+	file://0051-mcm-imx8m-mini-dts-Fix-rtc-enumeration-order.patch \
 "
 
