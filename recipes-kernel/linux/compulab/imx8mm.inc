@@ -50,5 +50,6 @@ SRC_URI_append = " \
 	file://0049-mcm-dts-Calibrate-RTC.patch \
 	file://0050-mcm-dts-Reorder-DTS.patch \
 	file://0051-mcm-imx8m-mini-dts-Fix-rtc-enumeration-order.patch \
+	file://0052-mcm-imx8m-mini-defconfig-Enable-CAN-mcp251x.patch \
 "
 
