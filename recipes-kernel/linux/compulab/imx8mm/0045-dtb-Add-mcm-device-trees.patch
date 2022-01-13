@@ -1,7 +1,7 @@
-From 32da3f9f4f07f1dd51d9d68557c7545caeecf921 Mon Sep 17 00:00:00 2001
+From c83f3052344c11f40ce54eb41b85ead9a9f4c2dd Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 13 Sep 2021 01:03:00 +0300
-Subject: [PATCH 45/45] dtb: Add mcm device trees
+Subject: [PATCH 45/81] dtb: Add mcm device trees
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -1015,7 +1015,7 @@ index 000000000000..9b917031ef6e
 +};
 diff --git a/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi b/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
 new file mode 100644
-index 000000000000..5e148929642c
+index 000000000000..fa250f89ddab
 --- /dev/null
 +++ b/arch/arm64/boot/dts/compulab/sb-mcm-imx8-rev1.dtsi
 @@ -0,0 +1,297 @@

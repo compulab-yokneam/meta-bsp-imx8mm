@@ -1,7 +1,7 @@
-From f9d4762d0a33ec4f422b831d6ad5223597df384b Mon Sep 17 00:00:00 2001
+From 78d487661aa564d7b8f7dbe61a8c5c805c47c0ff Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 27 Sep 2020 14:25:48 +0300
-Subject: [PATCH 19/35] dts:Fix rtc enumeration order
+Subject: [PATCH 19/81] dts:Fix rtc enumeration order
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

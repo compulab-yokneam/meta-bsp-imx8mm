@@ -1,7 +1,7 @@
-From bce17b857063545b4393c51771398812a57b431d Mon Sep 17 00:00:00 2001
+From c6a74a4acf7a9af04274400fd12ca8764120ab3c Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 30 Aug 2021 22:51:15 +0300
-Subject: [PATCH 42/43] snd: Fix resource management
+Subject: [PATCH 42/81] snd: Fix resource management
 
 Allocation of the memory and creating sysfs group shall be undone in case of
 error. This prevents memory leak; also this rids system log of unnecessary
@@ -14,17 +14,16 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  2 files changed, 43 insertions(+), 21 deletions(-)
 
 diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 68f69fb03eec..128283d541d8 100644
+index 5e3253cfc790..68fe921a391a 100644
 --- a/sound/soc/fsl/fsl_sai.c
 +++ b/sound/soc/fsl/fsl_sai.c
-@@ -1297,17 +1297,20 @@ static int fsl_sai_read_dlcfg(struct platform_device *pdev, char *pn,
+@@ -1305,16 +1305,19 @@ static int fsl_sai_read_dlcfg(struct platform_device *pdev, char *pn,
  static int fsl_sai_probe(struct platform_device *pdev)
  {
  	struct device_node *np = pdev->dev.of_node;
 -	struct fsl_sai *sai;
 +	struct fsl_sai *sai = NULL;
  	struct regmap *gpr;
- 	struct resource *res;
  	void __iomem *base;
  	char tmp[8];
  	int irq, ret, i;
@@ -41,10 +40,10 @@ index 68f69fb03eec..128283d541d8 100644
  
  	sai->pdev = pdev;
  	sai->soc_data = of_device_get_match_data(&pdev->dev);
-@@ -1316,8 +1319,10 @@ static int fsl_sai_probe(struct platform_device *pdev)
+@@ -1323,8 +1326,10 @@ static int fsl_sai_probe(struct platform_device *pdev)
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	base = devm_ioremap_resource(&pdev->dev, res);
+ 	sai->res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	base = devm_ioremap_resource(&pdev->dev, sai->res);
 -	if (IS_ERR(base))
 -		return PTR_ERR(base);
 +	if (IS_ERR(base)) {
@@ -54,7 +53,7 @@ index 68f69fb03eec..128283d541d8 100644
  
  	if (sai->soc_data->reg_offset == 8) {
  		fsl_sai_regmap_config.reg_defaults = fsl_sai_reg_defaults_ofs8;
-@@ -1330,7 +1335,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
+@@ -1337,7 +1342,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
  			NULL, base, &fsl_sai_regmap_config);
  	if (IS_ERR(sai->regmap)) {
  		dev_err(&pdev->dev, "regmap init failed\n");
@@ -64,7 +63,7 @@ index 68f69fb03eec..128283d541d8 100644
  	}
  
  	/* No error out for old DTB cases but only mark the clock NULL */
-@@ -1338,8 +1344,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
+@@ -1345,8 +1351,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
  	if (IS_ERR(sai->bus_clk)) {
  		dev_err(&pdev->dev, "failed to get bus clock: %ld\n",
  				PTR_ERR(sai->bus_clk));
@@ -75,7 +74,7 @@ index 68f69fb03eec..128283d541d8 100644
  	}
  
  	for (i = 0; i < FSL_SAI_MCLK_MAX; i++) {
-@@ -1367,14 +1373,14 @@ static int fsl_sai_probe(struct platform_device *pdev)
+@@ -1374,14 +1380,14 @@ static int fsl_sai_probe(struct platform_device *pdev)
  	ret = fsl_sai_read_dlcfg(pdev, "fsl,dataline", &sai->pcm_dl_cfg,
  					sai->soc_data->dataline);
  	if (ret < 0)
@@ -92,7 +91,7 @@ index 68f69fb03eec..128283d541d8 100644
  
  	sai->dsd_dl_cfg_cnt = ret;
  
-@@ -1393,14 +1399,16 @@ static int fsl_sai_probe(struct platform_device *pdev)
+@@ -1400,14 +1406,16 @@ static int fsl_sai_probe(struct platform_device *pdev)
  	}
  
  	irq = platform_get_irq(pdev, 0);
@@ -112,7 +111,7 @@ index 68f69fb03eec..128283d541d8 100644
  	}
  
  	memcpy(&sai->cpu_dai_drv, &fsl_sai_dai_template,
-@@ -1417,7 +1425,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
+@@ -1424,7 +1432,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
  	    of_find_property(np, "fsl,sai-asynchronous", NULL)) {
  		/* error out if both synchronous and asynchronous are present */
  		dev_err(&pdev->dev, "invalid binding for synchronous mode\n");
@@ -122,7 +121,7 @@ index 68f69fb03eec..128283d541d8 100644
  	}
  
  	if (of_find_property(np, "fsl,sai-synchronous-rx", NULL)) {
-@@ -1438,12 +1447,15 @@ static int fsl_sai_probe(struct platform_device *pdev)
+@@ -1445,12 +1454,15 @@ static int fsl_sai_probe(struct platform_device *pdev)
  		gpr = syscon_regmap_lookup_by_compatible("fsl,imx6ul-iomuxc-gpr");
  		if (IS_ERR(gpr)) {
  			dev_err(&pdev->dev, "cannot find iomuxc registers\n");
@@ -141,22 +140,25 @@ index 68f69fb03eec..128283d541d8 100644
  
  		regmap_update_bits(gpr, IOMUXC_GPR1, MCLK_DIR(index),
  				   MCLK_DIR(index));
-@@ -1489,6 +1501,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
- 
- 		if (sysfs_create_group(&pdev->dev.kobj, fsl_sai_get_dev_attribute_group(sai->monitor_spdif)))
+@@ -1500,6 +1512,8 @@ static int fsl_sai_probe(struct platform_device *pdev)
  			dev_err(&pdev->dev, "fail to create sys group\n");
+ 			goto err_pm_disable;
+ 		}
 +		else
 +			sysfs_initialized = true;
  	}
  
  	pm_runtime_put_sync(&pdev->dev);
-@@ -1509,11 +1523,16 @@ static int fsl_sai_probe(struct platform_device *pdev)
- 			goto err_pm_disable;
+@@ -1520,7 +1534,7 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 			goto err_component_register;
  	}
  
 -	return ret;
 +	goto general_finish;
  
+ err_component_register:
+ 	if (sai->verid.feature & FSL_SAI_VERID_TSTMP_EN)
+@@ -1530,6 +1544,11 @@ static int fsl_sai_probe(struct platform_device *pdev)
  err_pm_disable:
  	pm_runtime_disable(&pdev->dev);
  

@@ -1,7 +1,7 @@
-From 884a7472692628cb786f73b66174d257f00f7df1 Mon Sep 17 00:00:00 2001
+From 5e55d244f2598547ec6c4a8b1f6fcfbc6afb810e Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 13 Feb 2019 21:43:15 +0200
-Subject: [PATCH 05/35] ucm-imx8m-mini: dts: Enable onboard LED
+Subject: [PATCH 05/81] ucm-imx8m-mini: dts: Enable onboard LED
 
 Enable onboard LED and set 'Heartbeat' as its default trigger.
 

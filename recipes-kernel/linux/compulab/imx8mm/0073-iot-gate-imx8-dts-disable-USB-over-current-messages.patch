@@ -1,0 +1,35 @@
+From c2c57dc8d34e5e2a043e8a65adb27c7efd19402b Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 2 Nov 2021 12:18:00 +0200
+Subject: [PATCH 73/81] iot-gate-imx8: dts: disable USB over-current messages
+
+Example of the  over-current messages:
+usb usb1-port1: over-current condition
+usb usb2-port1: over-current condition
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8.dts | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
+index 92f95a36f5a1..489fb11038dd 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
+@@ -161,11 +161,13 @@
+ 
+ &usbotg1 {
+ 	dr_mode = "host";
++	disable-over-current;
+ 	status = "okay";
+ };
+ 
+ &usbotg2 {
+ 	dr_mode = "host";
++	disable-over-current;
+ 	status = "okay";
+ 
+ 	#address-cells = <1>;
+-- 
+2.11.0
+

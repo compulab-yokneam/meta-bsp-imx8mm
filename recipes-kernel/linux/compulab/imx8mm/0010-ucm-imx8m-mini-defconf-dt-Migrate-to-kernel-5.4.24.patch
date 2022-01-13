@@ -1,7 +1,7 @@
-From 9b2c747c1af2ef03aff5d5619109129bb28f4565 Mon Sep 17 00:00:00 2001
+From 00473a8f7e6d513da87c26a0b26f616d154b6486 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 19 Mar 2021 22:36:14 +0200
-Subject: [PATCH 10/35] ucm-imx8m-mini:defconf+dt:Migrate to kernel 5.4.24
+Subject: [PATCH 10/81] ucm-imx8m-mini:defconf+dt:Migrate to kernel 5.4.24
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -1635,7 +1635,7 @@ index 000000000000..fce8cbeaada9
 +	temperature = <115000>;
 +};
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index 4ac6f9cf91ec..b2cf1065805b 100644
+index 4ac6f9cf91ec..e753a9b2fc93 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -27,42 +27,9 @@ CONFIG_USER_NS=y

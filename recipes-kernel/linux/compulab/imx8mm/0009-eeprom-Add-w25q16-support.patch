@@ -1,7 +1,7 @@
-From 9789df1cc3c994a2b595a0b21f9479db5effaa5b Mon Sep 17 00:00:00 2001
+From b7f8f478ba659727bfa4ca29f5dde185ae6c4415 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 13 Aug 2021 23:54:10 +0300
-Subject: [PATCH 9/9] eeprom: Add w25q16 support
+Subject: [PATCH 09/81] eeprom: Add w25q16 support
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -21,5 +21,5 @@ index e5dfa786f190..ed2ab898f2c7 100644
  	{ "w25q32dw", INFO(0xef6016, 0, 64 * 1024,  64,
  			   SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ |
 -- 
-2.17.1
+2.11.0
 

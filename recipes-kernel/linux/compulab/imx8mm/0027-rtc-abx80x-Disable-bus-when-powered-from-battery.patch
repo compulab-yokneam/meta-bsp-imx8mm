@@ -1,7 +1,7 @@
-From 00a0c6c23a3a425ed88b489d90fdec4cfa327798 Mon Sep 17 00:00:00 2001
+From 115aa0b5ae5e884671f81a5edf7e055240966d5c Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 17 Nov 2020 20:05:43 +0200
-Subject: [PATCH 27/35] rtc:abx80x: Disable bus when powered from battery
+Subject: [PATCH 27/81] rtc:abx80x: Disable bus when powered from battery
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 36 insertions(+)
 
 diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index 55df2264700a..a8e1e4f890d2 100644
+index ed1ed1b91001..d060c3b86dbb 100644
 --- a/drivers/rtc/rtc-abx80x.c
 +++ b/drivers/rtc/rtc-abx80x.c
-@@ -87,6 +87,9 @@
+@@ -88,6 +88,9 @@
  #define ABX8XX_CFG_KEY_OSC	0xa1
  #define ABX8XX_CFG_KEY_MISC	0x9d
  
@@ -22,7 +22,7 @@ index 55df2264700a..a8e1e4f890d2 100644
  #define ABX8XX_REG_ID0		0x28
  
  #define ABX8XX_REG_OUT_CTRL	0x30
-@@ -909,6 +912,35 @@ static int abx80x_setup_watchdog(struct abx80x_priv *priv)
+@@ -912,6 +915,35 @@ static int abx80x_setup_watchdog(struct abx80x_priv *priv)
  }
  #endif
  
@@ -58,7 +58,7 @@ index 55df2264700a..a8e1e4f890d2 100644
  static int abx80x_probe(struct i2c_client *client,
  			const struct i2c_device_id *id)
  {
-@@ -1056,6 +1088,10 @@ static int abx80x_probe(struct i2c_client *client,
+@@ -1059,6 +1091,10 @@ static int abx80x_probe(struct i2c_client *client,
  	else
  		sqw_set(client, "none");
  

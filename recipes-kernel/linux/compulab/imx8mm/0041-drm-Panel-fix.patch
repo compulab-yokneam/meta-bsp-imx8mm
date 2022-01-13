@@ -1,7 +1,7 @@
-From 98f5716c39a28561344db7c78d31bb6da70276e7 Mon Sep 17 00:00:00 2001
+From 9f3e89f1836f700fbf9c4a281ac9d9801356ac17 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 26 Aug 2021 00:29:48 +0300
-Subject: [PATCH 41/41] drm: Panel fix
+Subject: [PATCH 41/81] drm: Panel fix
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

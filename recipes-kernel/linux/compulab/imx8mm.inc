@@ -37,7 +37,7 @@ SRC_URI_append = " \
 	file://0036-ucm-Enable-display-kd050hdfia020-with-touchscreen.patch \
 	file://0037-ov5640_mipi_v2-gpio_set_value_cansleep.patch \
 	file://0038-dts-Enable-ov5640-camera-and-VPU.patch \
-	file://0039-ucm-Enable-wm8731-audiocodec.patch \
+	file://0039-ucm-dts-Enable-wm8731-audiocodec.patch \
 	file://0040-ucm-imx8m-mini-Fix-iwlwifi.patch \
 	file://0041-drm-Panel-fix.patch \
 	file://0042-snd-Fix-resource-management.patch \
@@ -49,5 +49,36 @@ SRC_URI_append = " \
 	file://0048-dts-ucm-imx8m-mini-Add-_thermal_-dts.patch \
 	file://0049-mcm-dts-Calibrate-RTC.patch \
 	file://0050-mcm-dts-Reorder-DTS.patch \
+	file://0051-serial-imx-allow-passing-rs485-options.patch \
+	file://0052-mcm-imx8m-mini-remove-the-local-rpmsg-support.patch \
+	file://0053-ucm-imx8m-mini-dts-rearrange-components.patch \
+	file://0054-iot-gate-imx8-dts-add-support-for-the-IOT-GATE-iMX8.patch \
+	file://0055-arm64-dts-imx8mm-specify-dma-ranges.patch \
+	file://0056-iot-gate-imx8-config-Update-device-config.patch \
+	file://0057-iot-gate-imx8-can-dts-increase-frequency-of-SPI-inte.patch \
+	file://0058-encx24j600-add-device-tree-support.patch \
+	file://0059-iot-gate-imx8-add-support-for-the-IE-POE-board.patch \
+	file://0060-iot-gate-imx8-dts-add-CAN-bus-RX-interrupt.patch \
+	file://0061-iio-adc-Add-Maxim-MAX11108-driver.patch \
+	file://0062-iot-gate-imx8-add-support-for-the-IE-TPM-module.patch \
+	file://0063-iot-gate-imx8-add-support-for-the-IE-CL420-module.patch \
+	file://0064-iot-gate-imx8-set-system-time-from-RTC-on-startup.patch \
+	file://0065-iot-gate-imx8-dts-add-M4-support.patch \
+	file://0066-iot-gate-imx8-dts-add-support-for-the-POEv2-module.patch \
+	file://0067-iot-gate-imx8-integrate-the-USB-to-Ethernet-drivers-.patch \
+	file://0068-iot-gate-imx8-enable-the-nftables-feature.patch \
+	file://0069-iot-gate-imx8-enable-Bluetooth-features.patch \
+	file://0070-iot-gate-imx8-dts-add-wakeup-sources.patch \
+	file://0071-iot-gate-imx8-enable-setting-the-RTC-time-based-on-N.patch \
+	file://0072-iot-gate-imx8-can-enable-Broadcast-Manager-CAN-Proto.patch \
+	file://0073-iot-gate-imx8-dts-disable-USB-over-current-messages.patch \
+	file://0074-iot-gate-imx8-disable-regulator-debug.patch \
+	file://0075-iot-gate-imx8-iio-enable-standalone-triggers.patch \
+	file://0076-iot-gate-imx8-add-Moby-compatibility.patch \
+	file://0077-mmc-dts-fix-mmc1-initialization.patch \
+	file://0078-ucm-imx8m-mini-dts-phy-eliminate-excessive-reset.patch \
+	file://0079-lib-iov_iter-initialize-flags-in-new-pipe_buffer.patch \
+	file://0080-netfilter-nf_tables_offload-incorrect-flow-offload-a.patch \
+	file://0081-iot-gate-imx8-release-3.0.patch \
+	file://defconfig \
 "
-

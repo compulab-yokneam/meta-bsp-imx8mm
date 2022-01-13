@@ -1,12 +1,12 @@
-From 85865cbe8c8e882fe4ac61fa75a27d1a506dc4cb Mon Sep 17 00:00:00 2001
+From d62a7806e69e40464ff182de1c98b6dafaff8567 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 7 Nov 2021 23:44:43 +0200
-Subject: [PATCH 48/48] dts:ucm-imx8m-mini: Add _thermal_ dts
+Subject: [PATCH 48/81] dts:ucm-imx8m-mini: Add _thermal_ dts
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm64/boot/dts/compulab/Makefile         |  1 +
- .../dts/compulab/ucm-imx8m-mini-thermal.dts   | 30 +++++++++++++++++++
+ arch/arm64/boot/dts/compulab/Makefile              |  1 +
+ .../boot/dts/compulab/ucm-imx8m-mini-thermal.dts   | 30 ++++++++++++++++++++++
  2 files changed, 31 insertions(+)
  create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini-thermal.dts
 
@@ -57,5 +57,5 @@ index 000000000000..ff4ad6617d6a
 +	temperature = <155000>;
 +};
 -- 
-2.17.1
+2.11.0
 

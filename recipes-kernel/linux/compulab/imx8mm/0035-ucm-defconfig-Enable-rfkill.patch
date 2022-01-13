@@ -1,7 +1,7 @@
-From f289111a2a5040c7e167170e7ea5862d13688ab5 Mon Sep 17 00:00:00 2001
+From 752f3990d9c22851b6e9de7214dad7982b4e2d78 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 24 Apr 2021 21:09:07 +0300
-Subject: [PATCH 35/35] ucm:defconfig: Enable rfkill
+Subject: [PATCH 35/81] ucm:defconfig: Enable rfkill
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index 952060fa8358..5f75b54ca245 100644
+index c20e1b4129b9..1e35a6009c13 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -173,6 +173,7 @@ CONFIG_BT_HCIUART_QCA=y

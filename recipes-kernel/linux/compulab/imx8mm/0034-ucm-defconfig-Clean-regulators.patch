@@ -1,7 +1,7 @@
-From 7631f12e444839c95374c285c19374259cd117f7 Mon Sep 17 00:00:00 2001
+From 5c68169ec68fffa58d8ae803ce6f1418fbd8a492 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 24 Apr 2021 20:56:02 +0300
-Subject: [PATCH 34/35] ucm:defconfig: Clean regulators
+Subject: [PATCH 34/81] ucm:defconfig: Clean regulators
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 1 insertion(+), 15 deletions(-)
 
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index e5e1ecf085b5..952060fa8358 100644
+index fd567ed3d983..c20e1b4129b9 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -452,22 +452,8 @@ CONFIG_MFD_SEC_CORE=y

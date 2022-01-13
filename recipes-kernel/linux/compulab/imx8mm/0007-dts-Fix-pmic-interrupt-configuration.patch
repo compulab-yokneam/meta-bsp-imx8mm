@@ -1,7 +1,7 @@
-From 5af376daabfd9493582d5686ae567eb3ee3566ae Mon Sep 17 00:00:00 2001
+From 61d62df4c4e81d86b9160b0a2dfede1ac4890e4c Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 25 Jun 2020 18:40:59 +0300
-Subject: [PATCH 07/35] dts: Fix pmic interrupt configuration
+Subject: [PATCH 07/81] dts: Fix pmic interrupt configuration
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

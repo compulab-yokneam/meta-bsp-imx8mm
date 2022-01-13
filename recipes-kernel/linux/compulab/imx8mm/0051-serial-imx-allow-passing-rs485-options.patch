@@ -1,0 +1,42 @@
+From c5cb8fb2093feb963da131134fc13cdf60f695b4 Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Sun, 2 Jan 2022 14:26:25 +0200
+Subject: [PATCH 51/81] serial: imx: allow passing rs485 options
+
+According to Documentation/devicetree/bindings/serial/rs485.txt the
+"linux,rs485-enabled-at-boot-time" and "rs485-rx-during-tx" can be
+passed by device tree to a serial driver.
+Add support for handling these option in the driver.
+Additionally, add "rs485-rts-active-high" proiperty to specify
+a logical level for RTS pin when sending.
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ drivers/tty/serial/imx.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index f6afe305f72d..a4a668e9feac 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -2251,6 +2251,17 @@ static int imx_uart_probe_dt(struct imx_port *sport,
+ 	if (of_get_property(np, "fsl,inverted-rx", NULL))
+ 		sport->inverted_rx = 1;
+ 
++	if (of_property_read_bool(np, "linux,rs485-enabled-at-boot-time"))
++		sport->port.rs485.flags |= SER_RS485_ENABLED;
++
++	if (of_property_read_bool(np, "rs485-rx-during-tx"))
++		sport->port.rs485.flags |= SER_RS485_RX_DURING_TX;
++
++	if (of_property_read_bool(np, "rs485-rts-active-high"))
++		sport->port.rs485.flags |= SER_RS485_RTS_ON_SEND;
++	else
++		sport->port.rs485.flags |= SER_RS485_RTS_AFTER_SEND;
++
+ 	return 0;
+ }
+ #else
+-- 
+2.11.0
+

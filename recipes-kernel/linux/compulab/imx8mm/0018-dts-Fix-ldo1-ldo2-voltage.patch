@@ -1,7 +1,7 @@
-From c112711542e2b5c01c3dd6faa3158632c8228992 Mon Sep 17 00:00:00 2001
+From 20fdaa6281fbed04d645e0b51dcce4f35d917f39 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 22 Sep 2020 20:44:04 +0300
-Subject: [PATCH 18/35] dts: Fix ldo1 ldo2 voltage
+Subject: [PATCH 18/81] dts: Fix ldo1 ldo2 voltage
 
 Rationale:
 NXP CIN

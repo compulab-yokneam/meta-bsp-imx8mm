@@ -1,0 +1,29 @@
+From 71a12184b7adf6ee398b2fc3389811477196e8b5 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 4 Jan 2022 13:06:33 +0200
+Subject: [PATCH 55/81] arm64: dts: imx8mm: specify dma-ranges
+
+Apply the same dma range limitations as on the i.MX8MQ.
+
+Original commit: ca04fed4706dfb13cb964be2dc294054ed0efb6b
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index d2c2b96cba5b..a45db0ac7bcc 100755
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -406,6 +406,7 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		ranges = <0x0 0x0 0x0 0x3e000000>;
++		dma-ranges = <0x40000000 0x0 0x40000000 0xc0000000>;
+ 		nvmem-cells = <&imx8mm_uid>;
+ 		nvmem-cell-names = "soc_unique_id";
+ 
+-- 
+2.11.0
+

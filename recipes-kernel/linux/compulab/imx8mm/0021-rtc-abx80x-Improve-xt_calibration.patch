@@ -1,7 +1,7 @@
-From 91dd792b9022e06a4351765f7e20c099d1f767e0 Mon Sep 17 00:00:00 2001
+From cd35ea997dce667cbc61f2a8593ad4bb11589401 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 5 Nov 2020 18:56:16 +0200
-Subject: [PATCH 21/35] rtc:abx80x: Improve xt_calibration
+Subject: [PATCH 21/81] rtc:abx80x: Improve xt_calibration
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 17 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index 2ba1686fe2a4..55df2264700a 100644
+index 4dd7b26bcb4d..ed1ed1b91001 100644
 --- a/drivers/rtc/rtc-abx80x.c
 +++ b/drivers/rtc/rtc-abx80x.c
-@@ -106,7 +106,6 @@ struct abx80x_cap {
+@@ -107,7 +107,6 @@ struct abx80x_cap {
  	u16 pn;
  	bool has_tc;
  	bool has_wdog;
@@ -20,7 +20,7 @@ index 2ba1686fe2a4..55df2264700a 100644
  };
  
  static struct abx80x_cap abx80x_caps[] = {
-@@ -117,7 +116,7 @@ static struct abx80x_cap abx80x_caps[] = {
+@@ -118,7 +117,7 @@ static struct abx80x_cap abx80x_caps[] = {
  	[AB1801] = {.pn = 0x1801},
  	[AB1803] = {.pn = 0x1803},
  	[AB1804] = {.pn = 0x1804, .has_tc = true, .has_wdog = true},
@@ -29,7 +29,7 @@ index 2ba1686fe2a4..55df2264700a 100644
  	[RV1805] = {.pn = 0x1805, .has_tc = true, .has_wdog = true},
  	[ABX80X] = {.pn = 0}
  };
-@@ -499,9 +498,9 @@ static ssize_t oscillator_show(struct device *dev,
+@@ -500,9 +499,9 @@ static ssize_t oscillator_show(struct device *dev,
  
  static DEVICE_ATTR_RW(oscillator);
  
@@ -41,7 +41,7 @@ index 2ba1686fe2a4..55df2264700a 100644
  				u32 xt_freq)
  {
  	int retval, flags;
-@@ -510,7 +509,7 @@ static int xt_calibration_set(struct i2c_client *client,
+@@ -511,7 +510,7 @@ static int xt_calibration_set(struct i2c_client *client,
  	long Adj;
  	u8 XTCAL, CMDX, OFFSETX;
  
@@ -50,7 +50,7 @@ index 2ba1686fe2a4..55df2264700a 100644
  	if (Adj < -320 ) {
  		dev_err(&client->dev, "The XT oscillator is too fast to be adjusted\n");
  		return -ERANGE;
-@@ -577,7 +576,7 @@ static int xt_calibration_set(struct i2c_client *client,
+@@ -578,7 +577,7 @@ static int xt_calibration_set(struct i2c_client *client,
  
  }
  
@@ -59,7 +59,7 @@ index 2ba1686fe2a4..55df2264700a 100644
  				struct device_attribute *attr,
  				const char *buf, size_t count)
  {
-@@ -591,14 +590,16 @@ static ssize_t xt_calibration_store(struct device *dev,
+@@ -592,14 +591,16 @@ static ssize_t xt_calibration_store(struct device *dev,
  	}
  
  	dev_info(dev,"xt osc drift is %li ppm\n", \
@@ -78,7 +78,7 @@ index 2ba1686fe2a4..55df2264700a 100644
  static ssize_t xt_calibration_show(struct device *dev,
  				struct device_attribute *attr, char *buf)
  {
-@@ -622,8 +623,7 @@ static ssize_t xt_calibration_show(struct device *dev,
+@@ -623,8 +624,7 @@ static ssize_t xt_calibration_show(struct device *dev,
  	return sprintf(buf, "\n");
  	return flags;
  }
@@ -88,7 +88,7 @@ index 2ba1686fe2a4..55df2264700a 100644
  
  #define SQFS_COUNT (1 << ABX8XX_REG_SQW_MODE_BITS)
  static char const *const SQFS[SQFS_COUNT] = { "1_century", "32768_Hz", "8192_Hz", "4096_Hz",
-@@ -726,6 +726,7 @@ static struct attribute *rtc_calib_attrs[] = {
+@@ -727,6 +727,7 @@ static struct attribute *rtc_calib_attrs[] = {
  	&dev_attr_oscillator.attr,
  	&dev_attr_sqw.attr,
  	&dev_attr_xt_calibration.attr,
@@ -96,7 +96,7 @@ index 2ba1686fe2a4..55df2264700a 100644
  	NULL,
  };
  
-@@ -1042,12 +1043,12 @@ static int abx80x_probe(struct i2c_client *client,
+@@ -1045,12 +1046,12 @@ static int abx80x_probe(struct i2c_client *client,
  		abx80x_enable_trickle_charger(client, trickle_cfg);
  	}
  

@@ -1,7 +1,7 @@
-From 47d0c5f37227c04b8e5f6d7cf4ef403ddb4b3f77 Mon Sep 17 00:00:00 2001
+From 9c4784d58179d372a0932c218982296cdfeb45e8 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 27 Dec 2021 16:22:42 +0200
-Subject: [PATCH 50/50] mcm:dts: Reorder DTS
+Subject: [PATCH 50/81] mcm:dts: Reorder DTS
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
