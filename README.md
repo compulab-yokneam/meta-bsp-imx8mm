@@ -11,7 +11,7 @@ repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-li
 ```
 ## 1.2 Download CompuLab meta layer
 ```
-wget --directory-prefix .repo/manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/rel_imx_5.10.35_2.0.0-experiment/scripts/imx-5.10.35_2.0.0_compulab.xml
+wget --directory-prefix .repo/manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/rel_imx_5.10.35_2.0.0-stable/scripts/imx-5.10.35_2.0.0_compulab.xml
 ```
 ## 1.3 Get entire BSP tree
 ```
