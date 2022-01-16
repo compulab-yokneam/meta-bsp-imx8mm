@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <manifest>
+  <remote fetch="https://github.com/compulab-yokneam" name="compulab"/>
+
+  <project name="compulab-fslc-bsp" remote="compulab" revision="devel" path="sources/compulab-fslc-bsp" >
+      <linkfile src="meta-fslc/imx8mm" dest="sources/meta-fslc-som" />
+      <linkfile src="meta-fslc/imx" dest="sources/meta-fslc-som-common" />
+  </project>
+
+  <project name="meta-compulab" remote="compulab" revision="9196e24d16425bd8aa76a6943acbde0786149fcc" path="sources/meta-compulab"/>
+  <project name="meta-compulab-bsp" remote="compulab" revision="3eaf6d4ca22270c00ecccf91061f8251b5b5f3a9" path="sources/meta-compulab-bsp"/>
+  <project name="meta-bsp-imx8mm" remote="compulab" revision="refs/tags/iot-gate-imx8_r3.0" path="sources/meta-compulab-som"/>
+
+  </manifest>
