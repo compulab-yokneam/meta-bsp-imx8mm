@@ -1,0 +1,178 @@
+From e5eddc311ecd42599199e6c3ac64d6702f27573f Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 3 Feb 2022 20:09:37 +0200
+Subject: [PATCH 60/60] net: Enable phy Realtek RTL8211E
+
+Developed infrastructure for enablement of ethernet phy by means of reading
+ID directly from the phy to distinguish between them, and apply an appropriate
+tuning.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c | 102 +++++++++++++++++++++++--
+ drivers/net/fec_mxc.c                          |   2 +-
+ include/configs/ucm-imx8m-mini.h               |   2 +-
+ 3 files changed, 97 insertions(+), 9 deletions(-)
+
+diff --git a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+index 5fcef9bfff..a149436d3a 100644
+--- a/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
++++ b/board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c
+@@ -37,6 +37,8 @@ DECLARE_GLOBAL_DATA_PTR;
+ #define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
+ #define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+ 
++static int fec_phyaddr = -1;
++
+ static iomux_v3_cfg_t const uart_pads[] = {
+ 	IMX8MM_PAD_UART3_RXD_UART3_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+ 	IMX8MM_PAD_UART3_TXD_UART3_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+@@ -229,9 +231,22 @@ static int fdt_set_soc_info(void *blob)
+ 	return 0;
+ }
+ 
++#define FDT_PHYADDR "/ethernet@30be0000/mdio/ethernet-phy@0"
++#define FLIP_32B(val) (((val>>24)&0xff) | ((val<<8)&0xff0000) | ((val>>8)&0xff00) | ((val<<24)&0xff000000))
++static int fdt_set_fec_phy_addr(void *blob)
++{
++	if(0 > fec_phyaddr)
++		return -EINVAL;
++
++	u32 val = FLIP_32B(fec_phyaddr);
++	return fdt_find_and_setprop
++		(blob, FDT_PHYADDR, "reg", &val, sizeof(val), 0);
++}
++
+ int ft_board_setup(void *blob, bd_t *bd)
+ {
+ 	fdt_set_soc_info(blob);
++	fdt_set_fec_phy_addr(blob);
+ 	return 0;
+ }
+ #endif
+@@ -295,16 +310,89 @@ static int setup_fec(void)
+ 	return set_clk_enet(ENET_125MHZ);
+ }
+ 
++/* These are specifc ID, purposed to distiguish between PHY vendors.
++These values are not equal to real vendors' OUI (half of MAC address) */
++#define OUI_PHY_ATHEROS 0x1374
++#define OUI_PHY_REALTEK 0x0732
++
+ int board_phy_config(struct phy_device *phydev)
+ {
+-	/* enable rgmii rxc skew and phy mode select to RGMII copper */
+-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x1f);
+-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x8);
++	int phyid1, phyid2;
++	unsigned int model, rev, oui;
++	unsigned int reg;
++
++	phyid1 = phy_read(phydev, MDIO_DEVAD_NONE, MII_PHYSID1);
++	if(0 > phyid1) {
++		printf("%s: PHYID1 registry read fail %i\n", __func__, phyid1);
++		return phyid1;
++	}
++
++	phyid2 = phy_read(phydev, MDIO_DEVAD_NONE, MII_PHYSID2);
++	if(0 > phyid2) {
++		printf("%s: PHYID2 registry read fail %i\n", __func__, phyid2);
++		return phyid2;
++	}
++
++	reg = phyid2 | phyid1 << 16;
++	if(0xffff == reg) {
++		printf("%s: There is no device @%i\n", __func__, phydev->addr);
++		return -ENODEV;
++	}
++
++	rev = reg & 0xf;
++	reg >>= 4;
++	model = reg & 0x3f;
++	reg >>=6;
++	oui = reg;
++	debug("%s: PHY @0x%x OUI 0x%06x model 0x%x rev 0x%x\n",
++		__func__, phydev->addr, oui, model, rev);
++
++	switch (oui) {
++	case OUI_PHY_ATHEROS:
++		break;
++		/* enable rgmii rxc skew and phy mode select to RGMII copper */
++		printf("phy: AR803x@%x\t", phydev->addr);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x1f);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x8);
++
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x00);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x82ee);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x05);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x100);
++		break;
++	case OUI_PHY_REALTEK:
++		printf("phy: RTL8211E@%x\t", phydev->addr);
++		/** RTL8211E-VB-CG - add TX and RX delay */
++		unsigned short val;
++
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1f, 0x07);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0xa4);
++		val = phy_read(phydev, MDIO_DEVAD_NONE, 0x1c);
++		val |= (0x1 << 13) | (0x1 << 12) | (0x1 << 11);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1c, val);
++		/*LEDs:*/
++		/* set to extension page */
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1f, 0x0007);
++		/* extension Page44 */
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x002c);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1c, 0x0430);//LCR
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1a, 0x0010);//LACR
++		/* To disable EEE LED mode (blinking .4s/2s) */
++		/* extension Page5 */
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1f, 0x0005);
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x05, 0x8b82);//magic const
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x06, 0x052b);//magic const
++
++		phy_write(phydev, MDIO_DEVAD_NONE, 0x1f, 0x00);// Back to Page0
++
++		break;
++	default:
++		printf("%s: ERROR: unknown PHY @0x%x OUI 0x%06x model 0x%x rev 0x%x\n",
++			__func__, phydev->addr, oui, model, rev);
++		return -ENOSYS;
++	}
+ 
+-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x00);
+-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x82ee);
+-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x05);
+-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x100);
++	fec_phyaddr = phydev->addr;
+ 
+ 	if (phydev->drv->config)
+ 		phydev->drv->config(phydev);
+diff --git a/drivers/net/fec_mxc.c b/drivers/net/fec_mxc.c
+index cc23aeacf5..06f0a6284c 100644
+--- a/drivers/net/fec_mxc.c
++++ b/drivers/net/fec_mxc.c
+@@ -1243,7 +1243,7 @@ static int fec_phy_init(struct fec_priv *priv, struct udevice *dev)
+ 	int mask = 0xffffffff;
+ 
+ #ifdef CONFIG_PHYLIB
+-	mask = 1 << CONFIG_FEC_MXC_PHYADDR;
++	mask = (CONFIG_FEC_MXC_PHYADDR >= 0) ? (1 << CONFIG_FEC_MXC_PHYADDR) : 0xffffffff;
+ #endif
+ 
+ 	phydev = phy_find_by_mask(priv->bus, mask, priv->interface);
+diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
+index 7635f7544e..86c3f5c02c 100644
+--- a/include/configs/ucm-imx8m-mini.h
++++ b/include/configs/ucm-imx8m-mini.h
+@@ -92,7 +92,7 @@
+ 
+ #define CONFIG_FEC_MXC
+ #define CONFIG_FEC_XCV_TYPE             RGMII
+-#define CONFIG_FEC_MXC_PHYADDR          0
++#define CONFIG_FEC_MXC_PHYADDR          -1
+ #define FEC_QUIRK_ENET_MAC
+ 
+ #define CONFIG_PHY_GIGE
+-- 
+2.11.0
+
