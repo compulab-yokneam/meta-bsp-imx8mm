@@ -102,4 +102,6 @@ SRC_URI_append = " \
 	file://0101-spl-Enable-Samsung-4G-DRAM-0x01061010.patch \
 	file://0102-Enable-DDR-Alliance-1G-0x01050008.patch \
 	file://0103-make-Add-wrapper-for-compound-config.patch \
+	file://0104-net-Enable-phy-Realtek-RTL8211E.patch \
+	file://0105-LOCALVERSION-2.2.1-1.1.1.patch \
 "
