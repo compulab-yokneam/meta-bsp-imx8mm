@@ -9,15 +9,13 @@ DEPENDS_append = " dtc-native"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-UBOOT_SRC = "git://source.codeaurora.org/external/imx/uboot-imx.git;protocol=https"
-SRCBRANCH = "imx_v2020.04_5.4.24_2.1.0"
-SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH} \
-"
-SRCREV = "4979a99482f7e04a3c1f4fb55e3182395ee8f710"
+SRCBRANCH = "lf_v2021.04"
+SRC_URI = "git://source.codeaurora.org/external/imx/uboot-imx.git;protocol=https;branch=${SRCBRANCH}"
+SRCREV = "263b27e076a0f6e5dcc80227a235f0af73718342"
 
 S = "${WORKDIR}/git"
 
-LOCALVERSION = "-5.4.24-2.1.0-compulab"
+LOCALVERSION = "-compulab"
 
 BOOT_TOOLS = "imx-boot-tools"
 
@@ -41,6 +39,15 @@ do_deploy_append_mx8m () {
         unset  i
     fi
 
+}
+
+do_configure_prepend () {
+	# Merge common defconfig with specific fraggment to get specific defconfig
+	local CONFDIR=configs
+	cd ${S}
+	scripts/kconfig/merge_config.sh  -O ${CONFDIR}/ -m  ${CONFDIR}/cl-imx8m-mini_defconfig ${CONFDIR}/${MACHINE}.config
+	mv ${CONFDIR}/.config ${CONFDIR}/${MACHINE}_defconfig
+	cd -
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
