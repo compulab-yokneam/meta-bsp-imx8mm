@@ -2,26 +2,24 @@
 
 Supported machines:
 
-* `mcm-imx8m-mini`
-* `ucm-imx8m-mini`
+* `iot-gate-imx8`
 
 Define a `MACHINE` environment variable for the target product:
 
 |Machine|Command Line|
 |---|---|
-|mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
-|ucm-imx8m-mini|export MACHINE=ucm-imx8m-mini
+|iot-gate-imx8|export MACHINE=iot-gate-imx8
 
 Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
 |NXP release name|export NXP_RELEASE=lf-5.10.y|
-|CompuLab branch name|export CPL_BRANCH=imx_5.10.35_2.0.0-experiment|
+|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8_r3.0|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/rel_imx_5.4.70_2.3.0-stable/Documentation/toolchain.md)
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r3.0/Documentation/toolchain.md)
 * Create a folder to organize the files:
 <pre>
 mkdir imx8mm
@@ -35,13 +33,13 @@ export PATCHES=$(pwd)/meta-bsp-imx8mm/recipes-kernel/linux/compulab/imx8mm
 
 ## CompuLab Linux Kernel setup
 <pre>
-git clone https://source.codeaurora.org/external/imx/linux-imx.git
-git -C linux-imx checkout -b linux-compulab ${NXP_RELEASE}
+git clone -b ${NXP_RELEASE} --single-branch https://source.codeaurora.org/external/imx/linux-imx.git
+git -C linux-imx checkout -b linux-compulab 
 git -C linux-imx am ${PATCHES}/*.patch
 </pre>
 
 ## Compile the Kernel
 <pre>
-make cl-imx8m-mini_defconfig ${MACHINE}.config
+make -C linux-imx ${MACHINE}_defconfig
 make -C linux-imx
 </pre>
