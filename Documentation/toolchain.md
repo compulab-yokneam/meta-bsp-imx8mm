@@ -14,6 +14,6 @@ sudo tar -C /opt -xf gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu.tar.xz
 * Set environment variables:
 <pre>
 export ARCH=arm64
-export CROSS_COMPILE=/opt/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-linux-gnu-
+export CROSS_COMPILE=/opt/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-
 </pre>
 
