@@ -18,9 +18,9 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP u-boot release|export NXP_UBOOT_RELEASE=lf_v2021.04|
-|NXP ATF release|export NXP_ATF_RELEASE=lf_v2.4|
-|NXP mkimage release|export NXP_MKIMAGE_RELEASE=lf-5.10.y_2.0.0|
+|NXP u-boot release|export NXP_UBOOT_RELEASE=lf-5.10.35-2.0.0|
+|NXP ATF release|export NXP_ATF_RELEASE=lf-5.10.35-2.0.0|
+|NXP mkimage release|export NXP_MKIMAGE_RELEASE=lf-5.10.35-2.0.0|
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.12.bin|
 |CompuLab branch name|export CPL_BRANCH=rel_imx_5.10.35_2.0.0-stable|
 
