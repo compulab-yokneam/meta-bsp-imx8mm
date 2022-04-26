@@ -113,4 +113,5 @@ SRC_URI_append = " \
 	file://0111-release-2020.04-iot-gate-imx8-2.4.patch \
 	file://0112-iot-gate-imx8-Add-SDP-support.patch \
 	file://0113-cpl-imx8m-mini-Fix-CONFIG_MFG_ENV_SETTINGS.patch \
+	file://0114-imx8mm-net-enable-phy-Realtek-RTL8211E.patch \
 "
