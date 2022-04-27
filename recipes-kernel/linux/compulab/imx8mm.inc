@@ -55,5 +55,6 @@ SRC_URI_append = " \
 	file://0053-iot-gate-imx8-set-system-time-from-RTC-on-startup.patch \
 	file://0054-iot-gate-imx8-dts-add-M4-support.patch \
 	file://0055-iot-gate-imx8-release-2.4.patch \
+	file://0056-ucm-imx8m-mini-dts-phy-eliminate-excessive-reset.patch \
 	file://defconfig \
 "
