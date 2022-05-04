@@ -1,7 +1,7 @@
-From fd3bd41d1edf6300e4c0b2e19e4319821cc15115 Mon Sep 17 00:00:00 2001
+From 48afff4126103326193042622273e036f3396d2c Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Wed, 8 Jul 2020 11:34:20 +0300
-Subject: [PATCH 2/2] imx8mm: Assign RDC_PDAP_UART4 to D0
+Subject: [PATCH 1/2] imx8mm: Assign RDC_PDAP_UART4 to D0
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c b/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
-index 049192880..6f98f7304 100644
+index f63b9fcad..a89c7f941 100644
 --- a/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
 +++ b/plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
 @@ -58,7 +58,7 @@ static const struct imx_rdc_cfg rdc[] = {
