@@ -39,5 +39,6 @@ SRC_URI_append = " \
 	file://0038-dts-Enable-ov5640-camera-and-VPU.patch \
 	file://0039-ucm-Enable-wm8731-audiocodec.patch \
 	file://0040-ucm-imx8m-mini-Fix-iwlwifi.patch \
+	file://0041-dts-phy-Eliminate-excessive-reset.patch \
 	file://defconfig \
 "
