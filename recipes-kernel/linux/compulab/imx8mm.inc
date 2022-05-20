@@ -53,5 +53,6 @@ SRC_URI_append = " \
 	file://0052-mcm-imx8m-mini-defconfig-Enable-CAN-mcp251x.patch \
 	file://0053-dts-phy-Eliminate-excessive-reset.patch \
 	file://0054-LOCALVERSION-2.2.1.patch \
+	file://0055-dts-defconfig-Fix-cpufreq-sysfs-attr-disappearance.patch \
 "
 
