@@ -40,5 +40,6 @@ SRC_URI_append = " \
 	file://0039-ucm-Enable-wm8731-audiocodec.patch \
 	file://0040-ucm-imx8m-mini-Fix-iwlwifi.patch \
 	file://0041-dts-phy-Eliminate-excessive-reset.patch \
+	file://0042-dts-Enable-rpmsg.patch \
 	file://defconfig \
 "
