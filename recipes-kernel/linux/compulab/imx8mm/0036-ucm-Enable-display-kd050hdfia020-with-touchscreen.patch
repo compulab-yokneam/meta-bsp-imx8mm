@@ -1,7 +1,7 @@
 From 5290d86ece90b504bc980af25a2bd9eea2c0feef Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 14 Aug 2021 00:07:15 +0300
-Subject: [PATCH 36/81] ucm: Enable display kd050hdfia020 with touchscreen
+Subject: [PATCH 36/84] ucm: Enable display kd050hdfia020 with touchscreen
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

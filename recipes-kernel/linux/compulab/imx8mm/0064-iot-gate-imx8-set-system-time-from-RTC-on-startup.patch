@@ -1,7 +1,7 @@
 From 02f2f5aad92bbf5e5d09aaf4509e0859293faa72 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 2 Mar 2021 10:49:03 +0200
-Subject: [PATCH 64/81] iot-gate-imx8: set system time from RTC on startup
+Subject: [PATCH 64/84] iot-gate-imx8: set system time from RTC on startup
 
 Enable setting the system time from the RTC dring the proot process.
 

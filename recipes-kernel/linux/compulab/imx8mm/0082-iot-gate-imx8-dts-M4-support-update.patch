@@ -1,0 +1,47 @@
+From 42b6951bef538593f85bb46f076924eba0dc8d19 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 10 May 2022 12:19:59 +0300
+Subject: [PATCH 82/84] iot-gate-imx8: dts: M4 support update
+
+Adjust the M4 device tree to NXP SDK lf-5.10.72-2.2.0.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8-ied-m4.dts | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied-m4.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied-m4.dts
+index eca040200864..c56e116acaaa 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied-m4.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied-m4.dts
+@@ -37,10 +37,27 @@
+ 			no-map;
+ 		};
+ 
++		rsc_table: rsc_table@b80ff000 {
++			reg = <0 0xb80ff000 0 0x1000>;
++			no-map;
++		};
++
+ 		vdevbuffer: vdevbuffer@b8400000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0 0xb8400000 0 0x100000>;
+ 			no-map;
+ 		};
+ 	};
++
++	imx8mm-cm4 {
++		compatible = "fsl,imx8mm-cm4";
++		rsc-da = <0xb8000000>;
++		clocks = <&clk IMX8MM_CLK_M4_DIV>;
++		mbox-names = "tx", "rx", "rxdb";
++		mboxes = <&mu 0 1
++			  &mu 1 1
++			  &mu 3 1>;
++		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
++		syscon = <&src>;
++	};
+ };
+-- 
+2.11.0
+

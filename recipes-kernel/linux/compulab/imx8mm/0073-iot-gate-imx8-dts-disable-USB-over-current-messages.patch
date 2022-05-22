@@ -1,7 +1,7 @@
 From c2c57dc8d34e5e2a043e8a65adb27c7efd19402b Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 2 Nov 2021 12:18:00 +0200
-Subject: [PATCH 73/81] iot-gate-imx8: dts: disable USB over-current messages
+Subject: [PATCH 73/84] iot-gate-imx8: dts: disable USB over-current messages
 
 Example of the  over-current messages:
 usb usb1-port1: over-current condition

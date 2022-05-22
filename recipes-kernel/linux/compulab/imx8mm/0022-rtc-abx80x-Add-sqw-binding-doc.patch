@@ -1,7 +1,7 @@
 From b1fedc5b9c4aceb05e8e8329e365be28de881bfd Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 27 Sep 2020 15:32:58 +0300
-Subject: [PATCH 22/81] rtc:abx80x: Add sqw binding doc
+Subject: [PATCH 22/84] rtc:abx80x: Add sqw binding doc
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

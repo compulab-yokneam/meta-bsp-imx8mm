@@ -1,7 +1,7 @@
 From cfecbf6e5ba32e668ec65080e7b0cf5881e7ef2d Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 18 Aug 2020 18:14:40 +0300
-Subject: [PATCH 13/81] ucm-imx8m-mini:dts: Update PCIe node
+Subject: [PATCH 13/84] ucm-imx8m-mini:dts: Update PCIe node
 
 Update the PCIe description in accordance with the updated PCIe driver
 

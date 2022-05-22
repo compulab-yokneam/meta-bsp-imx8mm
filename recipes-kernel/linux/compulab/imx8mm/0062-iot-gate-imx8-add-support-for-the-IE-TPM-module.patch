@@ -1,7 +1,7 @@
 From 73933c1c84e8f425e8cc9929f0f523f4b41fdd60 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 24 Jan 2021 15:19:47 +0200
-Subject: [PATCH 62/81] iot-gate-imx8: add support for the IE-TPM module
+Subject: [PATCH 62/84] iot-gate-imx8: add support for the IE-TPM module
 
 The CAN and the TPM modules are 2 alternatives in the baseboard
 IED-BASE, slots A and B for the SPI bus.

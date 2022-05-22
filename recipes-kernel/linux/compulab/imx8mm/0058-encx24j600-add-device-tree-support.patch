@@ -1,7 +1,7 @@
 From aeb8b9b1a9e0653ebd173cd9818acbed390d808a Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Thu, 3 Dec 2020 17:37:33 +0200
-Subject: [PATCH 58/81] encx24j600: add device tree support
+Subject: [PATCH 58/84] encx24j600: add device tree support
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

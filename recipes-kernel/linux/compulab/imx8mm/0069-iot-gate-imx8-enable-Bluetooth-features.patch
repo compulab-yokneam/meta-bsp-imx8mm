@@ -1,7 +1,7 @@
 From 157477424e1fbda20f3a7e28271a636697946b91 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 23 May 2021 17:38:32 +0300
-Subject: [PATCH 69/81] iot-gate-imx8: enable Bluetooth features
+Subject: [PATCH 69/84] iot-gate-imx8: enable Bluetooth features
 
 Enable the following features:
 * BLE physical layer, available with Bluetooth version 4.0 or later.

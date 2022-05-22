@@ -1,7 +1,7 @@
 From ead38c8e024e51cb3fe7968e7676cf14996f228a Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 24 Dec 2021 01:09:56 +0200
-Subject: [PATCH 49/81] mcm:dts: Calibrate RTC
+Subject: [PATCH 49/84] mcm:dts: Calibrate RTC
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

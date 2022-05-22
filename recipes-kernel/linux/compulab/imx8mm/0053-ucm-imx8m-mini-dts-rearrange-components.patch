@@ -1,7 +1,7 @@
 From 9a0d83977469a2db29fd4326b5f66968c7c81e0c Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Mon, 3 Jan 2022 09:55:05 +0200
-Subject: [PATCH 53/81] ucm-imx8m-mini: dts: rearrange components
+Subject: [PATCH 53/84] ucm-imx8m-mini: dts: rearrange components
 
 Change boards include relationship - the baseboard includes the module.
 Move baseboard components from the modules to the baseboard dts file.
