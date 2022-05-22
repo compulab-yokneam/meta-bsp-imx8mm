@@ -1,7 +1,7 @@
 From 946c13ecd0d37fe0f863be7892151e9b4264c013 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 25 Oct 2021 23:39:29 +0300
-Subject: [PATCH 46/81] defconfig: Fix PCIe and mPCIE_USB
+Subject: [PATCH 46/84] defconfig: Fix PCIe and mPCIE_USB
 
 Regression: these interfaces stop working because the driver reset_imx7 has
 been excluded after some Kconfigs cleaning. Thus a card in mPCIe slot left

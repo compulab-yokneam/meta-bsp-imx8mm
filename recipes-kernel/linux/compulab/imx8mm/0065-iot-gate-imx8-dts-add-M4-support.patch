@@ -1,7 +1,7 @@
 From e397dc6da45ef1968ee82d6b40728d1dca366c8e Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 2 Mar 2021 11:06:37 +0200
-Subject: [PATCH 65/81] iot-gate-imx8: dts: add M4 support
+Subject: [PATCH 65/84] iot-gate-imx8: dts: add M4 support
 
 The RPMsg is used for communication between the Cortex-A53 and the
 Cortex-M4 cores.

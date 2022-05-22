@@ -1,7 +1,7 @@
 From 5c68169ec68fffa58d8ae803ce6f1418fbd8a492 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 24 Apr 2021 20:56:02 +0300
-Subject: [PATCH 34/81] ucm:defconfig: Clean regulators
+Subject: [PATCH 34/84] ucm:defconfig: Clean regulators
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

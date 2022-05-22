@@ -1,7 +1,7 @@
 From e336e6112c82d2fc37e2630a1224b97b5f97a887 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 2 Feb 2021 14:10:02 +0200
-Subject: [PATCH 60/81] iot-gate-imx8: dts: add CAN bus RX interrupt
+Subject: [PATCH 60/84] iot-gate-imx8: dts: add CAN bus RX interrupt
 
 The updated CAN bus driver supports the RX interrupt.
 Add the definition for the RX interrupt GPIOs.

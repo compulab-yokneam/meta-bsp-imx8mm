@@ -1,7 +1,7 @@
 From 35565d2bff267777b1c39c95663358e33fabd161 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 17 Aug 2020 21:41:46 +0300
-Subject: [PATCH 12/81] ucm-imx8m-mini:dts: Cleaning
+Subject: [PATCH 12/84] ucm-imx8m-mini:dts: Cleaning
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

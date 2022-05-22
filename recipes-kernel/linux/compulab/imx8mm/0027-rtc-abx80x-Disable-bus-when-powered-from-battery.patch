@@ -1,7 +1,7 @@
 From 115aa0b5ae5e884671f81a5edf7e055240966d5c Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 17 Nov 2020 20:05:43 +0200
-Subject: [PATCH 27/81] rtc:abx80x: Disable bus when powered from battery
+Subject: [PATCH 27/84] rtc:abx80x: Disable bus when powered from battery
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

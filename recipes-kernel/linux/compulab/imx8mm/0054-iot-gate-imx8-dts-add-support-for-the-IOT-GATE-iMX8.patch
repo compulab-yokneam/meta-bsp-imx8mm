@@ -1,7 +1,7 @@
 From cc7f7d4b76b8a7764406731e38a7513de6f22e3c Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 22 Jul 2020 18:33:31 +0300
-Subject: [PATCH 54/81] iot-gate-imx8: dts: add support for the IOT-GATE-iMX8
+Subject: [PATCH 54/84] iot-gate-imx8: dts: add support for the IOT-GATE-iMX8
 
 The following device tree source files are added:
 sb-iotgimx8.dts - SB-IOTGIMX8 without expansion board.

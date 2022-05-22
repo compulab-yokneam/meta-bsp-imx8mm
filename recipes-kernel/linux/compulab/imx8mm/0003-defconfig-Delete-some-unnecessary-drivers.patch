@@ -1,7 +1,7 @@
 From b453eae6bc558d90e14011171443054faa2e0e88 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 21 Jun 2020 22:00:13 +0300
-Subject: [PATCH 03/81] defconfig: Delete some unnecessary drivers
+Subject: [PATCH 03/84] defconfig: Delete some unnecessary drivers
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

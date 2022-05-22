@@ -1,7 +1,7 @@
 From 8528cb15610c7b566372e9a0ef16f077bf513fd0 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 26 May 2021 23:02:51 +0300
-Subject: [PATCH 40/81] ucm-imx8m-mini: Fix iwlwifi
+Subject: [PATCH 40/84] ucm-imx8m-mini: Fix iwlwifi
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

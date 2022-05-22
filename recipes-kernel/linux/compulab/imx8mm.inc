@@ -80,5 +80,8 @@ SRC_URI_append = " \
 	file://0079-lib-iov_iter-initialize-flags-in-new-pipe_buffer.patch \
 	file://0080-netfilter-nf_tables_offload-incorrect-flow-offload-a.patch \
 	file://0081-iot-gate-imx8-release-3.0.patch \
+	file://0082-iot-gate-imx8-dts-M4-support-update.patch \
+	file://0083-iot-gate-imx8-M4-support-update.patch \
+	file://0084-iot-gate-imx8-release-3.1.patch \
 	file://defconfig \
 "

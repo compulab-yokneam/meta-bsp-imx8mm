@@ -1,7 +1,7 @@
 From 1cdefef59772e436ef115374da563e48c9be228f Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 28 Oct 2021 01:02:03 +0300
-Subject: [PATCH 47/81] defconfig: Fix mipi-csi camera
+Subject: [PATCH 47/84] defconfig: Fix mipi-csi camera
 
 Regression: the driver for mipi-csi camera ov5640 has been dropped since
 the configuration parameter CONFIG_MEDIA_SUPPORT_FILTER has been enabled by

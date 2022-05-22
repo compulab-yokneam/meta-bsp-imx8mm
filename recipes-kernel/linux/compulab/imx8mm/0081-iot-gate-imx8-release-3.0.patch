@@ -1,7 +1,7 @@
 From 5fbffbf2e9dfa03382275dc9ba3795e8ce456aae Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 5 Jan 2022 14:12:00 +0200
-Subject: [PATCH 81/81] iot-gate-imx8: release 3.0
+Subject: [PATCH 81/84] iot-gate-imx8: release 3.0
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

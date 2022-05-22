@@ -1,7 +1,7 @@
 From 9198aff524d891ff651b6e74105faa452e4ff5be Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 8 Dec 2021 10:25:12 +0200
-Subject: [PATCH 77/81] mmc: dts: fix mmc1 initialization
+Subject: [PATCH 77/84] mmc: dts: fix mmc1 initialization
 
 Occasionally eMMC1 storage is not initialized correctly during the boot
 process.
