@@ -36,3 +36,8 @@ MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b
 ```
 bitbake -k compulab-ucm-imx8m-mini
 ```
+
+# 3 Precompiled images
+|Machine|Image|
+|---|---|
+|ucm-imx8m-mini|[compulab-ucm-imx8m-mini-ucm-imx8m-mini-YYYYMMDDhhmmss.rootfs.wic.bz2](https://drive.google.com/file/d/1PLSpK6_F1oTnSQqcTwHmpUboF7tbKLAv/view?usp=sharing)
