@@ -20,34 +20,31 @@ mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
 * Set environmet varables:
 
 ```
-export MACHINE=iot-gate-imx8
-export LREPO=${MACHINE}.xml
-export CLB_RELEASE=iot-gate-imx8_r3.0
+export COMPULAB_MACHINE=iot-gate-imx8
+export LREPO=${COMPULAB_MACHINE}.xml
+export CLB_RELEASE=iot-gate-imx8_r3.1
 ```
 
-## Initialize repo manifests
-
-* FSL Community
+### Prepare NXP BSP
 ```
-repo init -u https://github.com/Freescale/fsl-community-bsp-platform -b dunfell
+repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-linux-hardknott -m imx-5.10.72-2.2.1.xml
 ```
 
-* CompuLab
+### Download CompuLab meta layer
 ```
-mkdir -p .repo/local_manifests
-wget --directory-prefix .repo/local_manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/${CLB_RELEASE}/scripts/${LREPO}
+wget --directory-prefix .repo/manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/${CLB_RELEASE}/scripts/${LREPO}
 ```
 
-* Sync Them all
+### Get entire BSP tree
 ```
+repo init -m ${LREPO}
 repo sync
 ```
-
-## Setup build environment
-
+## Build
+### Run CompuLab Linux Yocto Project setup
 * Initialize the build environment:
 ```
-source sources/compulab-fslc-bsp/tools/setup-env build-fslc-${MACHINE}
+MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build
 ```
 
 ## Build image
