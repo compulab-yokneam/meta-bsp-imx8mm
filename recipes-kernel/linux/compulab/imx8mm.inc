@@ -1,4 +1,4 @@
-SRC_URI_append = " \
+SRC_URI:append = " \
 	file://0001-imx8m-mini-add-basic-support.patch \
 	file://0002-dts-Fix-usdhc1-properties.patch \
 	file://0003-defconfig-Delete-some-unnecessary-drivers.patch \

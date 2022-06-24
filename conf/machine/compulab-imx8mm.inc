@@ -29,9 +29,9 @@ IMX_BOOT_SEEK = "33"
 
 OPTEE_BIN_EXT = "8mm"
 
-MACHINE_FIRMWARE_append = " firmware-cypress linux-firmware-ax200"
+MACHINE_FIRMWARE:append = " firmware-cypress linux-firmware-ax200"
 
-MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
+MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
 
 DEFAULTTUNE_mx8mm = "aarch64"
 
@@ -43,7 +43,7 @@ ATF_MACHINE_NAME = "bl31-imx8mm.bin"
 PLATFORM = "imx8mm"
 SOC_TARGET = "iMX8MM"
 
-IMAGE_INSTALL_append = " \
+IMAGE_INSTALL:append = " \
 	kernel-image \
 	kernel-modules \
 	kernel-devicetree \

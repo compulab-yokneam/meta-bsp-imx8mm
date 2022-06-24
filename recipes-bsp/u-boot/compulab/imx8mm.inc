@@ -1,5 +1,5 @@
 
-SRC_URI_append = " \
+SRC_URI:append = " \
 	file://0001-ucm-imx8m-mini-Add-basic-support.patch \
 	file://0002-ucm-imx8m-mini-update-CPU-model-printed-parameters.patch \
 	file://0003-ucm-imx8m-mini-Fix-KConfig-warning.patch \

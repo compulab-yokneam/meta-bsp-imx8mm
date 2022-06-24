@@ -18,11 +18,11 @@ do_install() {
 	install -m 0755 ${S}/cl-migrate-env ${D}/usr/local/bin/
 }
 
-FILES_${PN} = " \
+FILES:${PN} = " \
 	/usr/local/bin/* \
 	/usr/share/* \
 "
 
-RDEPENDS_${PN} = "bash dialog util-linux cl-uboot"
+RDEPENDS:${PN} = "bash dialog util-linux cl-uboot"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(ucm-imx8m-mini)"

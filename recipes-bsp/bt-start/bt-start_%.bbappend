@@ -1,7 +1,7 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append = " \
+SRC_URI:append = " \
 	file://bt-start \
 "
 
-RDEPENDS_${PN} = "bash brcm-patchram firmware-imx-brcm"
+RDEPENDS:${PN} = "bash brcm-patchram firmware-imx-brcm"

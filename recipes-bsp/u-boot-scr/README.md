@@ -14,5 +14,5 @@ CompuLad imx8mm boot loader location is at emmc boot hw partititon.
 
 ```
 CORE_IMAGE_EXTRA_INSTALL += "u-boot-script"
-IMAGE_BOOT_FILES_append = " boot.scr "
+IMAGE_BOOT_FILES:append = " boot.scr "
 ```

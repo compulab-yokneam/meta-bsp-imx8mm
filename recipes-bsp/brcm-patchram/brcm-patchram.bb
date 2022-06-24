@@ -17,9 +17,9 @@ PV = "git+4070e71"
 SRCREV = "4070e7161f2f1a1a22027a744eb868500688f0b6"
 SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/broadcom;protocol=http;branch=master"
 
-FILES_${PN} = "/usr/bin/*"
+FILES:${PN} = "/usr/bin/*"
 
-do_install_append() {
+do_install:append() {
 	install -d ${D}/usr/bin
 	install -m 755 brcm_patchram_plus ${D}/usr/bin
 }

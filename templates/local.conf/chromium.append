@@ -1,7 +1,7 @@
 #;prompt Add Chromium browser [yes]
 
 # Add Chromium
-IMAGE_INSTALL_append = \
+IMAGE_INSTALL:append = \
     "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' chromium-ozone-wayland', \
         bb.utils.contains('DISTRO_FEATURES',     'x11', ' chromium-x11', \
                                                         '', d), d)}"

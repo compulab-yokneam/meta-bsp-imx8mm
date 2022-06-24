@@ -1,6 +1,6 @@
 require linux-compulab.inc
 
-do_configure_prepend () {
+do_configure:prepend () {
 	# Merge common defconfig with specific fraggment to get specific defconfig
 	local CONFDIR=arch/arm64/configs
 	cd ${S}
