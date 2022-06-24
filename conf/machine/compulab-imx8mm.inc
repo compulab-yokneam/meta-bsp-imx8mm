@@ -4,7 +4,7 @@ require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8a/tune-cortexa53.inc
 
 MACHINE_FEATURES += " pci wifi bluetooth "
-# MACHINE_FEATURES:append:use-nxp-bsp = " optee "
+MACHINE_FEATURES:append:use-nxp-bsp = " optee "
 
 IMX_DEFAULT_BOOTLOADER:use-mainline-bsp = "u-boot-compulab"
 IMX_DEFAULT_BOOTLOADER:use-nxp-bsp = "u-boot-compulab"
@@ -57,5 +57,10 @@ PREFERRED_RROVIDER_u-boot-fw-utils = "libubootenv-bin"
 
 MACHINE_FIRMWARE:append = " firmware-cypress linux-firmware-ax200"
 MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
+
+OPTEE_PLATFORM_FLAVOR = "mx8mm_cl_iot_gate"
+PLATFORM_FLAVOR:ucm-imx8m-mini = "${OPTEE_PLATFORM_FLAVOR}"
+PLATFORM_FLAVOR:mcm-imx8m-mini = "${OPTEE_PLATFORM_FLAVOR}"
+PLATFORM_FLAVOR:iot-gate-imx8 = "${OPTEE_PLATFORM_FLAVOR}"
 
 IMX_DEFAULT_BSP = "nxp"
