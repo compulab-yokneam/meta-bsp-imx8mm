@@ -1,4 +1,3 @@
-
 SRC_URI:append = " \
 	file://0001-ucm-imx8m-mini-Add-basic-support.patch \
 	file://0002-ucm-imx8m-mini-update-CPU-model-printed-parameters.patch \
@@ -126,6 +125,7 @@ SRC_URI:append = " \
 	file://0125-imx8mm-net-enable-phy-Realtek-RTL8211E.patch \
 	file://0126-iot-gate-imx8-release-2020.04-iot-gate-imx8-3.0.patch \
 	file://0127-iot-gate-imx8-dts-Make-usbotg1-work-in-peripheral-mo.patch \
+	file://0128-cpl-imx8m-mini-dts-Make-usbotg1-woark-as-peripheral-.patch \
 "
  
 #	For U-Boot build outside of Yocto

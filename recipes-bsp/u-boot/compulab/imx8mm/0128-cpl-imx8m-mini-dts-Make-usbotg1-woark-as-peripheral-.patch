@@ -1,0 +1,29 @@
+From 16bc906b0b1ac3a52e8274ecc1ca501e6d4cdc15 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Fri, 24 Jun 2022 15:25:06 +0000
+Subject: [PATCH] cpl-imx8m-mini: dts: Make usbotg1 woark as peripheral device
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/dts/cpl-imx8m-mini.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/dts/cpl-imx8m-mini.dtsi b/arch/arm/dts/cpl-imx8m-mini.dtsi
+index 3cd4bfab6f..041faca5c9 100644
+--- a/arch/arm/dts/cpl-imx8m-mini.dtsi
++++ b/arch/arm/dts/cpl-imx8m-mini.dtsi
+@@ -386,6 +386,11 @@
+ 	arm-supply = <&buck2_reg>;
+ };
+ 
++&usbotg1 {
++	dr_mode = "peripheral";
++	status = "okay";
++};
++
+ &usbotg2 {
+ 	dr_mode = "host";
+ 	status = "okay";
+-- 
+2.17.1
+
