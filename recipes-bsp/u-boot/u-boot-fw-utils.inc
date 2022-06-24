@@ -1,4 +1,4 @@
-SRC_URI:append += "\
+SRC_URI:append = "\
 	file://cl_setenv \
 "
 

@@ -22,7 +22,7 @@ LOCALVERSION = "-compulab"
 
 BOOT_TOOLS = "imx-boot-tools"
 
-do_deploy:append_mx8m () {
+do_deploy:append () {
     # Deploy u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
     if [ -n "${UBOOT_CONFIG}" ]
     then
@@ -43,6 +43,8 @@ do_deploy:append_mx8m () {
     fi
 
 }
+
+require u-boot-compulab-env.inc
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
