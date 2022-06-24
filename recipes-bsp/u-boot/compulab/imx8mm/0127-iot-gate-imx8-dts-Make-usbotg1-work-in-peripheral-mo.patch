@@ -1,0 +1,27 @@
+From 8bcf2bdfc1b501786da1c34e741ed6c23985de5c Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Fri, 24 Jun 2022 09:54:46 +0000
+Subject: [PATCH 127/127] iot-gate-imx8: dts: Make usbotg1 work in peripheral
+ mode
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/dts/iot-gate-imx8.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/dts/iot-gate-imx8.dts b/arch/arm/dts/iot-gate-imx8.dts
+index cf1629d10c..9392f481fa 100644
+--- a/arch/arm/dts/iot-gate-imx8.dts
++++ b/arch/arm/dts/iot-gate-imx8.dts
+@@ -62,7 +62,7 @@
+ 
+ &usbotg1 {
+ 	vbus-supply = <&reg_vusb_5v>;
+-	dr_mode = "host";
++	dr_mode = "peripheral";
+ 	status = "okay";
+ };
+ 
+-- 
+2.17.1
+

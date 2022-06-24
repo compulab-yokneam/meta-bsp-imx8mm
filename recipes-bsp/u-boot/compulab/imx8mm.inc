@@ -125,6 +125,7 @@ SRC_URI:append = " \
 	file://0124-Enable-SoC-info-export-via-fdt.patch \
 	file://0125-imx8mm-net-enable-phy-Realtek-RTL8211E.patch \
 	file://0126-iot-gate-imx8-release-2020.04-iot-gate-imx8-3.0.patch \
+	file://0127-iot-gate-imx8-dts-Make-usbotg1-work-in-peripheral-mo.patch \
 "
  
 #	For U-Boot build outside of Yocto
