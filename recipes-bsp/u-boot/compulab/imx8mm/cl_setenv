@@ -1,7 +1,6 @@
 #!/bin/bash
 
 CONF=/etc/fw_env.config
-PREFIX=/sbin
 
 force_rw() {
 for _d in $(awk '(/^\/dev\//)&&($0=$1)' ${CONF});do
@@ -17,10 +16,8 @@ fi
 done
 }
 
-[[ -f ${CONF} ]] || ${PREFIX}/fw_printenv -e > ${CONF}
-
 force_rw 1
 
-${PREFIX}/fw_setenv $@
+fw_setenv $@
 
 force_rw 0
