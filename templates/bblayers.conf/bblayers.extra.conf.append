@@ -6,4 +6,5 @@ BBLAYERS += " \
 	${BSPDIR}/sources/meta-compulab-bsp/meta-bsp \
 	${BSPDIR}/sources/meta-compulab-bsp/meta-devtool \
 	${BSPDIR}/sources/meta-compulab-bsp/meta-net \
+	${BSPDIR}/sources/meta-compulab-bsp/meta-utils \
 "

@@ -1,2 +1,2 @@
-#;prompt Enable Trusted Execution Environment optee OS [no]
+#; Enable Trusted Execution Environment optee OS [no]
 MACHINE_FEATURES_append += " optee "
