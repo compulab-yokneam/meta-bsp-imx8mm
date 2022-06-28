@@ -42,6 +42,7 @@ PLATFORM_FLAVOR_iot-gate-imx8 = "mx8mmevk"
 ATF_MACHINE_NAME = "bl31-imx8mm.bin"
 PLATFORM = "imx8mm"
 SOC_TARGET = "iMX8MM"
+IMX_BOOT_SOC_TARGET = "iMX8MM"
 
 IMAGE_INSTALL_append = " \
 	kernel-image \
