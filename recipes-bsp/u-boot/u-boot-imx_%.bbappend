@@ -1,4 +1,5 @@
 require u-boot-compulab.inc
+require u-boot-compulab-env.inc
 
 do_configure_prepend () {
 	# Merge common defconfig with specific fraggment to get specific defconfig
