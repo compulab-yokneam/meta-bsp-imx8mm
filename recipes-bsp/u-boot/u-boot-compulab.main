@@ -44,5 +44,7 @@ do_deploy_append_mx8m () {
 
 }
 
+require u-boot-compulab-env.inc
+
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
