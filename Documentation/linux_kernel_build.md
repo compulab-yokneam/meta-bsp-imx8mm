@@ -16,7 +16,7 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP release name|export NXP_RELEASE=lf-5.10.y|
+|NXP release name|export NXP_RELEASE=lf-5.10.35-2.0.0|
 |CompuLab branch name|export CPL_BRANCH=rel_imx_5.10.35_2.0.0-stable|
 
 ## Prerequisites
