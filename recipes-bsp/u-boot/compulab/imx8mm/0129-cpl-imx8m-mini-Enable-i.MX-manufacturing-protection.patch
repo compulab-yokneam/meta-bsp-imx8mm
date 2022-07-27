@@ -1,0 +1,403 @@
+From 9c8fd84b5fc03230399a3bac8981108ba422c0ca Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 27 Jul 2022 07:27:30 +0300
+Subject: [PATCH] cpl-imx8m-mini: Enable i.MX manufacturing protection
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/dts/iot-gate-imx8-u-boot.dtsi  | 104 ++++++++++++++++++++++++
+ arch/arm/dts/mcm-imx8m-mini-u-boot.dtsi | 104 ++++++++++++++++++++++++
+ arch/arm/dts/ucm-imx8m-mini-u-boot.dtsi | 104 ++++++++++++++++++++++++
+ board/compulab/plat/imx8mm/spl/spl.c    |   6 ++
+ configs/cl-imx8m-mini_defconfig         |  21 +++++
+ 5 files changed, 339 insertions(+)
+ create mode 100644 arch/arm/dts/iot-gate-imx8-u-boot.dtsi
+ create mode 100644 arch/arm/dts/mcm-imx8m-mini-u-boot.dtsi
+ create mode 100644 arch/arm/dts/ucm-imx8m-mini-u-boot.dtsi
+
+diff --git a/arch/arm/dts/iot-gate-imx8-u-boot.dtsi b/arch/arm/dts/iot-gate-imx8-u-boot.dtsi
+new file mode 100644
+index 0000000000..7d3396b553
+--- /dev/null
++++ b/arch/arm/dts/iot-gate-imx8-u-boot.dtsi
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2019 NXP
++ */
++
++/ {
++	wdt-reboot {
++		compatible = "wdt-reboot";
++		wdt = <&wdog1>;
++		u-boot,dm-spl;
++	};
++
++	firmware {
++		optee {
++			compatible = "linaro,optee-tz";
++			method = "smc";
++		};
++	};
++};
++
++&{/soc@0} {
++	u-boot,dm-pre-reloc;
++	u-boot,dm-spl;
++};
++
++&clk {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++	/delete-property/ assigned-clock-rates;
++};
++
++&osc_24m {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++};
++
++&aips1 {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++};
++
++&aips2 {
++	u-boot,dm-spl;
++};
++
++&aips3 {
++	u-boot,dm-spl;
++};
++
++&iomuxc {
++	u-boot,dm-spl;
++};
++
++&gpio1 {
++	u-boot,dm-spl;
++};
++
++&gpio2 {
++	u-boot,dm-spl;
++};
++
++&gpio3 {
++	u-boot,dm-spl;
++};
++
++&gpio4 {
++	u-boot,dm-spl;
++};
++
++&gpio5 {
++	u-boot,dm-spl;
++};
++
++&i2c1 {
++	u-boot,dm-spl;
++};
++
++&pinctrl_i2c1 {
++	u-boot,dm-spl;
++};
++
++&wdog1 {
++	u-boot,dm-spl;
++};
++
++&crypto {
++	u-boot,dm-spl;
++	status = "okay";
++};
++
++&sec_jr0 {
++	u-boot,dm-spl;
++};
++
++&sec_jr1 {
++	u-boot,dm-spl;
++	status = "okay";
++};
++
++&sec_jr2 {
++	u-boot,dm-spl;
++};
+diff --git a/arch/arm/dts/mcm-imx8m-mini-u-boot.dtsi b/arch/arm/dts/mcm-imx8m-mini-u-boot.dtsi
+new file mode 100644
+index 0000000000..7d3396b553
+--- /dev/null
++++ b/arch/arm/dts/mcm-imx8m-mini-u-boot.dtsi
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2019 NXP
++ */
++
++/ {
++	wdt-reboot {
++		compatible = "wdt-reboot";
++		wdt = <&wdog1>;
++		u-boot,dm-spl;
++	};
++
++	firmware {
++		optee {
++			compatible = "linaro,optee-tz";
++			method = "smc";
++		};
++	};
++};
++
++&{/soc@0} {
++	u-boot,dm-pre-reloc;
++	u-boot,dm-spl;
++};
++
++&clk {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++	/delete-property/ assigned-clock-rates;
++};
++
++&osc_24m {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++};
++
++&aips1 {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++};
++
++&aips2 {
++	u-boot,dm-spl;
++};
++
++&aips3 {
++	u-boot,dm-spl;
++};
++
++&iomuxc {
++	u-boot,dm-spl;
++};
++
++&gpio1 {
++	u-boot,dm-spl;
++};
++
++&gpio2 {
++	u-boot,dm-spl;
++};
++
++&gpio3 {
++	u-boot,dm-spl;
++};
++
++&gpio4 {
++	u-boot,dm-spl;
++};
++
++&gpio5 {
++	u-boot,dm-spl;
++};
++
++&i2c1 {
++	u-boot,dm-spl;
++};
++
++&pinctrl_i2c1 {
++	u-boot,dm-spl;
++};
++
++&wdog1 {
++	u-boot,dm-spl;
++};
++
++&crypto {
++	u-boot,dm-spl;
++	status = "okay";
++};
++
++&sec_jr0 {
++	u-boot,dm-spl;
++};
++
++&sec_jr1 {
++	u-boot,dm-spl;
++	status = "okay";
++};
++
++&sec_jr2 {
++	u-boot,dm-spl;
++};
+diff --git a/arch/arm/dts/ucm-imx8m-mini-u-boot.dtsi b/arch/arm/dts/ucm-imx8m-mini-u-boot.dtsi
+new file mode 100644
+index 0000000000..7d3396b553
+--- /dev/null
++++ b/arch/arm/dts/ucm-imx8m-mini-u-boot.dtsi
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2019 NXP
++ */
++
++/ {
++	wdt-reboot {
++		compatible = "wdt-reboot";
++		wdt = <&wdog1>;
++		u-boot,dm-spl;
++	};
++
++	firmware {
++		optee {
++			compatible = "linaro,optee-tz";
++			method = "smc";
++		};
++	};
++};
++
++&{/soc@0} {
++	u-boot,dm-pre-reloc;
++	u-boot,dm-spl;
++};
++
++&clk {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++	/delete-property/ assigned-clock-rates;
++};
++
++&osc_24m {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++};
++
++&aips1 {
++	u-boot,dm-spl;
++	u-boot,dm-pre-reloc;
++};
++
++&aips2 {
++	u-boot,dm-spl;
++};
++
++&aips3 {
++	u-boot,dm-spl;
++};
++
++&iomuxc {
++	u-boot,dm-spl;
++};
++
++&gpio1 {
++	u-boot,dm-spl;
++};
++
++&gpio2 {
++	u-boot,dm-spl;
++};
++
++&gpio3 {
++	u-boot,dm-spl;
++};
++
++&gpio4 {
++	u-boot,dm-spl;
++};
++
++&gpio5 {
++	u-boot,dm-spl;
++};
++
++&i2c1 {
++	u-boot,dm-spl;
++};
++
++&pinctrl_i2c1 {
++	u-boot,dm-spl;
++};
++
++&wdog1 {
++	u-boot,dm-spl;
++};
++
++&crypto {
++	u-boot,dm-spl;
++	status = "okay";
++};
++
++&sec_jr0 {
++	u-boot,dm-spl;
++};
++
++&sec_jr1 {
++	u-boot,dm-spl;
++	status = "okay";
++};
++
++&sec_jr2 {
++	u-boot,dm-spl;
++};
+diff --git a/board/compulab/plat/imx8mm/spl/spl.c b/board/compulab/plat/imx8mm/spl/spl.c
+index 03783d1e8b..fff919d2eb 100644
+--- a/board/compulab/plat/imx8mm/spl/spl.c
++++ b/board/compulab/plat/imx8mm/spl/spl.c
+@@ -21,6 +21,7 @@
+ #include <asm/mach-imx/gpio.h>
+ #include <asm/mach-imx/mxc_i2c.h>
+ #include <fsl_esdhc_imx.h>
++#include <fsl_sec.h>
+ #include <mmc.h>
+ #include <usb.h>
+ #include "ddr/ddr.h"
+@@ -213,6 +214,11 @@ __weak int spl_board_private_init(void) {
+ 
+ void spl_board_init(void)
+ {
++#ifdef CONFIG_FSL_CAAM
++	if (sec_init()) {
++		printf("\nsec_init failed!\n");
++	}
++#endif
+ #ifndef CONFIG_SPL_USB_SDP_SUPPORT
+ 	/* Serial download mode */
+ 	if (is_usb_boot()) {
+diff --git a/configs/cl-imx8m-mini_defconfig b/configs/cl-imx8m-mini_defconfig
+index 6d735ec886..923356dd24 100644
+--- a/configs/cl-imx8m-mini_defconfig
++++ b/configs/cl-imx8m-mini_defconfig
+@@ -105,3 +105,24 @@ CONFIG_FAT_WRITE=y
+ CONFIG_OF_LIBFDT_OVERLAY=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
++# Extra for MP
++CONFIG_IMX_HAB=y
++CONFIG_FSL_BLOB=y
++CONFIG_FSL_MFGPROT=y
++CONFIG_IMX_CAAM_MFG_PROT=y
++CONFIG_IMX_SECO_MFG_PROT=n
++# Continue
++CONFIG_BOARD_LATE_INIT=y
++CONFIG_SPL_CRYPTO_SUPPORT=y
++CONFIG_CMD_EXT4_WRITE=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_FSL_BLOB=y
++CONFIG_MISC=y
++CONFIG_SUPPORT_EMMC_RPMB=y
++CONFIG_RSA=y
++CONFIG_RSA_VERIFY_WITH_PKEY=y
++CONFIG_X509_CERTIFICATE_PARSER=y
++CONFIG_PKCS7_MESSAGE_PARSER=y
++CONFIG_LZO=y
++CONFIG_BZIP2=y
++CONFIG_HEXDUMP=y
+-- 
+2.17.1
+

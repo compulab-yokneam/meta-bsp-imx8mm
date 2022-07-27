@@ -126,6 +126,7 @@ SRC_URI:append = " \
 	file://0126-iot-gate-imx8-release-2020.04-iot-gate-imx8-3.0.patch \
 	file://0127-iot-gate-imx8-dts-Make-usbotg1-work-in-peripheral-mo.patch \
 	file://0128-cpl-imx8m-mini-dts-Make-usbotg1-woark-as-peripheral-.patch \
+	file://0129-cpl-imx8m-mini-Enable-i.MX-manufacturing-protection.patch \
 "
  
 #	For U-Boot build outside of Yocto
