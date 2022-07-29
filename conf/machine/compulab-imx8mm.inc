@@ -1,4 +1,4 @@
-MACHINEOVERRIDES =. "imx-boot-container:mx8mm:"
+MACHINEOVERRIDES =. "imx-boot-container:mx8:mx8m:mx8mm:compulab-mx8mm:"
 
 require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8a/tune-cortexa53.inc
@@ -50,8 +50,10 @@ IMAGE_INSTALL:append = " \
 	kernel-devicetree \
 "
 
-PREFERRED_PROVIDER_virtual/kernel = "linux-compulab"
-PREFERRED_PROVIDER_virtual/bootloader = "u-boot-compulab"
+PREFERRED_PROVIDER_virtual/kernel:compulab-mx8mm = "linux-compulab"
+PREFERRED_PROVIDER_virtual/bootloader:compulab-mx8mm = "u-boot-compulab"
+PREFERRED_PROVIDER_linux-imx-mfgtool:compulab-mx8mm = "linux-compulab-mfgtool"
+PREFERRED_PROVIDER_linux-compulab-mfgtool:compulab-mx8mm = "linux-compulab-mfgtool"
 
 PREFERRED_RROVIDER_u-boot-fw-utils = "libubootenv-bin"
 
