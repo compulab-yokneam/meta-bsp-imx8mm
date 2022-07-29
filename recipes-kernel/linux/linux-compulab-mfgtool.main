@@ -1,0 +1,9 @@
+SUMMARY = "Produces a Manufacturing Tool compatible Linux Kernel"
+DESCRIPTION = "Linux Kernel provided and supported by NXP that produces a \
+Manufacturing Tool compatible Linux Kernel to be used in updater environment"
+
+require linux-compulab_${PV}.bb
+
+PROVIDES += "linux-mfgtool"
+
+KERNEL_PACKAGE_NAME = "mfgtool"
