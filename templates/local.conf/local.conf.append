@@ -1,11 +1,18 @@
 LICENSE_FLAGS_WHITELIST = "commercial"
 CORE_IMAGE_EXTRA_INSTALL += " cl-uboot cl-deploy cl-stest cl-camera cl-audio "
-CORE_IMAGE_EXTRA_INSTALL += " u-boot-fw-utils "
+CORE_IMAGE_EXTRA_INSTALL += " libubootenv-bin u-boot-compulab-env "
 CORE_IMAGE_EXTRA_INSTALL += " memtester htop iotop tmux iperf3 "
 CORE_IMAGE_EXTRA_INSTALL += " wvdial "
 
-CORE_IMAGE_EXTRA_INSTALL += " u-boot-update-script "
-IMAGE_BOOT_FILES:append = " boot.update.scr "
+# optional
+# CORE_IMAGE_EXTRA_INSTALL += " u-boot-update-script "
+# IMAGE_BOOT_FILES:append = " boot.update.scr "
+
+# i.MX Manufacturing Protection
+CORE_IMAGE_EXTRA_INSTALL += " optee-client optee-os optee-test "
+CORE_IMAGE_EXTRA_INSTALL += " keyctl-caam mp-verification-tool "
+
+# i.MX Encrypted Storage Using CAAM Secure Keys
+CORE_IMAGE_EXTRA_INSTALL += "coreutils keyutils lvm2 e2fsprogs-mke2fs util-linux"
 
 HOSTTOOLS += " git-lfs"
-PREFERRED_RPROVIDER_u-boot-fw-utils = "u-boot-fw-utils"
