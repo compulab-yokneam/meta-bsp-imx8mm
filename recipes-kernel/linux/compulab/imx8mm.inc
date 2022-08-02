@@ -85,5 +85,6 @@ SRC_URI:append = " \
 	file://0084-iot-gate-imx8-release-3.1.patch \
 	file://0085-iot-gate-imx8-config-Update-for-i.MX-Encrypted-Stora.patch \
 	file://0086-imx8mm-dts-Add-sb-iotgimx8-nobt.dts.patch \
+	file://0087-ucm-imx8m-mini-dts-Add-ucm-imx8m-mini-nobt.dts.patch \
 	file://defconfig \
 "
