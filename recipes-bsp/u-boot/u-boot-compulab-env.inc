@@ -8,4 +8,4 @@ do_install:append () {
 }
 
 FILES:${PN}-env += "/etc/* ${INSTALL_DIR}/*"
-RDEPENDS:${PN}-env += "bash libubootenv"
+RDEPENDS:${PN}-env += "bash"
