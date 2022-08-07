@@ -1,4 +1,4 @@
-# Kirkstone
+# Disclaimer
 
-| NOTE | This is a helper layer for [compulab-fslc-bsp](https://github.com/compulab-yokneam/compulab-fslc-bsp)|
+| !IMPORTANT! | This is a development branch, that is not relelased by CompuLab officially yet|
 |---|---|
