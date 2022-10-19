@@ -1,0 +1,57 @@
+From 608da26675dff4847861cacce6e6667e9d001655 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 29 Aug 2022 18:22:23 +0300
+Subject: [PATCH 1/1] attestation: test: Avoid asserts
+
+Avoid asserts, return an error instead.
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ core/pta/attestation.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/core/pta/attestation.c b/core/pta/attestation.c
+index 6395d0d9b..0813b7a0c 100644
+--- a/core/pta/attestation.c
++++ b/core/pta/attestation.c
+@@ -115,11 +115,15 @@ static TEE_Result serialize_key(uint8_t *buf, size_t size)
+ 	size_t n_sz = 0;
+ 	size_t sz = 0;
+ 
++	if (!key)
++		return res;
++
+ 	assert(key);
+ 
+ 	e_sz = crypto_bignum_num_bytes(key->e);
+ 	d_sz = crypto_bignum_num_bytes(key->d);
+ 	n_sz = crypto_bignum_num_bytes(key->n);
++
+ 	if (e_sz > UINT16_MAX || d_sz > UINT16_MAX || n_sz > UINT16_MAX)
+ 		goto err;
+ 
+@@ -141,6 +145,10 @@ static TEE_Result serialize_key(uint8_t *buf, size_t size)
+ 	if (!sz)
+ 		goto err;
+ 	needed_sz -= sz;
++
++	if (needed_sz)
++		goto err;
++
+ 	assert(!needed_sz);
+ 
+ 	return TEE_SUCCESS;
+@@ -196,6 +204,10 @@ static TEE_Result deserialize_key(uint8_t *buf, size_t buf_sz)
+ 	if (!sz)
+ 		goto out;
+ 	buf_sz -= sz;
++
++	if (buf_sz)
++		goto out;
++
+ 	assert(!buf_sz);
+ out:
+ 	return res;
+-- 
+2.17.1
+
