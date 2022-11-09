@@ -57,7 +57,7 @@ PREFERRED_PROVIDER_linux-compulab-mfgtool:compulab-mx8mm = "linux-compulab-mfgto
 
 PREFERRED_RROVIDER_u-boot-fw-utils = "libubootenv-bin"
 
-MACHINE_FIRMWARE:append = " firmware-cypress linux-firmware-ax200"
+MACHINE_FIRMWARE:append = " firmware-cypress linux-firmware-ax200 linux-firmware-ax210 "
 MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
 
 OPTEE_PLATFORM_FLAVOR = "mx8mm_cl_iot_gate"
