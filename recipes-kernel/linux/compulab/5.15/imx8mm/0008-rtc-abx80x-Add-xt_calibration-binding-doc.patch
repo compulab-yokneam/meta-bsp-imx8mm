@@ -1,0 +1,34 @@
+From 6a6e2d25bca7718a21dbfa287091efdc9ee89402 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 27 Sep 2020 15:33:37 +0300
+Subject: [PATCH] rtc:abx80x: Add xt_calibration binding doc
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ .../devicetree/bindings/rtc/abracon,abx80x.txt      | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt b/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt
+index 60a7a3ab3856..0c38386dcbb9 100644
+--- a/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt
++++ b/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt
+@@ -42,3 +42,16 @@ this property to enable the output:
+ 	"1_year", "1_Hz_to_Counters", "1/32_Hz_from_Acal", "1/8_Hz_from_Acal"
+ 
+ Note that some frequencies produce no output in RC oscillator mode.
++
++All the listed RTCs support XT calibration that allows to improve the RTC
++accuracy. To perform the calibration follow the instruction:
++
++	Write the nominal frequency (in milliHerz) 32768000 to
++		/sys/class/rtc/your_rtc/xt_frequency
++		to ensure the calibration is not occurring.
++	Select the XT oscillator by writing
++		xtal to /sys/class/rtc/your_rtc/oscillator.
++	Configure a square wave SQW output on the output pin by writing
++		32768_Hz to /sys/class/rtc/your_rtc/sqw.
++	Measure the square wave frequency at the output pin in milliHz.
++	Assign the measured value to the property xt_frequency.
+-- 
+2.17.1
+
