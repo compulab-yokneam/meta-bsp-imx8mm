@@ -1,0 +1,40 @@
+From 79a7147c5fc2303a18e9bd26b386b339ecb85461 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 21 Nov 2022 16:33:49 +0200
+Subject: [PATCH 85/85] dts: Fix usb power supply reset
+
+USB power supply reset, performed by GPIO4 IO28 causes a noticeable
+glitch on USB power lead. The property regulator-boot-on allows to avoid
+the execcive reset.
+Also, the GPIO is renamed along with the fake regulator.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8.dts | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
+index c514602cc02a..3e428fab3aa3 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
+@@ -18,14 +18,15 @@
+ 	model = "CompuLab SB-IOTGIMX8 board";
+ 	compatible = "sb-iotgimx8", "cpl,ucm-imx8m-mini", "fsl,imx8mm";
+ 
+-	regulator-usbhub-ena {
++	regulator-usb-ports-pwron {
+ 		compatible = "regulator-fixed";
+-		regulator-name = "usbhub_ena";
++		regulator-name = "usb_ports_pwron";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+ 		gpio = <&gpio4 28 GPIO_ACTIVE_HIGH>;
+ 		regulator-always-on;
+ 		enable-active-high;
++		regulator-boot-on;
+ 	};
+ 
+ 	regulator-usbhub-rst {
+-- 
+2.17.1
+

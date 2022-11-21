@@ -83,5 +83,6 @@ SRC_URI_append = " \
 	file://0082-iot-gate-imx8-dts-M4-support-update.patch \
 	file://0083-iot-gate-imx8-M4-support-update.patch \
 	file://0084-iot-gate-imx8-release-3.1.patch \
+	file://0085-dts-Fix-usb-power-supply-reset.patch \
 	file://defconfig \
 "
