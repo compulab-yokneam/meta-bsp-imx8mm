@@ -1,0 +1,38 @@
+From 819029bee0e443e6d240f531ccd2002707374131 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 23 Nov 2022 00:01:33 +0200
+Subject: [PATCH 1/1] flcs: Attestation test avoid asserts
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ core/pta/attestation.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/core/pta/attestation.c b/core/pta/attestation.c
+index 4a3f70f58..61105ec1f 100644
+--- a/core/pta/attestation.c
++++ b/core/pta/attestation.c
+@@ -115,6 +115,9 @@ static TEE_Result serialize_key(uint8_t *buf, size_t size)
+ 	size_t n_sz = 0;
+ 	size_t sz = 0;
+ 
++	if (!key)
++		return res;
++
+ 	assert(key);
+ 
+ 	e_sz = crypto_bignum_num_bytes(key->e);
+@@ -141,6 +144,10 @@ static TEE_Result serialize_key(uint8_t *buf, size_t size)
+ 	if (!sz)
+ 		goto err;
+ 	needed_sz -= sz;
++
++	if (needed_sz)
++		goto err;
++
+ 	assert(!needed_sz);
+ 
+ 	return TEE_SUCCESS;
+-- 
+2.17.1
+
