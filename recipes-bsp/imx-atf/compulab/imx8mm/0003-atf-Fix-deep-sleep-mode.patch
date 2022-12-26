@@ -1,0 +1,38 @@
+From b35f833b561779f6dcc06f61c59587f8525b9cff Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 26 Dec 2022 22:53:59 +0200
+Subject: [PATCH 3/3] atf: Fix deep sleep mode
+
+The base address and the serial port were incorrect, that cause ATF crashes on
+waking up after deep sleep (mem).
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ plat/imx/imx8mm/include/platform_def.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/plat/imx/imx8mm/include/platform_def.h b/plat/imx/imx8mm/include/platform_def.h
+index 04a4f6f8..7551035c 100644
+--- a/plat/imx/imx8mm/include/platform_def.h
++++ b/plat/imx/imx8mm/include/platform_def.h
+@@ -38,7 +38,7 @@
+ #define BL32_SIZE			0x02000000
+ #define BL32_LIMIT			0xC0000000
+ #endif
+-#define BL32_BASE			0xbe000000
++#define BL32_BASE			0x7e000000
+ 
+ /* non-secure uboot base */
+ #define PLAT_NS_IMAGE_OFFSET		0x40200000
+@@ -57,7 +57,7 @@
+ 
+ #define HAB_RVT_BASE			0x00000900 /* HAB_RVT for i.MX8MM */
+ 
+-#define IMX_BOOT_UART_BASE		0x30890000
++#define IMX_BOOT_UART_BASE		0x30880000
+ #define IMX_BOOT_UART_CLK_IN_HZ		24000000 /* Select 24Mhz OSC */
+ 
+ #define PLAT_CRASH_UART_BASE		IMX_BOOT_UART_BASE
+-- 
+2.11.0
+
