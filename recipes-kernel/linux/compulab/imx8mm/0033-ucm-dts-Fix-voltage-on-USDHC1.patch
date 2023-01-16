@@ -1,7 +1,7 @@
-From a8d1fe049cd29ae8c8efbba839ad19020c1e3563 Mon Sep 17 00:00:00 2001
+From 24adc767f43566d48078254afcfa77bf8c465570 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 24 Apr 2021 20:36:16 +0300
-Subject: [PATCH 33/35] ucm:dts: Fix voltage on USDHC1
+Subject: [PATCH 33/82] ucm:dts: Fix voltage on USDHC1
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -21,5 +21,5 @@ index c4cd87804700..aff5d206dc70 100644
  	wifi-host;
  	pm-ignore-notify;
 -- 
-2.11.0
+2.17.1
 

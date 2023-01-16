@@ -1,14 +1,14 @@
-From 9b2c747c1af2ef03aff5d5619109129bb28f4565 Mon Sep 17 00:00:00 2001
+From 5d4395943ca9a88461fb490ea7514f1943f6b9a0 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 19 Mar 2021 22:36:14 +0200
-Subject: [PATCH 10/35] ucm-imx8m-mini:defconf+dt:Migrate to kernel 5.4.24
+Subject: [PATCH 10/82] ucm-imx8m-mini:defconf+dt:Migrate to kernel 5.4.24
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi | 151 +++-
- arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts    | 592 +--------------
- arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi   | 842 +++++++++++++++++++++
- arch/arm64/configs/ucm-imx8m-mini_defconfig        | 556 +++++---------
+ .../boot/dts/compulab/sb-ucm-imx8-rev2.dtsi   | 151 +++-
+ .../boot/dts/compulab/ucm-imx8m-mini.dts      | 592 +-----------
+ .../boot/dts/compulab/ucm-imx8m-mini.dtsi     | 842 ++++++++++++++++++
+ arch/arm64/configs/ucm-imx8m-mini_defconfig   | 556 ++++--------
  4 files changed, 1164 insertions(+), 977 deletions(-)
  create mode 100644 arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
 
@@ -1635,7 +1635,7 @@ index 000000000000..fce8cbeaada9
 +	temperature = <115000>;
 +};
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index 4ac6f9cf91ec..b2cf1065805b 100644
+index 4ac6f9cf91ec..e753a9b2fc93 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -27,42 +27,9 @@ CONFIG_USER_NS=y
@@ -2696,5 +2696,5 @@ index 4ac6f9cf91ec..b2cf1065805b 100644
 +CONFIG_CORESIGHT_LINK_AND_SINK_TMC=y
 +CONFIG_CORESIGHT_SOURCE_ETM4X=y
 -- 
-2.11.0
+2.17.1
 

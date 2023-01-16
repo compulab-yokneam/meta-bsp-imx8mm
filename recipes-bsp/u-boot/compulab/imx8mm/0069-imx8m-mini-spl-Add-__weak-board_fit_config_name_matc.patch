@@ -1,0 +1,30 @@
+From 0db9464775f4664c48b8428cdbd3cd70c87dea2c Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 5 Aug 2020 00:20:44 +0300
+Subject: [PATCH 069/126] imx8m-mini: spl: Add __weak
+ board_fit_config_name_match()
+
+Add __weak board_fit_config_name_match().
+Each board can redefind this function in its spl.c file.
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/spl/spl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/board/compulab/plat/imx8mm/spl/spl.c b/board/compulab/plat/imx8mm/spl/spl.c
+index ad1be9befd..63af88caa5 100644
+--- a/board/compulab/plat/imx8mm/spl/spl.c
++++ b/board/compulab/plat/imx8mm/spl/spl.c
+@@ -212,7 +212,7 @@ void spl_board_init(void)
+ }
+ 
+ #ifdef CONFIG_SPL_LOAD_FIT
+-int board_fit_config_name_match(const char *name)
++__weak int board_fit_config_name_match(const char *name)
+ {
+ 	/* Just empty function now - can't decide what to choose */
+ 	debug("%s: %s\n", __func__, name);
+-- 
+2.11.0
+

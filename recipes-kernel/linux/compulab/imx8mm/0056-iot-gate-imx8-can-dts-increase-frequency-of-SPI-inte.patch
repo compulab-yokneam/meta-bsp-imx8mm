@@ -1,0 +1,62 @@
+From 6d01c206b2647301fb19be36e2f71d53b3132388 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 3 Dec 2020 17:12:08 +0200
+Subject: [PATCH 56/82] iot-gate-imx8: can: dts: increase frequency of SPI
+ interface
+
+The updated CAN bus driver mcp25xxfd, requires an SPI frequency of 2MHz.
+Update SPI interface frequency of the MCP2518FD unit.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8-can.dts | 4 ++--
+ arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8-can.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8-can.dts
+index 85a4bf2f97f1..43a363f73eaa 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8-can.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8-can.dts
+@@ -80,7 +80,7 @@
+ 		pinctrl-0 = <&pinctrl_can0>;
+ 		interrupt-parent = <&gpio5>;
+ 		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
+-		spi-max-frequency = <10000000>;
++		spi-max-frequency = <20000000>;
+ 		clocks = <&clk40m>;
+ 	};
+ };
+@@ -101,7 +101,7 @@
+ 		pinctrl-0 = <&pinctrl_can1>;
+ 		interrupt-parent = <&gpio5>;
+ 		interrupts = <28 IRQ_TYPE_LEVEL_LOW>;
+-		spi-max-frequency = <10000000>;
++		spi-max-frequency = <20000000>;
+ 		clocks = <&clk40m>;
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
+index 0e775f82c40e..23c267e5f4a9 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
+@@ -96,7 +96,7 @@
+ 		pinctrl-0 = <&pinctrl_can0>;
+ 		interrupt-parent = <&gpio5>;
+ 		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
+-		spi-max-frequency = <10000000>;
++		spi-max-frequency = <20000000>;
+ 		clocks = <&clk40m>;
+ 	};
+ };
+@@ -116,7 +116,7 @@
+ 		pinctrl-0 = <&pinctrl_can1>;
+ 		interrupt-parent = <&gpio5>;
+ 		interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
+-		spi-max-frequency = <10000000>;
++		spi-max-frequency = <20000000>;
+ 		clocks = <&clk40m>;
+ 	};
+ };
+-- 
+2.17.1
+

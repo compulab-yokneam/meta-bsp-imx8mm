@@ -1,16 +1,16 @@
-From c4e09d71adf13ae781ed295c0667b5ce0a3a2b60 Mon Sep 17 00:00:00 2001
+From 42ee0d104b1ecc275269d401cfaad103863cc1e9 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 19 Sep 2017 10:47:25 +0300
-Subject: [PATCH 07/91] compulab: eeprom: layout: add read serial function
+Subject: [PATCH 007/126] compulab: eeprom: layout: add read serial function
 
 The function conver the CompuLab serial number format to tag_serialnr
 structure.
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---
- board/compulab/common/eeprom.c | 67 ++++++++++++++++++++++++++--------
- common/eeprom/eeprom_field.c   | 21 +++++++++++
- include/eeprom_field.h         |  2 +
+ board/compulab/common/eeprom.c | 67 ++++++++++++++++++++++++++++++++----------
+ common/eeprom/eeprom_field.c   | 21 +++++++++++++
+ include/eeprom_field.h         |  2 ++
  3 files changed, 75 insertions(+), 15 deletions(-)
 
 diff --git a/board/compulab/common/eeprom.c b/board/compulab/common/eeprom.c
@@ -191,11 +191,10 @@ diff --git a/common/eeprom/eeprom_field.c b/common/eeprom/eeprom_field.c
 index e588b0943f..814dc4eb7a 100644
 --- a/common/eeprom/eeprom_field.c
 +++ b/common/eeprom/eeprom_field.c
-@@ -203,6 +203,27 @@ int eeprom_field_update_bin_rev(struct eeprom_field *field, uchar *fbuf,
- 	return __eeprom_field_update_bin(field, fbuf, value, true);
+@@ -204,6 +204,27 @@ int eeprom_field_update_bin_rev(struct eeprom_field *field, uchar *fbuf,
  }
  
-+/**
+ /**
 + * eeprom_field_read_rev() - Read reversed binary data
 + *
 + * @field:     an initialized field
@@ -216,9 +215,10 @@ index e588b0943f..814dc4eb7a 100644
 +	return 0;
 +}
 +
- /**
++/**
   * eeprom_field_print_mac_addr() - print a field which contains a mac address
   *
+  * Treat the field data as simple binary data, and print it formatted as a MAC
 diff --git a/include/eeprom_field.h b/include/eeprom_field.h
 index 6b6cd37229..311c49401a 100644
 --- a/include/eeprom_field.h
@@ -233,5 +233,5 @@ index 6b6cd37229..311c49401a 100644
  void eeprom_field_print_mac(const struct eeprom_field *field, uchar *fbuf);
  int eeprom_field_update_mac(struct eeprom_field *field, uchar *fbuf,
 -- 
-2.17.1
+2.11.0
 

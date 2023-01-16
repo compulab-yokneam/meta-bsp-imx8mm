@@ -1,7 +1,7 @@
-From 85865cbe8c8e882fe4ac61fa75a27d1a506dc4cb Mon Sep 17 00:00:00 2001
+From 848f28fa2bc96d1a7f47259e888bd0c8d1871362 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 7 Nov 2021 23:44:43 +0200
-Subject: [PATCH 48/48] dts:ucm-imx8m-mini: Add _thermal_ dts
+Subject: [PATCH 48/82] dts:ucm-imx8m-mini: Add _thermal_ dts
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

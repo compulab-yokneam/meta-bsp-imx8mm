@@ -1,11 +1,11 @@
-From 9764e29af99c6a29fa1c2223a7acc00af5539b32 Mon Sep 17 00:00:00 2001
+From f701da425b0ca366ee9df4140bb370b61fd2510e Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 22 Apr 2021 00:08:07 +0300
-Subject: [PATCH 29/35] ucm-imx8m-mini: dts: Enable brcm,bcm4330-bt
+Subject: [PATCH 29/82] ucm-imx8m-mini: dts: Enable brcm,bcm4330-bt
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 40 +++++++++++++++++++++---
+ .../boot/dts/compulab/ucm-imx8m-mini.dtsi     | 40 +++++++++++++++++--
  1 file changed, 36 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
@@ -88,5 +88,5 @@ index 2f87103dd9c7..70d6a90d981f 100644
  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
  	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
 -- 
-2.11.0
+2.17.1
 

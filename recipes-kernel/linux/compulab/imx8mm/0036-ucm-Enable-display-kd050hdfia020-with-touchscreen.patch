@@ -1,17 +1,16 @@
-From dd8a9786b6ac443c000c50d359660bd26a9a554b Mon Sep 17 00:00:00 2001
+From 9a2a33c48fdaa2b6974cb8da856e492bf2695d90 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-Date: Sat, 14 Aug 2021 00:07:15 +0300
-Subject: [PATCH 36/36] ucm: Enable display kd050hdfia020 with touchscreen
+Date: Sun, 15 Jan 2023 22:45:09 +0200
+Subject: [PATCH 36/82] ucm: Enable display kd050hdfia020 with touchscreen
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
  .../boot/dts/compulab/sb-ucm-imx8-rev2.dtsi   |  26 +
  .../boot/dts/compulab/ucm-imx8m-mini.dtsi     |  37 +
- arch/arm64/configs/ucm-imx8m-mini_defconfig   |   1 -
  drivers/gpu/drm/panel/Kconfig                 |   9 +
  drivers/gpu/drm/panel/Makefile                |   1 +
  .../gpu/drm/panel/panel-startek-ili9881c.c    | 648 ++++++++++++++++++
- 6 files changed, 721 insertions(+), 1 deletion(-)
+ 5 files changed, 721 insertions(+)
  create mode 100644 drivers/gpu/drm/panel/panel-startek-ili9881c.c
 
 diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
@@ -113,12 +112,12 @@ index aff5d206dc70..a596f87bbefb 100644
  	temperature = <105000>;
  };
 diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 436013189166..9da160ba8556 100644
+index 5663037fff13..b082603edda6 100644
 --- a/drivers/gpu/drm/panel/Kconfig
 +++ b/drivers/gpu/drm/panel/Kconfig
-@@ -114,6 +114,15 @@ config DRM_PANEL_ILITEK_ILI9881C
- 	  Say Y if you want to enable support for panels based on the
- 	  Ilitek ILI9881c controller.
+@@ -157,6 +157,15 @@ config DRM_PANEL_INNOLUX_EJ030NA
+           320x480 3.0" panel as found in the RS97 V2.1, RG300(non-ips)
+           and LDK handheld gaming consoles.
  
 +config DRM_PANEL_STARTEK_ILI9881C
 +	tristate "Startek ILI9881C-based panels"
@@ -133,17 +132,17 @@ index 436013189166..9da160ba8556 100644
  	tristate "Innolux P079ZCA panel"
  	depends on OF
 diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index 3be941e15fd5..4e240cf670ff 100644
+index 5315883da4b5..575a033bc4f2 100644
 --- a/drivers/gpu/drm/panel/Makefile
 +++ b/drivers/gpu/drm/panel/Makefile
-@@ -47,6 +47,7 @@ obj-$(CONFIG_DRM_PANEL_SITRONIX_ST7703) += panel-sitronix-st7703.o
+@@ -57,6 +57,7 @@ obj-$(CONFIG_DRM_PANEL_SITRONIX_ST7703) += panel-sitronix-st7703.o
  obj-$(CONFIG_DRM_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
  obj-$(CONFIG_DRM_PANEL_SONY_ACX424AKP) += panel-sony-acx424akp.o
  obj-$(CONFIG_DRM_PANEL_SONY_ACX565AKM) += panel-sony-acx565akm.o
 +obj-$(CONFIG_DRM_PANEL_STARTEK_ILI9881C) += panel-startek-ili9881c.o
+ obj-$(CONFIG_DRM_PANEL_TDO_TL070WSH30) += panel-tdo-tl070wsh30.o
  obj-$(CONFIG_DRM_PANEL_TPO_TD028TTEC1) += panel-tpo-td028ttec1.o
  obj-$(CONFIG_DRM_PANEL_TPO_TD043MTEA1) += panel-tpo-td043mtea1.o
- obj-$(CONFIG_DRM_PANEL_TPO_TPG110) += panel-tpo-tpg110.o
 diff --git a/drivers/gpu/drm/panel/panel-startek-ili9881c.c b/drivers/gpu/drm/panel/panel-startek-ili9881c.c
 new file mode 100644
 index 000000000000..f832d055be4e

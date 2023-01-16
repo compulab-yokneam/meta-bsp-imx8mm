@@ -1,0 +1,27 @@
+From 243127656dab1102cc91f4069fc07f30bbaba8b0 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 8 Jun 2021 10:48:13 +0300
+Subject: [PATCH 71/82] iot-gate-imx8: can: enable Broadcast Manager CAN
+ Protocol
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 6f9c42238ac7..dff8d5df2317 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -207,7 +207,7 @@ CONFIG_TSN=y
+ CONFIG_NET_SWITCHDEV=y
+ CONFIG_BPF_JIT=y
+ CONFIG_CAN=y
+-# CONFIG_CAN_BCM is not set
++CONFIG_CAN_BCM=m
+ # CONFIG_CAN_GW is not set
+ CONFIG_CAN_MCP251XFD=m
+ CONFIG_BT=y
+-- 
+2.17.1
+

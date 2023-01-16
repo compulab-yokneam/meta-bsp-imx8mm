@@ -1,7 +1,7 @@
-From a31a3902562fcc8b38183bd6ccd25cd9d333e0fb Mon Sep 17 00:00:00 2001
+From bf2f4b36ada27bf72a642f2e55ac39d5cfd9edaa Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 17 Apr 2020 20:38:46 +0300
-Subject: [PATCH 31/91] Enable env import/export commands
+Subject: [PATCH 031/126] Enable env import/export commands
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -22,5 +22,5 @@ index 2400afe7ab..dfd7d9980f 100644
  
  #undef CONFIG_CMD_CRC32
 -- 
-2.17.1
+2.11.0
 

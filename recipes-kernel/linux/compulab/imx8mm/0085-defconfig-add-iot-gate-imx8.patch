@@ -1,0 +1,18 @@
+From 0f3eab84c754f1e70085ec3c771406b29b7d83c7 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 8 Feb 2023 21:57:48 +0200
+Subject: [PATCH 85/85] defconfig: add iot-gate-imx8
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ .../configs/{iot-gate-imx8_defconfig => iot-gate-imx8.config}     | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename arch/arm64/configs/{iot-gate-imx8_defconfig => iot-gate-imx8.config} (100%)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8.config
+similarity index 100%
+rename from arch/arm64/configs/iot-gate-imx8_defconfig
+rename to arch/arm64/configs/iot-gate-imx8.config
+-- 
+2.17.1
+

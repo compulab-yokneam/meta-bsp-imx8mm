@@ -1,0 +1,59 @@
+From 6af40f74ed179d5e10181b69c515b02baf304d06 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 1 Feb 2022 17:45:23 +0200
+Subject: [PATCH 124/126] Enable SoC info export via fdt
+
+Store the SOC type and revision in the following device tree nodes:
+soc.info/imx.type
+soc.info/imx.rev
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/iot-gate-imx8/iot-gate-imx8.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/board/compulab/iot-gate-imx8/iot-gate-imx8.c b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+index ea183f4b09..95924884c5 100644
+--- a/board/compulab/iot-gate-imx8/iot-gate-imx8.c
++++ b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+@@ -420,6 +420,29 @@ static void iot_gate_imx8_update_uart1_node(void *blob)
+ }
+ 
+ /*
++ * iot_gate_imx8_fdt_set_soc_info() - store SOC information in the device tree
++ *
++ * @blob: ptr to device tree
++ */
++static int iot_gate_imx8_fdt_set_soc_info(void *blob)
++{
++	char tmp[128];
++	u32 cpurev = get_cpu_rev();
++
++	int nodeoff = fdt_add_subnode(blob, 0, "soc.info");
++	if(0 > nodeoff)
++		return nodeoff;
++
++	fdt_setprop(blob, nodeoff, "imx.type", tmp,
++		    sprintf(tmp, "i.MX%s", get_imx_type
++		    ((cpurev & 0x1FF000) >> 12)));
++	fdt_setprop(blob, nodeoff, "imx.rev", tmp,
++		    sprintf(tmp, "%d.%d", (cpurev & 0x000F0) >>4, cpurev & 0x0000F));
++
++	return 0;
++}
++
++/*
+  * sub_ft_board_setup() - IOT-GATE-iMX8 implementation of ft_board_setup
+  *
+  * @blob: ptr to device tree
+@@ -429,6 +452,7 @@ int sub_ft_board_setup(void *blob, struct bd_info *bd)
+ {
+ 	int ret=0;
+ 
++	iot_gate_imx8_fdt_set_soc_info(blob);
+ 	iot_gate_imx8_update_uart1_node(blob);/* Update	dtb node uart1 */
+ 	/* Update device tree of the extended board IED-BASE */
+ 	ret = iot_gate_imx8_update_ext_ied(blob);
+-- 
+2.11.0
+

@@ -1,20 +1,20 @@
-From 8e4f334ab1c365dc0ba1d0ef8d0b31ac6caed9ad Mon Sep 17 00:00:00 2001
+From ab1153a5f4319338446cbdbea8398dd5ff387706 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 19 Jul 2021 01:01:11 +0300
-Subject: [PATCH 40/91] mcm-imx8m-mini: Add basic support
+Subject: [PATCH 040/126] mcm-imx8m-mini: Add basic support
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm/dts/Makefile                         |   1 +
- arch/arm/dts/mcm-imx8m-mini.dts               | 476 ++++++++++++++++++
- arch/arm/mach-imx/imx8m/Kconfig               |   7 +
- board/compulab/mcm-imx8m-mini/Kconfig         |  17 +
- board/compulab/mcm-imx8m-mini/Makefile        |  14 +
- .../compulab/mcm-imx8m-mini/mcm-imx8m-mini.c  | 352 +++++++++++++
- .../compulab/mcm-imx8m-mini/mcm-imx8m-mini.h  |  19 +
- board/compulab/mcm-imx8m-mini/spl.c           | 265 ++++++++++
- configs/mcm-imx8m-mini_defconfig              |  67 +++
- include/configs/mcm-imx8m-mini.h              | 308 ++++++++++++
+ arch/arm/dts/Makefile                          |   1 +
+ arch/arm/dts/mcm-imx8m-mini.dts                | 476 +++++++++++++++++++++++++
+ arch/arm/mach-imx/imx8m/Kconfig                |   7 +
+ board/compulab/mcm-imx8m-mini/Kconfig          |  17 +
+ board/compulab/mcm-imx8m-mini/Makefile         |  14 +
+ board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c | 352 ++++++++++++++++++
+ board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.h |  19 +
+ board/compulab/mcm-imx8m-mini/spl.c            | 265 ++++++++++++++
+ configs/mcm-imx8m-mini_defconfig               |  67 ++++
+ include/configs/mcm-imx8m-mini.h               | 308 ++++++++++++++++
  10 files changed, 1526 insertions(+)
  create mode 100644 arch/arm/dts/mcm-imx8m-mini.dts
  create mode 100644 board/compulab/mcm-imx8m-mini/Kconfig
@@ -26,11 +26,11 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  create mode 100644 include/configs/mcm-imx8m-mini.h
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 6238d142af..5dacac3b5a 100644
+index 9781d3451c..c6b54163d0 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -881,6 +881,7 @@ dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb \
- 	imxrt1020-evk.dtb
+@@ -889,6 +889,7 @@ dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb \
+ dtb-$(CONFIG_ARCH_IMX8ULP) += imx8ulp-evk.dtb imx8ulp-evk-i3c.dtb
  
  dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
 +dtb-$(CONFIG_TARGET_MCM_IMX8M_MINI) += mcm-imx8m-mini.dtb
@@ -520,10 +520,10 @@ index 0000000000..2c3723a42c
 +	temperature = <115000>;
 +};
 diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
-index d4c41ba1aa..13e93cf0f1 100644
+index 4930b9bee6..a38ec31d25 100644
 --- a/arch/arm/mach-imx/imx8m/Kconfig
 +++ b/arch/arm/mach-imx/imx8m/Kconfig
-@@ -208,6 +208,12 @@ config TARGET_UCM_IMX8M_MINI
+@@ -266,6 +266,12 @@ config TARGET_UCM_IMX8M_MINI
  	select SUPPORT_SPL
  	select IMX8M_LPDDR4
  
@@ -536,7 +536,7 @@ index d4c41ba1aa..13e93cf0f1 100644
  endchoice
  
  source "board/freescale/imx8mq_evk/Kconfig"
-@@ -225,5 +231,6 @@ source "board/beacon/imx8mn/Kconfig"
+@@ -284,5 +290,6 @@ source "board/beacon/imx8mn/Kconfig"
  source "board/phytec/phycore_imx8mm/Kconfig"
  source "board/phytec/phycore_imx8mp/Kconfig"
  source "board/compulab/ucm-imx8m-mini/Kconfig"
@@ -1628,5 +1628,5 @@ index 0000000000..f5ab2f101b
 +#endif
 +#endif
 -- 
-2.17.1
+2.11.0
 

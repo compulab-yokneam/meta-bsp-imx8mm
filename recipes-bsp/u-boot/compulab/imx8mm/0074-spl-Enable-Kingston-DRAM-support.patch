@@ -1,0 +1,121 @@
+From 2daab9bfa0085f0b3ed0587128327b14b03fa302 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 18 Aug 2020 19:10:19 +0300
+Subject: [PATCH 074/126] spl: Enable Kingston DRAM support
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/plat/imx8/eeprom/eeprom_spl.c | 21 +++++++++++++++++++++
+ board/compulab/plat/imx8mm/ddr/ddr.c         | 27 ++++++++++++++++++++-------
+ 2 files changed, 41 insertions(+), 7 deletions(-)
+
+diff --git a/board/compulab/plat/imx8/eeprom/eeprom_spl.c b/board/compulab/plat/imx8/eeprom/eeprom_spl.c
+index 79b2e29c63..b3c894a9af 100644
+--- a/board/compulab/plat/imx8/eeprom/eeprom_spl.c
++++ b/board/compulab/plat/imx8/eeprom/eeprom_spl.c
+@@ -79,6 +79,10 @@ static int cl_eeprom_write(uint offset, uchar *buf, int len)
+ #define BOARD_DDRINFO_SIZE 4
+ static u32 board_ddrinfo = 0xdeadbeef;
+ 
++#define BOARD_DDRSUBIND_OFFSET 0x44
++#define BOARD_DDRSUBIND_SIZE 1
++static u8 board_ddrsubind = 0xff;
++
+ #define BOARD_DRATE_OFFSET 0x50
+ #define BOARD_DRATE_SIZE 4
+ static u32 board_drate = 0xdeadbeef;
+@@ -129,6 +133,23 @@ u32 cl_eeprom_set_drate(u32 drate, unsigned int r, unsigned int c)
+ 	return board_drate;
+ };
+ 
++u8 cl_eeprom_get_subind(void)
++{
++	if (cl_eeprom_read(BOARD_DDRSUBIND_OFFSET, (uchar *)&board_ddrsubind, BOARD_DDRSUBIND_SIZE))
++		return 0xff;
++
++	return board_ddrsubind;
++};
++
++u8 cl_eeprom_set_subind(u8 ddrsubind)
++{
++	if (cl_eeprom_write(BOARD_DDRSUBIND_OFFSET, (uchar *)&ddrsubind, BOARD_DDRSUBIND_SIZE))
++		return 0xff;
++	board_ddrsubind = ddrsubind;
++
++	return board_ddrsubind;
++};
++
+ /* override-size ifaces */
+ u32 cl_eeprom_get_osize(void)
+ {
+diff --git a/board/compulab/plat/imx8mm/ddr/ddr.c b/board/compulab/plat/imx8mm/ddr/ddr.c
+index 3912de6316..970d3ab81b 100644
+--- a/board/compulab/plat/imx8mm/ddr/ddr.c
++++ b/board/compulab/plat/imx8mm/ddr/ddr.c
+@@ -19,6 +19,8 @@
+ /* Forward declarations */
+ u32 cl_eeprom_get_ddrinfo(void);
+ u32 cl_eeprom_set_ddrinfo(u32 ddrinfo);
++u32 cl_eeprom_get_subind(void);
++u32 cl_eeprom_set_subind(u32 subind);
+ 
+ u32 cl_eeprom_get_osize(void);
+ 
+@@ -57,17 +59,24 @@ struct lpddr4_desc {
+ 	 * use it if default is not the
+ 	 * 1-st array entry */
+ 	unsigned int _default;
++	/* An optional field to distiguish DRAM chips that
++	 * have different geometry, though return the same MRR.
++	 * Default value 0xff
++	 */
++	u8	subind;
+ 	struct dram_timing_info *timing;
+ 	char *desc[4];
+ };
+ 
+ #define DEFAULT (('D' << 24) + ('E' << 16 ) + ( 'F' << 8 ) + 'A')
+ static const struct lpddr4_desc lpddr4_array[] = {
+-	{ .name = "Nanya",  .id = 0x01050008, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008}, //Only the first timing entry is in use
+-	{ .name = "Nanya",  .id = 0x05000010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+-	{ .name = "Samsung",.id = 0x01061010, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+-	{ .name = "Micron", .id = 0xff020008, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
+-	{ .name = "Micron", .id = 0xff000110, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
++	{ .name = "Nanya",	.id = 0x05000010, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
++	{ .name = "Samsung",	.id = 0x01061010, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
++	{ .name = "Samsung",	.id = 0x01050008, .subind = 0xff, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},
++	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x04, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
++	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x02, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
++	{ .name = "Micron",	.id = 0xff020008, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
++	{ .name = "Micron",	.id = 0xff000110, .subind = 0xff, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
+ };
+ 
+ static unsigned int lpddr4_get_mr(void)
+@@ -122,7 +131,8 @@ void spl_dram_init(void)
+ 		/* get ddr type from the eeprom if not in tcm scan mode */
+ 		ddr_info = cl_eeprom_get_ddrinfo();
+ 		for ( i = 0; i < ARRAY_SIZE(lpddr4_array); i++ ) {
+-			if (lpddr4_array[i].id == ddr_info) {
++			if (lpddr4_array[i].id == ddr_info &&
++			lpddr4_array[i].subind == cl_eeprom_get_subind()) {
+ 				ddr_found = 1;
+ 				break;
+ 			}
+@@ -177,10 +187,13 @@ void spl_dram_init(void)
+ 	if (ddr_found == 0) {
+ 		/* Update eeprom */
+ 		cl_eeprom_set_ddrinfo(ddr_info_mrr);
++		mdelay(10);
+ 		ddr_info = cl_eeprom_get_ddrinfo();
++		mdelay(10);
++		cl_eeprom_set_subind(lpddr4_array[i].subind);
+ 		/* make sure that the ddr_info has reached the eeprom */
+ 		printf("DDRINFO(E): mr5-8 [ 0x%x ], read back\n", ddr_info);
+-		if (ddr_info_mrr != ddr_info) {
++		if (ddr_info_mrr != ddr_info || cl_eeprom_get_subind() != lpddr4_array[i].subind) {
+ 			printf("DDRINFO(EEPROM): make sure that the eeprom is accessible\n");
+ 			printf("DDRINFO(EEPROM): i2c dev 1; i2c md 0x51 0x40 0x50\n");
+ 		}
+-- 
+2.11.0
+

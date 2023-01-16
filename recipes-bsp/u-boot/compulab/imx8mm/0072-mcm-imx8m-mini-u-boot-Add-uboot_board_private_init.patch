@@ -1,0 +1,26 @@
+From 24922199f7e640a0dc20042bdc0ffaa900f85896 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 5 Aug 2020 00:26:12 +0300
+Subject: [PATCH 072/126] mcm-imx8m-mini: u-boot: Add
+ uboot_board_private_init()
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
+index 6cafc259e9..bd863f154f 100644
+--- a/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
++++ b/board/compulab/mcm-imx8m-mini/mcm-imx8m-mini.c
+@@ -28,3 +28,7 @@
+ #include <asm/mach-imx/video.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
++
++int uboot_board_private_init(void) {
++	return 0;
++}
+-- 
+2.11.0
+

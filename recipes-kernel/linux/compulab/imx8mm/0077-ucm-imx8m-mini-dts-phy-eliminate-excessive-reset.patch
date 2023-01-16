@@ -1,0 +1,29 @@
+From 1b8f7846c022c88de85d8ae27033f79590d8e2db Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 15 Jan 2023 23:42:26 +0200
+Subject: [PATCH 77/82] ucm-imx8m-mini: dts:phy: eliminate excessive reset
+
+The eth phy is tuned on u-boot, however the reset at Linux boot cleans
+all the tuning and makes the phy inoperable. Eliminate the reset at
+Linux boot so as to preserve the phy tuned.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index d90e0b7763b3..e67a55e44325 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -70,6 +70,7 @@
+ 		regulator-always-on;
+ 		enable-active-high;
+ 		startup-delay-us = <500>;
++		regulator-boot-on;
+ 	};
+ 
+ 	usdhc1_pwrseq: usdhc1_pwrseq {
+-- 
+2.17.1
+

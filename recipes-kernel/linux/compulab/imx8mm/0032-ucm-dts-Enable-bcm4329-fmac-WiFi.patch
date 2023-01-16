@@ -1,11 +1,11 @@
-From 9726241269edcdfa1bc494a33f5d28067baf7500 Mon Sep 17 00:00:00 2001
+From 2d4336205e815ce506b1b35997bc28432e0969e2 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 22 Apr 2021 19:59:12 +0300
-Subject: [PATCH 32/35] ucm:dts: Enable bcm4329-fmac WiFi
+Subject: [PATCH 32/82] ucm:dts: Enable bcm4329-fmac WiFi
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 25 ++++++++++++++++++++++++
+ .../boot/dts/compulab/ucm-imx8m-mini.dtsi     | 25 +++++++++++++++++++
  1 file changed, 25 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
@@ -45,5 +45,5 @@ index 70d6a90d981f..c4cd87804700 100644
  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
  	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
 -- 
-2.11.0
+2.17.1
 

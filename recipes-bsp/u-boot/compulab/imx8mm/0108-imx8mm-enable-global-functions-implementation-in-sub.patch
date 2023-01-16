@@ -1,0 +1,66 @@
+From d3e9f0489e8592ba87a2d1e3c06544fa74b9b706 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 9 Dec 2021 11:12:13 +0200
+Subject: [PATCH 108/126] imx8mm: enable global functions implementation in
+ sub-projects
+
+Some of the global U-Boot function are implemented in the imx8mm board
+file.
+Add the ability to add sub-project code to the global functions.
+The following global function was updated:
+ft_board_setup
+board_late_init
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/board/board.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/board/compulab/plat/imx8mm/board/board.c b/board/compulab/plat/imx8mm/board/board.c
+index e0d10a87f7..871e7ecedb 100644
+--- a/board/compulab/plat/imx8mm/board/board.c
++++ b/board/compulab/plat/imx8mm/board/board.c
+@@ -138,11 +138,17 @@ static int fdt_set_env_addr(void *blob)
+ 	return 0;
+ }
+ 
++__weak int sub_ft_board_setup(void *blob, struct bd_info *bd)
++{
++	return 0;
++}
++
+ int ft_board_setup(void *blob, struct bd_info *bd)
+ {
+ 	fdt_set_env_addr(blob);
+ 	fdt_set_sn(blob);
+-	return 0;
++
++	return sub_ft_board_setup(blob, bd);
+ }
+ #endif
+ 
+@@ -373,6 +379,11 @@ static void board_bootdev_init(void)
+ 	env_set_ulong("bootdev", bootdev);
+ }
+ 
++__weak int sub_board_late_init(void)
++{
++	return 0;
++}
++
+ int board_late_init(void)
+ {
+ 	int ret;
+@@ -386,7 +397,8 @@ int board_late_init(void)
+ 	if (ret < 0)
+ 		printf("%s: Can't set MAC address\n", __func__);
+ 
+-	return 0;
++	ret = sub_board_late_init();
++	return ret;
+ }
+ 
+ #ifdef CONFIG_FSL_FASTBOOT
+-- 
+2.11.0
+

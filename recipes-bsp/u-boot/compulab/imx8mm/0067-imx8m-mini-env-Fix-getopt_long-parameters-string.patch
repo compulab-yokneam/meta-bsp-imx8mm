@@ -1,0 +1,26 @@
+From 20f325051a66a31b0c6644e63cd2f8bb2b616e6e Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 20 Jul 2020 14:00:31 +0300
+Subject: [PATCH 067/126] imx8m-mini: env: Fix getopt_long() parameters' string
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ tools/env/fw_env_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/env/fw_env_main.c b/tools/env/fw_env_main.c
+index ebd18b40ba..ca9ad78014 100644
+--- a/tools/env/fw_env_main.c
++++ b/tools/env/fw_env_main.c
+@@ -122,7 +122,7 @@ static void parse_common_args(int argc, char *argv[])
+ 	env_opts.config_file = CONFIG_FILE;
+ #endif
+ 
+-	while ((c = getopt_long(argc, argv, ":a:c:l:h:v:e", long_options, NULL)) !=
++	while ((c = getopt_long(argc, argv, ":a:c:l:h:ve", long_options, NULL)) !=
+ 	       EOF) {
+ 		switch (c) {
+ #ifdef CONFIG_FILE
+-- 
+2.11.0
+

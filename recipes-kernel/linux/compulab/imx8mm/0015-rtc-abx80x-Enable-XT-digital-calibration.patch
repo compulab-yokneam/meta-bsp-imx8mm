@@ -1,18 +1,18 @@
-From 5f796913bd6607ff1276059380c0f83a519fff41 Mon Sep 17 00:00:00 2001
+From 53951d9307ae5de23533030fec5ffb86e20fa855 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 5 Nov 2020 18:41:55 +0200
-Subject: [PATCH 15/35] rtc:abx80x: Enable XT digital calibration
+Subject: [PATCH 15/82] rtc:abx80x: Enable XT digital calibration
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- drivers/rtc/rtc-abx80x.c | 232 ++++++++++++++++++++++++++++++++++++++---------
+ drivers/rtc/rtc-abx80x.c | 232 +++++++++++++++++++++++++++++++--------
  1 file changed, 188 insertions(+), 44 deletions(-)
 
 diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index 7f66bdd2868e..0bd45a2e4a93 100644
+index a48815be1bfa..b2f1cc7f0c0f 100644
 --- a/drivers/rtc/rtc-abx80x.c
 +++ b/drivers/rtc/rtc-abx80x.c
-@@ -16,57 +16,64 @@
+@@ -17,57 +17,64 @@
  #include <linux/rtc.h>
  #include <linux/watchdog.h>
  
@@ -120,7 +120,7 @@ index 7f66bdd2868e..0bd45a2e4a93 100644
  
  #define ABX8XX_REG_WDT		0x1b
  #define ABX8XX_WDT_WDS		BIT(7)
-@@ -99,6 +106,7 @@ struct abx80x_cap {
+@@ -100,6 +107,7 @@ struct abx80x_cap {
  	u16 pn;
  	bool has_tc;
  	bool has_wdog;
@@ -128,7 +128,7 @@ index 7f66bdd2868e..0bd45a2e4a93 100644
  };
  
  static struct abx80x_cap abx80x_caps[] = {
-@@ -109,7 +117,7 @@ static struct abx80x_cap abx80x_caps[] = {
+@@ -110,7 +118,7 @@ static struct abx80x_cap abx80x_caps[] = {
  	[AB1801] = {.pn = 0x1801},
  	[AB1803] = {.pn = 0x1803},
  	[AB1804] = {.pn = 0x1804, .has_tc = true, .has_wdog = true},
@@ -137,7 +137,7 @@ index 7f66bdd2868e..0bd45a2e4a93 100644
  	[RV1805] = {.pn = 0x1805, .has_tc = true, .has_wdog = true},
  	[ABX80X] = {.pn = 0}
  };
-@@ -491,6 +499,132 @@ static ssize_t oscillator_show(struct device *dev,
+@@ -490,6 +498,132 @@ static ssize_t oscillator_show(struct device *dev,
  
  static DEVICE_ATTR_RW(oscillator);
  
@@ -270,7 +270,7 @@ index 7f66bdd2868e..0bd45a2e4a93 100644
  #define SQFS_COUNT (1 << ABX8XX_REG_SQW_MODE_BITS)
  static char const *const SQFS[SQFS_COUNT] = { "1_century", "32768_Hz", "8192_Hz", "4096_Hz",
  				"2048_Hz", "1024_Hz", "512_Hz", "256_Hz",
-@@ -579,6 +713,7 @@ static struct attribute *rtc_calib_attrs[] = {
+@@ -578,6 +712,7 @@ static struct attribute *rtc_calib_attrs[] = {
  	&dev_attr_autocalibration.attr,
  	&dev_attr_oscillator.attr,
  	&dev_attr_sqw.attr,
@@ -278,7 +278,7 @@ index 7f66bdd2868e..0bd45a2e4a93 100644
  	NULL,
  };
  
-@@ -775,6 +910,7 @@ static int abx80x_probe(struct i2c_client *client,
+@@ -776,6 +911,7 @@ static int abx80x_probe(struct i2c_client *client,
  	unsigned int wafer;
  	unsigned int uid;
  	const char *sqw_mode_name;
@@ -286,7 +286,7 @@ index 7f66bdd2868e..0bd45a2e4a93 100644
  
  	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
  		return -ENODEV;
-@@ -894,6 +1030,14 @@ static int abx80x_probe(struct i2c_client *client,
+@@ -890,6 +1026,14 @@ static int abx80x_probe(struct i2c_client *client,
  		abx80x_enable_trickle_charger(client, trickle_cfg);
  	}
  
@@ -302,5 +302,5 @@ index 7f66bdd2868e..0bd45a2e4a93 100644
  		sqw_set(client, sqw_mode_name);
  
 -- 
-2.11.0
+2.17.1
 

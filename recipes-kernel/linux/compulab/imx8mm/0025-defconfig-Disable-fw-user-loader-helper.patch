@@ -1,7 +1,7 @@
-From 0f3729428a5a947d519706101a4930dee2297a3f Mon Sep 17 00:00:00 2001
+From 5165c21d42d463b553a4131e4aeb2fd4c0293a98 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 19 Mar 2021 22:45:21 +0200
-Subject: [PATCH 25/35] defconfig: Disable fw user loader helper
+Subject: [PATCH 25/82] defconfig: Disable fw user loader helper
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index b2cf1065805b..9780edd70663 100644
+index e753a9b2fc93..49b310a1622f 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -195,7 +195,7 @@ CONFIG_PCIE_LAYERSCAPE_GEN4=y
@@ -22,5 +22,5 @@ index b2cf1065805b..9780edd70663 100644
  CONFIG_SIMPLE_PM_BUS=y
  CONFIG_VEXPRESS_CONFIG=y
 -- 
-2.11.0
+2.17.1
 

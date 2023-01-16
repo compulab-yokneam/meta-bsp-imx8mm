@@ -19,7 +19,7 @@ SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/broadcom;proto
 
 FILES_${PN} = "/usr/bin/*"
 
-do_install_append() {
+do_install:append() {
 	install -d ${D}/usr/bin
 	install -m 755 brcm_patchram_plus ${D}/usr/bin
 }

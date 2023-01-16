@@ -1,0 +1,65 @@
+From 696209fa1dcb04991913e65ea1ea8958cc0b881e Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Wed, 8 Dec 2021 10:25:12 +0200
+Subject: [PATCH 76/82] mmc: dts: fix mmc1 initialization
+
+Occasionally eMMC1 storage is not initialized correctly during the boot
+process.
+
+The reset signal, of the MMC1 bus, is set to enable during the boot
+process.
+
+Update the MMC1 bus initialization to set the state of the reset signals
+to disable and then to enable.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8.dts | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
+index 489fb11038dd..c514602cc02a 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
+@@ -88,13 +88,16 @@
+ 		enable-active-high;
+ 	};
+ 
+-	regulator-usdhc2_rst {
++	reg_usdhc2_rst: regulator-usdhc2_rst {
+ 		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg_usdhc2_rst>;
+ 		regulator-name = "usdhc2_rst";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+ 		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+-		regulator-always-on;
++		startup-delay-us = <100>;
++		off-on-delay-us = <12000>;
+ 		enable-active-high;
+ 	};
+ 
+@@ -198,6 +201,7 @@
+ 	bus-width = <4>;
+ 	mmc-ddr-1_8v;
+ 	non-removable;
++	vmmc-supply = <&reg_usdhc2_rst>;
+ 	status = "okay";
+ };
+ 
+@@ -289,6 +293,11 @@
+ 				MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d0
+ 				MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d0
+ 				MX8MM_IOMUXC_GPIO1_IO04_GPIO1_IO4	0x1d0 /* SD2_VSEL */
++			>;
++		};
++
++		pinctrl_reg_usdhc2_rst: usdhc2rst {
++			fsl,pins = <
+ 				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41  /* EMMC_RST */
+ 			>;
+ 		};
+-- 
+2.17.1
+

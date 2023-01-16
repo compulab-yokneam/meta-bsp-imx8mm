@@ -1,0 +1,57 @@
+From 5f656bdea51b83d0157693f691e2e9e569cba2e2 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Mon, 3 Aug 2020 14:06:48 +0300
+Subject: [PATCH 107/126] iot-gate-imx8: usb: VBUS enable fix
+
+The VBUS is enabled during the USB start process.
+Some of the devices are not detected during the USB start process.
+
+Resolve the issue by enabling the VBUS before the USB start process.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm/dts/iot-gate-imx8.dts | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/dts/iot-gate-imx8.dts b/arch/arm/dts/iot-gate-imx8.dts
+index fcaf9d0915..46e304be78 100644
+--- a/arch/arm/dts/iot-gate-imx8.dts
++++ b/arch/arm/dts/iot-gate-imx8.dts
+@@ -47,24 +47,28 @@
+ };
+ 
+ &usbotg1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctl_usb_gpio>;
++	vbus-supply = <&reg_vusb_5v>;
+ 	dr_mode = "host";
+ 	status = "okay";
+ };
+ 
+ &iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog>;
++
+ 	sb-iotgimx8 {
+-		pinctrl_usdhc2_gpio: usdhc2grpgpio {
++		pinctrl_hog: hoggrp {
+ 			fsl,pins = <
+-				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
++				/* USB VBUS enable GPIO */
++				MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28	0x00
+ 			>;
+ 		};
+ 
+-		pinctl_usb_gpio: usb_gpio_grp {
++		pinctrl_usdhc2_gpio: usdhc2grpgpio {
+ 			fsl,pins = <
+-				MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x00
++				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
+ 			>;
+ 		};
++
+ 	};
+ };
+-- 
+2.11.0
+

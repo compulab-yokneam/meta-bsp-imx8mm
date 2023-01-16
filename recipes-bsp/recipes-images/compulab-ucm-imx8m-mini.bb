@@ -3,4 +3,4 @@ LICENSE = "MIT"
 
 export IMAGE_LINK_NAME="${MACHINE}"
 
-require dynamic-layers/qt5-layer/recipes-fsl/images/fsl-image-qt5-validation-imx.bb
+#require dynamic-layers/qt6-layer/recipes-fsl/images/imx-image-full.bb

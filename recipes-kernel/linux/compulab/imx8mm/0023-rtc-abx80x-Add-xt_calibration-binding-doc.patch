@@ -1,11 +1,11 @@
-From 052353da8b2f0e595a1b5ae63ce57d56a3eebeda Mon Sep 17 00:00:00 2001
+From d9f1ab1e88ebd9d9944ab936ea77c558151b4f76 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 27 Sep 2020 15:33:37 +0300
-Subject: [PATCH 23/35] rtc:abx80x: Add xt_calibration binding doc
+Subject: [PATCH 23/82] rtc:abx80x: Add xt_calibration binding doc
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- Documentation/devicetree/bindings/rtc/abracon,abx80x.txt | 13 +++++++++++++
+ .../devicetree/bindings/rtc/abracon,abx80x.txt      | 13 +++++++++++++
  1 file changed, 13 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt b/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt
@@ -30,5 +30,5 @@ index 60a7a3ab3856..0c38386dcbb9 100644
 +	Measure the square wave frequency at the output pin in milliHz.
 +	Assign the measured value to the property xt_frequency.
 -- 
-2.11.0
+2.17.1
 

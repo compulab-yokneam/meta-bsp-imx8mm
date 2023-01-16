@@ -1,40 +1,31 @@
-From 1787abeea8fbcb9e284f5b2d4a4ba06bef8c2251 Mon Sep 17 00:00:00 2001
+From e2f68b309bbba5efba12713b4732bbdcc23d809c Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 19 Jul 2021 00:22:59 +0300
-Subject: [PATCH 33/91] Trivial cleaning
+Subject: [PATCH 033/126] Trivial cleaning
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm/dts/Makefile                          | 4 ++--
+ arch/arm/dts/Makefile                          | 2 ++
  board/compulab/common/Makefile                 | 4 +++-
  board/compulab/common/common.c                 | 3 ++-
  board/compulab/common/common.h                 | 3 ++-
  board/compulab/common/eeprom.h                 | 3 ++-
  board/compulab/ucm-imx8m-mini/ucm-imx8m-mini.c | 2 +-
- 6 files changed, 12 insertions(+), 7 deletions(-)
+ 6 files changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 2b81a2bc62..6238d142af 100644
+index c31d483784..9781d3451c 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -880,6 +880,8 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
- dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb \
+@@ -888,6 +888,8 @@ dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb \
  	imxrt1020-evk.dtb
+ dtb-$(CONFIG_ARCH_IMX8ULP) += imx8ulp-evk.dtb imx8ulp-evk-i3c.dtb
  
 +dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
 +
  dtb-$(CONFIG_RCAR_GEN2) += \
  	r8a7790-lager-u-boot.dtb \
  	r8a7790-stout-u-boot.dtb \
-@@ -890,8 +892,6 @@ dtb-$(CONFIG_RCAR_GEN2) += \
- 	r8a7794-alt-u-boot.dtb \
- 	r8a7794-silk-u-boot.dtb
- 
--dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
--
- dtb-$(CONFIG_RCAR_GEN3) += \
- 	r8a774a1-beacon-rzg2m-kit.dtb \
- 	r8a774b1-beacon-rzg2n-kit.dtb \
 diff --git a/board/compulab/common/Makefile b/board/compulab/common/Makefile
 index 500858035f..0a26fdb426 100644
 --- a/board/compulab/common/Makefile
@@ -111,5 +102,5 @@ index fca256439b..cf3cefb30d 100644
      switch (value) {
      case 4096:
 -- 
-2.17.1
+2.11.0
 

@@ -1,7 +1,7 @@
-From 77c76ced7b58fa21dfd53421a521d6e7036dfa1b Mon Sep 17 00:00:00 2001
+From a15d15b86c8e9609b57de6978c8068dadd8b6fb3 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 15 Sep 2020 22:05:06 +0300
-Subject: [PATCH 17/35] ucm:dts: Fix no-1-8-v for mmc2
+Subject: [PATCH 17/82] ucm:dts: Fix no-1-8-v for mmc2
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -21,5 +21,5 @@ index 72b792219968..349893c4e757 100644
  };
  
 -- 
-2.11.0
+2.17.1
 

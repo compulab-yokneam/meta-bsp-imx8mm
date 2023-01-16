@@ -1,0 +1,28 @@
+From 1a99603999a9e9d0f24ece73f1c260080d89c05a Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Tue, 10 May 2022 12:57:31 +0300
+Subject: [PATCH 80/82] iot-gate-imx8: M4 support update
+
+Update the kernel configuration, in order to support M4 in NXP SDK
+lf-5.10.72-2.2.0.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index d08da2dd2c6a..55630f0bcf3d 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -656,6 +656,7 @@ CONFIG_PLATFORM_MHU=y
+ CONFIG_ARM_SMMU=y
+ CONFIG_ARM_SMMU_V3=y
+ CONFIG_REMOTEPROC=y
++CONFIG_IMX_REMOTEPROC=y
+ CONFIG_RPMSG_QCOM_GLINK_RPM=y
+ CONFIG_SOC_BRCMSTB=y
+ CONFIG_FSL_RCPM=y
+-- 
+2.17.1
+

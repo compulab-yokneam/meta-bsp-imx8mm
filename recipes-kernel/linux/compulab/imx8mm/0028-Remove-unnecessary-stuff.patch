@@ -1,13 +1,13 @@
-From b6f069b6f73bdf1478e7d314c2a496deb597a984 Mon Sep 17 00:00:00 2001
+From 69e806bf5da0e89c4b81a2fb415ce40c418c73b1 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 19 Mar 2021 23:56:18 +0200
-Subject: [PATCH 28/35] Remove unnecessary stuff
+Subject: [PATCH 28/82] Remove unnecessary stuff
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi | 119 ------------------
- arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi   | 140 ---------------------
- arch/arm64/configs/ucm-imx8m-mini_defconfig        |   6 +-
+ .../boot/dts/compulab/sb-ucm-imx8-rev2.dtsi   | 119 ---------------
+ .../boot/dts/compulab/ucm-imx8m-mini.dtsi     | 140 ------------------
+ arch/arm64/configs/ucm-imx8m-mini_defconfig   |   6 +-
  3 files changed, 2 insertions(+), 263 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
@@ -330,7 +330,7 @@ index 0b8be84d8293..2f87103dd9c7 100644
  	temperature = <105000>;
  };
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
-index 9780edd70663..1f630afb592a 100644
+index 49b310a1622f..0c773e797ca7 100644
 --- a/arch/arm64/configs/ucm-imx8m-mini_defconfig
 +++ b/arch/arm64/configs/ucm-imx8m-mini_defconfig
 @@ -812,10 +812,8 @@ CONFIG_CRYPTO_SM4=m
@@ -347,5 +347,5 @@ index 9780edd70663..1f630afb592a 100644
  CONFIG_DMA_CMA=y
  CONFIG_CMA_SIZE_MBYTES=320
 -- 
-2.11.0
+2.17.1
 

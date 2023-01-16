@@ -1,7 +1,7 @@
-From c9ffed91dceb5f532e5954e4e4b05c5b340ce060 Mon Sep 17 00:00:00 2001
+From 19a20a4fbf843bfe4270249920d7852b102ace72 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 5 Nov 2020 18:49:05 +0200
-Subject: [PATCH 20/35] rtc:abx80x: Improve sqw generation
+Subject: [PATCH 20/82] rtc:abx80x: Improve sqw generation
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index 0bd45a2e4a93..2ba1686fe2a4 100644
+index b2f1cc7f0c0f..a666b4044a19 100644
 --- a/drivers/rtc/rtc-abx80x.c
 +++ b/drivers/rtc/rtc-abx80x.c
-@@ -633,8 +633,17 @@ static char const *const SQFS[SQFS_COUNT] = { "1_century", "32768_Hz", "8192_Hz"
+@@ -632,8 +632,17 @@ static char const *const SQFS[SQFS_COUNT] = { "1_century", "32768_Hz", "8192_Hz"
  				"1/2_Hz", "1/4_Hz", "1/8_Hz", "1/16_Hz",
  				"1/32_Hz", "1_min", "16384_Hz", "100_Hz",
  				"1_hour", "1_day", "TIRQ", "nTIRQ",
@@ -32,7 +32,7 @@ index 0bd45a2e4a93..2ba1686fe2a4 100644
  };
  
  static int sqw_set(struct i2c_client *client, const char *buf)
-@@ -651,6 +660,9 @@ static int sqw_set(struct i2c_client *client, const char *buf)
+@@ -650,6 +659,9 @@ static int sqw_set(struct i2c_client *client, const char *buf)
  		if( 0 > idx )
  			return idx;
  
@@ -42,7 +42,7 @@ index 0bd45a2e4a93..2ba1686fe2a4 100644
  		dev_info(&client->dev, "sqw output enabled @ %s\n",SQFS[idx]);
  		reg &= ~((1 << ABX8XX_REG_SQW_MODE_BITS) - 1);
  		reg |= idx | ABX8XX_REG_SQW_EN;
-@@ -1040,6 +1052,8 @@ static int abx80x_probe(struct i2c_client *client,
+@@ -1036,6 +1048,8 @@ static int abx80x_probe(struct i2c_client *client,
  
  	if (!of_property_read_string(np, "sqw", &sqw_mode_name))
  		sqw_set(client, sqw_mode_name);
@@ -52,5 +52,5 @@ index 0bd45a2e4a93..2ba1686fe2a4 100644
  	err = i2c_smbus_write_byte_data(client, ABX8XX_REG_CD_TIMER_CTL,
  					BIT(2));
 -- 
-2.11.0
+2.17.1
 

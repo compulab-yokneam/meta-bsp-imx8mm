@@ -1,0 +1,26 @@
+From 9b96cc5ac3ea204f39a5ccafd96b842585a9b50c Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 9 Dec 2021 12:35:01 +0200
+Subject: [PATCH 122/126] iot-gate-imx8: enable USB to Ethernet driver SMSC
+ LAN95xx
+
+The relevant interfaces are used in the baseboard and in the POEv2
+extension module.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ configs/iot-gate-imx8.config | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/iot-gate-imx8.config b/configs/iot-gate-imx8.config
+index 22d8f731e6..d92f2866f8 100644
+--- a/configs/iot-gate-imx8.config
++++ b/configs/iot-gate-imx8.config
+@@ -15,3 +15,4 @@ CONFIG_LED_GPIO=n
+ CONFIG_CMD_PCA953X=y
+ CONFIG_DM_PCA953X=y
+ CONFIG_SYS_PROMPT="IOT-GATE-iMX8 => "
++CONFIG_USB_ETHER_SMSC95XX=y
+-- 
+2.11.0
+

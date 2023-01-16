@@ -1,11 +1,11 @@
-From 8a671d0d5146d0677329532cf7510d6484f4804a Mon Sep 17 00:00:00 2001
+From 6330e3be9f14be9a81d367e742299b3157869b45 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 27 Sep 2020 15:32:58 +0300
-Subject: [PATCH 22/35] rtc:abx80x: Add sqw binding doc
+Subject: [PATCH 22/82] rtc:abx80x: Add sqw binding doc
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- Documentation/devicetree/bindings/rtc/abracon,abx80x.txt | 13 +++++++++++++
+ .../devicetree/bindings/rtc/abracon,abx80x.txt      | 13 +++++++++++++
  1 file changed, 13 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt b/Documentation/devicetree/bindings/rtc/abracon,abx80x.txt
@@ -30,5 +30,5 @@ index 2405e35a1bc0..60a7a3ab3856 100644
 +
 +Note that some frequencies produce no output in RC oscillator mode.
 -- 
-2.11.0
+2.17.1
 

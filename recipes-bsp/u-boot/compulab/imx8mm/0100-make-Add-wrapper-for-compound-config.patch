@@ -1,0 +1,26 @@
+From 953be0eebb526c193f7181c0ae8fd440169d0f95 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 22 Dec 2021 16:58:13 +0200
+Subject: [PATCH 100/126] make: Add wrapper for compound config
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ defconfig.mk | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 defconfig.mk
+
+diff --git a/defconfig.mk b/defconfig.mk
+new file mode 100644
+index 0000000000..e164ba2655
+--- /dev/null
++++ b/defconfig.mk
+@@ -0,0 +1,6 @@
++.DEFAULT: compound_defconfig
++compound_defconfig:
++	scripts/kconfig/merge_config.sh -O configs/ -m configs/cl-imx8m-mini_defconfig configs/${MACHINE}.config
++	mv configs/.config configs/${MACHINE}_defconfig
++	$(MAKE) -f Makefile ${MACHINE}_defconfig
++
+-- 
+2.11.0
+

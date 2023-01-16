@@ -1,0 +1,275 @@
+From 36a4e6d6d41a1072021f6b1501a87812e5d8843b Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 30 Dec 2021 10:51:48 +0200
+Subject: [PATCH 123/126] cmd: eeprom: fix disregarding of the i2c_bus
+ parameter
+
+The eeprom commands are disregarding the i2c_bus parameter if
+CONFIG_SYS_I2C_EEPROM_BUS is defined - setting the i2c bus to
+CONFIG_SYS_I2C_EEPROM_BUS.
+
+Add parameter set_bus to the functions eeprom_read() and
+eeprom_write().
+If set_bus parameter equals 1, the functions operation remains the
+same.
+If set_bus parameter equals 0, the functions doesn't set the i2c bus.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ board/corscience/tricorder/tricorder-eeprom.c |  6 ++----
+ board/freescale/mpc8323erdb/mpc8323erdb.c     |  3 ++-
+ board/kosagi/novena/novena.c                  |  3 ++-
+ board/softing/vining_fpga/socfpga.c           |  3 ++-
+ cmd/eeprom.c                                  | 24 +++++++++++++-----------
+ env/eeprom.c                                  | 22 ++++++++++------------
+ include/configs/tam3517-common.h              |  3 ++-
+ include/eeprom.h                              | 10 ++++++----
+ 8 files changed, 39 insertions(+), 35 deletions(-)
+
+diff --git a/board/corscience/tricorder/tricorder-eeprom.c b/board/corscience/tricorder/tricorder-eeprom.c
+index 192af304d9..0968fc5734 100644
+--- a/board/corscience/tricorder/tricorder-eeprom.c
++++ b/board/corscience/tricorder/tricorder-eeprom.c
+@@ -167,15 +167,13 @@ int tricorder_eeprom_write(unsigned devaddr, const char *name,
+ 	print_buffer(0, &eeprom, 1, sizeof(eeprom), 16);
+ #endif
+ 
+-	eeprom_init(CONFIG_SYS_EEPROM_BUS_NUM);
+-
+ 	ret = eeprom_write(devaddr, 0, (unsigned char *)&eeprom,
+-			TRICORDER_EEPROM_SIZE);
++			TRICORDER_EEPROM_SIZE, CONFIG_SYS_EEPROM_BUS_NUM);
+ 	if (ret)
+ 		printf("Tricorder: Could not write EEPROM content!\n");
+ 
+ 	ret = eeprom_read(devaddr, 0, (unsigned char *)&eeprom_verify,
+-			TRICORDER_EEPROM_SIZE);
++			TRICORDER_EEPROM_SIZE, CONFIG_SYS_EEPROM_BUS_NUM);
+ 	if (ret)
+ 		printf("Tricorder: Could not read EEPROM content!\n");
+ 
+diff --git a/board/freescale/mpc8323erdb/mpc8323erdb.c b/board/freescale/mpc8323erdb/mpc8323erdb.c
+index cef3216a6f..0d11ef25a8 100644
+--- a/board/freescale/mpc8323erdb/mpc8323erdb.c
++++ b/board/freescale/mpc8323erdb/mpc8323erdb.c
+@@ -204,7 +204,8 @@ int mac_read_from_eeprom(void)
+ 	unsigned char enetvar[32];
+ 
+ 	/* Read MAC addresses from EEPROM */
+-	if (eeprom_read(CONFIG_SYS_I2C_EEPROM_ADDR, CONFIG_SYS_I2C_MAC_OFFSET, buf, 28)) {
++	if (eeprom_read(CONFIG_SYS_I2C_EEPROM_ADDR, CONFIG_SYS_I2C_MAC_OFFSET,
++			buf, 28, , CONFIG_SYS_EEPROM_BUS_NUM)) {
+ 		printf("\nEEPROM @ 0x%02x read FAILED!!!\n",
+ 		       CONFIG_SYS_I2C_EEPROM_ADDR);
+ 	} else {
+diff --git a/board/kosagi/novena/novena.c b/board/kosagi/novena/novena.c
+index 0e1b4a0a46..3379f87270 100644
+--- a/board/kosagi/novena/novena.c
++++ b/board/kosagi/novena/novena.c
+@@ -214,7 +214,8 @@ int misc_init_r(void)
+ 	}
+ 
+ 	/* EEPROM is at address 0x56. */
+-	ret = eeprom_read(0x56, 0, datap, sizeof(data));
++	ret = eeprom_read(0x56, 0, datap, sizeof(data),
++			  CONFIG_SYS_EEPROM_BUS_NUM);
+ 	if (ret) {
+ 		puts("Cannot read I2C EEPROM.\n");
+ 		return 0;
+diff --git a/board/softing/vining_fpga/socfpga.c b/board/softing/vining_fpga/socfpga.c
+index aaedf03450..393c78e074 100644
+--- a/board/softing/vining_fpga/socfpga.c
++++ b/board/softing/vining_fpga/socfpga.c
+@@ -59,7 +59,8 @@ int misc_init_r(void)
+ 	int ret;
+ 
+ 	/* EEPROM is at address 0x50 (at bus CONFIG_SYS_EEPROM_BUS_NUM). */
+-	ret = eeprom_read(0x50, 0, data, sizeof(data));
++	ret = eeprom_read(0x50, 0, data, sizeof(data),
++			  CONFIG_SYS_EEPROM_BUS_NUM);
+ 	if (ret) {
+ 		puts("Cannot read I2C EEPROM.\n");
+ 		return 0;
+diff --git a/cmd/eeprom.c b/cmd/eeprom.c
+index b3fd37c827..bbd50a14fa 100644
+--- a/cmd/eeprom.c
++++ b/cmd/eeprom.c
+@@ -162,7 +162,7 @@ static int eeprom_rw_block(unsigned offset, uchar *addr, unsigned alen,
+ }
+ 
+ static int eeprom_rw(unsigned dev_addr, unsigned offset, uchar *buffer,
+-		     unsigned cnt, bool read)
++		     unsigned cnt, bool read, int set_bus)
+ {
+ 	unsigned end = offset + cnt;
+ 	unsigned alen, len;
+@@ -170,7 +170,8 @@ static int eeprom_rw(unsigned dev_addr, unsigned offset, uchar *buffer,
+ 	uchar addr[3];
+ 
+ #if defined(CONFIG_SYS_I2C_EEPROM_BUS)
+-	eeprom_init(CONFIG_SYS_I2C_EEPROM_BUS);
++	if (set_bus)
++		eeprom_init(CONFIG_SYS_I2C_EEPROM_BUS);
+ #endif
+ 
+ 	while (offset < end) {
+@@ -190,18 +191,19 @@ static int eeprom_rw(unsigned dev_addr, unsigned offset, uchar *buffer,
+ 	return rcode;
+ }
+ 
+-int eeprom_read(unsigned dev_addr, unsigned offset, uchar *buffer, unsigned cnt)
++int eeprom_read(unsigned dev_addr, unsigned offset, uchar *buffer, unsigned cnt,
++		int set_bus)
+ {
+ 	/*
+ 	 * Read data until done or would cross a page boundary.
+ 	 * We must write the address again when changing pages
+ 	 * because the next page may be in a different device.
+ 	 */
+-	return eeprom_rw(dev_addr, offset, buffer, cnt, 1);
++	return eeprom_rw(dev_addr, offset, buffer, cnt, 1, set_bus);
+ }
+ 
+ int eeprom_write(unsigned dev_addr, unsigned offset,
+-		 uchar *buffer, unsigned cnt)
++		 uchar *buffer, unsigned cnt, int set_bus)
+ {
+ 	int ret;
+ 
+@@ -212,7 +214,7 @@ int eeprom_write(unsigned dev_addr, unsigned offset,
+ 	 * We must write the address again when changing pages
+ 	 * because the address counter only increments within a page.
+ 	 */
+-	ret = eeprom_rw(dev_addr, offset, buffer, cnt, 0);
++	ret = eeprom_rw(dev_addr, offset, buffer, cnt, 0, set_bus);
+ 
+ 	eeprom_write_enable(dev_addr, 0);
+ 	return ret;
+@@ -316,26 +318,25 @@ static int eeprom_execute_command(enum eeprom_action action, int i2c_bus,
+ 
+ 	if (action == EEPROM_ACTION_INVALID)
+ 		return CMD_RET_USAGE;
+-
+ 	eeprom_init(i2c_bus);
+ 	if (action == EEPROM_READ) {
+ 		printf(fmt, i2c_addr, "read", addr, off, cnt);
+ 
+-		rcode = eeprom_read(i2c_addr, off, (uchar *)addr, cnt);
++		rcode = eeprom_read(i2c_addr, off, (uchar *)addr, cnt, 0);
+ 
+ 		puts("done\n");
+ 		return rcode;
+ 	} else if (action == EEPROM_WRITE) {
+ 		printf(fmt, i2c_addr, "write", addr, off, cnt);
+ 
+-		rcode = eeprom_write(i2c_addr, off, (uchar *)addr, cnt);
++		rcode = eeprom_write(i2c_addr, off, (uchar *)addr, cnt, 0);
+ 
+ 		puts("done\n");
+ 		return rcode;
+ 	}
+ 
+ #ifdef CONFIG_CMD_EEPROM_LAYOUT
+-	rcode = eeprom_read(i2c_addr, 0, eeprom_buf, CONFIG_SYS_EEPROM_SIZE);
++	rcode = eeprom_read(i2c_addr, 0, eeprom_buf, CONFIG_SYS_EEPROM_SIZE, 0);
+ 	if (rcode < 0)
+ 		return rcode;
+ 
+@@ -349,7 +350,8 @@ static int eeprom_execute_command(enum eeprom_action action, int i2c_bus,
+ 
+ 	layout.update(&layout, key, value);
+ 
+-	rcode = eeprom_write(i2c_addr, 0, layout.data, CONFIG_SYS_EEPROM_SIZE);
++	rcode = eeprom_write(i2c_addr, 0, layout.data, CONFIG_SYS_EEPROM_SIZE,
++			     0);
+ #endif
+ 
+ 	return rcode;
+diff --git a/env/eeprom.c b/env/eeprom.c
+index 1f36917a00..f30387877c 100644
+--- a/env/eeprom.c
++++ b/env/eeprom.c
+@@ -31,14 +31,13 @@ static int eeprom_bus_read(unsigned dev_addr, unsigned offset,
+ #if defined(CONFIG_I2C_ENV_EEPROM_BUS)
+ 	int old_bus = i2c_get_bus_num();
+ 
+-	if (old_bus != CONFIG_I2C_ENV_EEPROM_BUS)
+-		i2c_set_bus_num(CONFIG_I2C_ENV_EEPROM_BUS);
+-#endif
+-
+-	rcode = eeprom_read(dev_addr, offset, buffer, cnt);
++	rcode = eeprom_read(dev_addr, offset, buffer, cnt,
++			    CONFIG_I2C_ENV_EEPROM_BUS);
+ 
+-#if defined(CONFIG_I2C_ENV_EEPROM_BUS)
+ 	i2c_set_bus_num(old_bus);
++#else
++	rcode = eeprom_read(dev_addr, offset, buffer, cnt,
++			    CONFIG_SYS_EEPROM_BUS_NUM);
+ #endif
+ 
+ 	return rcode;
+@@ -51,14 +50,13 @@ static int eeprom_bus_write(unsigned dev_addr, unsigned offset,
+ #if defined(CONFIG_I2C_ENV_EEPROM_BUS)
+ 	int old_bus = i2c_get_bus_num();
+ 
+-	if (old_bus != CONFIG_I2C_ENV_EEPROM_BUS)
+-		i2c_set_bus_num(CONFIG_I2C_ENV_EEPROM_BUS);
+-#endif
+-
+-	rcode = eeprom_write(dev_addr, offset, buffer, cnt);
++	rcode = eeprom_write(dev_addr, offset, buffer, cnt,
++			     CONFIG_I2C_ENV_EEPROM_BUS);
+ 
+-#if defined(CONFIG_I2C_ENV_EEPROM_BUS)
+ 	i2c_set_bus_num(old_bus);
++#else
++	rcode = eeprom_write(dev_addr, offset, buffer, cnt,
++			     CONFIG_SYS_EEPROM_BUS_NUM);
+ #endif
+ 
+ 	return rcode;
+diff --git a/include/configs/tam3517-common.h b/include/configs/tam3517-common.h
+index afc9adbe12..834f04b513 100644
+--- a/include/configs/tam3517-common.h
++++ b/include/configs/tam3517-common.h
+@@ -251,7 +251,8 @@ struct tam3517_module_info {
+ do {								\
+ 	i2c_init(CONFIG_SYS_OMAP24_I2C_SPEED, CONFIG_SYS_OMAP24_I2C_SLAVE); \
+ 	if (eeprom_read(CONFIG_SYS_I2C_EEPROM_ADDR, 0,		\
+-		(void *)info, sizeof(*info)))			\
++		(void *)info, sizeof(*info),			\
++		CONFIG_SYS_EEPROM_BUS_NUM))			\
+ 		ret = 1;					\
+ 	else							\
+ 		ret = 0;					\
+diff --git a/include/eeprom.h b/include/eeprom.h
+index 6820844cea..31a0872858 100644
+--- a/include/eeprom.h
++++ b/include/eeprom.h
+@@ -9,16 +9,18 @@
+ 
+ #if defined(CONFIG_CMD_EEPROM) || defined(CONFIG_ENV_IS_IN_EEPROM)
+ void eeprom_init(int bus);
+-int eeprom_read(uint dev_addr, uint offset, uchar *buffer, uint cnt);
+-int eeprom_write(uint dev_addr, uint offset, uchar *buffer, uint cnt);
++int eeprom_read(uint dev_addr, uint offset, uchar *buffer, uint cnt,
++		int set_bus);
++int eeprom_write(uint dev_addr, uint offset, uchar *buffer, uint cnt,
++		 int set_bus);
+ #else
+ /*
+  * Some EEPROM code is depecated because it used the legacy I2C interface. Add
+  * some macros here so we don't have to touch every one of those uses
+  */
+ #define eeprom_init(bus)
+-#define eeprom_read(dev_addr, offset, buffer, cnt) (-ENOSYS)
+-#define eeprom_write(dev_addr, offset, buffer, cnt) (-ENOSYS)
++#define eeprom_read(dev_addr, offset, buffer, cnt, set_bus) (-ENOSYS)
++#define eeprom_write(dev_addr, offset, buffer, cnt, set_bus) (-ENOSYS)
+ #endif
+ 
+ #if !defined(CONFIG_ENV_EEPROM_IS_ON_I2C) && defined(CONFIG_SYS_I2C_EEPROM_ADDR)
+-- 
+2.11.0
+

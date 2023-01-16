@@ -1,0 +1,46 @@
+From c8f58be8401b672be8aa35226470ffd2da136364 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 20 Jul 2020 06:29:03 +0300
+Subject: [PATCH 065/126] mcm-imx8m-mini: reset: Refactor the reset
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/spl/spl.c | 9 ---------
+ configs/mcm-imx8m-mini_defconfig     | 3 ---
+ 2 files changed, 12 deletions(-)
+
+diff --git a/board/compulab/plat/imx8mm/spl/spl.c b/board/compulab/plat/imx8mm/spl/spl.c
+index 643093aaf9..ad1be9befd 100644
+--- a/board/compulab/plat/imx8mm/spl/spl.c
++++ b/board/compulab/plat/imx8mm/spl/spl.c
+@@ -251,12 +251,3 @@ void board_init_f(ulong dummy)
+ 
+ 	board_init_r(NULL, 0);
+ }
+-
+-int do_reset(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+-{
+-	puts ("resetting ...\n");
+-
+-	reset_cpu(WDOG1_BASE_ADDR);
+-
+-	return 0;
+-}
+diff --git a/configs/mcm-imx8m-mini_defconfig b/configs/mcm-imx8m-mini_defconfig
+index 971e1ec982..e0e4f86329 100644
+--- a/configs/mcm-imx8m-mini_defconfig
++++ b/configs/mcm-imx8m-mini_defconfig
+@@ -77,10 +77,7 @@ CONFIG_PINCTRL_IMX8M=y
+ CONFIG_DM_REGULATOR=y
+ CONFIG_DM_REGULATOR_FIXED=y
+ CONFIG_DM_REGULATOR_GPIO=y
+-CONFIG_DM_RESET=y
+ CONFIG_MXC_UART=y
+-CONFIG_SYSRESET=y
+-CONFIG_SYSRESET_PSCI=y
+ CONFIG_DM_THERMAL=y
+ CONFIG_NXP_TMU=y
+ CONFIG_USB=y
+-- 
+2.11.0
+

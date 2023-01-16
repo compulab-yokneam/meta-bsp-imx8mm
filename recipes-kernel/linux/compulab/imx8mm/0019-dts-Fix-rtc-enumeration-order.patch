@@ -1,0 +1,38 @@
+From 26640560a8b66f000b4973e204c9c9ff60de78dc Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 27 Sep 2020 14:25:48 +0300
+Subject: [PATCH 19/82] dts:Fix rtc enumeration order
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+index 8f2e0599abf0..159a7d5e7146 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi
+@@ -13,6 +13,11 @@
+  */
+ 
+ / {
++	aliases {
++		rtc0 = &rtc0;
++		rtc1 = &snvs_rtc;
++	};
++
+ 	chosen {
+ 		bootargs = "console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200";
+ 		stdout-patch = &uart3;
+@@ -434,7 +439,7 @@
+ 	pinctrl-0 = <&pinctrl_i2c2>;
+ 	status = "okay";
+ 
+-	rtc@69 {
++	rtc0: rtc@69 {
+ 		compatible = "ab1805";
+ 		reg = <0x69>;
+ 		pagesize = <16>;
+-- 
+2.17.1
+

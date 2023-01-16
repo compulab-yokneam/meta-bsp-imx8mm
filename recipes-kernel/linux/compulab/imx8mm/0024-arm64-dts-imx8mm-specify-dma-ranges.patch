@@ -1,7 +1,7 @@
-From 381bb955de4f1247342f031b07f12a0588202448 Mon Sep 17 00:00:00 2001
+From 8f9a2f8ccd18e8321d30a4b2c5e9de0e6eaad8f4 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 5 Nov 2020 17:54:36 +0200
-Subject: [PATCH 24/35] arm64: dts: imx8mm: specify dma-ranges
+Subject: [PATCH 24/82] arm64: dts: imx8mm: specify dma-ranges
 
 Apply the same dma range limitations as on the i.MX8MQ.
 Original commit: ca04fed4706dfb13cb964be2dc294054ed0efb6b
@@ -27,5 +27,5 @@ index 159a7d5e7146..d27d0833120a 100644
  		#address-cells = <2>;
  		#size-cells = <2>;
 -- 
-2.11.0
+2.17.1
 

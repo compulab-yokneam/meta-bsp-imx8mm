@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+
+  <remote fetch="https://github.com/compulab-yokneam" name="compulab"/>
+
+  <project name="meta-compulab" remote="compulab" revision="7498005c2ba66f2fe62d4e526f236c1e5b32da92" path="sources/meta-compulab"/>
+  <project name="meta-compulab-bsp" remote="compulab" revision="c8512a5d3a61fae46e26ca5817aaf088850c80f7" path="sources/meta-compulab-bsp"/>
+  <project name="meta-bsp-imx8mm" remote="compulab" revision="rel_imx_5.15.32-2.0.0-experimental" path="sources/meta-bsp-imx8mm" >
+    <linkfile src="tools/compulab-setup-env" dest="compulab-setup-env" />
+  </project>
+
+</manifest>

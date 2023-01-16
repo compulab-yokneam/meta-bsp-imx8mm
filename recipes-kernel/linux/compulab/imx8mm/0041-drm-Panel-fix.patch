@@ -1,12 +1,12 @@
-From 98f5716c39a28561344db7c78d31bb6da70276e7 Mon Sep 17 00:00:00 2001
+From c9827933ce9b687499d29ffe2922ddab03150655 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 26 Aug 2021 00:29:48 +0300
-Subject: [PATCH 41/41] drm: Panel fix
+Subject: [PATCH 41/82] drm: Panel fix
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm64/configs/ucm-imx8m-mini_defconfig    |   2 +-
- drivers/gpu/drm/panel/panel-startek-ili9881c.c | 145 ++++++++++++-------------
+ arch/arm64/configs/ucm-imx8m-mini_defconfig   |   2 +-
+ .../gpu/drm/panel/panel-startek-ili9881c.c    | 145 +++++++++---------
  2 files changed, 71 insertions(+), 76 deletions(-)
 
 diff --git a/arch/arm64/configs/ucm-imx8m-mini_defconfig b/arch/arm64/configs/ucm-imx8m-mini_defconfig
@@ -300,5 +300,5 @@ index f832d055be4e..f66a24e8f055 100644
  };
  MODULE_DEVICE_TABLE(of, ili9881c_of_match);
 -- 
-2.11.0
+2.17.1
 

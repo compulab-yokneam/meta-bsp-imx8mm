@@ -1,0 +1,69 @@
+From f883f4b9684b99d51b6081dd722ca1a9079920ae Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 24 Feb 2021 15:06:16 +0200
+Subject: [PATCH 090/126] cm-imx8m-mini: config: Enable startek-ili9881c
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ configs/mcm-imx8m-mini_defconfig | 5 +++++
+ configs/ucm-imx8m-mini_defconfig | 7 ++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/configs/mcm-imx8m-mini_defconfig b/configs/mcm-imx8m-mini_defconfig
+index cf388e99a5..a54442424e 100644
+--- a/configs/mcm-imx8m-mini_defconfig
++++ b/configs/mcm-imx8m-mini_defconfig
+@@ -60,6 +60,7 @@ CONFIG_SYSCON=y
+ CONFIG_CLK_COMPOSITE_CCF=y
+ CONFIG_CLK_IMX8MM=y
+ CONFIG_MXC_GPIO=y
++CONFIG_DM_PCA953X=y
+ CONFIG_DM_I2C=y
+ CONFIG_SYS_I2C_MXC=y
+ CONFIG_DM_MMC=y
+@@ -92,6 +93,10 @@ CONFIG_SDP_LOADADDR=0x40400000
+ CONFIG_USB_GADGET_DOWNLOAD=y
+ CONFIG_USB_HOST_ETHER=y
+ CONFIG_USB_ETHER_ASIX88179=y
++CONFIG_DM_VIDEO=y
++CONFIG_SYS_WHITE_ON_BLACK=y
++CONFIG_VIDEO_LCD_STARTEK_ILI9881C=y
++CONFIG_VIDEO_IMX_SEC_DSI=y
+ CONFIG_EXT4_WRITE=y
+ CONFIG_FAT_WRITE=y
+ CONFIG_OF_LIBFDT_OVERLAY=y
+diff --git a/configs/ucm-imx8m-mini_defconfig b/configs/ucm-imx8m-mini_defconfig
+index 9fb020d256..9abb9bfd7c 100644
+--- a/configs/ucm-imx8m-mini_defconfig
++++ b/configs/ucm-imx8m-mini_defconfig
+@@ -45,7 +45,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_CACHE=y
+-CONFIG_CMD_REGULATOR=
++CONFIG_CMD_REGULATOR=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_EXT4=y
+ CONFIG_CMD_FAT=y
+@@ -61,6 +61,7 @@ CONFIG_SYSCON=y
+ CONFIG_CLK_COMPOSITE_CCF=y
+ CONFIG_CLK_IMX8MM=y
+ CONFIG_MXC_GPIO=y
++CONFIG_DM_PCA953X=y
+ CONFIG_DM_I2C=y
+ CONFIG_SYS_I2C_MXC=y
+ CONFIG_DM_MMC=y
+@@ -93,6 +94,10 @@ CONFIG_SDP_LOADADDR=0x40400000
+ CONFIG_USB_GADGET_DOWNLOAD=y
+ CONFIG_USB_HOST_ETHER=y
+ CONFIG_USB_ETHER_ASIX88179=y
++CONFIG_DM_VIDEO=y
++CONFIG_SYS_WHITE_ON_BLACK=y
++CONFIG_VIDEO_LCD_STARTEK_ILI9881C=y
++CONFIG_VIDEO_IMX_SEC_DSI=y
+ CONFIG_EXT4_WRITE=y
+ CONFIG_FAT_WRITE=y
+ CONFIG_OF_LIBFDT_OVERLAY=y
+-- 
+2.11.0
+

@@ -1,0 +1,35 @@
+From a34afbc2b6d8fc51fb9b9474972caad3255ad41f Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Wed, 12 May 2021 12:15:14 +0300
+Subject: [PATCH 66/82] iot-gate-imx8: integrate the USB to Ethernet drivers in
+ the kernel image
+
+Integrate the drivers in the kernel image to enable NFS with the USB to
+Ethernet converters.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 9a1e8cce708a..6efd30ed6b6a 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -272,11 +272,11 @@ CONFIG_USB_PEGASUS=m
+ CONFIG_USB_RTL8150=m
+ CONFIG_USB_RTL8152=m
+ CONFIG_USB_LAN78XX=m
+-CONFIG_USB_USBNET=m
++CONFIG_USB_USBNET=y
+ CONFIG_USB_NET_DM9601=m
+ CONFIG_USB_NET_SR9800=m
+ CONFIG_USB_NET_SMSC75XX=m
+-CONFIG_USB_NET_SMSC95XX=m
++CONFIG_USB_NET_SMSC95XX=y
+ CONFIG_USB_NET_PLUSB=m
+ CONFIG_USB_NET_MCS7830=m
+ CONFIG_USB_NET_QMI_WWAN=m
+-- 
+2.17.1
+

@@ -1,4 +1,4 @@
-do_install_append() {
+do_install:append() {
     local SSHDCONF=${D}${sysconfdir}/ssh/sshd_config
 
     if [ -f ${SSHDCONF} ]; then

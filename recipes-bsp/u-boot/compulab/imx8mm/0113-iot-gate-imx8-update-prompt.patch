@@ -1,0 +1,22 @@
+From 70e1dffa05d26cfcdae6a1aaa068c50e21537a48 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 9 Dec 2021 11:52:26 +0200
+Subject: [PATCH 113/126] iot-gate-imx8: update prompt
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ configs/iot-gate-imx8.config | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/iot-gate-imx8.config b/configs/iot-gate-imx8.config
+index cd722b89cf..22d8f731e6 100644
+--- a/configs/iot-gate-imx8.config
++++ b/configs/iot-gate-imx8.config
+@@ -14,3 +14,4 @@ CONFIG_LED=n
+ CONFIG_LED_GPIO=n
+ CONFIG_CMD_PCA953X=y
+ CONFIG_DM_PCA953X=y
++CONFIG_SYS_PROMPT="IOT-GATE-iMX8 => "
+-- 
+2.11.0
+

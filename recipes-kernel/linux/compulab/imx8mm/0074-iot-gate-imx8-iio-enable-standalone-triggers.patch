@@ -1,0 +1,33 @@
+From 38cfd2262c26f6cc54466441e83b394fa8b40168 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Wed, 3 Nov 2021 10:43:10 +0200
+Subject: [PATCH 74/82] iot-gate-imx8: iio: enable standalone triggers
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 2b062d7963de..946d802d559c 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -642,8 +642,15 @@ CONFIG_SOC_TI=y
+ CONFIG_EXTCON_USB_GPIO=y
+ CONFIG_MEMORY=y
+ CONFIG_IIO=y
++CONFIG_IIO_BUFFER=y
++CONFIG_IIO_TRIGGERED_BUFFER=m
++CONFIG_IIO_SW_TRIGGER=m
+ CONFIG_IMX8QXP_ADC=y
+ CONFIG_MAX11108=m
++CONFIG_IIO_HRTIMER_TRIGGER=m
++CONFIG_IIO_INTERRUPT_TRIGGER=m
++CONFIG_IIO_TIGHTLOOP_TRIGGER=m
++CONFIG_IIO_SYSFS_TRIGGER=m
+ CONFIG_PWM=y
+ CONFIG_PWM_IMX27=y
+ CONFIG_RESET_IMX7=y
+-- 
+2.17.1
+

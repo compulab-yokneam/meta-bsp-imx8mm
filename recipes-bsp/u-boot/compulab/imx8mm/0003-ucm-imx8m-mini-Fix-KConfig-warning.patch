@@ -1,7 +1,7 @@
-From 5dabb2f3f0d1814c111ff4c6edd2a88360b88948 Mon Sep 17 00:00:00 2001
+From 665396af251f6eec00d0ece435f120a75ea3e621 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 13 Feb 2019 08:56:03 +0200
-Subject: [PATCH 03/91] ucm-imx8m-mini: Fix KConfig warning
+Subject: [PATCH 003/126] ucm-imx8m-mini: Fix KConfig warning
 
 The following compilation warning is generated:
 choice value used outside its choice group
@@ -84,5 +84,5 @@ index 6d9cccdbcb..34f7683d2d 100644
  	ddr_init();
  #endif
 -- 
-2.17.1
+2.11.0
 

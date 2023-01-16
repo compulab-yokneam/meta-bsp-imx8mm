@@ -1,7 +1,7 @@
 require u-boot-compulab.inc
 require u-boot-compulab-env.inc
 
-do_configure_prepend () {
+do_configure:prepend () {
 	# Merge common defconfig with specific fraggment to get specific defconfig
 	local CONFDIR=configs
 	cd ${S}

@@ -1,12 +1,12 @@
-From 191feb9ba6cd656f2f8c8c56749e204ca5aab4f6 Mon Sep 17 00:00:00 2001
+From 6bcfe6007bc66837010335c9048fc593677f68a2 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 26 Mar 2019 10:36:45 +0200
-Subject: [PATCH 13/91] ucm-imx8m-mini: ddr: Validate new setting
+Subject: [PATCH 013/126] ucm-imx8m-mini: ddr: Validate new setting
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---
- board/compulab/ucm-imx8m-mini/ddr/ddr_init.c  | 23 +++--
- .../ucm-imx8m-mini/ddr/ddrphy_train.c         | 96 +++++++++----------
+ board/compulab/ucm-imx8m-mini/ddr/ddr_init.c     | 23 +++---
+ board/compulab/ucm-imx8m-mini/ddr/ddrphy_train.c | 96 ++++++++++++------------
  2 files changed, 62 insertions(+), 57 deletions(-)
 
 diff --git a/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c b/board/compulab/ucm-imx8m-mini/ddr/ddr_init.c
@@ -324,5 +324,5 @@ index 8116069dfb..e4577e0a21 100644
 +}
 \ No newline at end of file
 -- 
-2.17.1
+2.11.0
 

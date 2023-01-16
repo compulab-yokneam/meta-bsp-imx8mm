@@ -1,7 +1,7 @@
-From fa158dafefdcb52d8e10e8d6711fe90b759df091 Mon Sep 17 00:00:00 2001
+From 3d914d55d3fa43b8ca1f1d16473cf33e5917061c Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 16 Jun 2020 15:45:22 +0300
-Subject: [PATCH 35/91] Fix storages numeration order
+Subject: [PATCH 035/126] Fix storages numeration order
 
 Make u-boot enumerate storages in the same order as previous versions (2018.03)
 
@@ -36,5 +36,5 @@ index 3d8be3a09a..b191e87755 100644
  		compatible = "regulator-fixed";
  		regulator-name = "VSD_3V3";
 -- 
-2.17.1
+2.11.0
 

@@ -1,7 +1,7 @@
-From 17c8e369aaf449e624c40eda88e184856c5e3875 Mon Sep 17 00:00:00 2001
+From 56cc0e465092c676b1f5d1401454bad06e316277 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sat, 31 Aug 2019 20:20:34 +0300
-Subject: [PATCH 26/91] env: Change boot sequence
+Subject: [PATCH 026/126] env: Change boot sequence
 
 Boot commands have been refactored to make them uniform and simplify a boot
 sequence edition.
@@ -12,7 +12,7 @@ if not, a pair of files Image + default DTB.
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- include/configs/ucm-imx8m-mini.h | 55 ++++++++++++++++----------------
+ include/configs/ucm-imx8m-mini.h | 55 ++++++++++++++++++++--------------------
  1 file changed, 28 insertions(+), 27 deletions(-)
 
 diff --git a/include/configs/ucm-imx8m-mini.h b/include/configs/ucm-imx8m-mini.h
@@ -99,5 +99,5 @@ index 7bbd0e73f9..e9e3b2cb1c 100644
  /* Link Definitions */
  #define CONFIG_LOADADDR			0x40480000
 -- 
-2.17.1
+2.11.0
 

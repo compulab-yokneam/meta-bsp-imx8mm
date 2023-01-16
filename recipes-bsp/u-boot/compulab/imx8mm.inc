@@ -1,4 +1,5 @@
-SRC_URI_append = " \
+
+SRC_URI:append = " \
 	file://0001-ucm-imx8m-mini-Add-basic-support.patch \
 	file://0002-ucm-imx8m-mini-update-CPU-model-printed-parameters.patch \
 	file://0003-ucm-imx8m-mini-Fix-KConfig-warning.patch \
@@ -50,58 +51,81 @@ SRC_URI_append = " \
 	file://0049-mcm-imx8m-mini-dts-Enable-usbotg2-in-host-mode.patch \
 	file://0050-mcm-imx8m-mini-config-Remove-unused-stuff.patch \
 	file://0051-mcm-imx8m-mini-Remove-dram_init_banksize-and-get_eff.patch \
-	file://0052-imx8m-soc-Don-t-reduce-the-memory-amount-by-the-opte.patch \
-	file://0053-mcm-imx8m-mini-Move-tcm-to-plat-imx8mm.patch \
-	file://0054-mcm-imx8m-mini-Refactor-spl-code.patch \
-	file://0055-ucm-imx8m-mini-Refactor-the-code-for-2020.04.patch \
-	file://0056-cpl-imx8m-mini-Set-LOCALVERSION-intead-of-EXTRAVERSI.patch \
-	file://0057-cpl-imx8m-mini-Refactor-.h-configs.patch \
-	file://0058-cpl-imx8m-mini-Refactor-.dts.patch \
-	file://0059-iot-gate-imx8-Add-basic-support.patch \
-	file://0060-mcm-imx8m-mini-config-Update-env-size-offest.patch \
-	file://0061-imx8m-mini-env-config-Update-size-offset-value.patch \
-	file://0062-imx8-eeprom-Move-to-the-imx8-platform-independent-fo.patch \
-	file://0063-imx8-eeprom-Remove-duplicated-code.patch \
-	file://0064-imx8mm-plat-Add-the-common-board-file-for-imx8mm-SoC.patch \
-	file://0065-imx8m-mini-Refactor-the-usdhc2.patch \
-	file://0066-mcm-imx8m-mini-reset-Refactor-the-reset.patch \
-	file://0067-imx8m-mini-ddr-Change-the-memory-presets-order.patch \
-	file://0068-imx8m-mini-env-Fix-getopt_long-parameters-string.patch \
-	file://0069-ucm-imx8m-mini-Fix-reset.patch \
-	file://0070-imx8m-mini-spl-Add-__weak-board_fit_config_name_matc.patch \
-	file://0071-mcm-imx8m-mini-spl-Add-board_fit_config_name_match.patch \
-	file://0072-imx8m-mini-u-boot-Add-__weak-uboot_board_private_ini.patch \
-	file://0073-mcm-imx8m-mini-u-boot-Add-uboot_board_private_init.patch \
-	file://0074-Add-ddr_init-return-handling.patch \
-	file://0075-spl-Enable-Kingston-DRAM-support.patch \
-	file://0076-Add-show_suite-function.patch \
-	file://0077-Clean-debug-printout.patch \
-	file://0078-imx8m-ddr-Add-Nanya-2G-2400-MTS-support.patch \
-	file://0079-ucm-imx8m-mini-Enable-status-LED-and-cmd-led.patch \
-	file://0080-mcm-and-ucm-Enable-status-LED-for-both-platforms.patch \
-	file://0081-Enable-env-address-export-via-FDT.patch \
-	file://0082-fw_utils-Enable-actual-env-address-readout.patch \
-	file://0083-SPL-Disable-fake-memsize-report.patch \
-	file://0084-fdt-Add-export-SoM-data-via-FDT.patch \
-	file://0085-board-minor-cleaninig.patch \
-	file://0086-rtc-Disable-bus-when-powered-from-battery.patch \
-	file://0087-fdt-Add-export-of-base-board-data-via-FDT.patch \
-	file://0088-spl-ddr-Enable-DDR-ID-0x1060008.patch \
-	file://0089-drivers-video-Add-startek-ili9881c-panel-driver.patch \
-	file://0090-cpl-imx8m-mini-Enable-startek-ili9881c-panel-support.patch \
-	file://0091-cm-imx8m-mini-config-Enable-startek-ili9881c.patch \
-	file://0092-Migration-to-5.10.35.patch \
-	file://0093-Fix-enable_cache.patch \
-	file://0094-Fix-mmc_autodetect.patch \
-	file://0095-config-Enable-video.patch \
-	file://0096-readout-some-cleannig.patch \
-	file://0097-mmc-Fix-mmc_switch-workflow-issue.patch \
-	file://0098-defconfig-Break-down-to-common-and-specific-parts.patch \
-	file://0099-spl-lpddr-training-size-optimisation.patch \
-	file://0100-spl-Add-SDP-support.patch \
-	file://0101-spl-Enable-Samsung-4G-DRAM-0x01061010.patch \
-	file://0102-Enable-DDR-Alliance-1G-0x01050008.patch \
-	file://0103-make-Add-wrapper-for-compound-config.patch \
-	file://0104-net-Enable-phy-Realtek-RTL8211E.patch \
-	file://0105-LOCALVERSION-2.2.1-1.1.1.patch \
+	file://0052-mcm-imx8m-mini-Move-tcm-to-plat-imx8mm.patch \
+	file://0053-mcm-imx8m-mini-Refactor-spl-code.patch \
+	file://0054-ucm-imx8m-mini-Refactor-the-code-for-2020.04.patch \
+	file://0055-cpl-imx8m-mini-Set-LOCALVERSION-intead-of-EXTRAVERSI.patch \
+	file://0056-cpl-imx8m-mini-Refactor-.h-configs.patch \
+	file://0057-cpl-imx8m-mini-Refactor-.dts.patch \
+	file://0058-iot-gate-imx8-Add-basic-support.patch \
+	file://0059-mcm-imx8m-mini-config-Update-env-size-offest.patch \
+	file://0060-imx8m-mini-env-config-Update-size-offset-value.patch \
+	file://0061-imx8-eeprom-Move-to-the-imx8-platform-independent-fo.patch \
+	file://0062-imx8-eeprom-Remove-duplicated-code.patch \
+	file://0063-imx8mm-plat-Add-the-common-board-file-for-imx8mm-SoC.patch \
+	file://0064-imx8m-mini-Refactor-the-usdhc2.patch \
+	file://0065-mcm-imx8m-mini-reset-Refactor-the-reset.patch \
+	file://0066-imx8m-mini-ddr-Change-the-memory-presets-order.patch \
+	file://0067-imx8m-mini-env-Fix-getopt_long-parameters-string.patch \
+	file://0068-ucm-imx8m-mini-Fix-reset.patch \
+	file://0069-imx8m-mini-spl-Add-__weak-board_fit_config_name_matc.patch \
+	file://0070-mcm-imx8m-mini-spl-Add-board_fit_config_name_match.patch \
+	file://0071-imx8m-mini-u-boot-Add-__weak-uboot_board_private_ini.patch \
+	file://0072-mcm-imx8m-mini-u-boot-Add-uboot_board_private_init.patch \
+	file://0073-Add-ddr_init-return-handling.patch \
+	file://0074-spl-Enable-Kingston-DRAM-support.patch \
+	file://0075-Add-show_suite-function.patch \
+	file://0076-Clean-debug-printout.patch \
+	file://0077-imx8m-ddr-Add-Nanya-2G-2400-MTS-support.patch \
+	file://0078-ucm-imx8m-mini-Enable-status-LED-and-cmd-led.patch \
+	file://0079-mcm-and-ucm-Enable-status-LED-for-both-platforms.patch \
+	file://0080-Enable-env-address-export-via-FDT.patch \
+	file://0081-fw_utils-Enable-actual-env-address-readout.patch \
+	file://0082-SPL-Disable-fake-memsize-report.patch \
+	file://0083-fdt-Add-export-SoM-data-via-FDT.patch \
+	file://0084-board-minor-cleaninig.patch \
+	file://0085-rtc-Disable-bus-when-powered-from-battery.patch \
+	file://0086-fdt-Add-export-of-base-board-data-via-FDT.patch \
+	file://0087-spl-ddr-Enable-DDR-ID-0x1060008.patch \
+	file://0088-drivers-video-Add-startek-ili9881c-panel-driver.patch \
+	file://0089-cpl-imx8m-mini-Enable-startek-ili9881c-panel-support.patch \
+	file://0090-cm-imx8m-mini-config-Enable-startek-ili9881c.patch \
+	file://0091-Migration-to-5.10.35.patch \
+	file://0092-Fix-mmc_autodetect.patch \
+	file://0093-config-Enable-video.patch \
+	file://0094-mmc-Fix-mmc_switch-workflow-issue.patch \
+	file://0095-defconfig-Break-down-to-common-and-specific-parts.patch \
+	file://0096-spl-lpddr-training-size-optimisation.patch \
+	file://0097-spl-Add-SDP-support.patch \
+	file://0098-spl-Enable-Samsung-4G-DRAM-0x01061010.patch \
+	file://0099-Enable-DDR-Alliance-1G-0x01050008.patch \
+	file://0100-make-Add-wrapper-for-compound-config.patch \
+	file://0102-defconfig-Enable-EFI_LOADER.patch \
+	file://0103-core-Add-EPFNOSUPPORT-handeler.patch \
+	file://0104-cpl-imx8m-mini-dts-remove-unrelevant-sections.patch \
+	file://0105-iot-gate-imx8-remove-driver-reset-functions.patch \
+	file://0106-iot-gate-imx8-dts-set-MMC1-voltage-to-1.8V.patch \
+	file://0107-iot-gate-imx8-usb-VBUS-enable-fix.patch \
+	file://0108-imx8mm-enable-global-functions-implementation-in-sub.patch \
+	file://0109-iot-gate-imx8-RS485-232-selection.patch \
+	file://0110-iot-gate-imx8-add-extension-board-support.patch \
+	file://0111-iot-gate-imx8-update-boot-sequence.patch \
+	file://0112-iot-gate-imx8-prevent-network-interfaces-rename.patch \
+	file://0113-iot-gate-imx8-update-prompt.patch \
+	file://0114-imx8mm-enable-prompt-update-in-sub-projects.patch \
+	file://0115-iot-gate-imx8-hide-temperature-message.patch \
+	file://0116-iot-gate-imx8-fix-UART1-mode-GPIO.patch \
+	file://0117-iot-gate-imx8-add-support-for-the-IE-TPM-module.patch \
+	file://0118-iot-gate-imx8-add-support-for-the-IE-POE-extension-b.patch \
+	file://0119-iot-gate-imx8-update-support-for-the-IE-TPM-module.patch \
+	file://0120-iot-gate-imx8-add-support-for-the-IE-CL420-module.patch \
+	file://0121-iot-gate-imx8-add-support-for-the-POEv2-module.patch \
+	file://0122-iot-gate-imx8-enable-USB-to-Ethernet-driver-SMSC-LAN.patch \
+	file://0123-cmd-eeprom-fix-disregarding-of-the-i2c_bus-parameter.patch \
+	file://0124-Enable-SoC-info-export-via-fdt.patch \
+	file://0125-imx8mm-net-enable-phy-Realtek-RTL8211E.patch \
+	file://0126-iot-gate-imx8-release-2020.04-iot-gate-imx8-3.0.patch \
 "
+ 
+#	For U-Boot build outside of Yocto
+#	file://0101-compulab-imx8mm-Add-binman-support.patch

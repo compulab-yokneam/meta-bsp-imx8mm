@@ -1,0 +1,122 @@
+From ece5bd09e9bf6224bb1fa71127132b92b4b1146c Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Thu, 8 Oct 2020 20:33:08 +0300
+Subject: [PATCH 080/126] Enable env address export via FDT
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/common/mmc.c              |  2 ++
+ board/compulab/plat/imx8mm/board/board.c | 47 ++++++++++++++++++++++++++++----
+ 2 files changed, 44 insertions(+), 5 deletions(-)
+
+diff --git a/board/compulab/common/mmc.c b/board/compulab/common/mmc.c
+index 52b15ab5f3..9d6bf38282 100644
+--- a/board/compulab/common/mmc.c
++++ b/board/compulab/common/mmc.c
+@@ -48,4 +48,6 @@ void board_late_mmc_env_init(void)
+ 
+ 	sprintf(cmd, "mmc dev %d", dev_no);
+ 	run_command(cmd, 0);
++
++	return;
+ }
+diff --git a/board/compulab/plat/imx8mm/board/board.c b/board/compulab/plat/imx8mm/board/board.c
+index 58bcefbd82..f3565ec77d 100644
+--- a/board/compulab/plat/imx8mm/board/board.c
++++ b/board/compulab/plat/imx8mm/board/board.c
+@@ -34,6 +34,9 @@
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
++static int env_dev = -1;
++static int env_part= -1;
++
+ #ifdef CONFIG_BOARD_POSTCLK_INIT
+ int board_postclk_init(void)
+ {
+@@ -70,8 +73,30 @@ ulong board_get_usable_ram_top(ulong total_size)
+ }
+ 
+ #ifdef CONFIG_OF_BOARD_SETUP
++static int fdt_set_env_addr(void *blob, bd_t *bd)
++{
++	char tmp[32];
++	int nodeoff = fdt_add_subnode(blob, 0, "fw_env");
++	if(0 > nodeoff)
++		return nodeoff;
++
++	fdt_setprop(blob, nodeoff, "env_off", tmp, sprintf(tmp, "0x%x", CONFIG_ENV_OFFSET));
++	fdt_setprop(blob, nodeoff, "env_size", tmp, sprintf(tmp, "0x%x", CONFIG_ENV_SIZE));
++	if(0 < env_dev) {
++		switch(env_part) {
++		case 1 ... 2:
++			fdt_setprop(blob, nodeoff, "env_dev", tmp, sprintf(tmp, "/dev/mmcblk%iboot%i", env_dev, env_part - 1));
++			break;
++		default:
++			fdt_setprop(blob, nodeoff, "env_dev", tmp, sprintf(tmp, "/dev/mmcblk%i", env_dev));
++			break;
++		}
++	}
++}
++
+ int ft_board_setup(void *blob, bd_t *bd)
+ {
++	fdt_set_env_addr(blob, bd);
+ 	return 0;
+ }
+ #endif
+@@ -217,27 +242,32 @@ int board_mmc_get_env_dev(int devno)
+ 	return devno;
+ }
+ 
+-static int _mmc_get_env_part(void)
++static int _mmc_get_env_part(struct mmc *mmc)
+ {
+ 	const ulong user_env_part = env_get_hex("env_part", ULONG_MAX);
+ 	if (user_env_part != ULONG_MAX) {
+ 		printf("User Environment part# is (%lu)\n", user_env_part);
+ 		return (int)user_env_part;
+ 	}
+-	return CONFIG_SYS_MMC_ENV_PART;
++
++	return EXT_CSD_EXTRACT_BOOT_PART(mmc->part_config);
+ }
+ 
+ uint mmc_get_env_part(struct mmc *mmc)
+ {
+-	if (mmc->part_support)
+-	    return _mmc_get_env_part();
+-
++	if (mmc->part_support && mmc->part_config != MMCPART_NOAVAILABLE) {
++		uint partno = _mmc_get_env_part(mmc);
++		env_part = partno;
++		return partno;
++	}
+ 	return 0;
+ }
+ 
+ static void board_bootdev_init(void)
+ {
+ 	u32 bootdev = get_boot_device();
++	struct mmc *mmc;
++
+ 	switch (bootdev) {
+ 	case MMC3_BOOT:
+ 		bootdev = 2;
+@@ -249,6 +279,13 @@ static void board_bootdev_init(void)
+ 		env_set("bootdev", NULL);
+ 		return;
+ 	}
++
++	env_dev = bootdev;
++
++	mmc = find_mmc_device(bootdev);
++	if (mmc && mmc->part_support && mmc->part_config != MMCPART_NOAVAILABLE)
++		env_part = EXT_CSD_EXTRACT_BOOT_PART(mmc->part_config);
++
+ 	env_set_ulong("bootdev", bootdev);
+ }
+ 
+-- 
+2.11.0
+

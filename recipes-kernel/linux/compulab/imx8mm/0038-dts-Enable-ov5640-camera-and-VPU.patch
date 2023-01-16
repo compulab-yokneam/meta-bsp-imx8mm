@@ -1,12 +1,12 @@
-From 4fed89aa2a815c2f1db821dc349ba84f592133ad Mon Sep 17 00:00:00 2001
+From f6c4bb5bee5c26ac482bc78ad90464f7ed59cd49 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 27 Apr 2021 00:25:17 +0300
-Subject: [PATCH 38/38] dts: Enable ov5640 camera and VPU
+Subject: [PATCH 38/82] dts: Enable ov5640 camera and VPU
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi | 58 ++++++++++++++++++++++
- arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi   | 12 +++++
+ .../boot/dts/compulab/sb-ucm-imx8-rev2.dtsi   | 58 +++++++++++++++++++
+ .../boot/dts/compulab/ucm-imx8m-mini.dtsi     | 12 ++++
  2 files changed, 70 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
@@ -109,5 +109,5 @@ index a596f87bbefb..91af4e6c5295 100644
  	dr_mode = "otg";
  	hnp-disable;
 -- 
-2.11.0
+2.17.1
 

@@ -1,0 +1,39 @@
+From e752fb5b7a8f227c8b18076d631d48225e712e1f Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 9 Dec 2021 12:09:26 +0200
+Subject: [PATCH 115/126] iot-gate-imx8: hide temperature message
+
+The temperature message is generated during the U-Boot boot.
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm/mach-imx/cpu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-imx/cpu.c b/arch/arm/mach-imx/cpu.c
+index 7fd58af068..334807db8d 100644
+--- a/arch/arm/mach-imx/cpu.c
++++ b/arch/arm/mach-imx/cpu.c
+@@ -210,7 +210,8 @@ int print_cpuinfo(void)
+ 
+ 	cpurev = get_cpu_rev();
+ 
+-#if defined(CONFIG_IMX_THERMAL) || defined(CONFIG_IMX_TMU)
++#if	!defined(CONFIG_TARGET_IOT_GATE_IMX8) && \
++	(defined(CONFIG_IMX_THERMAL) || defined(CONFIG_NXP_TMU))
+ 	struct udevice *thermal_dev;
+ 	int cpu_tmp, minc, maxc, ret;
+ 
+@@ -233,7 +234,8 @@ int print_cpuinfo(void)
+ 		mxc_get_clock(MXC_ARM_CLK) / 1000000);
+ #endif
+ 
+-#if defined(CONFIG_IMX_THERMAL) || defined(CONFIG_IMX_TMU)
++#if	!defined(CONFIG_TARGET_IOT_GATE_IMX8) && \
++	(defined(CONFIG_IMX_THERMAL) || defined(CONFIG_NXP_TMU))
+ 	puts("CPU:   ");
+ 	switch (get_cpu_temp_grade(&minc, &maxc)) {
+ 	case TEMP_AUTOMOTIVE:
+-- 
+2.11.0
+
