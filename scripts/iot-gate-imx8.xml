@@ -5,7 +5,7 @@
 
   <remote fetch="https://github.com/compulab-yokneam" name="compulab"/>
 
-  <project name="meta-compulab" remote="compulab" revision="b4badbdfceeb2161bf48b7cf9893eb69e4d8b2a8" path="sources/meta-compulab"/>
+  <project name="meta-compulab" remote="compulab" revision="503534591fbec9c649d2c8cc706fe09dd7f5bdf8" path="sources/meta-compulab"/>
   <project name="meta-compulab-bsp" remote="compulab" revision="31ff1aa4a4df0295744ddb66956565f59862a980" path="sources/meta-compulab-bsp"/>
   <project name="meta-bsp-imx8mm" remote="compulab" revision="refs/tags/iot-gate-imx8_r3.1" path="sources/meta-bsp-imx8mm" >
     <linkfile src="tools/compulab-setup-env" dest="compulab-setup-env" />
