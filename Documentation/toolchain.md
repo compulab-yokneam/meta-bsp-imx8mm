@@ -2,18 +2,19 @@
 
 * Downlaod the Linaro compiler:
 <pre>
+export GCC_ARM=gcc-arm-11.2-2022.02-x86_64-aarch64-none-linux-gnu
 cd ~/Downloads
-wget https://developer.arm.com/-/media/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu.tar.xz
+wget https://developer.arm.com/-/media/Files/downloads/gnu/11.2-2022.02/binrel/${GCC_ARM}.tar.xz
 </pre>
 
 * Install it:
 <pre>
-sudo tar -C /opt -xf gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu.tar.xz
+sudo tar -C /opt -xf ${GCC_ARM}.tar.xz
 </pre>
 
 * Set environment variables:
 <pre>
 export ARCH=arm64
-export CROSS_COMPILE=/opt/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-
+export CROSS_COMPILE=/opt/${GCC_ARM}/bin/aarch64-none-linux-gnu-
 </pre>
 
