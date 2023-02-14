@@ -125,7 +125,8 @@ SRC_URI_append = " \
 	file://0124-Enable-SoC-info-export-via-fdt.patch \
 	file://0125-imx8mm-net-enable-phy-Realtek-RTL8211E.patch \
 	file://0126-iot-gate-imx8-release-2020.04-iot-gate-imx8-3.0.patch \
+	file://0127-eth-phy-Turn-off-clk-125M.patch \
+	file://0128-u-boot-localversion-3.1.3.patch \
 "
- 
 #	For U-Boot build outside of Yocto
 #	file://0101-compulab-imx8mm-Add-binman-support.patch
