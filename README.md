@@ -1,5 +1,6 @@
-# Developer snapshot
-# Please do not try this at home
+# Development branch
+# Only for development purpose
+# NOT intended for production
 
 export COMPULAB_MACHINE=ucm-imx8m-mini
 export LREPO=imx_5.15.32-2.0.0-compulab.xml
@@ -10,5 +11,3 @@ repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-li
 mkdir -p .repo/local_manifests
 wget --directory-prefix .repo/local_manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/${CLB_RELEASE}/scripts/${LREPO}
 repo sync
-
-
