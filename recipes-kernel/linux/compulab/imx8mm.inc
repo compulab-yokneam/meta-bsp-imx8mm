@@ -64,5 +64,7 @@ SRC_URI_append = " \
 	file://0062-can-dev-Move-device-back-to-init-netns-on-owning-net.patch \
 	file://0063-iot-gate-imx8-can-enable-Broadcast-Manager-CAN-Proto.patch \
 	file://0064-iot-gate-imx8-release-2.5.patch \
+	file://0065-ucm-imx8m-mini-dts-phy-eliminate-excessive-reset.patch \
+	file://0066-iot-gate-imx8-release-2.5.1.patch \
 	file://defconfig \
 "

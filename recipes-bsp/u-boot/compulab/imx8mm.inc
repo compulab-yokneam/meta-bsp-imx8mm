@@ -111,4 +111,6 @@ SRC_URI_append = " \
 	file://0109-iot-gate-imx8-add-support-for-the-POEv2-module.patch \
 	file://0110-iot-gate-imx8-enable-USB-to-Ethernet-driver-SMSC-LAN.patch \
 	file://0111-release-2020.04-iot-gate-imx8-2.4.patch \
+	file://0112-imx8mm-net-enable-phy-Realtek-RTL8211E.patch \
+	file://0113-release-2020.04-iot-gate-imx8-2.5.1.patch \
 "
