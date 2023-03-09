@@ -1,5 +1,4 @@
-
-SRC_URI:append = " \
+SRC_URI:append = "  \
 	file://0001-ucm-imx8m-mini-Add-basic-support.patch \
 	file://0002-ucm-imx8m-mini-update-CPU-model-printed-parameters.patch \
 	file://0003-ucm-imx8m-mini-Fix-KConfig-warning.patch \
@@ -125,7 +124,9 @@ SRC_URI:append = " \
 	file://0124-Enable-SoC-info-export-via-fdt.patch \
 	file://0125-imx8mm-net-enable-phy-Realtek-RTL8211E.patch \
 	file://0126-iot-gate-imx8-release-2020.04-iot-gate-imx8-3.0.patch \
-"
- 
-#	For U-Boot build outside of Yocto
-#	file://0101-compulab-imx8mm-Add-binman-support.patch
+	file://cl_setenv \
+" \
+  \
+#	For U-Boot build outside of Yocto \
+#	file://0101-compulab-imx8mm-Add-binman-support.patch \
+ \
