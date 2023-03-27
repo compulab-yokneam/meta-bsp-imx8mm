@@ -1,4 +1,4 @@
-SUMMARY = "CompuLab Linux Kernel for ucm-imx8m-plus SOM"
+SUMMARY = "CompuLab Linux Kernel for ucm-imx8m-mini SOM"
 
 inherit kernel-yocto kernel fsl-kernel-localversion fsl-vivante-kernel-driver-handler
 
