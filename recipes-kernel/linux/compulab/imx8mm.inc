@@ -86,5 +86,8 @@ SRC_URI_append = " \
 	file://0085-dts-Fix-usb-power-supply-reset.patch \
 	file://0086-dts-Correct-thermal-thresholds.patch \
 	file://0087-dts-defconfig-Fix-cpufreq-sysfs-attr-disappearance.patch \
+	file://0088-net-smsc95-Fix-phy-issue.patch \
+	file://0089-iot-gate-imx8-release-3.1.4.patch \
 	file://defconfig \
 "
+
