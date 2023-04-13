@@ -5,7 +5,7 @@ Supported CompuLab machines:
 
 ## Setup Yocto Environment
 
-* Install the `reop` utility:
+* Install the `repo` utility:
 ```
 mkdir ~/bin
 curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
