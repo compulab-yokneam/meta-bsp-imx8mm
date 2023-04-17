@@ -1,7 +1,7 @@
-From e7b86ace39b9816e3ccf14f56c921fb6b08a18d0 Mon Sep 17 00:00:00 2001
+From e5b8b99ae77e42661d2e3496d3fecba213245905 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Fri, 13 Aug 2021 23:54:10 +0300
-Subject: [PATCH 09/82] eeprom: Add w25q16 support
+Subject: [PATCH 09/89] eeprom: Add w25q16 support
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

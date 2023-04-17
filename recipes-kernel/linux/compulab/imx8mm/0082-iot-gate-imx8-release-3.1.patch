@@ -1,0 +1,23 @@
+From e8a8097ca3ab038f7da30bf444612fa3df657629 Mon Sep 17 00:00:00 2001
+From: Uri Mashiach <uri.mashiach@compulab.co.il>
+Date: Thu, 19 May 2022 18:38:58 +0300
+Subject: [PATCH 82/89] iot-gate-imx8: release 3.1
+
+Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 55630f0bcf3d..060cec89025a 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-iot-gate-imx8-3.0"
++CONFIG_LOCALVERSION="-iot-gate-imx8-3.1"
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+ CONFIG_NO_HZ_IDLE=y
+-- 
+2.17.1
+

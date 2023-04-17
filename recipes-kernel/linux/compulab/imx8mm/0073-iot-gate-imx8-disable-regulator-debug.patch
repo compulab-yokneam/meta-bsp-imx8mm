@@ -1,7 +1,7 @@
-From f572227e85b30f09d45b5fab59ab755ede41b930 Mon Sep 17 00:00:00 2001
+From 28ab16770fd7f798ef7565ff909f43a0f53f89fd Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 2 Nov 2021 15:34:40 +0200
-Subject: [PATCH 73/82] iot-gate-imx8: disable regulator debug
+Subject: [PATCH 73/89] iot-gate-imx8: disable regulator debug
 
 The regulator debug messages are disabled.
 

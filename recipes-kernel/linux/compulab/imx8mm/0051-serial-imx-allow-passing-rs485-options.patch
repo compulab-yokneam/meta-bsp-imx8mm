@@ -1,7 +1,7 @@
-From d166dfce24f3e5038208973dd41e4878dc14f48b Mon Sep 17 00:00:00 2001
+From 488ca776c5e30e7ba04e57513dbd7cbd691c6054 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 16 Jan 2023 16:46:02 +0200
-Subject: [PATCH 51/51] serial: imx: allow passing rs485 options
+Subject: [PATCH 51/89] serial: imx: allow passing rs485 options
 
 According to Documentation/devicetree/bindings/serial/rs485.txt
 the "linux,rs485-enabled-at-boot-time" and "rs485-rx-during-tx" can be

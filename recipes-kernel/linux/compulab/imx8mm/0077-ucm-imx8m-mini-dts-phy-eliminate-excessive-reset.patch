@@ -1,11 +1,11 @@
-From 1b8f7846c022c88de85d8ae27033f79590d8e2db Mon Sep 17 00:00:00 2001
+From 98b98f0dfecb091abfb375577add75ec247f3a67 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-Date: Sun, 15 Jan 2023 23:42:26 +0200
-Subject: [PATCH 77/82] ucm-imx8m-mini: dts:phy: eliminate excessive reset
+Date: Mon, 7 Mar 2022 17:02:32 +0200
+Subject: [PATCH 77/89] ucm-imx8m-mini: dts:phy: eliminate excessive reset
 
 The eth phy is tuned on u-boot, however the reset at Linux boot cleans
-all the tuning and makes the phy inoperable. Eliminate the reset at
-Linux boot so as to preserve the phy tuned.
+all the tuning and makes the phy inoperable.
+Eliminate the reset at Linux boot so as to preserve the phy tuned.
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

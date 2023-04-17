@@ -1,7 +1,7 @@
-From 6fa9059657c3c582974181dee7d5675ed8148d83 Mon Sep 17 00:00:00 2001
+From 40dd816b307c553c66909f4dad74aeb47126c624 Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Mon, 16 Nov 2020 16:43:07 +0200
-Subject: [PATCH 26/82] ucm-imx8m-mini: dts: Fix usdhc1 node descriptor
+Subject: [PATCH 26/89] ucm-imx8m-mini: dts: Fix usdhc1 node descriptor
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
 ---

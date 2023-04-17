@@ -1,7 +1,7 @@
-From 7e9f28b1d87d2ed7e0ff5a80c5992368b8382db8 Mon Sep 17 00:00:00 2001
+From 728181a80c467fb821e1b05207681d4695c77936 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 22 Apr 2021 00:14:19 +0300
-Subject: [PATCH 31/82] ucm-imx8m-mini: config: Add brcm firmware to kernel
+Subject: [PATCH 31/89] ucm-imx8m-mini: config: Add brcm firmware to kernel
  build
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>

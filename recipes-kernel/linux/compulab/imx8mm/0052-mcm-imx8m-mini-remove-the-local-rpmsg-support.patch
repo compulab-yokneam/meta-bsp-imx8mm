@@ -1,7 +1,7 @@
-From 0e4164f1c484e4771c45b5faf5518e420fb1a85c Mon Sep 17 00:00:00 2001
+From 01eac3468b0c6ae3362d3c0521e57626e67b54cd Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 5 Jan 2022 19:46:31 +0200
-Subject: [PATCH 52/82] mcm-imx8m-mini: remove the local rpmsg support
+Subject: [PATCH 52/89] mcm-imx8m-mini: remove the local rpmsg support
 
 Remove the local rpmsg support, in order to comply with the following
 commit:

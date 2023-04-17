@@ -1,7 +1,7 @@
-From 243127656dab1102cc91f4069fc07f30bbaba8b0 Mon Sep 17 00:00:00 2001
+From 898dc09807d151bbe0e2e52213aa840e8ef3814f Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 8 Jun 2021 10:48:13 +0300
-Subject: [PATCH 71/82] iot-gate-imx8: can: enable Broadcast Manager CAN
+Subject: [PATCH 71/89] iot-gate-imx8: can: enable Broadcast Manager CAN
  Protocol
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>

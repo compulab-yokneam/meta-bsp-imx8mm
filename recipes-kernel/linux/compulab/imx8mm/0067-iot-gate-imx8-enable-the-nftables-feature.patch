@@ -1,7 +1,7 @@
-From 09534d7fb8d56b7d1b428d5acdb9d84ff0f0c036 Mon Sep 17 00:00:00 2001
+From 4883dee51a6e36ffbb6181ff31adc998e47706dc Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 12 May 2021 17:33:37 +0300
-Subject: [PATCH 67/82] iot-gate-imx8: enable the nftables feature
+Subject: [PATCH 67/89] iot-gate-imx8: enable the nftables feature
 
 The nftables feature is required for firewalls.
 

@@ -1,7 +1,7 @@
-From 2087769e3474ba169a8fdbc92328e920266a51d6 Mon Sep 17 00:00:00 2001
+From 96f4e12153046a0f5efce6e13ec43865d985cece Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 24 Jan 2021 15:58:13 +0200
-Subject: [PATCH 62/82] iot-gate-imx8: add support for the IE-CL420 module
+Subject: [PATCH 62/89] iot-gate-imx8: add support for the IE-CL420 module
 
 The IE-CL420 implements one channel ADC.
 

@@ -1,7 +1,7 @@
-From 577d379a0652d40eb5b83cba79b82d02c664dc09 Mon Sep 17 00:00:00 2001
+From c2517577eb4e994fdded489dcfc5a370905887ec Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 13 Sep 2021 01:03:00 +0300
-Subject: [PATCH 45/82] dtb: Add mcm device trees
+Subject: [PATCH 45/89] dtb: Add mcm device trees
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

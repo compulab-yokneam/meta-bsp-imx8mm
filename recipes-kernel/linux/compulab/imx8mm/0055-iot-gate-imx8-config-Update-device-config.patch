@@ -1,7 +1,7 @@
-From 3c5044623c529dc991d1cf0e09fc9a1ad18696ad Mon Sep 17 00:00:00 2001
+From 1aef800605b361719a7e18add56a8175a43a9f1f Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 10 Nov 2020 14:43:36 +0200
-Subject: [PATCH 55/82] iot-gate-imx8: config: Update device config
+Subject: [PATCH 55/89] iot-gate-imx8: config: Update device config
 
 1) CONFIG_FW_LOADER_USER_HELPER -- disable
 2) CONFIG_PPP_FILTER -- enable

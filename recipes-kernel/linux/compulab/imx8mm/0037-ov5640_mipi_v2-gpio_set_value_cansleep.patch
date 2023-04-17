@@ -1,7 +1,7 @@
-From 71c79ae5b8e8f1d8ab55ec8425d5f3d76c99ccb1 Mon Sep 17 00:00:00 2001
+From 0a151a1604f206d2a5d6b2e24f841ecad596907e Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 27 Apr 2021 00:24:42 +0300
-Subject: [PATCH 37/82] ov5640_mipi_v2: gpio_set_value_cansleep
+Subject: [PATCH 37/89] ov5640_mipi_v2: gpio_set_value_cansleep
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

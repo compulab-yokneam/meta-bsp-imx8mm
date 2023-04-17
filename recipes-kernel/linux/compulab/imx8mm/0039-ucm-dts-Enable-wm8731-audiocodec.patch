@@ -1,7 +1,7 @@
-From f67b80f01c0f478a289661b3f357c1a72763a354 Mon Sep 17 00:00:00 2001
+From 9ec1c84277fb4e24ed79aa0a8b3c07c8678f56f0 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 28 Apr 2021 00:26:12 +0300
-Subject: [PATCH 39/82] ucm:dts:Enable wm8731 audiocodec
+Subject: [PATCH 39/89] ucm:dts:Enable wm8731 audiocodec
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

@@ -1,7 +1,7 @@
-From 2268439f279f264f1eac9cf04fbec253347e2f37 Mon Sep 17 00:00:00 2001
+From 16db3aec74c0df715f93de7f18a7aef2e9a0dc3f Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Sun, 30 May 2021 16:32:38 +0300
-Subject: [PATCH 70/82] iot-gate-imx8: enable setting the RTC time based on NTP
+Subject: [PATCH 70/89] iot-gate-imx8: enable setting the RTC time based on NTP
 
 Update the RTC time after NTP synchronization.
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>

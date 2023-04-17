@@ -1,7 +1,7 @@
-From 38cfd2262c26f6cc54466441e83b394fa8b40168 Mon Sep 17 00:00:00 2001
+From 1a41bc75b7c0c6df1f8b98881ad9c9114962fbe1 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 3 Nov 2021 10:43:10 +0200
-Subject: [PATCH 74/82] iot-gate-imx8: iio: enable standalone triggers
+Subject: [PATCH 74/89] iot-gate-imx8: iio: enable standalone triggers
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 ---

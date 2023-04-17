@@ -1,7 +1,7 @@
-From f701da425b0ca366ee9df4140bb370b61fd2510e Mon Sep 17 00:00:00 2001
+From f983a102123dda0b4265b6e37fba2501222cb407 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Thu, 22 Apr 2021 00:08:07 +0300
-Subject: [PATCH 29/82] ucm-imx8m-mini: dts: Enable brcm,bcm4330-bt
+Subject: [PATCH 29/89] ucm-imx8m-mini: dts: Enable brcm,bcm4330-bt
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

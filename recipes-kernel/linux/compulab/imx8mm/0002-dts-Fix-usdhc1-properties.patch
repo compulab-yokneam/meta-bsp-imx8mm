@@ -1,7 +1,7 @@
-From 973aa9e40b47e10b7133af9bca1f00856f9d3d67 Mon Sep 17 00:00:00 2001
+From bdc7e4ce070c55e2539365e517830c7bddae3f85 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 21 Jun 2020 20:50:45 +0300
-Subject: [PATCH 02/82] dts: Fix usdhc1 properties
+Subject: [PATCH 02/89] dts: Fix usdhc1 properties
 
 Define WP GPIO, add no-1-8-v.
 

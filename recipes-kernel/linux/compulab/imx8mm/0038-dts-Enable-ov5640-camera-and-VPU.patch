@@ -1,7 +1,7 @@
-From f6c4bb5bee5c26ac482bc78ad90464f7ed59cd49 Mon Sep 17 00:00:00 2001
+From 0b33d05aabe97f5910294d43bb3779860928969c Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Tue, 27 Apr 2021 00:25:17 +0300
-Subject: [PATCH 38/82] dts: Enable ov5640 camera and VPU
+Subject: [PATCH 38/89] dts: Enable ov5640 camera and VPU
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

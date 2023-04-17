@@ -1,7 +1,7 @@
-From be3587e0f9dd28b49fac59b38562fc47d0899037 Mon Sep 17 00:00:00 2001
+From 55ddf4d0e6a5243eb7fe485f710d54b7a94f1bc5 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 10 May 2022 12:19:59 +0300
-Subject: [PATCH 79/82] iot-gate-imx8: dts: M4 support update
+Subject: [PATCH 79/89] iot-gate-imx8: dts: M4 support update
 
 Adjust the M4 device tree to NXP SDK lf-5.10.72-2.2.0.
 

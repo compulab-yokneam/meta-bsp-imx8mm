@@ -1,7 +1,7 @@
-From 727aa5e6cae90fac07cb04b3ed348606dd7db6a6 Mon Sep 17 00:00:00 2001
+From 332e356b0788e35cfc281842b68c02dddbc937ca Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 21 Nov 2022 16:33:49 +0200
-Subject: [PATCH 82/82] dts: Fix usb power supply reset
+Subject: [PATCH 83/89] dts: Fix usb power supply reset
 
 USB power supply reset, performed by GPIO4 IO28 causes a noticeable
 glitch on USB power lead. The property regulator-boot-on allows to avoid

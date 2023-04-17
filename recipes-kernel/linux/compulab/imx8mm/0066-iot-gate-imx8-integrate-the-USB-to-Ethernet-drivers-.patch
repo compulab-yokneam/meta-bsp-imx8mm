@@ -1,7 +1,7 @@
-From a34afbc2b6d8fc51fb9b9474972caad3255ad41f Mon Sep 17 00:00:00 2001
+From 5a7dda3ba99f367791c15ae9f30e88e158cd212b Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 12 May 2021 12:15:14 +0300
-Subject: [PATCH 66/82] iot-gate-imx8: integrate the USB to Ethernet drivers in
+Subject: [PATCH 66/89] iot-gate-imx8: integrate the USB to Ethernet drivers in
  the kernel image
 
 Integrate the drivers in the kernel image to enable NFS with the USB to

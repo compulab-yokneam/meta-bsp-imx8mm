@@ -1,7 +1,7 @@
-From 1a99603999a9e9d0f24ece73f1c260080d89c05a Mon Sep 17 00:00:00 2001
+From de77dc5982c1a5dea27b17b746cfe35ee163be02 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Tue, 10 May 2022 12:57:31 +0300
-Subject: [PATCH 80/82] iot-gate-imx8: M4 support update
+Subject: [PATCH 81/89] iot-gate-imx8: M4 support update
 
 Update the kernel configuration, in order to support M4 in NXP SDK
 lf-5.10.72-2.2.0.

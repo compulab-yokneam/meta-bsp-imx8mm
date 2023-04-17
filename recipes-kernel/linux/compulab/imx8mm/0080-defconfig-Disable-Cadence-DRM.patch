@@ -1,7 +1,7 @@
-From a7cdce04420198602d298068682cb9803ba1b3e5 Mon Sep 17 00:00:00 2001
+From 3bcf075801badb6052ed5336f16b08724fde935d Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Mon, 16 Jan 2023 20:21:23 +0200
-Subject: [PATCH 83/83] defconfig: Disable Cadence DRM
+Subject: [PATCH 80/89] defconfig: Disable Cadence DRM
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---

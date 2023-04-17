@@ -1,7 +1,7 @@
-From 05759ce85d56c7aaf36ed200ae018ae093a278ea Mon Sep 17 00:00:00 2001
+From 3a186325aa6b4bc9ad0580d97961ce574c6f5455 Mon Sep 17 00:00:00 2001
 From: Uri Mashiach <uri.mashiach@compulab.co.il>
 Date: Wed, 5 Jan 2022 13:26:44 +0200
-Subject: [PATCH 75/82] iot-gate-imx8: add Moby compatibility
+Subject: [PATCH 75/89] iot-gate-imx8: add Moby compatibility
 
 The Moby container engine is required for Microsoft Azure.
 Update the kernel configurations to support the Moby container engine.

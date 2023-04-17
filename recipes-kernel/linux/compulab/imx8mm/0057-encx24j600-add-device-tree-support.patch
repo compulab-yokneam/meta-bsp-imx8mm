@@ -1,16 +1,16 @@
-From 050ffd09f51fe3f6a664194d585d13a78c999248 Mon Sep 17 00:00:00 2001
+From 82ce9129fe44a44c97f172162525c26d129faac7 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 15 Jan 2023 23:36:34 +0200
-Subject: [PATCH 57/82] encx24j600: add device tree support
+Subject: [PATCH 57/89] encx24j600: add device tree support
 
 Signed-off-by: Uri Mashiach <uri.mashiach@compulab.co.il>
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
- drivers/net/ethernet/microchip/encx24j600.c | 26 ++++++++++-----------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/microchip/encx24j600.c | 24 ++++++++++-----------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/ethernet/microchip/encx24j600.c b/drivers/net/ethernet/microchip/encx24j600.c
-index 0bc6b3176fbf..d6d2a9b2306e 100644
+index 0bc6b3176fbf..f63e7321514c 100644
 --- a/drivers/net/ethernet/microchip/encx24j600.c
 +++ b/drivers/net/ethernet/microchip/encx24j600.c
 @@ -345,7 +345,7 @@ static int encx24j600_receive_packet(struct encx24j600_priv *priv,
@@ -59,12 +59,11 @@ index 0bc6b3176fbf..d6d2a9b2306e 100644
  		.name	= DRV_NAME,
 -		.owner	= THIS_MODULE,
 -		.bus	= &spi_bus_type,
--	},
++		.of_match_table = encx24j600_dt_ids,
+ 	},
 -	.probe		= encx24j600_spi_probe,
 -	.remove		= encx24j600_spi_remove,
 -	.id_table	= encx24j600_spi_id_table,
-+		.of_match_table = encx24j600_dt_ids,
-+ 	},
 +	.probe		= encx24j600_probe,
 +	.remove		= encx24j600_remove,
  };

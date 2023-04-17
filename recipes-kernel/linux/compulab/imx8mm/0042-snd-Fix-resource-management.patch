@@ -1,7 +1,7 @@
-From 5a215714bf637fa0e9d871fd1210a028bec6d7d9 Mon Sep 17 00:00:00 2001
+From 9e4a517bdf843cf2d88bae57cb6c78c74230109e Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 15 Jan 2023 22:59:11 +0200
-Subject: [PATCH 42/82] snd: Fix resource management
+Subject: [PATCH 42/89] snd: Fix resource management
 
 Allocation of the memory and creating sysfs group shall be undone in
 case of error. This prevents memory leak; also this rids system log of

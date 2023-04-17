@@ -1,7 +1,7 @@
-From 54b2d50aba41f3dccaeb57f265bf3913d108e8a9 Mon Sep 17 00:00:00 2001
+From 9d9106e02a1886f01b6c9d54c4a4c7264ef7aaf0 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Sun, 15 Jan 2023 22:37:37 +0200
-Subject: [PATCH 14/82] rtc:abx80x: Enable SQW output
+Subject: [PATCH 14/89] rtc:abx80x: Enable SQW output
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
