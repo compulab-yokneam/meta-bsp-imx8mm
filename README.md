@@ -27,7 +27,7 @@ repo sync
 |ucm-imx8m-mini|```export COMPULAB_MACHINE=ucm-imx8m-mini```
 
 ## 2.2 Run CompuLab Linux Yocto Project setup
-|NOTE|Refer to the [NXP Readme](https://github.com/nxp-imx/meta-imx/tree/README?h=hardknott-5.10.35-2.0.0) for details about how to select a correct backend & distro.|
+|NOTE|Refer to the [NXP Readme](https://github.com/nxp-imx/meta-imx/blob/hardknott-5.10.35-2.0.0/README) for details about how to select a correct backend & distro.|
 |---|---|
 ```
 MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build
