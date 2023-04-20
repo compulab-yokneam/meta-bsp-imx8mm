@@ -27,7 +27,7 @@ export CLB_RELEASE=iot-gate-imx8_r3.1
 
 ### Prepare NXP BSP
 ```
-repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-linux-hardknott -m imx-5.10.72-2.2.1.xml
+repo init -u https://github.com/nxp-imx/imx-manifest.git -b imx-linux-hardknott -m imx-5.10.72-2.2.1.xml
 ```
 
 ### Download CompuLab meta layer
