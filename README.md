@@ -32,7 +32,7 @@ repo init -u https://github.com/nxp-imx/imx-manifest.git -b imx-linux-hardknott 
 
 ### Download CompuLab meta layer
 ```
-wget --directory-prefix .repo/manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/${CLB_RELEASE}/scripts/${LREPO}
+wget --directory-prefix .repo/manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/github/iot-gate-imx8_r3.1/scripts/iot-gate-imx8.xml
 ```
 
 ### Get entire BSP tree
