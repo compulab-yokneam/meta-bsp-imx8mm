@@ -1,16 +1,15 @@
-From fe40eee60e75c4eba63c237102b4771cfdcc0173 Mon Sep 17 00:00:00 2001
+From 0ab1e2d1488026c65074c09324f381ffaecca27b Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 Date: Wed, 21 Jul 2021 01:13:33 +0300
-Subject: [PATCH] imx8mm: Set IMX_BOOT_UART_BASE for CompuLab boards
+Subject: [PATCH 5/5] imx8mm: Set IMX_BOOT_UART_BASE for CompuLab boards
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-
 ---
  plat/imx/imx8m/imx8mm/platform.mk | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/plat/imx/imx8m/imx8mm/platform.mk b/plat/imx/imx8m/imx8mm/platform.mk
-index 22846f289..35f43b838 100644
+index fde4102cd..b0bf8da90 100644
 --- a/plat/imx/imx8m/imx8mm/platform.mk
 +++ b/plat/imx/imx8m/imx8mm/platform.mk
 @@ -62,7 +62,7 @@ $(eval $(call add_define,BL32_BASE))
@@ -22,3 +21,6 @@ index 22846f289..35f43b838 100644
  $(eval $(call add_define,IMX_BOOT_UART_BASE))
  
  ifeq (${SPD},trusty)
+-- 
+2.17.1
+
