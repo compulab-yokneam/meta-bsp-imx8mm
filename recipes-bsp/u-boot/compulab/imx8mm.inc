@@ -105,4 +105,5 @@ SRC_URI_append = " \
 	file://0103-iot-gate-imx8-add-support-for-the-IE-TPM-module.patch \
 	file://0104-iot-gate-imx8-add-support-for-the-IE-POE-extension-b.patch \
 	file://0105-release-2020.04-iot-gate-imx8-2.2.patch \
+	file://0106-imx8mm-net-enable-phy-Realtek-RTL8211E.patch \
 "
