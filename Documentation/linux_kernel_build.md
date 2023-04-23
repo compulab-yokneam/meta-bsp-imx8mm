@@ -33,7 +33,7 @@ export PATCHES=$(pwd)/meta-bsp-imx8mm/recipes-kernel/linux/compulab/imx8mm
 
 ## CompuLab Linux Kernel setup
 <pre>
-git clone -b ${NXP_RELEASE} --single-branch https://source.codeaurora.org/external/imx/linux-imx.git
+git clone -b ${NXP_RELEASE} --single-branch https://github.com/nxp-imx/linux-imx.git
 git -C linux-imx checkout -b linux-compulab 
 git -C linux-imx am ${PATCHES}/*.patch
 </pre>
