@@ -1,0 +1,25 @@
+From 8064f078af053750a4b5414b0715e16fa40a7fb2 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 23 Apr 2023 22:34:12 +0300
+Subject: [PATCH 91/94] defconfig:enable  pl2303 USB-serial
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index fe3dd27b1107..6cfb812bf0a5 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -797,6 +797,7 @@ CONFIG_USB_SERIAL_FTDI_SIO=m
+ CONFIG_USB_SERIAL_GENERIC=y
+ CONFIG_USB_SERIAL=m
+ CONFIG_USB_SERIAL_OPTION=m
++CONFIG_USB_SERIAL_PL2303=m
+ CONFIG_USB_SERIAL_SIMPLE=m
+ CONFIG_USB_SNP_UDC_PLAT=y
+ CONFIG_USB_STORAGE=y
+-- 
+2.17.1
+

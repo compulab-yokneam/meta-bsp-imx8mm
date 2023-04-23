@@ -1,0 +1,25 @@
+From c882019cd46c2b7b6c2ae17ac55857c37b62a794 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 23 Apr 2023 22:49:17 +0300
+Subject: [PATCH 92/94] defconfig:net: enable vxlan
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 6cfb812bf0a5..b54ea8c106c1 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -830,6 +830,7 @@ CONFIG_VIRTIO_NET=y
+ CONFIG_VIRTIO_PCI=y
+ CONFIG_VIRTUALIZATION=y
+ CONFIG_VITESSE_PHY=y
++CONFIG_VXLAN=m
+ CONFIG_VLAN_8021Q_GVRP=y
+ CONFIG_VLAN_8021Q_MVRP=y
+ CONFIG_VLAN_8021Q=y
+-- 
+2.17.1
+

@@ -1,0 +1,38 @@
+From 1a9439357ba450200d7697c527c1c9b350a30f20 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 23 Apr 2023 23:31:35 +0300
+Subject: [PATCH 93/94] defconfig:snd: Enable USB SND
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index b54ea8c106c1..0dcd49ec22e6 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -682,7 +682,20 @@ CONFIG_SND_SOC_SPDIF=m
+ CONFIG_SND_SOC_WM8731=y
+ CONFIG_SND_SOC=y
+ CONFIG_SND_USB_AUDIO=m
++CONFIG_SND_USB_UA101=m
++CONFIG_SND_USB_USX2Y=m
++CONFIG_SND_USB_CAIAQ=m
++CONFIG_SND_USB_CAIAQ_INPUT=y
++CONFIG_SND_USB_US122L=m
++CONFIG_SND_USB_6FIRE=m
++CONFIG_SND_USB_HIFACE=m
++CONFIG_SND_BCD2000=m
+ CONFIG_SND=y
++CONFIG_SND_USB_LINE6=m
++CONFIG_SND_USB_POD=m
++CONFIG_SND_USB_PODHD=m
++CONFIG_SND_USB_TONEPORT=m
++CONFIG_SND_USB_VARIAX=m
+ CONFIG_SOC_BRCMSTB=y
+ CONFIG_SOC_TI=y
+ CONFIG_SOUND=y
+-- 
+2.17.1
+

@@ -1,0 +1,25 @@
+From 2504ee6947ec4263ec39331ebc8a5652531c8d21 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 23 Apr 2023 23:33:51 +0300
+Subject: [PATCH 94/94] defconfig:usb: Enable usbmon
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8_defconfig b/arch/arm64/configs/iot-gate-imx8_defconfig
+index 0dcd49ec22e6..23d775483b04 100644
+--- a/arch/arm64/configs/iot-gate-imx8_defconfig
++++ b/arch/arm64/configs/iot-gate-imx8_defconfig
+@@ -789,6 +789,7 @@ CONFIG_USB_HSIC_USB3503=y
+ CONFIG_USB_ISP1760=y
+ CONFIG_USB_LAN78XX=m
+ CONFIG_USB_MASS_STORAGE=m
++CONFIG_USB_MON=m
+ CONFIG_USB_MUSB_HDRC=y
+ CONFIG_USB_MXS_PHY=y
+ CONFIG_USB_NET_DM9601=m
+-- 
+2.17.1
+

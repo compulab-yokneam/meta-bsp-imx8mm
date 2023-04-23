@@ -88,5 +88,10 @@ SRC_URI:append = " \
 	file://0087-iio-max11108-Fix-name-of-trigger-to-be-allocated.patch \
 	file://0088-iot-gate-imx8-defconfig-Reorder.patch \
 	file://0089-net-smsc95-Fix-phy-issue.patch \
+	file://0090-defconfig-net-can-Enable-j1939.patch \
+	file://0091-defconfig-enable-pl2303-USB-serial.patch \
+	file://0092-defconfig-net-enable-vxlan.patch \
+	file://0093-defconfig-snd-Enable-USB-SND.patch \
+	file://0094-defconfig-usb-Enable-usbmon.patch \
 	file://defconfig \
 "
