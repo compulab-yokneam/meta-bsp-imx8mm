@@ -5,7 +5,7 @@ Supported CompuLab machines:
 
 ## Setup Yocto Environment
 
-* Install the `reop` utility:
+* Install the `repo` utility:
 ```
 mkdir ~/bin
 curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
@@ -17,7 +17,7 @@ PATH=${PATH}:~/bin
 ```
 mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
 ```
-* Set environmet varables:
+* Set environment variables:
 
 ```
 export COMPULAB_MACHINE=iot-gate-imx8
