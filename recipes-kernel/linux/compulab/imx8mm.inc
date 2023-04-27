@@ -89,6 +89,8 @@ SRC_URI_append = " \
 	file://0088-net-smsc95-Fix-phy-issue.patch \
 	file://0089-iot-gate-imx8-release-3.1.4.patch \
 	file://0090-iio-max11108-Fix-name-of-trigger-to-be-allocated.patch \
+	file://0091-defconfig-Enable-Wireguard.patch \
+	file://0092-LOCALVERSION-iot-gate-imx8-3.1.5.patch \
 	file://defconfig \
 "
 
