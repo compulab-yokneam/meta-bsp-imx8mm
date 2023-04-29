@@ -93,5 +93,6 @@ SRC_URI:append = " \
 	file://0092-defconfig-net-enable-vxlan.patch \
 	file://0093-defconfig-snd-Enable-USB-SND.patch \
 	file://0094-defconfig-usb-Enable-usbmon.patch \
+	file://0095-iot-gate-imx8-release-3.2.patch  \
 	file://defconfig \
 "
