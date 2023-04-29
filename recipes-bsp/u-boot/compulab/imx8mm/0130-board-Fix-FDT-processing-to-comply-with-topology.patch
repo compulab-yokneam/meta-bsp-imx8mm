@@ -1,0 +1,292 @@
+From bd6adfb0a71de0b5945c07ef318e5fedf0538a50 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sat, 29 Apr 2023 23:32:14 +0300
+Subject: [PATCH 130/130] board: Fix FDT processing to comply with topology
+
+An updated bus topology has been introduced in the file imx8mm.dtsi by NXP
+The FDT processing procedure has been changed to comply with the
+topology by means of using aliases instead of fixed path lines.
+Some code refactoring performed.
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/iot-gate-imx8/iot-gate-imx8.c | 227 ++++++++-----------
+ 1 file changed, 100 insertions(+), 127 deletions(-)
+
+diff --git a/board/compulab/iot-gate-imx8/iot-gate-imx8.c b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+index ea0b070c82..e61986416c 100644
+--- a/board/compulab/iot-gate-imx8/iot-gate-imx8.c
++++ b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+@@ -197,27 +197,26 @@ int sub_board_late_init(void)
+ }
+ 
+ #ifdef CONFIG_OF_BOARD_SETUP
+-#define IOT_GATE_IMX8_GPIO_S0B0 IMX_GPIO_NR(6, 0) /* Slot ID slot 0 bit 0 */
+-#define IOT_GATE_IMX8_GPIO_S0B1 IMX_GPIO_NR(6, 1) /* Slot ID slot 0 bit 1 */
+-#define IOT_GATE_IMX8_GPIO_S0B2 IMX_GPIO_NR(6, 2) /* Slot ID slot 0 bit 2 */
+-#define IOT_GATE_IMX8_GPIO_S1B0 IMX_GPIO_NR(6, 3) /* Slot ID slot 1 bit 0 */
+-#define IOT_GATE_IMX8_GPIO_S1B1 IMX_GPIO_NR(6, 4) /* Slot ID slot 1 bit 1 */
+-#define IOT_GATE_IMX8_GPIO_S1B2 IMX_GPIO_NR(6, 5) /* Slot ID slot 1 bit 2 */
+-#define IOT_GATE_IMX8_GPIO_S2B0 IMX_GPIO_NR(6, 6) /* Slot ID slot 2 bit 0 */
+-#define IOT_GATE_IMX8_GPIO_S2B1 IMX_GPIO_NR(6, 7) /* Slot ID slot 2 bit 1 */
+-#define IOT_GATE_IMX8_GPIO_S2B2 IMX_GPIO_NR(6, 8) /* Slot ID slot 2 bit 2 */
+-#define IOT_GATE_IMX8_DTB_PATH_UART2 "/soc@0/bus@30800000/serial@30890000"
+-#define IOT_GATE_IMX8_DTB_PATH_UART4 "/soc@0/bus@30800000/serial@30a60000"
+-#define IOT_GATE_IMX8_DTB_PATH_ECSPI2 "/soc@0/bus@30800000/spi@30830000"
+-#define IOT_GATE_IMX8_DTB_PATH_ECSPI3 "/soc@0/bus@30800000/spi@30840000"
+-#define IOT_GATE_IMX8_DTB_PATH_CAN0 "/soc@0/bus@30800000/spi@30830000/can@0"
+-#define IOT_GATE_IMX8_DTB_PATH_CAN1 "/soc@0/bus@30800000/spi@30840000/can@0"
+-#define IOT_GATE_IMX8_DTB_PATH_TPM0 "/soc@0/bus@30800000/spi@30830000/tpm@0"
+-#define IOT_GATE_IMX8_DTB_PATH_TPM1 "/soc@0/bus@30800000/spi@30840000/tpm@0"
+-#define IOT_GATE_IMX8_DTB_PATH_ADC0 "/soc@0/bus@30800000/spi@30830000/adc@0"
+-#define IOT_GATE_IMX8_DTB_PATH_ADC1 "/soc@0/bus@30800000/spi@30840000/adc@0"
+-
+-enum  IOT_GATE_IMX8_CARD_REVISION {
++
++#define IED_SLOT_NUM		3 //Num of slots on IED
++#define IED_BIT_PER_SLOT	3 //Num of bits to detect a plug on an  slot
++char ied_slot_letter[IED_SLOT_NUM] = {'A', 'B', 'C',};
++int ied_gpio_det[IED_SLOT_NUM][IED_BIT_PER_SLOT] = {
++	{IMX_GPIO_NR(6, 0),
++	IMX_GPIO_NR(6, 1),
++	IMX_GPIO_NR(6, 2),},
++	{IMX_GPIO_NR(6, 3),
++	IMX_GPIO_NR(6, 4),
++	IMX_GPIO_NR(6, 5),},
++	{IMX_GPIO_NR(6, 6),
++	IMX_GPIO_NR(6, 7),
++	IMX_GPIO_NR(6, 8),},
++};
++//Slot C has neither SPI nor serial
++int ied_uarts[IED_SLOT_NUM] = {1,3,-1,};
++int ied_spis[IED_SLOT_NUM] = {1,2,-1,};
++
++enum ied_card_code {
+ 	IOT_GATE_IMX8_CARD_ID_EMPTY,	/* card id - uninhabited */
+ 	IOT_GATE_IMX8_CARD_ID_DI4O4,	/* Card ID - IED-DI4O4   */
+ 	IOT_GATE_IMX8_CARD_ID_RS_485,	/* Card ID - IED-RS485   */
+@@ -227,7 +226,8 @@ enum  IOT_GATE_IMX8_CARD_REVISION {
+ 	IOT_GATE_IMX8_CARD_ID_RS_232,	/* Card ID - IED-RS232   */
+ 	IOT_GATE_IMX8_CARD_ID_END,	/* Sentinel   */
+ };
+-char IOT_GATE_IMX8_CARD_DESCR[IOT_GATE_IMX8_CARD_ID_END][16] = {
++// To be printed out:
++char ied_card_descr[IOT_GATE_IMX8_CARD_ID_END][8] = {
+ 	"empty",
+ 	"DI4O4",
+ 	"RS-485",
+@@ -236,6 +236,18 @@ char IOT_GATE_IMX8_CARD_DESCR[IOT_GATE_IMX8_CARD_ID_END][16] = {
+ 	"CL-420",
+ 	"RS-232",
+ };
++// device tree node names:
++char ied_card_name[IOT_GATE_IMX8_CARD_ID_END][8] = {
++	[IOT_GATE_IMX8_CARD_ID_TPM] =	"tpm",
++	[IOT_GATE_IMX8_CARD_ID_CAN] =	"can",
++	[IOT_GATE_IMX8_CARD_ID_CL420] =	"adc",
++};
++
++#define  pr_err_if_any(path, val) \
++	if(0 > val) { \
++		fprintf(stderr, "%s:%i '%s' not found in DTB, err %d\n", 	__func__, __LINE__, path, val); \
++		return -ENOENT; \
++	}
+ 
+ /*
+  * iot_gate_imx8_update_ext_ied()
+@@ -248,118 +260,79 @@ char IOT_GATE_IMX8_CARD_DESCR[IOT_GATE_IMX8_CARD_ID_END][16] = {
+  */
+ static int iot_gate_imx8_update_ext_ied(void *blob)
+ {
+-	enum IOT_GATE_IMX8_CARD_REVISION revision;
++	enum ied_card_code code;
++	int slot, bit;
++	int nodeoffset, err;
++	char alias[16];
+ 
+ 	if (iot_gate_imx8_ext_id != IOT_GATE_EXT_IED)
+ 		return 0;
+ 
+ 	/* ID GPIO initializations */
+-	if (gpio_request(IOT_GATE_IMX8_GPIO_S0B0, "id_s0b0") ||
+-	    gpio_request(IOT_GATE_IMX8_GPIO_S0B1, "id_s0b1") ||
+-	    gpio_request(IOT_GATE_IMX8_GPIO_S0B2, "id_s0b2") ||
+-	    gpio_request(IOT_GATE_IMX8_GPIO_S1B0, "id_s1b0") ||
+-	    gpio_request(IOT_GATE_IMX8_GPIO_S1B1, "id_s1b1") ||
+-	    gpio_request(IOT_GATE_IMX8_GPIO_S1B2, "id_s1b2") ||
+-	    gpio_request(IOT_GATE_IMX8_GPIO_S2B0, "id_s2b0") ||
+-	    gpio_request(IOT_GATE_IMX8_GPIO_S2B1, "id_s2b1") ||
+-	    gpio_request(IOT_GATE_IMX8_GPIO_S2B2, "id_s2b2")) {
+-		printf("%s: ID GPIO request failure\n", __func__);
+-		return 1;
+-	}
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S0B0);
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S0B1);
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S0B2);
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S1B0);
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S1B1);
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S1B2);
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S2B0);
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S2B1);
+-	gpio_direction_input(IOT_GATE_IMX8_GPIO_S2B2);
+-
+-	revision =	gpio_get_value(IOT_GATE_IMX8_GPIO_S0B0)		|
+-			gpio_get_value(IOT_GATE_IMX8_GPIO_S0B1) << 1	|
+-			gpio_get_value(IOT_GATE_IMX8_GPIO_S0B2) << 2;
+-	printf("Slot A:\t");
+-	switch (revision)
+-	{
+-	case IOT_GATE_IMX8_CARD_ID_EMPTY:
+-		break;
+-	case IOT_GATE_IMX8_CARD_ID_RS_485:
+-	case IOT_GATE_IMX8_CARD_ID_RS_232:
+-		do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_UART2, "status",
+-				 "okay", sizeof("okay"), 1);
+-		break;
+-	case IOT_GATE_IMX8_CARD_ID_CAN:
+-	case IOT_GATE_IMX8_CARD_ID_TPM:
+-	case IOT_GATE_IMX8_CARD_ID_CL420:
+-		do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_ECSPI2, "status",
+-				 "okay", sizeof("okay"), 1);
+-		if (revision == IOT_GATE_IMX8_CARD_ID_CAN)
+-			do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_CAN0, "status",
+-					 "okay", sizeof("okay"), 1);
+-		else if (revision == IOT_GATE_IMX8_CARD_ID_TPM)
+-			do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_TPM0, "status",
+-					 "okay", sizeof("okay"), 1);
+-		else if (revision == IOT_GATE_IMX8_CARD_ID_CL420)
+-			do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_ADC0, "status",
+-					 "okay", sizeof("okay"), 1);
+-		break;
+-	default:
+-		printf("%s: invalid slot 0 card ID: %d\n", __func__, revision);
+-		return 1;
+-	}
+-	printf("%s\n", IOT_GATE_IMX8_CARD_DESCR[revision]);
+-
+-	revision =	gpio_get_value(IOT_GATE_IMX8_GPIO_S1B0)		|
+-			gpio_get_value(IOT_GATE_IMX8_GPIO_S1B1) << 1	|
+-			gpio_get_value(IOT_GATE_IMX8_GPIO_S1B2) << 2;
+-	printf("Slot B:\t");
+-	switch (revision)
+-	{
+-	case IOT_GATE_IMX8_CARD_ID_EMPTY:
+-		break;
+-	case IOT_GATE_IMX8_CARD_ID_RS_485:
+-	case IOT_GATE_IMX8_CARD_ID_RS_232:
+-		do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_UART4, "status",
+-				 "okay", sizeof("okay"), 1);
+-		break;
+-	case IOT_GATE_IMX8_CARD_ID_CAN:
+-	case IOT_GATE_IMX8_CARD_ID_TPM:
+-	case IOT_GATE_IMX8_CARD_ID_CL420:
+-		do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_ECSPI3, "status",
+-				 "okay", sizeof("okay"), 1);
+-		if (revision == IOT_GATE_IMX8_CARD_ID_CAN)
+-			do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_CAN1, "status",
+-					 "okay", sizeof("okay"), 1);
+-		else if (revision == IOT_GATE_IMX8_CARD_ID_TPM)
+-			do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_TPM1, "status",
+-					 "okay", sizeof("okay"), 1);
+-		else if (revision == IOT_GATE_IMX8_CARD_ID_CL420)
+-			do_fixup_by_path(blob, IOT_GATE_IMX8_DTB_PATH_ADC1, "status",
+-					 "okay", sizeof("okay"), 1);
+-		break;
+-	default:
+-		printf("%s: invalid slot 1 card ID: %d\n", __func__, revision);
+-		return 1;
++	for (slot = 0; IED_SLOT_NUM > slot; ++slot) {
++		for (bit= 0; IED_BIT_PER_SLOT > bit; ++bit) {
++			char label[16];
++			sprintf(label, "id_s%ib%i", slot, bit);
++			if (gpio_request(ied_gpio_det[slot][bit], label)) {
++				printf("%s:%i ID GPIO %s request failure\n",
++					__func__, __LINE__, label);
++				return -ENOSYS;
++			}
++			else {
++				gpio_direction_input(ied_gpio_det[slot][bit]);
++			}
++		}
+ 	}
+-	printf("%s\n", IOT_GATE_IMX8_CARD_DESCR[revision]);
+-
+-	revision =	gpio_get_value(IOT_GATE_IMX8_GPIO_S2B0)		|
+-			gpio_get_value(IOT_GATE_IMX8_GPIO_S2B1) << 1	|
+-			gpio_get_value(IOT_GATE_IMX8_GPIO_S2B2) << 2;
+-	printf("Slot C:\t");
+-	switch (revision)
+-	{
+-	case IOT_GATE_IMX8_CARD_ID_EMPTY:
+-	case IOT_GATE_IMX8_CARD_ID_DI4O4:
+-		break;
+-	default:
+-		printf("%s: invalid slot 2 card ID: %d\n", __func__, revision);
+-		return 1;
+-	}
+-	printf("%s\n", IOT_GATE_IMX8_CARD_DESCR[revision]);
+ 
++	for (slot = 0; IED_SLOT_NUM > slot; ++slot) {
++
++		for(code=0, bit=0; IED_BIT_PER_SLOT > bit; ++bit)
++			code |= gpio_get_value(ied_gpio_det[slot][bit]) << bit;
++
++		printf("Slot %c: %s(%x)\n", ied_slot_letter[slot], ied_card_descr[code], code);
++	
++		if ('C' == ied_slot_letter[slot]) { // Slot C differs from A and B
++			switch (code)
++			{
++			case IOT_GATE_IMX8_CARD_ID_EMPTY:
++			case IOT_GATE_IMX8_CARD_ID_DI4O4:
++				break;
++			default:
++				goto err_code;
++			}
++			continue;
++		}
++
++		switch (code)
++		{
++		case IOT_GATE_IMX8_CARD_ID_EMPTY:
++			break;
++		case IOT_GATE_IMX8_CARD_ID_RS_485:
++		case IOT_GATE_IMX8_CARD_ID_RS_232:
++			sprintf(alias, "serial%i", ied_uarts[slot]);
++			do_fixup_by_path(blob, alias, "status", "okay", sizeof("okay"), 1);
++			break;
++		case IOT_GATE_IMX8_CARD_ID_CAN:
++		case IOT_GATE_IMX8_CARD_ID_TPM:
++		case IOT_GATE_IMX8_CARD_ID_CL420:
++			sprintf(alias, "spi%i", ied_spis[slot]);
++			nodeoffset = fdt_path_offset(blob, alias);
++			pr_err_if_any(alias, nodeoffset);
++			err = fdt_setprop(blob, nodeoffset, "status", "okay", sizeof("okay"));
++			pr_err_if_any("status", err);
++			nodeoffset = fdt_subnode_offset(blob, nodeoffset, ied_card_name[code]);
++			pr_err_if_any(ied_card_name[code], nodeoffset);
++			err = fdt_setprop(blob, nodeoffset, "status", "okay", sizeof("okay"));
++			pr_err_if_any(ied_spis[slot], err);
++			break;
++		default:
++			goto err_code;
++		}
++	}
+ 	return 0;
++err_code:
++	printf("%s:%i invalid slot %c card ID: %x\n", __func__, __LINE__, ied_slot_letter[slot], code);
++	return -EINVAL;
+ }
+ 
+ #define IOT_GATE_IMX8_DTB_UART1_MODE_GPIO_RS232 {0x29000000,		\
+@@ -375,7 +348,7 @@ static int iot_gate_imx8_update_ext_ied(void *blob)
+ 0xb8010000, 0x20040000, 0xf0040000, 0x04000000,	0x02000000, 0x40010000	\
+ }
+ #define IOT_GATE_IMX8_DTB_PATH_UART1_MODE "/regulator-uart1-mode"
+-#define IOT_GATE_IMX8_DTB_PATH_UART1 "/soc@0/bus@30800000/serial@30860000"
++#define IOT_GATE_IMX8_DTB_PATH_UART1 "serial0"
+ #define IOT_GATE_IMX8_DTB_PATH_PINCTRL_UART1 \
+ "/soc@0/bus@30000000/pinctrl@30330000/sb-iotgimx8/uart1grp"
+ /*
+-- 
+2.17.1
+

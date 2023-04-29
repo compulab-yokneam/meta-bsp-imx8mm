@@ -1,0 +1,50 @@
+From d26b7854cc1c12e93bbe9e2eddaec3b2412ee7c6 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 26 Apr 2023 23:28:09 +0300
+Subject: [PATCH 129/129] fix diagnostics
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/iot-gate-imx8/iot-gate-imx8.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/board/compulab/iot-gate-imx8/iot-gate-imx8.c b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+index fb20f73fdf..59bd682b0d 100644
+--- a/board/compulab/iot-gate-imx8/iot-gate-imx8.c
++++ b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+@@ -109,15 +109,18 @@ static void iot_gate_imx8_detect_ext(void)
+  */
+ static void iot_gate_imx8_select_dtb(void)
+ {
+-	char *env_fdt_file = env_get(IOT_GATE_IMX8_ENV_FDT_FILE);
++	char *fdt_src;
++	const char *env_fdt_file = env_get(IOT_GATE_IMX8_ENV_FDT_FILE);
+ 
+ 	if (env_fdt_file == NULL) {
+-		env_set(IOT_GATE_IMX8_ENV_FDT_FILE,
+-			iot_gate_imx8_dtb[iot_gate_imx8_ext_id]);
+-		printf("DT %s chosen\n", iot_gate_imx8_dtb[iot_gate_imx8_ext_id]);
++		env_fdt_file = iot_gate_imx8_dtb[iot_gate_imx8_ext_id];
++		env_set(IOT_GATE_IMX8_ENV_FDT_FILE, env_fdt_file);
++		fdt_src = "det"; // peripheral determines FDT name
+ 	} else {
+-		printf("DT %s environment\n", iot_gate_imx8_dtb[iot_gate_imx8_ext_id]);
++		fdt_src = "env"; // FDT name is gotten from environment
+ 	}
++
++	printf("FDT[%s]: %s\n", fdt_src, iot_gate_imx8_dtb[iot_gate_imx8_ext_id]);
+ }
+ 
+ static iomux_v3_cfg_t const iot_gate_imx8_ext_ied_pads[] = {
+@@ -225,7 +228,7 @@ enum  IOT_GATE_IMX8_CARD_REVISION {
+ 	IOT_GATE_IMX8_CARD_ID_END,	/* Sentinel   */
+ };
+ char IOT_GATE_IMX8_CARD_DESCR[IOT_GATE_IMX8_CARD_ID_END][16] = {
+-	"not found",
++	"empty",
+ 	"DI4O4",
+ 	"RS-485",
+ 	"TPM",
+-- 
+2.17.1
+

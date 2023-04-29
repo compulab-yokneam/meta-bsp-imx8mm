@@ -126,6 +126,8 @@ SRC_URI:append = "  \
 	file://0126-iot-gate-imx8-release-2020.04-iot-gate-imx8-3.0.patch \
 	file://0127-eth-phy-Turn-off-clk-125M.patch \
 	file://0128-iot-gate-imx8-Improve-diagnostics.patch \
+	file://0129-fix-diagnostics.patch \
+	file://0130-board-Fix-FDT-processing-to-comply-with-topology.patch \
 	file://cl_setenv \
 " 
  
