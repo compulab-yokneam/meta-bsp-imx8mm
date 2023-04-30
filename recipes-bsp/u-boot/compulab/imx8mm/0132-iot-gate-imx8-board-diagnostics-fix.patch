@@ -1,0 +1,31 @@
+From f3a586331f4d4506e018c1687f2e770a8cd9c931 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 30 Apr 2023 22:14:49 +0300
+Subject: [PATCH 132/132] iot-gate-imx8: board: diagnostics fix
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/iot-gate-imx8/iot-gate-imx8.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/board/compulab/iot-gate-imx8/iot-gate-imx8.c b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+index e61986416c..b69cdbff47 100644
+--- a/board/compulab/iot-gate-imx8/iot-gate-imx8.c
++++ b/board/compulab/iot-gate-imx8/iot-gate-imx8.c
+@@ -319,11 +319,11 @@ static int iot_gate_imx8_update_ext_ied(void *blob)
+ 			nodeoffset = fdt_path_offset(blob, alias);
+ 			pr_err_if_any(alias, nodeoffset);
+ 			err = fdt_setprop(blob, nodeoffset, "status", "okay", sizeof("okay"));
+-			pr_err_if_any("status", err);
++			pr_err_if_any("spi:status", err);
+ 			nodeoffset = fdt_subnode_offset(blob, nodeoffset, ied_card_name[code]);
+ 			pr_err_if_any(ied_card_name[code], nodeoffset);
+ 			err = fdt_setprop(blob, nodeoffset, "status", "okay", sizeof("okay"));
+-			pr_err_if_any(ied_spis[slot], err);
++			pr_err_if_any("spi:subnode:status", err);
+ 			break;
+ 		default:
+ 			goto err_code;
+-- 
+2.17.1
+

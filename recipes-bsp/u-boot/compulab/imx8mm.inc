@@ -128,6 +128,8 @@ SRC_URI:append = "  \
 	file://0128-iot-gate-imx8-Improve-diagnostics.patch \
 	file://0129-fix-diagnostics.patch \
 	file://0130-board-Fix-FDT-processing-to-comply-with-topology.patch \
+	file://0131-u-boot-localversion-3.2.patch \
+	file://0132-iot-gate-imx8-board-diagnostics-fix.patch \
 	file://cl_setenv \
 " 
  
