@@ -7,8 +7,7 @@ Rationale:
 NXP CIN
 https://media.digikey.com/pdf/PCNs/NXP/202005006IU01.pdf
 MLK-23275
-https://source.codeaurora.org/external/imx/linux-imx/log/?h=imx_5.4.3_2.0.0&qt=grep&q=MLK-23275
-
+https://github.com/nxp-imx/linux-imx/commit/486172bef45ca93742006b93ee74d7524adbd70d
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
  arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dtsi | 6 +++---
