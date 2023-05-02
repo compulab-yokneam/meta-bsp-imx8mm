@@ -34,18 +34,12 @@ DEFAULT_PREFERENCE = "1"
 KERNEL_VERSION_SANITY_SKIP="1"
 
 # Merged from the bbappend
-FILESEXTRAPATHS:prepend := "${THISDIR}/compulab/${PV}/imx8mm:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/compulab/imx8mm:"
 
 require compulab/imx8mm.inc
 
-do_configure:append() {
-    if [ -z ${SKIP_MACHINE_DEFCONFIG} ];then
-        if [ -z ${KERNEL_CONFIG} ];then
-            oe_runmake ${MACHINE}_defconfig
-        else
-            oe_runmake ${KERNEL_CONFIG}
-        fi
-    fi
+do_configure() {
+    oe_runmake cl-imx8m-mini_defconfig ${MACHINE}.config
 }
 
 do_merge_config () {
@@ -60,7 +54,6 @@ do_merge_config () {
 
 do_compile:prepend() {
     export SOURCE_DATE_EPOCH=$(date +%s)
-    do_merge_config
 }
 
 do_install:append() {
