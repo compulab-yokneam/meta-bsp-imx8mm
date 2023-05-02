@@ -17,7 +17,7 @@ PATH=${PATH}:~/bin
 ```
 mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
 ```
-* Set environmet varables:
+* Set environment variables:
 
 ```
 export COMPULAB_MACHINE=iot-gate-imx8
