@@ -22,7 +22,7 @@ mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
 ```
 export COMPULAB_MACHINE=iot-gate-imx8
 export LREPO=${COMPULAB_MACHINE}.xml
-export CLB_RELEASE=iot-gate-imx8_5.10.72
+export CLB_RELEASE=iot-gate-imx8_r3.1.5
 ```
 
 ### Prepare NXP BSP
