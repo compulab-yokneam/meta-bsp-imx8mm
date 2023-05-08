@@ -95,5 +95,6 @@ SRC_URI:append = " \
 	file://0094-defconfig-usb-Enable-usbmon.patch \
 	file://0095-iot-gate-imx8-release-3.2.patch  \
 	file://0096-delete-monolithe-iotg-defconfig.patch \
+	file://0097-defconfig-Enable-Wireguard.patch \
 	file://defconfig \
 "
