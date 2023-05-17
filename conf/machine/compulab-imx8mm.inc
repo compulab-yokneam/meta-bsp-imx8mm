@@ -36,10 +36,6 @@ MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
 
 DEFAULTTUNE:mx8mm-nxp-bsp = "aarch64"
 
-# PLATFORM_FLAVOR = "mx8mmevk"
-# PLATFORM_FLAVOR:ucm-imx8m-mini = "mx8mmevk"
-# PLATFORM_FLAVOR:mcm-imx8m-mini = "mx8mmevk"
-# PLATFORM_FLAVOR:iot-gate-imx8 = "mx8mmevk"
 # Optee parameters
 OPTEE_BIN_EXT = "8mm"
 OPTEE_PLATFORM_FLAVOR = "mx8mm_cl_iot_gate"
