@@ -96,5 +96,6 @@ SRC_URI:append = " \
 	file://0095-iot-gate-imx8-release-3.2.patch  \
 	file://0096-delete-monolithe-iotg-defconfig.patch \
 	file://0097-defconfig-Enable-Wireguard.patch \
+	file://0098-defconfig-Enable-thermal-driver.patch \
 	file://defconfig \
 "
