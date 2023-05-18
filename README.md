@@ -1,7 +1,3 @@
-# Development branch
-# Only for development purpose
-# NOT intended for production
-
 # Quick Start Guide
 
 Supported CompuLab machines:
@@ -25,7 +21,7 @@ mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
 ```
 export COMPULAB_MACHINE=iot-gate-imx8
 export LREPO=imx_5.15.32-2.0.0-compulab.xml
-export CLB_RELEASE=rel_imx_5.15.32-2.0.0-dev/
+export CLB_RELEASE=rel_imx_5.15.32-2.0.0-stable/
 
 repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-kirkstone -m imx-5.15.32-2.0.0.xml
 

@@ -14,16 +14,16 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.14.bin|
-|CompuLab release|export CPL_RELEASE=${MACHINE}_r3.1|
-|CompuLab branch name|export CPL_BRANCH=lf-5.10.72-2.2.0_${MACHINE}|
-|ATF revision|export ATF=lf-5.10.72-2.2.0|
-|OPTEE revision|export OPTEE=lf-5.10.72-2.2.0|
-|U-Boot revision|export UBOOT=lf-5.10.72-2.2.0|
+|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.16.bin|
+|CompuLab release|export CPL_RELEASE=${MACHINE}_r3.2|
+|CompuLab branch name|export CPL_BRANCH=lf-5.15.32-2.0.0_${MACHINE}|
+|ATF revision|export ATF=lf-5.15.32-2.0.0|
+|OPTEE revision|export OPTEE=lf-5.15.32-2.0.0|
+|U-Boot revision|export UBOOT=lf-5.15.32-2.0.0|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [ARM tool chain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads/9-2-2019-12)
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r3.2/Documentation/toolchain.md)
 * Set environment variables:
 <pre>
 export ARCH=arm64
