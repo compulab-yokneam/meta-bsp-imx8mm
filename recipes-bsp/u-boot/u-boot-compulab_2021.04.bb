@@ -48,3 +48,5 @@ require u-boot-compulab-env.inc
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
+
+COMPATIBLE_MACHINE = "(ucm-imx8m-mini|iot-gate-imx8)"
