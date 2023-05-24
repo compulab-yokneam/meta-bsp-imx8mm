@@ -97,5 +97,7 @@ SRC_URI:append = " \
 	file://0096-delete-monolithe-iotg-defconfig.patch \
 	file://0097-defconfig-Enable-Wireguard.patch \
 	file://0098-defconfig-Enable-thermal-driver.patch \
+	file://0099-defconfig-Enable-sys-class-gpio.patch \
+	file://0100-defconfig-Disable-FB-EFI.patch \
 	file://defconfig \
 "
