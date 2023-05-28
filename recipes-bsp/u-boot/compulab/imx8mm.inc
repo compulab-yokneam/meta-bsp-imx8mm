@@ -130,6 +130,7 @@ SRC_URI:append = "  \
 	file://0130-board-Fix-FDT-processing-to-comply-with-topology.patch \
 	file://0131-u-boot-localversion-3.2.patch \
 	file://0132-iot-gate-imx8-board-diagnostics-fix.patch \
+	file://0133-ucm-mcm-dts-enable-mmc2-SD-card.patch \
 	file://cl_setenv \
 " 
  
