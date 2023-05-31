@@ -17,4 +17,3 @@ IMAGE_BOOT_FILES:append = " boot.update.scr "
 
 HOSTTOOLS += " git-lfs"
 PREFERRED_RPROVIDER:u-boot-fw-utils = "u-boot-fw-utils"
-CL_DEPLOY_MOD = "1"
