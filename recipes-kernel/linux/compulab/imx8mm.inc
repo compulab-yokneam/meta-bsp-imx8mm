@@ -99,5 +99,6 @@ SRC_URI:append = " \
 	file://0098-defconfig-Enable-thermal-driver.patch \
 	file://0099-defconfig-Enable-sys-class-gpio.patch \
 	file://0100-defconfig-Disable-FB-EFI.patch \
+	file://0101-dtb-bluetooth-node-deletion-fix.patch \
 	file://defconfig \
 "
