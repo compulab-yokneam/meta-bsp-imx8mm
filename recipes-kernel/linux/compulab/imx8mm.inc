@@ -101,5 +101,6 @@ SRC_URI:append = " \
 	file://0100-defconfig-Disable-FB-EFI.patch \
 	file://0101-dtb-bluetooth-node-deletion-fix.patch \
 	file://0102-iot-gate-imx8-dtb-Disable-mmc-hs400.patch \
+	file://0103-defconfig-Fix-expert-deps.patch \
 	file://defconfig \
 "
