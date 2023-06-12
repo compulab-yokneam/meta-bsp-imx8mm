@@ -102,5 +102,6 @@ SRC_URI:append = " \
 	file://0101-dtb-bluetooth-node-deletion-fix.patch \
 	file://0102-iot-gate-imx8-dtb-Disable-mmc-hs400.patch \
 	file://0103-defconfig-Fix-expert-deps.patch \
+	file://0104-iot-gate-imx8-release-3.2.1.patch \
 	file://defconfig \
 "

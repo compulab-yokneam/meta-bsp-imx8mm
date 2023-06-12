@@ -1,0 +1,23 @@
+From 39b89a30ebbcfab53168e482a54eb0a700c2ec57 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 7 Jun 2023 20:50:50 +0300
+Subject: [PATCH 104/104] iot-gate-imx8: release 3.2.1
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8.config | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8.config b/arch/arm64/configs/iot-gate-imx8.config
+index b852b18e74c3..f80f319d95cc 100644
+--- a/arch/arm64/configs/iot-gate-imx8.config
++++ b/arch/arm64/configs/iot-gate-imx8.config
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-iot-gate-imx8m-3.2"
++CONFIG_LOCALVERSION="-iot-gate-imx8m-3.2.1"
+ CONFIG_LOCALVERSION_AUTO=n
+ CONFIG_BT_BCM=n
+ CONFIG_BT_HCIBTUSB_BCM=n
+-- 
+2.17.1
+

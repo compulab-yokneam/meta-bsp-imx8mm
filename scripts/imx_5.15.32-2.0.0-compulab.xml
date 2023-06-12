@@ -5,7 +5,7 @@
 
   <project name="meta-compulab" remote="compulab" revision="6316d8ca737f7460ea24d83f3aeec9f8d00b6e8a" path="sources/meta-compulab"/>
   <project name="meta-compulab-bsp" remote="compulab" revision="7f5882eb9bd139e4dde204ffa6b0aa96577b36d0" path="sources/meta-compulab-bsp"/>
-  <project name="meta-bsp-imx8mm" remote="compulab" revision="iot-gate-imx8_r3.2" path="sources/meta-bsp-imx8mm" >
+  <project name="meta-bsp-imx8mm" remote="compulab" revision="iot-gate-imx8_r3.2.1" path="sources/meta-bsp-imx8mm" >
     <linkfile src="tools/compulab-setup-env" dest="compulab-setup-env" />
   </project>
 
