@@ -7,7 +7,7 @@ Supported CompuLab machines:
 # 1 Setup environment
 ## 1.1 Prepare NXP BSP
 ```
-repo init -u git://github.com/nxp-imx/imx-manifest.git -b imx-linux-hardknott -m imx-5.10.35-2.0.0.xml
+repo init -u https://github.com/nxp-imx/imx-manifest.git -b imx-linux-hardknott -m imx-5.10.35-2.0.0.xml
 ```
 ## 1.2 Download CompuLab meta layer
 ```
