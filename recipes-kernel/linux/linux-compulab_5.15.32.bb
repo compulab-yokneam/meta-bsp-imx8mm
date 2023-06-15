@@ -52,12 +52,48 @@ do_merge_config () {
     mv ${S}/${configs}/compulab_defconfig ${S}/${configs}/${MACHINE}_defconfig
 }
 
+FILES:${KERNEL_PACKAGE_NAME}-image:append = " /boot/kernel-${KERNEL_VERSION} /boot/config-${KERNEL_VERSION} "
+
 do_compile:prepend() {
     export SOURCE_DATE_EPOCH=$(date +%s)
 }
 
 do_install:append() {
-    oe_runmake headers_install INSTALL_HDR_PATH=${D}${exec_prefix}/src/linux-${KERNEL_VERSION} ARCH=$ARCH
+    ln -s Image-${KERNEL_VERSION} ${D}/${KERNEL_IMAGEDEST}/kernel-${KERNEL_VERSION}
+    install -m 0644 ${B}/.config ${D}/${KERNEL_IMAGEDEST}/config-${KERNEL_VERSION}
+
+    INSTALL_HDR_PATH=${D}${exec_prefix}/src/linux-headers-${KERNEL_VERSION}
+    INSTALL_MOD_PATH=${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}
+
+    oe_runmake headers_install INSTALL_HDR_PATH=$INSTALL_HDR_PATH ARCH=$ARCH
+    install -m 0644 ${B}/.config ${INSTALL_HDR_PATH}/.config
+
+    (
+        cd ${S}
+        find . arch/$ARCH -maxdepth 1 -name Makefile\*
+        find include scripts -type f -o -type l
+        find arch/$ARCH -name Kbuild.platforms -o -name Platform
+        find $(find arch/$ARCH -name include -o -name scripts -type d) -type f
+    ) > ${WORKDIR}/temp/hdrsrcfiles
+
+    (
+        cd ${B}
+        echo tools/objtool/objtool
+        find arch/$ARCH/include Module.symvers include scripts -type f
+    ) > ${WORKDIR}/temp/hdrobjfiles
+
+	tar -c -f - -C ${S} -T ${WORKDIR}/temp/hdrsrcfiles | tar -xf - -C ${INSTALL_HDR_PATH}
+	tar -c -f - -C ${B} -T ${WORKDIR}/temp/hdrobjfiles | tar -xf - -C ${INSTALL_HDR_PATH}
+
+    (
+        for f in $(find ${INSTALL_HDR_PATH});do
+            file ${f} | awk -F":" '(/ELF.*x86-64/)&&($0="rm -rf "$1)' | sh -x
+        done
+    )
+    chown -R 0:0 ${INSTALL_HDR_PATH}
+
+    install -d 0755 ${INSTALL_MOD_PATH}
+    ln -s /usr/src/linux-headers-${KERNEL_VERSION} ${INSTALL_MOD_PATH}/build
 }
 
 do_kernel_localversion:prepend() {
