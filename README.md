@@ -1,3 +1,6 @@
+# This is an unstable branch
+# For development purposes only!
+
 # Quick Start Guide
 
 Supported CompuLab machines:
