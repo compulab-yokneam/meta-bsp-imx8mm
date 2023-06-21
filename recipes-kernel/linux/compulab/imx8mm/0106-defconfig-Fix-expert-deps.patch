@@ -1,0 +1,63 @@
+From 474f1e696f7eaab6685830b669a37f059f4181b4 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 7 Jun 2023 19:49:31 +0300
+Subject: [PATCH 103/104] defconfig: Fix expert deps
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/cl-imx8m-mini_defconfig | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/cl-imx8m-mini_defconfig b/arch/arm64/configs/cl-imx8m-mini_defconfig
+index ed4987ccf754..81b725e5ae33 100644
+--- a/arch/arm64/configs/cl-imx8m-mini_defconfig
++++ b/arch/arm64/configs/cl-imx8m-mini_defconfig
+@@ -191,6 +191,7 @@ CONFIG_CRYPTO_XTS=m
+ CONFIG_CUSE=m
+ CONFIG_DAX=m
+ CONFIG_DEBUG_FS=y
++CONFIG_DEBUG_MEMORY_INIT=y
+ CONFIG_DEFAULT_SECURITY_DAC=y
+ CONFIG_DEVICE_THERMAL=y
+ CONFIG_DEVTMPFS_MOUNT=y
+@@ -276,6 +277,19 @@ CONFIG_GPIO_PCA953X=y
+ CONFIG_GPIO_PL061=y
+ CONFIG_GPIO_SYSFS=y
+ CONFIG_GPIO_XGENE=y
++CONFIG_HID_A4TECH=y
++CONFIG_HID_APPLE=y
++CONFIG_HID_BELKIN=y
++CONFIG_HID_CHERRY=y
++CONFIG_HID_CHICONY=y
++CONFIG_HID_CYPRESS=y
++CONFIG_HID_EZKEY=y
++CONFIG_HID_ITE=y
++CONFIG_HID_KENSINGTON=y
++CONFIG_HID_LOGITECH=y
++CONFIG_HID_REDRAGON=y
++CONFIG_HID_MICROSOFT=y
++CONFIG_HID_MONTEREY=y
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_HISI_PMU=y
+ CONFIG_HIX5HD2_GMAC=y
+@@ -422,8 +436,8 @@ CONFIG_MDIO_BUS_MUX_MULTIPLEXER=y
+ CONFIG_MD=y
+ CONFIG_MEDIA_CAMERA_SUPPORT=y
+ CONFIG_MEDIA_CONTROLLER=y
+-CONFIG_MEDIA_SUPPORT_FILTER=n
+ CONFIG_MEDIA_SUPPORT=y
++CONFIG_MEDIA_SUPPORT_FILTER=y
+ CONFIG_MEDIA_USB_SUPPORT=y
+ CONFIG_MEMCG_SWAP=y
+ CONFIG_MEMCG=y
+@@ -494,6 +508,7 @@ CONFIG_MXC_MLB150=y
+ CONFIG_MXC_SIM=y
+ CONFIG_MXMWIFIEX=m
+ CONFIG_MXS_DMA=y
++CONFIG_NAMESPACES=y
+ CONFIG_NET_9P_VIRTIO=y
+ CONFIG_NET_9P=y
+ CONFIG_NET_CLS_BASIC=y
+-- 
+2.17.1
+

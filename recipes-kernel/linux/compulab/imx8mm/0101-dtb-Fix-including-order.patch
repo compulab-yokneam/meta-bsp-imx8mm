@@ -1,0 +1,56 @@
+From 5913c9cf89ef04b6db874f963f539c0d83db9468 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 6 Jun 2023 20:46:20 +0300
+Subject: [PATCH 101/102] dtb:Fix including order
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8.dts                  | 2 +-
+ .../compulab/{sb-ucm-imx8-rev2.dts => sb-ucm-imx8-rev2.dtsi}  | 4 ++--
+ arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts               | 1 +
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+ rename arch/arm64/boot/dts/compulab/{sb-ucm-imx8-rev2.dts => sb-ucm-imx8-rev2.dtsi} (99%)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
+index 3e428fab3aa3..fd50ef2199fd 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8.dts
+@@ -12,7 +12,7 @@
+  * GNU General Public License for more details.
+  */
+ 
+-#include "ucm-imx8m-mini.dts"
++#include "ucm-imx8m-mini.dtsi"
+ 
+ / {
+ 	model = "CompuLab SB-IOTGIMX8 board";
+diff --git a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dts b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+similarity index 99%
+rename from arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dts
+rename to arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+index ece50257dadc..efebb8221199 100644
+--- a/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dts
++++ b/arch/arm64/boot/dts/compulab/sb-ucm-imx8-rev2.dtsi
+@@ -422,5 +422,5 @@
+ 				MX8MM_IOMUXC_GPIO1_IO14_CCMSRCGPCMIX_CLKO1	0x59
+ 			>;
+ 		};
+-	}
+-}
++	};
++};
+diff --git a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+index e1b8aed3087a..dd5b74946e21 100644
+--- a/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
++++ b/arch/arm64/boot/dts/compulab/ucm-imx8m-mini.dts
+@@ -15,6 +15,7 @@
+ /dts-v1/;
+ 
+ #include "ucm-imx8m-mini.dtsi"
++#include "sb-ucm-imx8-rev2.dtsi"
+ 
+ / {
+ 	model = "CompuLab UCM i.MX8MM board";
+-- 
+2.17.1
+

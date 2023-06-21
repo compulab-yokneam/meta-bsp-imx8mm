@@ -1,0 +1,113 @@
+From cd4f9ff8a98b67e20dbcd592c0b594f6b29b11fd Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 20 Jun 2023 20:41:42 +0300
+Subject: [PATCH 135/135] ucm:mcm:dts: enable ili9881c display
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/ili9881c_panel.dtsi | 67 ++++++++++++++++++++++++++++++++
+ arch/arm/dts/mcm-imx8m-mini.dts  |  1 +
+ arch/arm/dts/ucm-imx8m-mini.dts  |  1 +
+ 3 files changed, 69 insertions(+)
+ create mode 100644 arch/arm/dts/ili9881c_panel.dtsi
+
+diff --git a/arch/arm/dts/ili9881c_panel.dtsi b/arch/arm/dts/ili9881c_panel.dtsi
+new file mode 100644
+index 0000000000..8fd6eeab63
+--- /dev/null
++++ b/arch/arm/dts/ili9881c_panel.dtsi
+@@ -0,0 +1,67 @@
++/*
++ * Copyright 2018 CompuLab
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++/ {
++	dsi_host: dsi-host {
++		compatible = "samsung,sec-mipi-dsi";
++		status = "okay";
++	};
++
++	ili9881c_panel {
++		compatible = "startek,ili9881c";
++		reset-gpio = <&pca9555 6 GPIO_ACTIVE_LOW>;
++		dsi-lanes = <4>;
++		panel-width-mm = <63>;
++		panel-height-mm = <115>;
++		status = "okay";
++
++		port {
++			ili9881c_from_dsim: endpoint {
++				remote-endpoint = <&ili9881c_to_dsim>;
++			};
++		};
++	};
++};
++
++&lcdif {
++	display = <&display0>;
++	status = "okay";
++	display0: display@0 {
++		bits-per-pixel = <24>;
++		bus-width = <24>;
++	};
++};
++
++&mipi_dsi {
++	status = "okay";
++	port@1 {
++		ili9881c_to_dsim: endpoint {
++			remote-endpoint = <&ili9881c_from_dsim>;
++		};
++	};
++};
++
++&lcdif {
++	enable_polarity_low;
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++	/delete-property/ assigned-clock-rates;
++};
++
++&mipi_dsi {
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-parents;
++	/delete-property/ assigned-clock-rates;
++};
++
+diff --git a/arch/arm/dts/mcm-imx8m-mini.dts b/arch/arm/dts/mcm-imx8m-mini.dts
+index 33409dacc4..6f63959770 100644
+--- a/arch/arm/dts/mcm-imx8m-mini.dts
++++ b/arch/arm/dts/mcm-imx8m-mini.dts
+@@ -15,6 +15,7 @@
+ /dts-v1/;
+ 
+ #include "cpl-imx8m-mini.dtsi"
++#include "ili9881c_panel.dtsi"
+ 
+ / {
+ 	model = "CompuLab MCM-iMX8M-Mini board";
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index f3f371d158..2445454c23 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -15,6 +15,7 @@
+ /dts-v1/;
+ 
+ #include "cpl-imx8m-mini.dtsi"
++#include "ili9881c_panel.dtsi"
+ 
+ / {
+ 	model = "CompuLab UCM-iMX8M-Mini board";
+-- 
+2.17.1
+

@@ -131,6 +131,8 @@ SRC_URI:append = "  \
 	file://0131-u-boot-localversion-3.2.patch \
 	file://0132-iot-gate-imx8-board-diagnostics-fix.patch \
 	file://0133-ucm-mcm-dts-enable-mmc2-SD-card.patch \
+	file://0134-ucm-mcm-dts-enable-pca9555-i2c-gpio.patch \
+	file://0135-ucm-mcm-dts-enable-ili9881c-display.patch \
 	file://cl_setenv \
 " 
  

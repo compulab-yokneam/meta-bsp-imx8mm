@@ -1,0 +1,47 @@
+From 3e77f57b3a2f34ea9b8d24acafbfd4fb5fa7b01b Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 20 Jun 2023 20:38:08 +0300
+Subject: [PATCH 134/135] ucm:mcm:dts: enable pca9555 i2c-gpio
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/mcm-imx8m-mini.dts | 8 ++++++++
+ arch/arm/dts/ucm-imx8m-mini.dts | 9 +++++++++
+ 2 files changed, 17 insertions(+)
+
+diff --git a/arch/arm/dts/mcm-imx8m-mini.dts b/arch/arm/dts/mcm-imx8m-mini.dts
+index 17db04ac48..33409dacc4 100644
+--- a/arch/arm/dts/mcm-imx8m-mini.dts
++++ b/arch/arm/dts/mcm-imx8m-mini.dts
+@@ -80,3 +80,11 @@
+         status = "okay";
+ };
+ 
++&i2c1 {
++	pca9555:pca9555@20 {
++		compatible = "nxp,pca9555";
++		gpio-controller;
++		#gpio-cells = <2>;
++		reg = <0x20>;
++	};
++};
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index 2853e1d425..f3f371d158 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -81,3 +81,12 @@
+         status = "okay";
+ };
+ 
++&i2c1 {
++	pca9555:pca9555@20 {
++		compatible = "nxp,pca9555";
++		gpio-controller;
++		#gpio-cells = <2>;
++		reg = <0x20>;
++	};
++};
++
+-- 
+2.17.1
+

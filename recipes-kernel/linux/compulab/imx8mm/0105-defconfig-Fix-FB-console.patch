@@ -1,0 +1,24 @@
+From 30abfc69b11c3917a49a88553f8929a7cd139994 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 19 Jun 2023 22:42:49 +0300
+Subject: [PATCH 105/105] defconfig: Fix FB console
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/ucm-imx8m-mini.config | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm64/configs/ucm-imx8m-mini.config b/arch/arm64/configs/ucm-imx8m-mini.config
+index f5d35544ca73..4a3a7b71e919 100644
+--- a/arch/arm64/configs/ucm-imx8m-mini.config
++++ b/arch/arm64/configs/ucm-imx8m-mini.config
+@@ -10,3 +10,6 @@ CONFIG_BRCMFMAC_PCIE=y
+ CONFIG_BRCM_TRACING=y
+ CONFIG_EXTRA_FIRMWARE_DIR="firmware"
+ CONFIG_EXTRA_FIRMWARE="brcm/BCM4335C0.hcd"
++CONFIG_FB=y
++CONFIG_LOGO=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
+-- 
+2.17.1
+

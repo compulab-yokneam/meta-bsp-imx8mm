@@ -6,17 +6,84 @@ Subject: [PATCH 133/133] ucm:mcm:dts: enable mmc1 SD card
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
 ---
  arch/arm/dts/ucm-imx8m-mini.dts | 61 +++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ arch/arm/dts/mcm-imx8m-mini.dts | 60 +++++++++++++++++++++++++++++++++
+ 2 file changed, 121 insertions(+)
 
 diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
 index 7b81e8a75b..2853e1d425 100644
 --- a/arch/arm/dts/ucm-imx8m-mini.dts
 +++ b/arch/arm/dts/ucm-imx8m-mini.dts
-@@ -19,4 +19,65 @@
- / {
+@@ -20,3 +20,63 @@
  	model = "CompuLab UCM-iMX8M-Mini board";
  	compatible = "cpl,ucm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
+ };
 +
++&iomuxc {
++	ucm-imx8m-mini {
++		pinctrl_usdhc2_gpio: usdhc2grpgpio {
++			fsl,pins = <
++				MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
++				MX8MM_IOMUXC_SD2_WP_USDHC2_WP		0
++			>;
++		};
++
++		pinctrl_usdhc2: usdhc2grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
++				MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d0
++				MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d0
++				MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d0
++				MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d0
++				MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d0
++				MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
++			>;
++		};
++
++		pinctrl_usdhc2_100mhz: usdhc2grp100mhz {
++			fsl,pins = <
++				MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x194
++				MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d4
++				MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d4
++				MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d4
++				MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d4
++				MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d4
++				MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
++			>;
++		};
++
++		pinctrl_usdhc2_200mhz: usdhc2grp200mhz {
++			fsl,pins = <
++				MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x196
++				MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d6
++				MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d6
++				MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d6
++				MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d6
++				MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d6
++				MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
++			>;
++		};
++	};
++};
++
++&usdhc2 {
++        pinctrl-names = "default", "state_100mhz", "state_200mhz";
++        pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
++        pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
++        pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>; 
++        bus-width = <4>;
++        fsl,wp-controller;
++        non-removable;
++        vmmc-supply = <&reg_usdhc2_vmmc>;
++        status = "okay";
++};
++
+diff --git a/arch/arm/dts/mcm-imx8m-mini.dts b/arch/arm/dts/mcm-imx8m-mini.dts
+index 060e51793c..17db04ac48 100644
+--- a/arch/arm/dts/mcm-imx8m-mini.dts
++++ b/arch/arm/dts/mcm-imx8m-mini.dts
+@@ -20,3 +20,63 @@
+ 	model = "CompuLab MCM-iMX8M-Mini board";
+ 	compatible = "cpl,mcm-imx8m-mini", "fsl,imx8mm-evk", "fsl,imx8mm";
  };
 +
 +&iomuxc {

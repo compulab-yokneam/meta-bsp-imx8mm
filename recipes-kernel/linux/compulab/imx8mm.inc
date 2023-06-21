@@ -99,5 +99,12 @@ SRC_URI:append = " \
 	file://0098-defconfig-Enable-thermal-driver.patch \
 	file://0099-defconfig-Enable-sys-class-gpio.patch \
 	file://0100-defconfig-Disable-FB-EFI.patch \
+	file://0101-dtb-Fix-including-order.patch\
+	file://0102-defconfig-Enable-mipi-dsi-panel.patch \
+	file://0103-defconfig-Disable-Cadence-DRM.patch \
+	file://0104-make-Fix-IT6161-conditional-build.patch \
+	file://0105-defconfig-Fix-FB-console.patch \
+	file://0106-defconfig-Fix-expert-deps.patch \
+	file://0999-firmware-Add-the-brcm-firmware-to-the.patch \
 	file://defconfig \
 "
