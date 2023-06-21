@@ -1,7 +1,7 @@
 From 01c8830e05cf4112ba76a076b67474e87192c61f Mon Sep 17 00:00:00 2001
 From: Valentin Raevsky <valentin@compulab.co.il>
 Date: Tue, 11 Aug 2020 16:00:07 +0300
-Subject: [PATCH 0999] firmware: Add the brcm firmware to
+Subject: [PATCH 0107] firmware: Add the brcm firmware to
  the kernel tree
 
 Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>

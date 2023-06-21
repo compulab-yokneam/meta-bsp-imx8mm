@@ -105,6 +105,6 @@ SRC_URI:append = " \
 	file://0104-make-Fix-IT6161-conditional-build.patch \
 	file://0105-defconfig-Fix-FB-console.patch \
 	file://0106-defconfig-Fix-expert-deps.patch \
-	file://0999-firmware-Add-the-brcm-firmware-to-the.patch \
+	file://0107-firmware-Add-the-brcm-firmware-to-the.patch \
 	file://defconfig \
 "
