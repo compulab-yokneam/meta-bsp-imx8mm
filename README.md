@@ -1,20 +1,8 @@
-# VERY EXPERIMENTAL BRANCH
-# Only for development purpose
-# NOT intended for a production
-# Dont try this at home!
-
-
-
-
-
-
-
-
-
 # Quick Start Guide
 
 Supported CompuLab machines:
-* `IOT-GATE-iMX8`
+* mcm-imx8m-mini
+* ucm-imx8m-mini
 
 ## Setup Yocto Environment
 
@@ -25,32 +13,39 @@ curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/rep
 chmod a+x ~/bin/repo
 PATH=${PATH}:~/bin
 ```
+## Set environmet varables:
+```
+export LREPO=imx_5.15.32-2.0.0-compulab.xml
+export CLB_RELEASE=rel_imx_5.15.32-2.0.0
+```
+### Define COMPULAB_MACHINE environment variable
+|Machine|Command Line|
+|---|---|
+|mcm-imx8m-mini|```export COMPULAB_MACHINE=mcm-imx8m-mini```
+|ucm-imx8m-mini|```export COMPULAB_MACHINE=ucm-imx8m-mini```
 
-* Create a work directory
+## Prepare NXP BSP
 ```
 mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
-```
-* Set environmet varables:
-```
-export COMPULAB_MACHINE=iot-gate-imx8
-export LREPO=imx_5.15.32-2.0.0-compulab.xml
-export CLB_RELEASE=rel_imx_5.15.32-2.0.0-stable/
-
 repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-kirkstone -m imx-5.15.32-2.0.0.xml
-
+```
+## Download CompuLab meta layer
+```
 mkdir -p .repo/local_manifests
 wget --directory-prefix .repo/local_manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/${CLB_RELEASE}/scripts/${LREPO}
-
+```
+# Get entire BSP tree
+```
 repo sync
 ```
 ## Build
-### Run CompuLab Linux Yocto Project setup
-* Initialize the build environment:
+## Run CompuLab Linux Yocto Project setup
+|NOTE|Refer to the [NXP Readme](https://github.com/nxp-imx/meta-imx/blob/kirkstone-5.15.32-2.0.0/README) for details about how to select a correct backend & distro.|
+|---|---|
 ```
 MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build
 ```
-
 ## Build image
 ```
-bitbake -k core-image-full-cmdline
+bitbake -k compulab-ucm-imx8m-mini
 ```
