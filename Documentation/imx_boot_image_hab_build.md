@@ -15,7 +15,7 @@ Define the following environment variables:
 |Description|Command Line|
 |---|---|
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.16.bin|
-|CompuLab release|export CPL_RELEASE=${MACHINE}_r3.2|
+|CompuLab release|export CPL_RELEASE=${MACHINE}-r3.2.1|
 |CompuLab branch name|export CPL_BRANCH=lf-5.15.32-2.0.0_${MACHINE}|
 |ATF revision|export ATF=lf-5.15.32-2.0.0|
 |OPTEE revision|export OPTEE=lf-5.15.32-2.0.0|
