@@ -14,7 +14,8 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP release name|export NXP_RELEASE=lf-5.15.y|
+|NXP release name|export NXP_BRANCH=lf-5.15.y|
+|NXP release name|export NXP_RELEASE=fa6c3168595c02bd9d5366fcc28c9e7304947a3d|
 |CompuLab branch name|export CPL_BRANCH=rel_imx_5.15.32-2.0.0|
 
 ## Prerequisites
@@ -33,8 +34,8 @@ export PATCHES=$(pwd)/meta-bsp-imx8mm/recipes-kernel/linux/compulab/imx8mm
 
 ## CompuLab Linux Kernel setup
 <pre>
-git clone -b ${NXP_RELEASE} --single-branch https://github.com/nxp-imx/linux-imx.git
-git -C linux-imx checkout -b linux-compulab 
+git clone -b ${NXP_BRANCH} --single-branch https://github.com/nxp-imx/linux-imx.git
+git -C linux-imx checkout ${NXP_RELEASE} -b linux-compulab 
 git -C linux-imx am ${PATCHES}/*.patch
 </pre>
 
