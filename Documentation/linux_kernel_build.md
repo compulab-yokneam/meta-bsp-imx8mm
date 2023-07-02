@@ -14,9 +14,9 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP release name|export NXP_RELEASE=lf-5.15.y|
 |CompuLab branch name|export CPL_BRANCH=iot-gate-imx8-r3.2.1|
-
+|NXP release name|export NXP_BRANCH=lf-5.15.y|
+|NXP release name|export NXP_RELEASE=fa6c3168595c02bd9d5366fcc28c9e7304947a3d|
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
 * Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r3.2/Documentation/toolchain.md)
@@ -33,8 +33,8 @@ export PATCHES=$(pwd)/meta-bsp-imx8mm/recipes-kernel/linux/compulab/imx8mm
 
 ## CompuLab Linux Kernel setup
 <pre>
-git clone -b ${NXP_RELEASE} --single-branch https://github.com/nxp-imx/linux-imx.git
-git -C linux-imx checkout -b linux-compulab 
+git clone -b ${NXP_BRANCH} --single-branch https://github.com/nxp-imx/linux-imx.git
+git -C linux-imx checkout ${NXP_RELEASE} -b linux-compulab 
 git -C linux-imx am ${PATCHES}/*.patch
 </pre>
 

@@ -17,9 +17,9 @@ Define the following environment variables:
 |NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.16.bin|
 |CompuLab release|export CPL_RELEASE=${MACHINE}-r3.2.1|
 |CompuLab branch name|export CPL_BRANCH=lf-5.15.32-2.0.0_${MACHINE}|
-|ATF revision|export ATF=lf-5.15.32-2.0.0|
-|OPTEE revision|export OPTEE=lf-5.15.32-2.0.0|
-|U-Boot revision|export UBOOT=lf-5.15.32-2.0.0|
+|ATF revision|export ATF=cb51a0faa4b6672007f30abaa5736ccf5e4510a1|
+|OPTEE revision|export OPTEE=984996422c25c99ebfc5194c1bb393028605bb0c|
+|U-Boot revision|export UBOOT=263b27e076a0f6e5dcc80227a235f0af73718342|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
