@@ -21,7 +21,7 @@ mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
 ```
 export COMPULAB_MACHINE=iot-gate-imx8
 export LREPO=imx_5.15.32-2.0.0-compulab.xml
-export CLB_RELEASE=iot-gate-imx8_r3.2.1
+export CLB_RELEASE=iot-gate-imx8_5.15.32
 
 repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-kirkstone -m imx-5.15.32-2.0.0.xml
 
