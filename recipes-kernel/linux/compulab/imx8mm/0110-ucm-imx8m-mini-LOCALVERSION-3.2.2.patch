@@ -1,0 +1,23 @@
+From 9f89fc037fe4f229c508d66f9885db5fb28df0a5 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 17 Jul 2023 20:02:10 +0300
+Subject: [PATCH 110/111] ucm-imx8m-mini: LOCALVERSION 3.2.2
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/ucm-imx8m-mini.config | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/ucm-imx8m-mini.config b/arch/arm64/configs/ucm-imx8m-mini.config
+index a6311dfe9c52..9ca226ecfdfa 100644
+--- a/arch/arm64/configs/ucm-imx8m-mini.config
++++ b/arch/arm64/configs/ucm-imx8m-mini.config
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-ucm-imx8m-mini-2.2"
++CONFIG_LOCALVERSION="-ucm-imx8m-mini-3.2.2"
+ CONFIG_BACKLIGHT_CLASS_DEVICE=y
+ CONFIG_DRM_PANEL_STARTEK_ILI9881C=y
+ CONFIG_BACKLIGHT_GENERIC=m
+-- 
+2.17.1
+

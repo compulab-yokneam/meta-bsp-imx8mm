@@ -108,5 +108,7 @@ SRC_URI:append = " \
 	file://0107-firmware-Add-the-brcm-firmware-to-the.patch \
 	file://0108-defconfig-ucm-Enable-ov5640-sensor.patch \
 	file://0109-defconfig-dts-Eanble-cma-heap.patch \
+	file://0110-ucm-imx8m-mini-LOCALVERSION-3.2.2.patch \
+	file://0111-mcm-imx8m-mini-LOCALVERSION-3.2.2.patch \
 	file://defconfig \
 "
