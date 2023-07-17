@@ -106,6 +106,7 @@ SRC_URI:append = " \
 	file://0105-defconfig-Fix-FB-console.patch \
 	file://0106-defconfig-Fix-expert-deps.patch \
 	file://0107-firmware-Add-the-brcm-firmware-to-the.patch \
-	file://0108-defconfig-ucm-Enable-ov5640-sensor..patch \
+	file://0108-defconfig-ucm-Enable-ov5640-sensor.patch \
+	file://0109-defconfig-dts-Eanble-cma-heap.patch \
 	file://defconfig \
 "
