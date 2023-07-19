@@ -134,6 +134,7 @@ SRC_URI:append = "  \
 	file://0134-ucm-mcm-dts-enable-pca9555-i2c-gpio.patch \
 	file://0135-ucm-mcm-dts-enable-ili9881c-display.patch \
 	file://cl_setenv \
+	file://0136-ucm-imx8m-mini-mcm-imx8m-mini-dtb-Enable-USB-OTG.patch \
 " 
  
 #	For U-Boot build outside of Yocto 

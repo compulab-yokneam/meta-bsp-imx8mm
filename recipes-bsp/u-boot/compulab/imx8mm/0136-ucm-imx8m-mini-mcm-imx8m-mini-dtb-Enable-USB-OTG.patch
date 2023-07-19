@@ -1,0 +1,46 @@
+From d6bf64a3ba44fba8e8df51e8759c447a1f4d36f4 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 19 Jul 2023 19:49:51 +0300
+Subject: [PATCH 136/136] ucm-imx8m-mini:mcm-imx8m-mini:dtb: Enable USB OTG
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/mcm-imx8m-mini.dts | 5 +++++
+ arch/arm/dts/ucm-imx8m-mini.dts | 5 +++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/arch/arm/dts/mcm-imx8m-mini.dts b/arch/arm/dts/mcm-imx8m-mini.dts
+index 6f63959770..a215280f37 100644
+--- a/arch/arm/dts/mcm-imx8m-mini.dts
++++ b/arch/arm/dts/mcm-imx8m-mini.dts
+@@ -81,6 +81,11 @@
+         status = "okay";
+ };
+ 
++&usbotg1 {
++	dr_mode = "otg";
++	status = "okay";
++};
++
+ &i2c1 {
+ 	pca9555:pca9555@20 {
+ 		compatible = "nxp,pca9555";
+diff --git a/arch/arm/dts/ucm-imx8m-mini.dts b/arch/arm/dts/ucm-imx8m-mini.dts
+index fec067a8b7..fa3d5b03a1 100644
+--- a/arch/arm/dts/ucm-imx8m-mini.dts
++++ b/arch/arm/dts/ucm-imx8m-mini.dts
+@@ -81,6 +81,11 @@
+         status = "okay";
+ };
+ 
++&usbotg1 {
++	dr_mode = "otg";
++	status = "okay";
++};
++
+ &i2c1 {
+ 	pca9555:pca9555@20 {
+ 		compatible = "nxp,pca9555";
+-- 
+2.17.1
+
