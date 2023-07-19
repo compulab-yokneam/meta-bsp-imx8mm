@@ -121,6 +121,6 @@ make -j 16 -C uboot-imx O=${RESULTS}
 </pre>
 
 ## Flashing
-<pre>
+```
 dd if=${RESULTS}/flash.bin of=/dev/<your device> bs=1K seek=33 status=progress
-</pre>
+```
