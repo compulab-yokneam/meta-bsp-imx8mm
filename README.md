@@ -1,6 +1,3 @@
-# This is an unstable branch
-# For development purposes only!
-
 # Quick Start Guide
 
 Supported CompuLab machines:
@@ -19,7 +16,7 @@ PATH=${PATH}:~/bin
 ## Set environmet varables:
 ```
 export LREPO=imx_5.15.32-2.0.0-compulab.xml
-export CLB_RELEASE=rel_imx_5.15.32-2.0.0
+export CLB_RELEASE=rel_imx_5.15.32-2.0.0-stable
 ```
 ### Define COMPULAB_MACHINE environment variable
 |Machine|Command Line|
@@ -46,9 +43,9 @@ repo sync
 |NOTE|Refer to the [NXP Readme](https://github.com/nxp-imx/meta-imx/blob/kirkstone-5.15.32-2.0.0/README) for details about how to select a correct backend & distro.|
 |---|---|
 ```
-MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build
+MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build-${COMPULAB_MACHINE}
 ```
 ## Build image
 ```
-bitbake -k compulab-ucm-imx8m-mini
+bitbake -k imx-image-full
 ```
