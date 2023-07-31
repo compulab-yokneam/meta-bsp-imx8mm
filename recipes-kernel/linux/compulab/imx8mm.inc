@@ -111,4 +111,5 @@ SRC_URI:append = " \
 	file://0110-ucm-imx8m-mini-LOCALVERSION-3.2.2.patch \
 	file://0111-mcm-imx8m-mini-LOCALVERSION-3.2.2.patch \
 	file://defconfig \
+	file://0112-mcm-imx8m-mini-defconfig-Enable-can-mcp2518.patch \
 "
