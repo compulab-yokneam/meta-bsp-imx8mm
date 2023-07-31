@@ -107,4 +107,4 @@ PACKAGESPLITFUNCS:remove = "split_kernel_module_packages"
 
 FILES:${KERNEL_PACKAGE_NAME}-modules = "/lib/modules/ /etc/"
 
-COMPATIBLE_MACHINE = "(ucm-imx8m-mini|iot-gate-imx8)"
+COMPATIBLE_MACHINE = "(mcm-imx8m-mini|ucm-imx8m-mini|iot-gate-imx8)"
