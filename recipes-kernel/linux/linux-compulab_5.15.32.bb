@@ -39,17 +39,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/compulab/imx8mm:"
 require compulab/imx8mm.inc
 
 do_configure() {
-    oe_runmake cl-imx8m-mini_defconfig ${MACHINE}.config
-}
-
-do_merge_config () {
-    configs=arch/arm64/configs
-    cp ${S}/${configs}/${MACHINE}_defconfig ${S}/${configs}/compulab_defconfig
-    echo "# CONFIG_MACHINE_STUB is not set " > ${WORKDIR}/CONFIG_MACHINE_STUB.cfg
-    ${S}/scripts/kconfig/merge_config.sh  -O ${S}/${configs}/ -m ${S}/${configs}/${MACHINE}_defconfig ${WORKDIR}/*.cfg
-    mv ${S}/${configs}/.config ${S}/${configs}/${MACHINE}_defconfig
-    oe_runmake ${MACHINE}_defconfig
-    mv ${S}/${configs}/compulab_defconfig ${S}/${configs}/${MACHINE}_defconfig
+    oe_runmake cl-imx8m-mini_defconfig ${MACHINE}.config ${KBUILD_DEFCONFIG_EXTRA_FRAGMENTS}
 }
 
 do_compile:prepend() {

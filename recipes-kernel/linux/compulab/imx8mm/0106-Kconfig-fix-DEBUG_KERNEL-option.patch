@@ -1,0 +1,26 @@
+From 9504c864794701010e87e66c7e9cca65782b6890 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 16 Aug 2023 14:44:22 +0300
+Subject: [PATCH 106/106] Kconfig: fix DEBUG_KERNEL option
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ init/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 0b8a65ae1d72..564471bdc74b 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1449,7 +1449,7 @@ config BPF
+ menuconfig EXPERT
+ 	bool "Configure standard kernel features (expert users)"
+ 	# Unhide debug options, to make the on-by-default options visible
+-	select DEBUG_KERNEL
++	imply DEBUG_KERNEL
+ 	help
+ 	  This option allows certain base kernel options and settings
+ 	  to be disabled or tweaked. This is for specialized
+-- 
+2.17.1
+
