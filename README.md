@@ -16,7 +16,7 @@ PATH=${PATH}:~/bin
 ## Set environmet varables:
 ```
 export LREPO=imx_5.15.32-2.0.0-compulab.xml
-export CLB_RELEASE=rel_imx_5.15.32-2.0.0-stable
+export CLB_RELEASE=rel_imx_5.15.32-2.0.0-dev
 ```
 ### Define COMPULAB_MACHINE environment variable
 |Machine|Command Line|
