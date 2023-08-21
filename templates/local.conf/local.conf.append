@@ -6,6 +6,8 @@ CORE_IMAGE_EXTRA_INSTALL += " libubootenv-bin u-boot-compulab-env "
 CORE_IMAGE_EXTRA_INSTALL += " u-boot-update-script "
 CORE_IMAGE_EXTRA_INSTALL += " linux-firmware-ax210 firmware-imx-sdma-imx7d "
 
+CORE_IMAGE_EXTRA_INSTALL:append:iot-gate-imx8 = " linux-firmware-ath10k linux-firmware-qca "
+
 CORE_IMAGE_EXTRA_INSTALL:append:iot-gate-imx8 = " u-boot-script linux-firmware-ax200"
 CORE_IMAGE_EXTRA_INSTALL:append:iot-gate-imx8 = " networkmanager networkmanager-nmcli wireless-tools "
 CORE_IMAGE_EXTRA_INSTALL:append:iot-gate-imx8 = " libgpiod-tools eeprom-util bluez5 gpsd modemmanager "

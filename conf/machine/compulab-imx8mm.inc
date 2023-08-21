@@ -32,7 +32,7 @@ IMX_BOOT_SEEK = "33"
 
 MACHINE_FIRMWARE:append = " firmware-cypress linux-firmware-ax200"
 
-MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
+MACHINE_FIRMWARE:append = " linux-firmware-ath10k qca "
 
 DEFAULTTUNE:mx8mm-nxp-bsp = "aarch64"
 

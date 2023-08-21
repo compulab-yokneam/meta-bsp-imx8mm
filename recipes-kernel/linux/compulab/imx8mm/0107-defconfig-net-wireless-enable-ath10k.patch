@@ -1,0 +1,24 @@
+From 4af4553b9a992dc92db1b4949203477ebd5820cf Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Mon, 21 Aug 2023 19:55:37 +0300
+Subject: [PATCH 107/107] defconfig:net:wireless:enable ath10k
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8.config | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8.config b/arch/arm64/configs/iot-gate-imx8.config
+index 752831ed6b96..83b9f26d5ba7 100644
+--- a/arch/arm64/configs/iot-gate-imx8.config
++++ b/arch/arm64/configs/iot-gate-imx8.config
+@@ -121,3 +121,7 @@ CONFIG_PSTORE_COMPRESS=y
+ CONFIG_PSTORE_DEFLATE_COMPRESS_DEFAULT=y
+ CONFIG_PSTORE_COMPRESS_DEFAULT="deflate"
+
++CONFIG_ATH10K=m
++CONFIG_ATH10K_PCI=m
++CONFIG_ATH10K_DEBUG=y
++CONFIG_ATH10K_DEBUGFS=y
+--
+2.17.1
