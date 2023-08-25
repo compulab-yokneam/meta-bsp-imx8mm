@@ -110,6 +110,8 @@ SRC_URI:append = " \
 	file://0109-defconfig-dts-Eanble-cma-heap.patch \
 	file://0110-ucm-imx8m-mini-LOCALVERSION-3.2.2.patch \
 	file://0111-mcm-imx8m-mini-LOCALVERSION-3.2.2.patch \
-	file://defconfig \
 	file://0112-mcm-imx8m-mini-defconfig-Enable-can-mcp2518.patch \
+	file://0113-Add-kernel-module-nxp89xx.patch \
+	file://0114-mcm-defconfig-Enable-module-mlan.patch \
+	file://defconfig \
 "
