@@ -117,7 +117,7 @@ export ARCH=arm64
 * Compile U-Boot flash.bin:
 <pre>
 make -j 16 -C uboot-imx O=${RESULTS} -f defconfig.mk
-make -j 16 -C uboot-imx O=${RESULTS}
+make -j 16 -C uboot-imx O=${RESULTS} ATF_LOAD_ADDR=0x00920000 TEE_LOAD_ADDR=0x56000000 flash.bin
 </pre>
 
 ## Flashing
