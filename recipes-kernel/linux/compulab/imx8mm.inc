@@ -106,5 +106,6 @@ SRC_URI:append = " \
 	file://0105-iot-gate-imx8-defconfig-Trivial-typo-fix.patch \
 	file://0106-Kconfig-fix-DEBUG_KERNEL-option.patch \
 	file://0107-defconfig-net-wireless-enable-ath10k.patch \
+	file://0108-net-wireless-Integrate-Realtek-RTL8723BU.patch \
 	file://defconfig \
 "
