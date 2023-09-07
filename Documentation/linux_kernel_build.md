@@ -14,7 +14,7 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8-r3.2.1|
+|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8-r3.2-RTL8723BU|
 |NXP release name|export NXP_BRANCH=lf-5.15.y|
 |NXP release name|export NXP_RELEASE=fa6c3168595c02bd9d5366fcc28c9e7304947a3d|
 ## Prerequisites
