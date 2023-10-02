@@ -7,7 +7,7 @@ do_compile_preppend () {
 }
 
 do_install:append () {
-        ln -fs ${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/imx-boot
+    ln -fs ${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/imx-boot
 }
 
 addtask compile_preppend before do_compile after do_configure
