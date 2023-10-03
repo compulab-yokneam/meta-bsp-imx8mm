@@ -69,6 +69,4 @@ FILES:linux-compulab-headers = "${exec_prefix}/src/linux*"
 
 KERNEL_SPLIT_MODULES = "0"
 
-FILES:${KERNEL_PACKAGE_NAME}-modules = "/lib/modules/ /etc/"
-
 COMPATIBLE_MACHINE = "(ucm-imx8mm|iot-gate-imx8)"
