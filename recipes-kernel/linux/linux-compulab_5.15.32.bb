@@ -67,7 +67,7 @@ do_kernel_localversion:prepend() {
 PACKAGES =+ "linux-compulab-headers"
 FILES:linux-compulab-headers = "${exec_prefix}/src/linux*"
 
-PACKAGESPLITFUNCS:remove = "split_kernel_module_packages"
+KERNEL_SPLIT_MODULES = "0"
 
 FILES:${KERNEL_PACKAGE_NAME}-modules = "/lib/modules/ /etc/"
 
