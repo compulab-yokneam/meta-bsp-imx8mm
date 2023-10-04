@@ -1,0 +1,23 @@
+From dc5d797399c1e9639fd3beb2ab4ea55c5c513245 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 4 Oct 2023 12:52:21 +0000
+Subject: [PATCH 137/137] mcm:localversion 2.0
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ configs/mcm-imx8m-mini.config | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configs/mcm-imx8m-mini.config b/configs/mcm-imx8m-mini.config
+index bf8ebeee96..5650a0120c 100644
+--- a/configs/mcm-imx8m-mini.config
++++ b/configs/mcm-imx8m-mini.config
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-mcm-imx8m-mini-2.2"
++CONFIG_LOCALVERSION="-mcm-imx8m-mini-2.0"
+ CONFIG_TARGET_MCM_IMX8M_MINI=y
+ CONFIG_DEFAULT_DTB="mcm-imx8m-mini.dtb"
+ CONFIG_DEFAULT_FDT_FILE="mcm-imx8m-mini.dtb"
+-- 
+2.34.1
+

@@ -1,0 +1,23 @@
+From 081a05a5195ba408d58c400d320903806f3f3027 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 4 Oct 2023 12:45:28 +0000
+Subject: [PATCH 115/115] mcm:localversion 2.0
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/mcm-imx8m-mini.config | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/mcm-imx8m-mini.config b/arch/arm64/configs/mcm-imx8m-mini.config
+index f69c0df098d1..75d00b653484 100644
+--- a/arch/arm64/configs/mcm-imx8m-mini.config
++++ b/arch/arm64/configs/mcm-imx8m-mini.config
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-mcm-imx8m-mini-3.2.2"
++CONFIG_LOCALVERSION="-mcm-imx8m-mini-2.0"
+ CONFIG_BACKLIGHT_CLASS_DEVICE=y
+ CONFIG_DRM_PANEL_STARTEK_ILI9881C=y
+ CONFIG_BACKLIGHT_GENERIC=m
+-- 
+2.34.1
+

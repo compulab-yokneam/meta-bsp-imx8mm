@@ -113,5 +113,6 @@ SRC_URI:append = " \
 	file://0112-mcm-imx8m-mini-defconfig-Enable-can-mcp2518.patch \
 	file://0113-Add-kernel-module-nxp89xx.patch \
 	file://0114-mcm-defconfig-Enable-module-mlan.patch \
+	file://0115-mcm-localversion-2.0.patch \
 	file://defconfig \
 "
