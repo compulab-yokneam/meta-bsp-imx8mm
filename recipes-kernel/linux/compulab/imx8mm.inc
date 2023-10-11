@@ -106,5 +106,8 @@ SRC_URI:append = " \
 	file://0105-iot-gate-imx8-defconfig-Trivial-typo-fix.patch \
 	file://0106-Kconfig-fix-DEBUG_KERNEL-option.patch \
 	file://0107-defconfig-net-wireless-enable-ath10k.patch \
+	file://0108-rtc-abx80-fix-false-fail-caused-by-osc-glitch.patch \
+	file://0109-iot-gate-imx8-dts-free-gpio_rs485_trm.patch \
+	file://0110-iot-gate-imx8-release-3.2.2.patch \
 	file://defconfig \
 "

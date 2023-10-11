@@ -1,0 +1,42 @@
+From 4e003da755dc20fdf67a265bf9b3278ffad4d5d5 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 11 Oct 2023 19:57:19 +0000
+Subject: [PATCH 109/109] iot-gate-imx8:dts: free gpio_rs485_trm
+
+Delete fake regulator nodes to make these GPIOs available from userspace
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
+index 26d983fa925a..dcdf031e7dc2 100644
+--- a/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8-ied.dts
+@@ -32,22 +32,6 @@ clk40m: clk@1 {
+ 		};
+ 	};
+ 
+-	regulator-uart2-trm {
+-		compatible = "regulator-fixed";
+-		regulator-name = "uart2-trm";
+-		gpio = <&gpio5 12 GPIO_ACTIVE_LOW>;
+-		regulator-always-on;
+-		enable-active-low;
+-	};
+-
+-	regulator-uart4-trm {
+-		compatible = "regulator-fixed";
+-		regulator-name = "uart4-trm";
+-		gpio = <&gpio5 24 GPIO_ACTIVE_LOW>;
+-		regulator-always-on;
+-		enable-active-low;
+-	};
+-
+ 	regulatot-tpm0-rst {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "tpm0-rst";
+-- 
+2.34.1
+
