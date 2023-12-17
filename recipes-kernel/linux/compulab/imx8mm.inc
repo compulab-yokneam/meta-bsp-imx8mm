@@ -114,5 +114,6 @@ SRC_URI:append = " \
 	file://0113-Add-kernel-module-nxp89xx.patch \
 	file://0114-mcm-defconfig-Enable-module-mlan.patch \
 	file://0115-mcm-localversion-2.0.patch \
+	file://0116-dtb-fix-OOT-build.patch \
 	file://defconfig \
 "

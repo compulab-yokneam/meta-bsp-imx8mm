@@ -2,13 +2,15 @@
 
 Supported machines:
 
-* `iot-gate-imx8`
+* `ucm-imx8m-mini`
+* `mcm-imx8m-mini`
 
 Define a `MACHINE` environment variable for the target product:
 
 |Machine|Command Line|
 |---|---|
-|iot-gate-imx8|export MACHINE=iot-gate-imx8
+|ucm-imx8m-mini|export MACHINE=ucm-imx8m-mini
+|mcm-imx8m-mini|export MACHINE=mcm-imx8m-mini
 
 Define the following environment variables:
 
