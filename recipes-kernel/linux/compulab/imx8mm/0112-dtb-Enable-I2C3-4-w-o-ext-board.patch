@@ -1,0 +1,74 @@
+From 05191aa7f55247c0227418fde5964b4a2db35e1a Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 23 Jan 2024 23:25:43 +0200
+Subject: [PATCH 112/112] dtb: Enable I2C3&4 w/o ext board
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ .../boot/dts/compulab/sb-iotgimx8-i2c34.dts   | 54 +++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/compulab/sb-iotgimx8-i2c34.dts
+
+diff --git a/arch/arm64/boot/dts/compulab/sb-iotgimx8-i2c34.dts b/arch/arm64/boot/dts/compulab/sb-iotgimx8-i2c34.dts
+new file mode 100644
+index 000000000000..ed4894d2108e
+--- /dev/null
++++ b/arch/arm64/boot/dts/compulab/sb-iotgimx8-i2c34.dts
+@@ -0,0 +1,54 @@
++/*
++ * Copyright (C) 2020 CompuLab Ltd.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ */
++
++#include "sb-iotgimx8.dts"
++
++/ {
++	model = "CompuLab SB-IOTGIMX8 board + I2C3 + I2C4";
++};
++
++&i2c3 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	status = "okay";
++};
++
++&i2c4 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c4>;
++	status = "okay";
++};
++
++&iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog_sb_iotgimx8>;
++
++	sb-iotgimx8-i2c34 {
++		pinctrl_i2c3: i2c3grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL		0x400001c3
++				MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA		0x400001c3
++			>;
++		};
++
++		pinctrl_i2c4: i2c4grp {
++			fsl,pins = <
++				MX8MM_IOMUXC_I2C4_SCL_I2C4_SCL		0x400001c3
++				MX8MM_IOMUXC_I2C4_SDA_I2C4_SDA		0x400001c3
++			>;
++		};
++	};
++};
+-- 
+2.34.1
+
