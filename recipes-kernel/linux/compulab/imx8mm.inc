@@ -111,5 +111,6 @@ SRC_URI:append = " \
 	file://0110-iot-gate-imx8-release-3.2.2.patch \
 	file://0111-defconfig-Enable-ch341-usb2serial-driver.patch \
 	file://0112-iot-gate-imx8-dtb-Fix-PoE-rev1.0.patch \
+	file://0113-defconfig-Enable-usb-to-serial-F81232.patch \
 	file://defconfig \
 "

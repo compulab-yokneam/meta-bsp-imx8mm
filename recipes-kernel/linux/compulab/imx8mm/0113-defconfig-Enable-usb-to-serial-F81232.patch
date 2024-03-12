@@ -1,0 +1,23 @@
+From f888e33d16e222d768309d42c8952066b2d5f25e Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 12 Mar 2024 23:08:54 +0200
+Subject: [PATCH 113/113] defconfig: Enable usb-to-serial F81232
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm64/configs/iot-gate-imx8.config | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/configs/iot-gate-imx8.config b/arch/arm64/configs/iot-gate-imx8.config
+index f5373186be80..56802059df32 100644
+--- a/arch/arm64/configs/iot-gate-imx8.config
++++ b/arch/arm64/configs/iot-gate-imx8.config
+@@ -125,3 +125,5 @@ CONFIG_ATH10K=m
+ CONFIG_ATH10K_PCI=m
+ CONFIG_ATH10K_DEBUG=y
+ CONFIG_ATH10K_DEBUGFS=y
++
++CONFIG_USB_SERIAL_F81232=m
+-- 
+2.34.1
+
