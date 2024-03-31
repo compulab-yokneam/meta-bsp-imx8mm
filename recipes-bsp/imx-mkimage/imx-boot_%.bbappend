@@ -1,4 +1,5 @@
-do_compile_preppend () {
+do_compile:preppend () {
+	return 0
     make_file=${S}/iMX8M/soc.mak
     if [ -e ${make_file} ]; then
         sed -i "s/\(^dtbs \).*/\1= ${UBOOT_DTB_NAME}/g" ${make_file}
@@ -7,7 +8,7 @@ do_compile_preppend () {
 }
 
 do_install:append () {
-        ln -fs ${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/imx-boot
+    ln -fs ${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/imx-boot
 }
 
 addtask compile_preppend before do_compile after do_configure

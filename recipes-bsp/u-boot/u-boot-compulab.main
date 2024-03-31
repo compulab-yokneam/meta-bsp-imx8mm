@@ -23,7 +23,6 @@ LOCALVERSION = "-compulab"
 BOOT_TOOLS = "imx-boot-tools"
 
 do_deploy:append () {
-	return 1
     # Deploy u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
     if [ -n "${UBOOT_CONFIG}" ]
     then

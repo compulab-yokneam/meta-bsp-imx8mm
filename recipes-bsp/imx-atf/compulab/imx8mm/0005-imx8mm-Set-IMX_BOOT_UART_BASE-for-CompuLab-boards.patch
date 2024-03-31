@@ -1,6 +1,6 @@
-From 0ab1e2d1488026c65074c09324f381ffaecca27b Mon Sep 17 00:00:00 2001
+From cc3885628a6b844ce996d822be04513d6ab6ebb5 Mon Sep 17 00:00:00 2001
 From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
-Date: Wed, 21 Jul 2021 01:13:33 +0300
+Date: Mon, 5 Feb 2024 18:46:39 +0200
 Subject: [PATCH 5/5] imx8mm: Set IMX_BOOT_UART_BASE for CompuLab boards
 
 Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
@@ -9,10 +9,10 @@ Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/plat/imx/imx8m/imx8mm/platform.mk b/plat/imx/imx8m/imx8mm/platform.mk
-index fde4102cd..b0bf8da90 100644
+index dd9df6e12..8e0498d68 100644
 --- a/plat/imx/imx8m/imx8mm/platform.mk
 +++ b/plat/imx/imx8m/imx8mm/platform.mk
-@@ -62,7 +62,7 @@ $(eval $(call add_define,BL32_BASE))
+@@ -158,7 +158,7 @@ $(eval $(call add_define,BL32_BASE))
  BL32_SIZE		?=	0x2000000
  $(eval $(call add_define,BL32_SIZE))
  
@@ -20,7 +20,7 @@ index fde4102cd..b0bf8da90 100644
 +IMX_BOOT_UART_BASE	?=	0x30880000
  $(eval $(call add_define,IMX_BOOT_UART_BASE))
  
- ifeq (${SPD},trusty)
+ EL3_EXCEPTION_HANDLING := $(SDEI_SUPPORT)
 -- 
-2.17.1
+2.34.1
 
