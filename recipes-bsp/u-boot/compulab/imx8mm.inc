@@ -135,6 +135,7 @@ SRC_URI:append = "  \
 	file://0135-ucm-mcm-dts-enable-ili9881c-display.patch \
 	file://0136-ucm-imx8m-mini-mcm-imx8m-mini-dtb-Enable-USB-OTG.patch \
 	file://0137-mcm-localversion-2.0.patch \
+	file://0138-imx8mm-ddr-Enable-KIngston-2G-ID-0xff050010.patch \
 	file://cl_setenv \
 " 
  
