@@ -130,6 +130,7 @@ SRC_URI:append = "  \
 	file://0130-board-Fix-FDT-processing-to-comply-with-topology.patch \
 	file://0131-u-boot-localversion-3.2.patch \
 	file://0132-iot-gate-imx8-board-diagnostics-fix.patch \
+	file://0133-imx8mm-ddr-Enable-KIngston-2G-ID-0xff050010.patch \
 	file://cl_setenv \
 " 
  

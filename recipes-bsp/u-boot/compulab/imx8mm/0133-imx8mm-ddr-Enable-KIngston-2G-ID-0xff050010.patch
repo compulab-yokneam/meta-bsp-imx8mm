@@ -1,0 +1,25 @@
+From 13b04a7b1c609454de8ccad1183b776d5fc9ed09 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 5 Jun 2024 22:29:28 +0300
+Subject: [PATCH 133/133] imx8mm:ddr: Enable KIngston 2G ID 0xff050010
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ board/compulab/plat/imx8mm/ddr/ddr.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/board/compulab/plat/imx8mm/ddr/ddr.c b/board/compulab/plat/imx8mm/ddr/ddr.c
+index cf964e56bb..2bcd3c4b5d 100644
+--- a/board/compulab/plat/imx8mm/ddr/ddr.c
++++ b/board/compulab/plat/imx8mm/ddr/ddr.c
+@@ -84,6 +84,7 @@ static const struct lpddr4_desc lpddr4_array[] = {
+ 	{ .name = "Alliance",   .id = 0x52000008, .subind = 0xff, .size = 1024, .count = 1, .timing = &ucm_dram_timing_01050008},                                                                                  
+ 	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x04, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
+ 	{ .name = "Kingston",	.id = 0xff000010, .subind = 0x02, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
++	{ .name = "Kingston",	.id = 0xff050010, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_01061010},
+ 	{ .name = "Micron",	.id = 0xff020008, .subind = 0xff, .size = 2048, .count = 1, .timing = &ucm_dram_timing_ff020008},
+ 	{ .name = "Micron",	.id = 0xff000110, .subind = 0xff, .size = 4096, .count = 1, .timing = &ucm_dram_timing_ff000110},
+ };
+-- 
+2.34.1
+
