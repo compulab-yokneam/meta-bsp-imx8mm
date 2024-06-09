@@ -1,0 +1,35 @@
+From b9b9151a1f007b9e99739a904a13e43b41575db7 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 9 Jun 2024 22:30:02 +0300
+Subject: [PATCH 138/138] localversion: ucm-imx8m-mini-2.1.1
+ mcm-imx8m-mini-2.0.1
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ configs/mcm-imx8m-mini.config | 2 +-
+ configs/ucm-imx8m-mini.config | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configs/mcm-imx8m-mini.config b/configs/mcm-imx8m-mini.config
+index 5650a0120c..3e79fad217 100644
+--- a/configs/mcm-imx8m-mini.config
++++ b/configs/mcm-imx8m-mini.config
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-mcm-imx8m-mini-2.0"
++CONFIG_LOCALVERSION="-mcm-imx8m-mini-2.0.1"
+ CONFIG_TARGET_MCM_IMX8M_MINI=y
+ CONFIG_DEFAULT_DTB="mcm-imx8m-mini.dtb"
+ CONFIG_DEFAULT_FDT_FILE="mcm-imx8m-mini.dtb"
+diff --git a/configs/ucm-imx8m-mini.config b/configs/ucm-imx8m-mini.config
+index 41d00fe549..f53ffc220e 100644
+--- a/configs/ucm-imx8m-mini.config
++++ b/configs/ucm-imx8m-mini.config
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-ucm-imx8m-mini-2.1"
++CONFIG_LOCALVERSION="-ucm-imx8m-mini-2.1.1"
+ CONFIG_TARGET_UCM_IMX8M_MINI=y
+ CONFIG_DEFAULT_DTB="ucm-imx8m-mini.dtb"
+ CONFIG_DEFAULT_FDT_FILE="ucm-imx8m-mini.dtb"
+-- 
+2.34.1
+
