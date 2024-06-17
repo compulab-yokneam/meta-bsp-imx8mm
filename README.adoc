@@ -2,7 +2,7 @@
 
 ## Supported CompuLab Machines
 
-* `ucm-imx8m-mini`
+* https://www.compulab.com/products/computer-on-modules/ucm-imx8m-mini-nxp-i-mx-8m-mini-som-system-on-module-computer/[`UCM-iMX8M-Mini - NXP i.MX8M Mini System-on-Module`]
 
 # Prepare NXP BSP
 [source,console]
