@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-## Supported CompuLab Machines
+## Supported Compulab Machines
 
 * https://www.compulab.com/products/computer-on-modules/ucm-imx8m-mini-nxp-i-mx-8m-mini-som-system-on-module-computer/[`UCM-iMX8M-Mini - NXP i.MX8M Mini System-on-Module`]
 
@@ -9,7 +9,7 @@
 repo init -u git://source.codeaurora.org/external/imx/imx-manifest.git -b imx-linux-sumo -m imx-4.14.98-2.0.0_ga.xml
 repo sync
 
-# Download CompuLab meta layer
+# Download Compulab meta layer
 [source,console]
 git clone -b devel https://github.com/compulab-yokneam/meta-bsp-imx8mm.git sources/meta-bsp-imx8mm/
 
