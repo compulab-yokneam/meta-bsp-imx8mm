@@ -1,8 +1,8 @@
 # Quick Start Guide
 
-Supported CompuLab machines:
-* mcm-imx8m-mini
-* ucm-imx8m-mini
+Supported Compulab machines:
+* [**mcm-imx8m-mini**](https://www.compulab.com/products/computer-on-modules/mcm-imx8m-mini-nxp-i-mx-8m-mini-solder-down-som-system-on-module)
+* [**ucm-imx8m-mini**](https://www.compulab.com/products/computer-on-modules/ucm-imx8m-mini-nxp-i-mx-8m-mini-som-system-on-module-computer)
 
 ## Setup Yocto Environment
 
@@ -29,7 +29,7 @@ export CLB_RELEASE=rel_imx_5.15.32-2.0.0-dev
 mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
 repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-kirkstone -m imx-5.15.32-2.0.0.xml
 ```
-## Download CompuLab meta layer
+## Download Compulab meta layer
 ```
 mkdir -p .repo/local_manifests
 wget --directory-prefix .repo/local_manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/${CLB_RELEASE}/scripts/${LREPO}
@@ -39,7 +39,7 @@ wget --directory-prefix .repo/local_manifests https://raw.githubusercontent.com/
 repo sync
 ```
 ## Build
-## Run CompuLab Linux Yocto Project setup
+## Run Compulab Linux Yocto Project setup
 |NOTE|Refer to the [NXP Readme](https://github.com/nxp-imx/meta-imx/blob/kirkstone-5.15.32-2.0.0/README) for details about how to select a correct backend & distro.|
 |---|---|
 ```
