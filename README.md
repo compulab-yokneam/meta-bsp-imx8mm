@@ -1,7 +1,7 @@
 # Quick Start Guide
 
-Supported CompuLab machines:
-* `IOT-GATE-iMX8`
+Supported Compulab machines:
+* [IOT-GATE-iMX8](https://www.compulab.com/products/iot-gateways/iot-gate-imx8-industrial-arm-iot-gateway)
 
 ## Setup Yocto Environment
 
@@ -31,7 +31,7 @@ wget --directory-prefix .repo/local_manifests https://raw.githubusercontent.com/
 repo sync
 ```
 ## Build
-### Run CompuLab Linux Yocto Project setup
+### Run Compulab Linux Yocto Project setup
 * Initialize the build environment:
 ```
 MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build
