@@ -14,12 +14,16 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|NXP firmware name|export NXP_FIRMWARE=firmware-imx-8.16.bin|
-|CompuLab release|export CPL_RELEASE=${MACHINE}-r3.2.1|
-|CompuLab branch name|export CPL_BRANCH=lf-5.15.32-2.0.0_${MACHINE}|
-|ATF revision|export ATF=cb51a0faa4b6672007f30abaa5736ccf5e4510a1|
-|OPTEE revision|export OPTEE=984996422c25c99ebfc5194c1bb393028605bb0c|
-|U-Boot revision|export UBOOT=263b27e076a0f6e5dcc80227a235f0af73718342|
+|NXP firmware|export NXP_FIRMWARE=firmware-imx-8.16.bin|
+|CompuLab branch|export CPL_BRANCH=${MACHINE}-r3.2.2|
+|MKIMAGE branch|export MKIMAGE_BRANCH=lf-5.15.32_2.0.0|
+|MKIMAGE revision|export MKIMAGE_REV=lf-5.15.32-2.0.0|
+|ATF branch|export ATF_BRANCH=lf_v2.6|
+|ATF revision|export ATF_REV=lf-5.15.32-2.0.0|
+|OPTEE branch|export OPTEE_BRANCH=lf-5.15.32_2.0.0|
+|OPTEE revision|export OPTEE_REV=984996422c25c99ebfc5194c1bb393028605bb0c|
+|U-Boot branch|export UBOOT_BRANCH=lf_v2021.04|
+|U-Boot revision|export UBOOT_REV=lf-5.10.72-2.2.0|
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
@@ -31,38 +35,38 @@ export CROSS_COMPILE=/opt/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/
 </pre>
 * Create a folder to organize the files:
 <pre>
-mkdir -p imx8mm/{sources,results}
-export SRC_ROOT=$(readlink -f imx8mm/sources)
-export RESULTS=$(readlink -f imx8mm/results)
-cd ${SRC_ROOT}
+mkdir -p imx8mm
+cd imx8mm 
 </pre>
 
 * Download CompuLab BSP
 <pre>
-git clone -b ${CPL_RELEASE} https://github.com/compulab-yokneam/meta-bsp-imx8mm.git
+git clone -b ${CPL_BRANCH} https://github.com/compulab-yokneam/meta-bsp-imx8mm.git
 export LAYER_DIR=$(pwd)/meta-bsp-imx8mm
 </pre>
 
 ## Build Procedure
+### NXP mkimage tool setup
+<pre>
+git clone --single-branch -b $MKIMAGE_BRANCH https://github.com/nxp-imx/imx-mkimage.git
+git -C imx-mkimage checkout $MKIMAGE_REV
+export RESULTS=imx-mkimage/iMX8M
+</pre>
+
 ### Firmware iMX setup
-* Download the firmware-imx file:
+* Download and unpack the firmware-imx file:
 <pre>
 wget http://www.freescale.com/lgfiles/NMG/MAD/YOCTO/${NXP_FIRMWARE}
 bash -x ${NXP_FIRMWARE} --auto-accept
-cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${RESULTS}
+cp -v $(find firmware* | awk '/train|hdmi_imx8|dp_imx8/' ORS=" ") ${RESULTS}/
 </pre>
 
 ### Arm Trusted Firmware (ATF) setup
-* Download the ATF:
+* Download the ATF and apply CompuLab BSP patches:
 <pre>
-git clone https://github.com/nxp-imx/imx-atf.git
-git -C imx-atf checkout ${ATF} -b ${CPL_BRANCH}
-</pre>
-* Apply patches if applicable:
-<pre>
-[[ -d ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm ]] && { \
+git clone --single-branch -b $ATF_BRANCH https://github.com/nxp-imx/imx-atf.git
+git -C imx-atf checkout ${ATF_REV}
 git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
-}
 </pre>
 * Make bl31.bin
 
@@ -76,51 +80,55 @@ git -C imx-atf am ${LAYER_DIR}/recipes-bsp/imx-atf/compulab/imx8mm/*.patch
 ln -s $(readlink -f imx-atf/build/imx8mm/release/bl31.bin) ${RESULTS}/
 </pre>
 
-### OP-TEE Setup
+### U-Boot setup
+* Download the U-Boot source and apply CompuLab BSP patches:
+<pre>
+git clone --single-branch -b $UBOOT_BRANCH https://github.com/nxp-imx/uboot-imx.git
+git -C uboot-imx checkout $UBOOT_REV
+git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
+</pre>
+* Compile U-Boot flash.bin:
+<pre>
+make -j 16 -C uboot-imx -f defconfig.mk
+make -j 16 -C uboot-imx
+cp -v $(find uboot-imx | awk -v v=${MACHINE} '(/u-boot-spl.bin$|u-boot.bin$|u-boot-nodtb.bin$|tools\/mkimage$/)||($0~v".dtb$")' ORS=" ") ${RESULTS}/
+</pre>
 
+### OP-TEE Setup
 | Skip this for a non-optee build |
 | --- |
 
-* Download the OP-TEE:
+* Download the OP-TEE and apply CompuLab BSP patches:
 <pre>
-git clone https://github.com/nxp-imx/imx-optee-os
-git -C imx-optee-os checkout ${OPTEE} -b ${CPL_BRANCH}
-</pre>
-* Apply patches if applicable:
-<pre>
-[[ -d ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm ]] && { \
+git clone --single-branch -b $OPTEE_BRANCH https://github.com/nxp-imx/imx-optee-os
+git -C imx-optee-os checkout $OPTEE_REV
 git -C imx-optee-os am ${LAYER_DIR}/recipes-security/optee-imx/compulab/imx8mm/*.patch
-}
-</pre>
-* Set environment variables:
-<pre>
-export ARCH=arm
-export CROSS_COMPILE64=${CROSS_COMPILE}
 </pre>
 * Make tee.bin
 <pre>
+export ARCH=arm
+export CROSS_COMPILE64=${CROSS_COMPILE}
 make -j 16 -C imx-optee-os PLATFORM=imx PLATFORM_FLAVOR=mx8mm_cl_iot_gate
 ln -s $(readlink -f imx-optee-os/out/arm-plat-imx/core/tee-raw.bin) ${RESULTS}/tee.bin
 </pre>
 
-### U-Boot
-* Download the U-Boot source and apply CompuLab BSP patches:
+### Compiling imx-boot image
+* Unset these variables:
 <pre>
-git clone https://github.com/nxp-imx/uboot-imx.git
-git -C uboot-imx checkout ${UBOOT} -b ${CPL_BRANCH}
-git -C uboot-imx am ${LAYER_DIR}/recipes-bsp/u-boot/compulab/imx8mm/*.patch
+unset ARCH CROSS_COMPILE
+cd ${RESULTS}
+sed "s/\(^dtbs \).*/\1= ${MACHINE}.dtb/;s/\(mkimage\)_uboot/\1/;s/\(^TEE_LOAD_ADDR \).*/\1= 0x56000000/g" soc.mak > Makefile
+make clean
+make flash_evk SOC=iMX8MM
 </pre>
-* Restore `ARCH` environment variables:
+Issue the following commands to generate log files for the HAB signing operation (if required):
 <pre>
-export ARCH=arm64
+make SOC=iMX8MM flash_evk 2>&1 | tee flash_evk.log
+make SOC=iMX8MM print_fit_hab 2>&1 | tee print_fit_hab.log
 </pre>
-* Compile U-Boot flash.bin:
-<pre>
-make -j 16 -C uboot-imx O=${RESULTS} -f defconfig.mk
-make -j 16 -C uboot-imx O=${RESULTS}
-</pre>
-
 ## Flashing
-```
-dd if=${RESULTS}/flash.bin of=/dev/<your device> bs=1K seek=33 status=progress
-```
+<pre>
+echo 0 > /sys/class/block/mmcblk2boot0/force_ro
+dd if=${RESULTS}/flash.bin of=/dev/mmcblk2boot0 bs=1K seek=33 status=progress
+echo 1 > /sys/class/block/mmcblk2boot0/force_ro
+</pre>
