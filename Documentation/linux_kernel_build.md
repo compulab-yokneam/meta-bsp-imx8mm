@@ -21,7 +21,7 @@ Define the following environment variables:
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/rel_imx_5.4.70_2.3.0-stable/Documentation/toolchain.md)
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/rel_imx_5.10.35_2.0.0-stable/Documentation/toolchain.md)
 * Create a folder to organize the files:
 <pre>
 mkdir imx8mm
