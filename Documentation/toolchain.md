@@ -1,5 +1,6 @@
 # GNU toolchain how to
-
+* Prerequisites:<br>
+  flex, yacc, bison, libssl-dev, bc.
 * Downlaod the Linaro compiler:
 <pre>
 cd ~/Downloads
