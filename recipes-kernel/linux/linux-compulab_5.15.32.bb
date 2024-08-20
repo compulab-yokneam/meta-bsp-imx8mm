@@ -67,8 +67,6 @@ do_kernel_localversion:prepend() {
 PACKAGES =+ "linux-compulab-headers"
 FILES:linux-compulab-headers = "${exec_prefix}/src/linux*"
 
-PACKAGESPLITFUNCS:remove = "split_kernel_module_packages"
-
-FILES:${KERNEL_PACKAGE_NAME}-modules = "/lib/modules/ /etc/"
+KERNEL_SPLIT_MODULES = "0"
 
 COMPATIBLE_MACHINE = "(ucm-imx8mm|iot-gate-imx8)"
