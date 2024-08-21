@@ -37,15 +37,20 @@ MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
 DEFAULTTUNE:mx8mm-nxp-bsp = "aarch64"
 
 # Optee parameters
+OPTEEMACHINE:iot-gate-imx8 = "imx-mx8mm_cl_iot_gate"
+OPTEEMACHINE:mcm-imx8m-mini = "imx-mx8mm_cl_iot_gate"
+OPTEEMACHINE:ucm-imx8m-mini = "imx-mx8mm_cl_iot_gate"
 OPTEE_BIN_EXT = "8mm"
-OPTEE_PLATFORM_FLAVOR = "mx8mm_cl_iot_gate"
-PLATFORM_FLAVOR:iot-gate-imx8 = "${OPTEE_PLATFORM_FLAVOR}"
-PLATFORM_FLAVOR:mcm-imx8m-mini = "${OPTEE_PLATFORM_FLAVOR}"
-PLATFORM_FLAVOR:ucm-imx8m-mini = "${OPTEE_PLATFORM_FLAVOR}"
+# OPTEE_PLATFORM_FLAVOR = "mx8mm_cl_iot_gate"
+# PLATFORM_FLAVOR = "${OPTEE_PLATFORM_FLAVOR}"
+# PLATFORM_FLAVOR:iot-gate-imx8 = "${OPTEE_PLATFORM_FLAVOR}"
+# PLATFORM_FLAVOR:mcm-imx8m-mini = "${OPTEE_PLATFORM_FLAVOR}"
+# PLATFORM_FLAVOR:ucm-imx8m-mini = "${OPTEE_PLATFORM_FLAVOR}"
 TEE_LOAD_ADDR = "0x56000000"
 
 ATF_MACHINE_NAME = "bl31-imx8mm.bin"
 PLATFORM = "imx8mm"
+PLATFORM = "${OPTEE_PLATFORM_FLAVOR}"
 SOC_TARGET = "iMX8MM"
 IMX_BOOT_SOC_TARGET = "iMX8MM"
 
@@ -59,3 +64,7 @@ PREFERRED_PROVIDER_virtual/kernel:compulab-mx8mm = "linux-compulab"
 PREFERRED_PROVIDER_virtual/bootloader:compulab-mx8mm = "u-boot-compulab"
 PREFERRED_PROVIDER_linux-imx-mfgtool:compulab-mx8mm = "linux-compulab-mfgtool"
 PREFERRED_PROVIDER_linux-compulab-mfgtool:compulab-mx8mm = "linux-compulab-mfgtool"
+
+# For the kernel module nxp89xx
+MACHINE_FIRMWARE:append = " linux-firmware-nxp89xx "
+IMAGE_INSTALL:append = " nxp-wlan-sdk  kernel-module-nxp-wlan"

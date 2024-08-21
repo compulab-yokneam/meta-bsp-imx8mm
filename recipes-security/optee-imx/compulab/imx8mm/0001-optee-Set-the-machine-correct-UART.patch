@@ -1,0 +1,26 @@
+From 0b50f8654916919d0715e39c28a2058c90388a21 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Tue, 30 Jul 2024 22:46:41 +0300
+Subject: [PATCH 1/1] optee: Set the machine correct UART
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ core/arch/arm/plat-imx/conf.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index 9ab3e1e95..f65018b44 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -411,7 +411,7 @@ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mmevk))
+ CFG_DDR_SIZE ?= 0x80000000
+-CFG_UART_BASE ?= UART2_BASE
++CFG_UART_BASE = UART3_BASE
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mm_cl_iot_gate))
+-- 
+2.34.1
+

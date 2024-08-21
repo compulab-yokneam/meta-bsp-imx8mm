@@ -1,6 +1,6 @@
-SUMMARY = "CompuLab Linux Kernel for compulab-imx8mm"
+SUMMARY = "CompuLab Linux Kernel for compulab-imx8m-plus SOM"
 
-inherit kernel-yocto kernel fsl-kernel-localversion fsl-vivante-kernel-driver-handler
+inherit kernel-yocto kernel fsl-vivante-kernel-driver-handler
 
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
@@ -24,8 +24,10 @@ KCONFIG_MODE="--alldefconfig"
 # We need to pass it as param since kernel might support more then one
 # machine, with different entry points
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT}"
+KBUILD_DEFCONFIG:compulab-mx8mm ?= "compulab_v8_defconfig"
+EXTRA_OEMAKE += "DTC_FLAGS=-@ "
 
-DEPENDS += "lzop-native bc-native"
+DEPENDS += "lzop-native bc-native rsync-native"
 
 require linux-compulab_${PV}.inc
 
@@ -34,25 +36,15 @@ DEFAULT_PREFERENCE = "1"
 KERNEL_VERSION_SANITY_SKIP="1"
 
 # Merged from the bbappend
-FILESEXTRAPATHS:prepend := "${THISDIR}/compulab/imx8mm:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/compulab/${PV}/imx8mm:"
 
-require compulab/imx8mm.inc
+require compulab/${PV}/imx8mm.inc
+
+LINUX_VERSION_EXTENSION = "-${CL_RELEASE}"
 
 do_configure() {
-    oe_runmake cl-imx8m-mini_defconfig ${MACHINE}.config
+    oe_runmake cl-imx8m-mini_defconfig ${MACHINE}.config ${KBUILD_DEFCONFIG_EXTRA_FRAGMENTS}
 }
-
-do_merge_config () {
-    configs=arch/arm64/configs
-    cp ${S}/${configs}/${MACHINE}_defconfig ${S}/${configs}/compulab_defconfig
-    echo "# CONFIG_MACHINE_STUB is not set " > ${WORKDIR}/CONFIG_MACHINE_STUB.cfg
-    ${S}/scripts/kconfig/merge_config.sh  -O ${S}/${configs}/ -m ${S}/${configs}/${MACHINE}_defconfig ${WORKDIR}/*.cfg
-    mv ${S}/${configs}/.config ${S}/${configs}/${MACHINE}_defconfig
-    oe_runmake ${MACHINE}_defconfig
-    mv ${S}/${configs}/compulab_defconfig ${S}/${configs}/${MACHINE}_defconfig
-}
-
-FILES:${KERNEL_PACKAGE_NAME}-image:append = " /boot/kernel-${KERNEL_VERSION} /boot/config-${KERNEL_VERSION} "
 
 do_compile:prepend() {
     export SOURCE_DATE_EPOCH=$(date +%s)
@@ -90,11 +82,16 @@ do_install:append() {
             file ${f} | awk -F":" '(/ELF.*x86-64/)&&($0="rm -rf "$1)' | sh -x
         done
     )
+    (
+        find  ${INSTALL_HDR_PATH} | awk '(/\.cmd$/||/devicetable-offsets.s$/)&&($0="rm -rf "$0)' | sh -x
+    )
     chown -R 0:0 ${INSTALL_HDR_PATH}
 
     install -d 0755 ${INSTALL_MOD_PATH}
     ln -s /usr/src/linux-headers-${KERNEL_VERSION} ${INSTALL_MOD_PATH}/build
 }
+
+FILES:${KERNEL_PACKAGE_NAME}-image:append = " /boot/kernel-${KERNEL_VERSION} /boot/config-${KERNEL_VERSION} "
 
 do_kernel_localversion:prepend() {
     touch ${WORKDIR}/defconfig
@@ -103,8 +100,13 @@ do_kernel_localversion:prepend() {
 PACKAGES =+ "linux-compulab-headers"
 FILES:linux-compulab-headers = "${exec_prefix}/src/linux*"
 
-PACKAGESPLITFUNCS:remove = "split_kernel_module_packages"
+# PACKAGES =+ "linux-headers"
+# FILES:linux-headers = "${exec_prefix}/src/linux* ${nonarch_base_libdir}/modules/${KERNEL_VERSION}/build"
 
-FILES:${KERNEL_PACKAGE_NAME}-modules = "/lib/modules/ /etc/"
+KERNEL_SPLIT_MODULES = "1"
 
-COMPATIBLE_MACHINE = "(mcm-imx8m-mini|ucm-imx8m-mini|iot-gate-imx8)"
+COMPATIBLE_MACHINE = "(compulab-mx8mm)"
+
+EXTRA_OEMAKE += "debug=n  DEBUG=0 "
+
+rm_work[noexec] = "1"
