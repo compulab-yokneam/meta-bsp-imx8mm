@@ -64,7 +64,3 @@ PREFERRED_PROVIDER_virtual/kernel:compulab-mx8mm = "linux-compulab"
 PREFERRED_PROVIDER_virtual/bootloader:compulab-mx8mm = "u-boot-compulab"
 PREFERRED_PROVIDER_linux-imx-mfgtool:compulab-mx8mm = "linux-compulab-mfgtool"
 PREFERRED_PROVIDER_linux-compulab-mfgtool:compulab-mx8mm = "linux-compulab-mfgtool"
-
-# For the kernel module nxp89xx
-MACHINE_FIRMWARE:append = " linux-firmware-nxp89xx "
-IMAGE_INSTALL:append = " nxp-wlan-sdk  kernel-module-nxp-wlan"
