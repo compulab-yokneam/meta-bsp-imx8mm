@@ -15,8 +15,8 @@ PATH=${PATH}:~/bin
 ```
 ## Set environmet varables:
 ```
-export LREPO=imx_5.15.32-2.0.0-compulab.xml
-export CLB_RELEASE=rel_imx_5.15.32-2.0.0-dev
+export LREPO=imx_6.6.3_1.0.0-compulab.xml
+export CLB_RELEASE=rel_imx_6.6.3_1.0.0
 ```
 ### Define COMPULAB_MACHINE environment variable
 |Machine|Command Line|
@@ -27,7 +27,7 @@ export CLB_RELEASE=rel_imx_5.15.32-2.0.0-dev
 ## Prepare NXP BSP
 ```
 mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
-repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-kirkstone -m imx-5.15.32-2.0.0.xml
+repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-scarthgap -m imx-6.6.23-2.0.0.xml
 ```
 ## Download CompuLab meta layer
 ```
@@ -40,7 +40,7 @@ repo sync
 ```
 ## Build
 ## Run CompuLab Linux Yocto Project setup
-|NOTE|Refer to the [NXP Readme](https://github.com/nxp-imx/meta-imx/blob/kirkstone-5.15.32-2.0.0/README) for details about how to select a correct backend & distro.|
+|NOTE|Refer to the [NXP Readme](https://github.com/nxp-imx/meta-imx/tree/scarthgap-6.6.23-2.0.0/README) for details about how to select a correct backend & distro.|
 |---|---|
 ```
 MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b build-${COMPULAB_MACHINE}
