@@ -1,13 +1,13 @@
+LICENSE = "GPL-2.0-or-later"
+LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+
 DESCRIPTION = "CompuLab i.MX8 U-Boot"
 require recipes-bsp/u-boot/u-boot.inc
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+#FILESEXTRAPATHS:prepend := "${THISDIR}/compulab:"
 
 PROVIDES += "u-boot"
-DEPENDS:append = " dtc-native"
-
-LICENSE = "GPLv2+"
-LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+DEPENDS:append = " dtc-native python3-setuptools-native "
 
 require u-boot-compulab_${PV}.inc
 
@@ -21,6 +21,8 @@ inherit fsl-u-boot-localversion
 LOCALVERSION = "-compulab"
 
 BOOT_TOOLS = "imx-boot-tools"
+
+require u-boot-compulab.inc
 
 do_deploy:append () {
     # Deploy u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
