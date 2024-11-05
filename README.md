@@ -1,8 +1,9 @@
 # Quick Start Guide
 
 Supported CompuLab machines:
-* mcm-imx8m-mini
-* ucm-imx8m-mini
+* [ucm-imx8m-mini](https://www.compulab.com/products/computer-on-modules/ucm-imx8m-mini-nxp-i-mx-8m-mini-som-system-on-module-computer)
+* [mcm-imx8m-mini](https://www.compulab.com/products/computer-on-modules/mcm-imx8m-mini-nxp-i-mx-8m-mini-solder-down-som-system-on-module)
+* [IOT-GATE-iMX8](https://www.compulab.com/products/iot-gateways/iot-gate-imx8-industrial-arm-iot-gateway)
 
 ## Setup Yocto Environment
 
@@ -21,8 +22,9 @@ export CLB_RELEASE=rel_imx_6.6.3_1.0.0
 ### Define COMPULAB_MACHINE environment variable
 |Machine|Command Line|
 |---|---|
-|mcm-imx8m-mini|```export COMPULAB_MACHINE=mcm-imx8m-mini```
-|ucm-imx8m-mini|```export COMPULAB_MACHINE=ucm-imx8m-mini```
+|ucm-imx8m-mini|```export COMPULAB_MACHINE=ucm-imx8m-mini IMG_TYPE=imx-image-full```
+|mcm-imx8m-mini|```export COMPULAB_MACHINE=mcm-imx8m-mini IMG_TYPE=imx-image-full```
+|iot-gate-imx8|```export COMPULAB_MACHINE=iot-gate-imx8 IMG_TYPE=core-image-full-cmdline```
 
 ## Prepare NXP BSP
 ```
@@ -47,5 +49,5 @@ MACHINE=${COMPULAB_MACHINE} DISTRO=fsl-imx-xwayland source compulab-setup-env -b
 ```
 ## Build image
 ```
-bitbake -k imx-image-full
+bitbake -k $IMG_TYPE 
 ```
