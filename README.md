@@ -1,9 +1,9 @@
 # Quick Start Guide
 
 Supported CompuLab machines:
-* [**ucm-imx8m-mini**](https://www.compulab.com/products/computer-on-modules/ucm-imx8m-mini-nxp-i-mx-8m-mini-som-system-on-module-computer)
-* [**mcm-imx8m-mini**](https://www.compulab.com/products/computer-on-modules/mcm-imx8m-mini-nxp-i-mx-8m-mini-solder-down-som-system-on-module)
-* [**IOT-GATE-iMX8**](https://www.compulab.com/products/iot-gateways/iot-gate-imx8-industrial-arm-iot-gateway)
+* [UCM-iMX8M-Mini &ndash; NXP i.MX8M Mini System-on-Module](https://www.compulab.com/products/computer-on-modules/ucm-imx8m-mini-nxp-i-mx-8m-mini-som-system-on-module-computer)
+* [MCM-iMX8M-Mini &ndash; NXP i.MX8M Mini SMD System-on-Module](https://www.compulab.com/products/computer-on-modules/mcm-imx8m-mini-nxp-i-mx-8m-mini-solder-down-som-system-on-module)
+* [IOT-GATE-iMX8 &ndash; Industrial IoT Edge Gateway](https://www.compulab.com/products/iot-gateways/iot-gate-imx8-industrial-arm-iot-gateway)
 
 ## Setup Yocto Environment
 
