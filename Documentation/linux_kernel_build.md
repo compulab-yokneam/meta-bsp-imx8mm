@@ -14,12 +14,12 @@ Define the following environment variables:
 
 |Description|Command Line|
 |---|---|
-|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8-r3.2.1|
+|CompuLab branch name|export CPL_BRANCH=iot-gate-imx8-r3.2.2|
 |NXP release name|export NXP_BRANCH=lf-5.15.y|
 |NXP release name|export NXP_RELEASE=fa6c3168595c02bd9d5366fcc28c9e7304947a3d|
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r3.2/Documentation/toolchain.md)
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r3.2.2/Documentation/toolchain.md)
 * Create a folder to organize the files:
 <pre>
 mkdir imx8mm

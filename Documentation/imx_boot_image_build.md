@@ -27,7 +27,7 @@ Define the following environment variables:
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r3.2/Documentation/toolchain.md)
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r3.2.2/Documentation/toolchain.md)
 * Set environment variables:
 <pre>
 export ARCH=arm64
