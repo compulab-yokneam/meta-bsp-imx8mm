@@ -1,0 +1,35 @@
+From c19753c5d051ced0960fa517164e7579b8364ce0 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Wed, 5 Feb 2025 22:42:43 +0200
+Subject: [PATCH 62/63] make:dts: Exclude FSL DTS files
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ arch/arm/dts/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 126b4d302c..6dc249f617 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -460,7 +460,7 @@ dtb-$(CONFIG_ARCH_MX7ULP) += imx7ulp-evk.dtb \
+ 	imx7ulp-evk-qspi.dtb \
+ 	imx7ulp-10x10-arm2.dtb \
+ 	imx7ulp-14x14-arm2.dtb
+-
++ifeq (0,1)
+ dtb-$(CONFIG_ARCH_IMX8M) += fsl-imx8mq-evk.dtb \
+ 		fsl-imx8mq-ddr3l-arm2.dtb \
+ 		fsl-imx8mq-ddr4-arm2.dtb \
+@@ -478,7 +478,7 @@ dtb-$(CONFIG_ARCH_IMX8) += fsl-imx8dx-17x17-val.dtb \
+ 		fsl-imx8qxp-17x17-val.dtb \
+ 		fsl-imx8qxp-lpddr4-arm2.dtb \
+ 		fsl-imx8qxp-mek.dtb
+-
++endif
+ dtb-$(CONFIG_TARGET_UCM_IMX8M_MINI) += ucm-imx8m-mini.dtb
+ 
+ dtb-$(CONFIG_RCAR_GEN3) += \
+-- 
+2.39.2
+

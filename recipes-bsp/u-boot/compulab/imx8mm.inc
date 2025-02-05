@@ -61,5 +61,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0059-LOCALVERSION-1.3.8.patch \
 	file://0060-net-Enable-phy-Realtek-RTL8211E.patch \
 	file://0061-LOCALVERSION-1.3.9.patch \
+	file://0062-make-dts-Exclude-FSL-DTS-files.patch \
+	file://0063-ddr-Add-Samsung-0x01080010-2G-and-4G.-LOCALVVERSION-.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
