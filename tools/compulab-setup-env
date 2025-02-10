@@ -27,8 +27,8 @@ function interactive_config()
 	local answer
 	select answer in yes no default; do
 		answer=${answer:-$opt_def}
-		[[ "{answer}" == "default" ]] && answer=${opt_def}
-		[[ $answer == yes ]] && return 0 || return 1
+		[[ "${answer}" == "default" ]] && answer=${opt_def}
+		[[ "${answer}" == "yes" ]] && return 0 || return 1
 	done
 }
 
@@ -40,14 +40,10 @@ function add_config_from_file()
 }
 
 if [[ -d ${BD} ]];then
-
-echo "Back to the build environment ${BD}"
-. setup-environment ${BD}
-
+	echo "Back to the build environment ${BD}"
+	. setup-environment ${BD}
 else
-
-. imx-setup-release.sh $@
-
+	. imx-setup-release.sh $@
 for _d in ${T}/*; do
 	_file=$(basename ${_d})
 	for _f in ${_d}/*;do
@@ -55,4 +51,3 @@ for _d in ${T}/*; do
 	done;
 done
 fi
-
