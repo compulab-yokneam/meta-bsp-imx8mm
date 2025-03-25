@@ -11,7 +11,7 @@ repo init -u https://github.com/nxp-imx/imx-manifest.git -b imx-linux-hardknott 
 ```
 ## 1.2 Download CompuLab meta layer
 ```
-wget --directory-prefix .repo/manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/rel_imx_5.10.35_2.0.0-stable/scripts/imx-5.10.35_2.0.0_compulab.xml
+wget --directory-prefix .repo/manifests https://raw.githubusercontent.com/compulab-yokneam/meta-bsp-imx8mm/rel_imx_5.10.35_2.0.0-nxp-wlan/scripts/imx-5.10.35_2.0.0_compulab.xml
 ```
 ## 1.3 Get entire BSP tree
 ```
