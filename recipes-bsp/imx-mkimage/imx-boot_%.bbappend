@@ -7,5 +7,6 @@ do_compile:prepend () {
 }
 
 do_install:append () {
-    ln -fs ${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/imx-boot
+	IMX_BOOT_NAME=$(ls ${D}/boot/ | head -1)
+	ln -fs ${IMX_BOOT_NAME} ${D}/boot/imx-boot
 }
