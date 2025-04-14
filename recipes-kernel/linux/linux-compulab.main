@@ -24,7 +24,7 @@ KCONFIG_MODE="--alldefconfig"
 # We need to pass it as param since kernel might support more then one
 # machine, with different entry points
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT}"
-KBUILD_DEFCONFIG:compulab-mx8mm ?= "compulab_v8_defconfig"
+KBUILD_DEFCONFIG:compulab-mx8mm ?= "cl-imx8m-mini_defconfig"
 EXTRA_OEMAKE += "DTC_FLAGS=-@ "
 
 DEPENDS += "lzop-native bc-native rsync-native"
@@ -40,15 +40,32 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/compulab/${PV}/imx8mm:"
 
 require compulab/${PV}/imx8mm.inc
 
-LINUX_VERSION_EXTENSION = "-${CL_RELEASE}"
+LINUX_VERSION_EXTENSION = "-${MACHINE}-${CL_RELEASE}"
 
-do_configure() {
-    oe_runmake cl-imx8m-mini_defconfig ${MACHINE}.config ${KBUILD_DEFCONFIG_EXTRA_FRAGMENTS}
+SRC_URI:append = " \
+	file://1000-yocto-build-Update-.gitignore.patch \
+	file://compulab.cfg \
+"
+
+# Use this method if do_kernel_configme_compulab() is not in use
+do_compulab_config() {
+    cat ${S}/arch/arm64/configs/${MACHINE}.config > ${WORKDIR}/compulab.cfg
 }
+addtask do_compulab_config before do_kernel_configme after do_patch
 
 do_compile:prepend() {
     export SOURCE_DATE_EPOCH=$(date +%s)
 }
+
+do_kernel_configme[noexec] = "1"
+do_kernel_configcheck[noexec] = "1"
+do_compile:prepend() {
+    oe_runmake ${KBUILD_DEFCONFIG} ${MACHINE}.config yocto.config
+}
+do_kernel_configme_compulab() {
+    cat ${WORKDIR}/*.cfg >> ${S}/arch/arm64/configs/yocto.config
+}
+addtask kernel_configme_compulab before do_configure after do_patch
 
 do_install:append() {
     ln -s Image-${KERNEL_VERSION} ${D}/${KERNEL_IMAGEDEST}/kernel-${KERNEL_VERSION}
