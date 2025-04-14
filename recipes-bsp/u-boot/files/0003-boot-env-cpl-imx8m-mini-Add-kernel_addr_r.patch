@@ -1,0 +1,25 @@
+From e63d41da238f5e5f5996aba8cfedce2c39da39b1 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 14 Apr 2025 15:30:05 +0300
+Subject: [PATCH 3/3] boot: env: cpl-imx8m-mini: Add kernel_addr_r
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ include/configs/cpl-imx8m-mini.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/configs/cpl-imx8m-mini.h b/include/configs/cpl-imx8m-mini.h
+index bc24a2075d..588f179d74 100644
+--- a/include/configs/cpl-imx8m-mini.h
++++ b/include/configs/cpl-imx8m-mini.h
+@@ -100,6 +100,7 @@
+ 	BSP_BOOTCOMMAND \
+ 	"autoload=off\0" \
+ 	"script=boot.scr\0" \
++	"kernel_addr_r=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
+ 	"image=Image\0" \
+ 	"console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200\0" \
+ 	"fdt_addr=0x43000000\0"			\
+-- 
+2.34.1
+
