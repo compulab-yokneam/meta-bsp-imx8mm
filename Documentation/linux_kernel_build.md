@@ -16,11 +16,11 @@ Define `MACHINE` environment variable for the target product:
 
 Define the required branch:
 
-```export CPL_BRANCH=linux-compulab_v6.6.3```
+```export CPL_BRANCH=linux-compulab_v6.6.52```
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r3.2/Documentation/toolchain.md)
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r4.1/Documentation/toolchain.md)
 * Create a folder to organize the files:
 <pre>
 mkdir imx8mm
