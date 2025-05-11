@@ -33,6 +33,6 @@ git clone --single-branch -b ${CPL_BRANCH} https://github.com/compulab-yokneam/l
 
 ## Compile the Kernel
 <pre>
-make -C linux-imx cl-imx8m-mini_defconfig ${MACHINE}.config
-make -C linux-imx
+make -C linux-compulab cl-imx8m-mini_defconfig ${MACHINE}.config
+make -C linux-compulab
 </pre>
