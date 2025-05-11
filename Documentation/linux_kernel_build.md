@@ -12,7 +12,7 @@ Define `MACHINE` environment variable for the target product:
 |---|---|
 |ucm-imx8m-mini|```export MACHINE=ucm-imx8m-mini```
 |mcm-imx8m-mini|```export MACHINE=mcm-imx8m-mini```
-|iot-gate-imx8|```export COMPULAB_MACHINE=iot-gate-imx8```
+|iot-gate-imx8|```export MACHINE=iot-gate-imx8```
 
 Define the required branch:
 
@@ -20,7 +20,7 @@ Define the required branch:
 
 ## Prerequisites
 It is up to developer to setup arm64 build environment:
-* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8_r4.1/Documentation/toolchain.md)
+* Download the [GNU tool chain](https://github.com/compulab-yokneam/meta-bsp-imx8mm/blob/iot-gate-imx8-r4.1/Documentation/toolchain.md)
 * Create a folder to organize the files:
 <pre>
 mkdir imx8mm
