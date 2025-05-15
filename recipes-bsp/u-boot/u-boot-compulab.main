@@ -4,7 +4,8 @@ LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a
 DESCRIPTION = "CompuLab i.MX8 U-Boot"
 require recipes-bsp/u-boot/u-boot.inc
 
-#FILESEXTRAPATHS:prepend := "${THISDIR}/compulab:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+SRC_URI:append = " file://no_distro_defaults.cfg "
 
 PROVIDES += "u-boot"
 DEPENDS:append = " dtc-native python3-setuptools-native "
