@@ -25,7 +25,7 @@ BOOT_TOOLS = "imx-boot-tools"
 require u-boot-compulab.inc
 
 do_deploy:append () {
-    # Deploy u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
+    # Deploy u-boot-nodtb.bin and ${MACHINE}.dtb, to be packaged in boot binary by imx-boot
     if [ -n "${UBOOT_CONFIG}" ]
     then
         for config in ${UBOOT_MACHINE}; do
@@ -35,8 +35,9 @@ do_deploy:append () {
                 if [ $j -eq $i ]
                 then
                     install -d ${DEPLOYDIR}/${BOOT_TOOLS}
-                    install -m 0777 ${B}/${config}/arch/arm/dts/${UBOOT_DTB_NAME}  ${DEPLOYDIR}/${BOOT_TOOLS}
-                    install -m 0777 ${B}/${config}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${UBOOT_CONFIG}
+                    install -m 0644 ${B}/${config}/arch/arm/dts/${UBOOT_DTB_NAME}  ${DEPLOYDIR}/${BOOT_TOOLS}/${UBOOT_DTB_NAME}
+                    install -m 0644 ${B}/${config}/arch/arm/dts/${UBOOT_DTB_NAME}  ${DEPLOYDIR}/${BOOT_TOOLS}/${UBOOT_DTB_NAME}-${type}
+                    install -m 0644 ${B}/${config}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type}
                 fi
             done
             unset  j
@@ -58,4 +59,10 @@ do_configure:prepend () {
 require u-boot-compulab-env.inc
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
+UBOOT_NAME = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
+
+EXTRA_OEMAKE += "debug=n  DEBUG=0 "
+FULL_OPTIMIZATION:remove = "-O2"
+FULL_OPTIMIZATION:append = "-Os"
+
+rm_work[noexec] = "1"
