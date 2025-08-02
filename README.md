@@ -16,8 +16,8 @@ PATH=${PATH}:~/bin
 ```
 ## Set environmet varables:
 ```
-export LREPO=imx_6.6.3_1.0.0-compulab.xml
-export CLB_RELEASE=rel_imx_6.6.3_1.0.0
+export LREPO=imx-6.6.52-2.2.1-compulab.xml
+export CLB_RELEASE=rel_imx-6.6.52-2.2.1-devel
 ```
 ### Define COMPULAB_MACHINE environment variable
 |Machine|Command Line|
@@ -29,7 +29,7 @@ export CLB_RELEASE=rel_imx_6.6.3_1.0.0
 ## Prepare NXP BSP
 ```
 mkdir compulab-freescale-bsp && cd compulab-freescale-bsp
-repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-scarthgap -m imx-6.6.23-2.0.0.xml
+repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-scarthgap -m imx-6.6.52-2.2.1.xml
 ```
 ## Download CompuLab meta layer
 ```
