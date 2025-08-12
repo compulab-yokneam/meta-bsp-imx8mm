@@ -48,3 +48,4 @@ IMAGE_INSTALL_append = " \
 	kernel-modules \
 	kernel-devicetree \
 "
+DISTRO_FEATURES_append = "bluetooth"

@@ -56,5 +56,6 @@ SRC_URI_append = " \
 	file://0055-dts-defconfig-Fix-cpufreq-sysfs-attr-disappearance.patch \
 	file://0056-dts-Enable-rpmsg.patch \
 	file://0057-ucm-dtb-Enable-rev.1.4.patch \
+	file://0058-ucm-imx8m-mini-rev1.4-dtb-Free-uart4.patch \
 "
 
