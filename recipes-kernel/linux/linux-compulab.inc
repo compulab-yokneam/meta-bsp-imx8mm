@@ -1,4 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/compulab/imx8mm:"
+SRC_URI_append = " file://*.cfg "
 
 include compulab/imx8mm.inc
 
@@ -6,6 +7,9 @@ do_configure_append () {
     mkdir ${S}/firmware/brcm -p
     cp ${WORKDIR}/recipe-sysroot/${base_libdir}/firmware/brcm/bcm4339/4339.hcd ${S}/firmware/brcm/BCM4335C0.hcd
     oe_runmake ${MACHINE}_defconfig
+    touch ${WORKDIR}/empty.cfg
+    cat ${WORKDIR}/*.cfg >> ${B}/.config
+    oe_runmake oldconfig
 }
 
 do_compile_prepend() {
