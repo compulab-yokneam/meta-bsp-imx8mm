@@ -24,7 +24,13 @@ BOOT_TOOLS = "imx-boot-tools"
 
 require u-boot-compulab.inc
 
+EXTRA_OEMAKE:append = " KCPPFLAGS+=' -DLPDDR4_TIMINGS_BIN_SECTOR=${LPDDR4_TIMINGS_BIN_SECTOR}'"
+EXTRA_OEMAKE:append = " KCPPFLAGS+=' -DIMX_BOOT_SEEK=${IMX_BOOT_SEEK}'"
+
 do_deploy:append () {
+    rm -f ${DEPLOYDIR}/${BOOT_TOOLS}/timings.bin
+    cp ${B}/${config}/board/compulab/plat/imx8mm/ddr/timings.bin ${DEPLOYDIR}
+
     # Deploy u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
     if [ -n "${UBOOT_CONFIG}" ]
     then

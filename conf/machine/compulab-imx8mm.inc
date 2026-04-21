@@ -29,6 +29,7 @@ LOADADDR = ""
 UBOOT_SUFFIX = "bin"
 UBOOT_MAKE_TARGET = ""
 IMX_BOOT_SEEK = "33"
+LPDDR4_TIMINGS_BIN_SECTOR = "4000"
 
 MACHINE_FIRMWARE:append = " firmware-cypress linux-firmware-ax200"
 

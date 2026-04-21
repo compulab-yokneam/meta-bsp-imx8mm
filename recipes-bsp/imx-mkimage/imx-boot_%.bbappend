@@ -6,6 +6,10 @@ do_compile:prepend () {
     fi
 }
 
+do_compile:append () {
+	dd if=${DEPLOY_DIR_IMAGE}/timings.bin of=${S}/${BOOT_CONFIG_MACHINE}-${target} bs=512 seek=${LPDDR4_TIMINGS_BIN_SECTOR}
+}
+
 do_install:append () {
     ln -fs ${BOOT_CONFIG_MACHINE}-${target} ${D}/boot/imx-boot
 }
