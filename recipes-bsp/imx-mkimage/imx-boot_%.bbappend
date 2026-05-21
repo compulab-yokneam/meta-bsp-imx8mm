@@ -40,5 +40,7 @@ do_compile:append () {
 
 do_install:append () {
 	install -m 0755 -d ${D}/boot/
-	install -m 0644 ${DEPLOY_DIR_IMAGE}/${FLASH_NAME}*.bin-${target} ${D}/boot/
+	for target in ${IMXBOOT_TARGETS}; do
+		install -m 0644 ${S}/${FLASH_NAME}*.bin-${target} ${D}/boot/
+	done
 }
