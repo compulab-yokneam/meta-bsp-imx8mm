@@ -1,0 +1,70 @@
+LICENSE = "GPL-2.0-or-later"
+LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+
+DESCRIPTION = "CompuLab i.MX8 U-Boot"
+require recipes-bsp/u-boot/u-boot.inc
+
+FILESEXTRAPATHS:prepend := "${THISDIR}/patches:"
+
+PROVIDES += "u-boot"
+DEPENDS:append = " dtc-native python3-setuptools-native "
+
+require u-boot-compulab_${PV}.inc
+
+DEPENDS += "flex-native bison-native bc-native dtc-native"
+
+S = "${WORKDIR}/git"
+B = "${WORKDIR}/build"
+
+inherit fsl-u-boot-localversion
+
+LOCALVERSION = "-compulab"
+
+BOOT_TOOLS = "imx-boot-tools"
+
+EXTRA_OEMAKE:append = " KCPPFLAGS+=' -DLPDDR4_TIMINGS_BIN_SECTOR=${LPDDR4_TIMINGS_BIN_SECTOR}'"
+EXTRA_OEMAKE:append = " KCPPFLAGS+=' -DIMX_BOOT_SEEK=${IMX_BOOT_SEEK}'"
+
+do_deploy:append () {
+    cp ${B}/${config}/board/compulab/plat/imx8mm/ddr/lpddr4_timing_*.bin ${DEPLOYDIR}
+
+    # Deploy u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
+    if [ -n "${UBOOT_CONFIG}" ]
+    then
+        for config in ${UBOOT_MACHINE}; do
+            i=$(expr $i + 1);
+            for type in ${UBOOT_CONFIG}; do
+                j=$(expr $j + 1);
+                if [ $j -eq $i ]
+                then
+                    install -d ${DEPLOYDIR}/${BOOT_TOOLS}
+                    install -m 0777 ${B}/${config}/arch/arm/dts/${UBOOT_DTB_NAME}  ${DEPLOYDIR}/${BOOT_TOOLS}
+                    install -m 0777 ${B}/${config}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${UBOOT_CONFIG}
+                fi
+            done
+            unset  j
+        done
+        unset  i
+    fi
+
+}
+
+do_configure:prepend () {
+	# Merge common defconfig with specific fraggment to get specific defconfig
+	local CONFDIR=configs
+	cd ${S}
+	scripts/kconfig/merge_config.sh  -O ${CONFDIR}/ -m  ${CONFDIR}/cl-imx8m-mini_defconfig ${CONFDIR}/${MACHINE}.config
+	mv ${CONFDIR}/.config ${CONFDIR}/${MACHINE}_defconfig
+	cd -
+}
+
+do_compile:prepend() {
+	export SOURCE_DATE_EPOCH=$(date +%s)
+}
+
+SRC_URI:append = " \
+	file://0001-env-Fix-env_mmc_erase.patch \
+"
+
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"

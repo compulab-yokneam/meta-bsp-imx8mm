@@ -1,0 +1,28 @@
+From 21826f7a0d7995b3c21909810cfed1286fee8603 Mon Sep 17 00:00:00 2001
+From: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+Date: Sun, 21 Jun 2026 16:23:49 +0300
+Subject: [PATCH 1/1] env:Fix env_mmc_erase
+
+Avoid compiling failure in case of CONFIG_CMD_SAVEENV=n
+
+Signed-off-by: Kirill Kapranov <kirill.kapranov@compulab.co.il>
+---
+ env/mmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/env/mmc.c b/env/mmc.c
+index 7a5836ad66c..568215ff6f5 100644
+--- a/env/mmc.c
++++ b/env/mmc.c
+@@ -490,7 +490,7 @@ U_BOOT_ENV_LOCATION(mmc) = {
+ 	.location	= ENVL_MMC,
+ 	ENV_NAME("MMC")
+ 	.load		= env_mmc_load,
+-#ifndef CONFIG_SPL_BUILD
++#if defined(CONFIG_CMD_SAVEENV) && !defined(CONFIG_SPL_BUILD)
+ 	.save		= env_save_ptr(env_mmc_save),
+ 	.erase		= ENV_ERASE_PTR(env_mmc_erase)
+ #endif
+-- 
+2.34.1
+
