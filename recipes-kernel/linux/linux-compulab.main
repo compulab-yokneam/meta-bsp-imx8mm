@@ -38,11 +38,26 @@ KERNEL_VERSION_SANITY_SKIP="1"
 # Merged from the bbappend
 FILESEXTRAPATHS:prepend := "${THISDIR}/compulab/${PV}/imx8mm:"
 
-LINUX_VERSION_EXTENSION = "-${CL_RELEASE}"
+KBUILD_DEFCONFIG:iot-gate-imx8 = "cl-imx8m-mini_defconfig"
+DELTA_KERNEL_DEFCONFIG = "${MACHINE}.config"
 
-do_configure() {
-    oe_runmake cl-imx8m-mini_defconfig ${MACHINE}.config ${KBUILD_DEFCONFIG_EXTRA_FRAGMENTS}
+do_merge_delta_config() {
+    # create config with make config
+    oe_runmake  -C ${S} O=${B} ${KERNEL_DEFCONFIG}
+
+    # add config fragments
+    for deltacfg in ${DELTA_KERNEL_DEFCONFIG}; do
+        if [ -f ${S}/arch/${ARCH}/configs/${deltacfg} ]; then
+            oe_runmake  -C ${S} O=${B} ${deltacfg}
+        elif [ -f "${WORKDIR}/${deltacfg}" ]; then
+            ${S}/scripts/kconfig/merge_config.sh -m .config ${WORKDIR}/${deltacfg}
+        elif [ -f "${deltacfg}" ]; then
+            ${S}/scripts/kconfig/merge_config.sh -m .config ${deltacfg}
+        fi
+    done
+    cp .config ${WORKDIR}/defconfig
 }
+addtask merge_delta_config before do_kernel_localversion after do_patch
 
 do_compile:prepend() {
     export SOURCE_DATE_EPOCH=$(date +%s)
@@ -90,10 +105,6 @@ do_install:append() {
 }
 
 FILES:${KERNEL_PACKAGE_NAME}-image:append = " /boot/kernel-${KERNEL_VERSION} /boot/config-${KERNEL_VERSION} "
-
-do_kernel_localversion:prepend() {
-    touch ${WORKDIR}/defconfig
-}
 
 PACKAGES =+ "linux-compulab-headers"
 FILES:linux-compulab-headers = "${exec_prefix}/src/linux*"
