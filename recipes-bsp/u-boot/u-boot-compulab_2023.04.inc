@@ -1,7 +1,3 @@
 SRCBRANCH = "u-boot-compulab_v2023.04"
-# SRCBRANCH = "u-boot-compulab_v2023.04-ISSI-opt2-experiment"
 SRC_URI = "git://github.com/compulab-yokneam/u-boot-compulab;protocol=https;branch=${SRCBRANCH}"
-#SRCREV = "86b924310f84d7a026ccb6101734385cc917959f"
 SRCREV = "${AUTOREV}"
-#SRCREV = "2a2c7fcfa2d54b04944d5dc788767c85022fb0ae"
-#SRCREV = "86b924310f84d7a026ccb6101734385cc917959f"
