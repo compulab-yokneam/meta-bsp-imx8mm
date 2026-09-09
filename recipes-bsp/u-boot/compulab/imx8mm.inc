@@ -63,5 +63,7 @@ SRC_URI_append_ucm-imx8m-mini = " \
 	file://0061-LOCALVERSION-1.3.9.patch \
 	file://0062-make-dts-Exclude-FSL-DTS-files.patch \
 	file://0063-ddr-Add-Samsung-0x01080010-2G-and-4G.-LOCALVVERSION-.patch \
+	file://0064-imx8mm-ddr-Enable-only-4G-chips-remove-the-others.patch \
+	file://065-scripts-dtc-lexer-Fix-yylloc-declaration.patch \
 	file://ucm-imx8m-mini_defconfig \
 "
