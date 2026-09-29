@@ -1,4 +1,5 @@
 SRCBRANCH = "linux-compulab_v6.6.3"
+SRCBRANCH:sbc-minimax-mcm-imx8mm = "linux-minimax_v6.6.3"
 SRC_URI = "git://github.com/compulab-yokneam/linux-compulab;protocol=https;branch=${SRCBRANCH}"
 SRCREV = "${AUTOREV}"
 # SRC_URI[imx-sdma-firmware.sha256sum] = "004ad1f9cf5b1176e71765794a5bfdcffdf44b9a5c1545188a171554bf4439a1"

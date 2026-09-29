@@ -1,0 +1,1 @@
+SUBSYSTEM=="net", ACTION=="add", KERNEL=="wlan0", TAG+="systemd", ENV{SYSTEMD_WANTS}+="btnxpuart.service"

@@ -24,6 +24,8 @@ BOOT_TOOLS = "imx-boot-tools"
 
 require u-boot-compulab.inc
 
+UBOOT_MACHINE_CONFIG ?= "${MACHINE}.config"
+
 EXTRA_OEMAKE:append = " KCPPFLAGS+=' -DLPDDR4_TIMINGS_BIN_SECTOR=${LPDDR4_TIMINGS_BIN_SECTOR}'"
 EXTRA_OEMAKE:append = " KCPPFLAGS+=' -DIMX_BOOT_SEEK=${IMX_BOOT_SEEK}'"
 
@@ -55,7 +57,7 @@ do_configure:prepend () {
 	# Merge common defconfig with specific fraggment to get specific defconfig
 	local CONFDIR=configs
 	cd ${S}
-	scripts/kconfig/merge_config.sh  -O ${CONFDIR}/ -m  ${CONFDIR}/cl-imx8m-mini_defconfig ${CONFDIR}/${MACHINE}.config
+	scripts/kconfig/merge_config.sh  -O ${CONFDIR}/ -m  ${CONFDIR}/cl-imx8m-mini_defconfig ${CONFDIR}/${UBOOT_MACHINE_CONFIG}
 	mv ${CONFDIR}/.config ${CONFDIR}/${MACHINE}_defconfig
 	cd -
 }

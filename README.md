@@ -3,6 +3,7 @@
 Supported CompuLab machines:
 * [UCM-iMX8M-Mini &ndash; NXP i.MX8M Mini System-on-Module](https://www.compulab.com/products/computer-on-modules/ucm-imx8m-mini-nxp-i-mx-8m-mini-som-system-on-module-computer)
 * [MCM-iMX8M-Mini &ndash; NXP i.MX8M Mini SMD System-on-Module](https://www.compulab.com/products/computer-on-modules/mcm-imx8m-mini-nxp-i-mx-8m-mini-solder-down-som-system-on-module)
+* SBC-MiniMax-MCM-iMX8MM
 * [IOT-GATE-iMX8 &ndash; Industrial IoT Edge Gateway](https://www.compulab.com/products/iot-gateways/iot-gate-imx8-industrial-arm-iot-gateway)
 
 ## Setup Yocto Environment
@@ -17,13 +18,14 @@ PATH=${PATH}:~/bin
 ## Set environmet varables:
 ```
 export LREPO=imx_6.6.3_1.0.0-compulab.xml
-export CLB_RELEASE=rel_imx_6.6.3_1.0.0
+export CLB_RELEASE=minimax_6.6.3_1.0.0
 ```
 ### Define COMPULAB_MACHINE environment variable
 |Machine|Command Line|
 |---|---|
 |ucm-imx8m-mini|```export COMPULAB_MACHINE=ucm-imx8m-mini IMG_TYPE=imx-image-full```
 |mcm-imx8m-mini|```export COMPULAB_MACHINE=mcm-imx8m-mini IMG_TYPE=imx-image-full```
+|sbc-minimax-mcm-imx8mm|```export COMPULAB_MACHINE=sbc-minimax-mcm-imx8mm IMG_TYPE=imx-image-full```
 |iot-gate-imx8|```export COMPULAB_MACHINE=iot-gate-imx8 IMG_TYPE=core-image-full-cmdline```
 
 ## Prepare NXP BSP

@@ -1,0 +1,11 @@
+[Unit]
+Description=Load NXP UART Bluetooth driver after WiFi firmware load
+After=systemd-udevd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/btnxpuart-start
+RemainAfterExit=yes
+
+[Install]
+# Started by /etc/udev/rules.d/90-btnxpuart.rules when wlan0 appears.
